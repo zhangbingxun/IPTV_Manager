@@ -134,8 +134,12 @@ if (isset($_POST['submit']) && isset($_POST['appver'])) {
     $versionname = $_POST['appver'];
     $appurl = $_POST['appurl'];
     $up_size = $_POST["up_size"];
-    $up_sets = $_POST["up_sets"];
     $up_text = $_POST["up_text"];
+	if (isset($_POST['up_sets'])) {
+	    $up_sets = 1;
+	} else {
+	    $up_sets = 0;
+	} 
     $sql = "update luo2888_appdata set appver='$versionname',appurl='$appurl',up_size='$up_size',up_sets=$up_sets,up_text='$up_text' ";
     mysqli_query($GLOBALS['conn'], $sql);
     echo"<script>showindex=2;alert('APP升级设置成功！');</script>";

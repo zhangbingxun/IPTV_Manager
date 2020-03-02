@@ -65,7 +65,7 @@ if (isset($_POST['submitdelonedaybefor'])) {
 } 
 
 if (isset($_POST['submitdelall'])) {
-    $sql = "delete from luo2888_users where status=-1";
+    $sql = "delete from luo2888_users where status=-1 or status=-999";
     mysqli_query($GLOBALS['conn'], $sql);
     echo'<script>javascript:self.location=document.referrer;alert("已删除所有未授权用户！")</script>';
 } 

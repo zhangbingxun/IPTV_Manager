@@ -160,10 +160,10 @@ $("#appsetform").submit();
 							<span></span>
 						</label>
 					</div>
-				<div class="form-group">
-					<label class="btn-block">更新内容</label>
-					<textarea class="form-control" rows="5" name="up_text" placeholder="请输入更新内容" ><?php echo $up_text;?></textarea>
-				</div>
+					<div class="form-group">
+						<label class="btn-block">更新内容</label>
+						<textarea class="form-control" rows="5" name="up_text" placeholder="请输入更新内容" ><?php echo $up_text;?></textarea>
+					</div>
 					<div class="form-group">
 						<button class="btn btn-label btn-primary" type="submit" name="submit"><label><i class="mdi mdi-upload"></i></label>推送更新</button>
 					</div>

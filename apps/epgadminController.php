@@ -174,5 +174,5 @@ if (get_config('epg_api_chk') == 1) {
 } else {
     $epg_api_chk = "";
 } 
-
+$jisuapi_key=get_config('jisuapi_key');
 ?>

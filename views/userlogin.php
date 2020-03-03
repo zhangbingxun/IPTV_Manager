@@ -9,7 +9,7 @@
 		<span class="mdi mdi-lock form-control-feedback" aria-hidden="true"></span>
 	</div>
 	<div class="form-group has-feedback feedback-left">
-		<label class="lyear-checkbox">
+		<label class="lyear-checkbox checkbox-primary">
 		<input type="checkbox" name="rememberpass" value="1">
 			<span>记住7天</span>
 		</label>

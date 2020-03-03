@@ -141,7 +141,7 @@
 													?>
 													<div class="form-inline pull-left" >
 														<tr>
-															<td colspan="3">
+															<td colspan="4">
 																<div class="input-group">
 																	<div class="input-group-btn">
 																	<input class="form-control" style="width: 85px;height: 30px;" type="text" name="exp" size="3" placeholder="授权天数">
@@ -151,7 +151,7 @@
 																	</div>
 																</div>
 															</td>
-															<td colspan="6">
+															<td colspan="5">
 																<div class="form-group">
 																	<label class="lyear-checkbox">
 																		<input type="checkbox" name="submitauthorvip">

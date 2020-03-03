@@ -3,7 +3,6 @@
 	var showindex=0;
 	var maxindex=0;
 </script>
-<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
 	(function($){$.session={_id:null,_cookieCache:undefined,_init:function()
 	{if(!window.name){window.name=Math.random();}
@@ -62,17 +61,17 @@
 					<div class="tab-content">
 						<div class="tab-pane active">
 	                		<div class="table-responsive" >
-								<table class="table table-bordered table-striped table-vcenter">
+								<table class="table table-bordered table-vcenter">
 									<tr>
 										<td>
 											<form class="form-inline" method="post" id='autoupdate_form'>
-												<span>间隔时间</span>
+											<label>列表设置：</label>
+												<span>更新间隔</span>
 												<input type="hidden" name="ver" value="<?php echo ($ver+1); ?>">
 												<input type="text" name='updateinterval' style="width: 30px;height: 20px;" value="<?php echo $updateinterval ?>" size="5"><span>&nbsp;分</span>
-												<span>自动更新</span>
-												<label class="lyear-checkbox checkbox-inline checkbox-primary">
+												<label class="lyear-checkbox checkbox-inline">
 													<input type="checkbox" name="autoupdate" value="<?php $autoupdate ?>" <?php echo $checktext ?>>
-													<span></span>
+													<span>自动更新</span>
 												</label>
 												<button class="btn btn-xs btn-default" type="submit" name="submit"/>保存设定</button>
 											</form>
@@ -121,8 +120,8 @@
 													</div>
 												</div>
 												<div class="modal-footer">
-													<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 													<button type="submit" class="btn btn-primary" id="addthirdlist" name="addthirdlist">确定</button>
+													<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 												</div>
 											</form>
 										</div>
@@ -136,17 +135,17 @@
 					<div class="card-header"><h4>频道列表</h4></div>
             			<div class="card-body">
 	                		<div class="table-responsive" >
-								<table class="table table-bordered table-striped table-vcenter" style="min-width:850px;">
-										    <tr align="center">
+								<table class="table table-bordered table-vcenter" style="min-width:850px;">
+										    <tr>
 											    <td colspan="5">
-							<form class="form-inline" method="post">
-								<label>分类管理：</label>
+							<form class="form-inline" method="post" style="padding: 0 15px 0 15px;">
+								<label class="control-label">分类管理：</label>
 								<div class="input-group">
 									<div class="input-group-btn">
 										<input type="hidden" id="showindextype" name="showindex" value=""/>
 										<input type="hidden" id="typename0" name="typename0" value=""/>
-										<input class="form-control" style="width: 85px;height: 30px;" id="typename" type="text" size="10" name="category" value="<?PHP echo $pd?>" placeholder="请输入分类名称"/>
-										<input class="form-control" style="width: 125px;height: 30px;" id="typepass" type="text" size="10" name="cpass" value="<?PHP echo $cpass?>" placeholder="请输入分类密码"/>
+										<input class="form-control" style="width: 108px;height: 30px;" id="typename" type="text" size="10" name="category" value="<?PHP echo $pd?>" placeholder="请输入分类名称"/>
+										<input class="form-control" style="width: 135px;height: 30px;" id="typepass" type="text" size="10" name="cpass" value="<?PHP echo $cpass?>" placeholder="请输入分类密码"/>
 										<button class="btn btn-sm btn-default" type="submit" name="submit">增加分类</button>
 										<button class="btn btn-sm btn-default" type="submit" name="submit_deltype">删除分类</button>
 										<button class="btn btn-sm btn-default" type="submit" name="submit_modifytype">修改分类</button>
@@ -159,7 +158,7 @@
 							</td>
 							</tr>
 							<tr>
-							<td align="center" valign="top" style="float: left;padding-top: 40px;width: 180px;height: 100%;">
+							<td align="center" valign="top" style="float: left;padding: 40px 0 0 0;width: 180px;height: 100%;border-width: 0px;">
 								<div id="tip"></div>
 								<script type="text/javascript">
 									var pdname=[];
@@ -192,7 +191,7 @@
 											echo "<script>pdname[$index]='$pdname';psw[$index]='$cpass';</script>";
 											echo "
 												<button id=\"pdlist\" class=\"btn btn-default\" onclick=\"showlist($index)\">
-													<div class='pdlist' style='text-align:left;padding-left:15px;padding-top:5px;padding-bottom:5px;'>
+													<div class='pdlist' style='text-align:left;padding: 5px;'>
 														<label class=\"lyear-checkbox checkbox-inline checkbox-cyan\">
 															<input type=\"checkbox\" $check onclick='togglepdcheck(\"$pdname\",\"luo2888_category\")'>
 															<span></span>
@@ -225,6 +224,7 @@
 								</form>
 							</td>
 							</tr>
+						</table>
 						</div>
 					</div>
 				</div>

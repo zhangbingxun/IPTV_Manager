@@ -6,6 +6,7 @@
 <meta name="keywords" content="IPTV,后台管理系统">
 <meta name="description" content="IPTV后台管理系统">
 <meta name="author" content="luo2888">
+<meta name="renderer" content="webkit" />
 <title>小肥米TV管理系统</title>
 <link rel="icon" href="images/favicon.ico" type="image/ico">
 <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -14,6 +15,7 @@
 </head>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
@@ -35,7 +37,7 @@
 						<li class="nav-item active"> <a href="author.php"><i class="mdi mdi-account-check"></i>授权</a> </li>
 						<li class="nav-item active"> <a href="useradmin.php"><i class="mdi mdi-account"></i>用户</a> </li>
 						<li class="nav-item active"> <a href="exception.php"><i class="mdi mdi-account-alert"></i>异常</a> </li>
-						<li class="nav-item active"> <a href="epgadmin.php"><i class="mdi mdi-television-guide"></i>EPG列表</a> </li>
+						<li class="nav-item active"> <a href="epgadmin.php"><i class="mdi mdi-television-guide"></i>EPG</a> </li>
 						<li class="nav-item active"> <a href="channeladmin.php?categorytype=default"><i class="mdi mdi-television-classic"></i>频道列表</a> </li>
 						<li class="nav-item active"> <a href="channeladmin.php?categorytype=vip"><i class="mdi mdi-crown"></i>会员专区</a> </li>
 						<?php 
@@ -84,7 +86,7 @@
 						else if ($_SERVER['REQUEST_URI'] =='/views/author.php'){ echo '&nbsp;授权&nbsp;'; }
 						else if ($_SERVER['REQUEST_URI'] =='/views/useradmin.php'){ echo '&nbsp;用户&nbsp;'; }
 						else if ($_SERVER['REQUEST_URI'] =='/views/exception.php'){ echo '&nbsp;异常&nbsp;'; }
-						else if ($_SERVER['REQUEST_URI'] =='/views/epgadmin.php'){ echo '&nbsp;EPG列表&nbsp;'; }
+						else if ($_SERVER['REQUEST_URI'] =='/views/epgadmin.php'){ echo '&nbsp;EPG&nbsp;'; }
 						else if ($_SERVER['REQUEST_URI'] =='/views/channeladmin.php?categorytype=default'){ echo '&nbsp;频道列表&nbsp;'; }
 						else if ($_SERVER['REQUEST_URI'] =='/views/channeladmin.php?categorytype=vip'){ echo '&nbsp;会员专区&nbsp;'; }
 						else if ($_SERVER['REQUEST_URI'] =='/views/sysadmin.php'){ echo '&nbsp;系统设置&nbsp;'; }
@@ -94,8 +96,8 @@
 					<ul class="topbar-right">
 						<li class="dropdown dropdown-profile">
 							<a href="javascript:void(0)" data-toggle="dropdown">
-								<img class="img-avatar img-avatar-48 m-r-10" src="images/users/avatar.png" alt="user" />
-								<span><?php echo $user ?><span class="caret"></span></span>
+								<span style="font-size: 15px;padding-right: 10px;"><?php echo $user ?></span>
+								<img class="img-avatar img-avatar-32 m-r-5" src="images/users/avatar.png" alt="user" />
 							</a>
 							<ul class="dropdown-menu dropdown-menu-right">
 								<li> <a href="../apps/logout.php"><i class="mdi mdi-logout-variant"></i> 退出登录</a> </li>
@@ -108,7 +110,7 @@
 								<li class="drop-title"><p>主题</p></li>
 								<li class="drop-skin-li clearfix">
 									<span class="inverse">
-										<input type="radio" name="site_theme" value="default" id="site_theme_1" checked>
+										<input type="radio" name="site_theme" value="default" id="site_theme_1">
 										<label for="site_theme_1"></label>
 									</span>
 									<span>
@@ -123,7 +125,7 @@
 								<li class="drop-title"><p>LOGO</p></li>
 								<li class="drop-skin-li clearfix">
 									<span class="inverse">
-										<input type="radio" name="logo_bg" value="default" id="logo_bg_1" checked>
+										<input type="radio" name="logo_bg" value="default" id="logo_bg_1">
 										<label for="logo_bg_1"></label>
 									</span>
 									<span>
@@ -158,7 +160,7 @@
 								<li class="drop-title"><p>头部</p></li>
 								<li class="drop-skin-li clearfix">
 									<span class="inverse">
-										<input type="radio" name="header_bg" value="default" id="header_bg_1" checked>
+										<input type="radio" name="header_bg" value="default" id="header_bg_1">
 										<label for="header_bg_1"></label>											
 									</span>																										
 									<span>																										 
@@ -193,7 +195,7 @@
 								<li class="drop-title"><p>侧边栏</p></li>
 								<li class="drop-skin-li clearfix">
 									<span class="inverse">
-										<input type="radio" name="sidebar_bg" value="default" id="sidebar_bg_1" checked>
+										<input type="radio" name="sidebar_bg" value="default" id="sidebar_bg_1">
 										<label for="sidebar_bg_1"></label>
 									</span>
 									<span>

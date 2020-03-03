@@ -80,63 +80,35 @@ function quanxuan(a){
 								<div class="form-group">
 	                				<div class="table-responsive" >
 	                					<?php include "epgedit.php" ?>
-										<table class="table table-bordered table-striped table-vcenter" style="width: 1412px;" align="center">
-										    <tr align="center">
-											    <td colspan="3">
-													<form class="form-inline" method="POST" action="?act=add" >
-														<div class="input-group">
-															<div class="input-group-btn">
-																<select class="form-control btn btn-default dropdown-toggle" id="epg" name="epg" style="width: 125px;">
-																	<option value="">请选来源</option>
-																	<option value="cntv">CCTV官网</option>
-																	<option value="tvmao">电视猫</option>
-																	<option value="tvsou">搜视网</option>
-																	<option value="51zmt">51zmt</option>
-																	<option value="jisu">极速数据</option>
-																</select>
-																<input class="form-control" type="text" name="name" style="width: 125px;" placeholder="请输入名称">
-																<input class="form-control" type="text" name="remarks" style="width: 125px;" placeholder="请输入备注">
-																<button class="btn btn-default" type="submit" >新增</button>
-																<button class="btn btn-default" type="submit" type="reset">重置</button>
-															</div>
-														</div>
-													</form>
-												</td>
-												<td colspan="2">
-												    <form class="form-inline" method="POST">
-														<input class="form-control" type="text" name="jisuapi_key" style="width: 215px;" value="<?php echo get_config('jisuapi_key');?>" placeholder="请输入极速数据API_KEY" >
-														<label>接口验证</label>
-														<label class="lyear-checkbox checkbox-inline checkbox-primary">
-															<input type="checkbox" name="epg_api_chk" <?php echo $epg_api_chk;?> onclick="alert('注意：非专用客户端打开后EPG会将不显示！');">
-															<span></span>
-														</label>
-														<button class="btn btn-default" type="submit" name="submit">保存</button>
-													</form>
-												</td>
-												<td colspan="2">
-													<form class="form-inline" method="POST" align="center">
+										<table class="table table-hover table-vcenter">
+										    <tr>
+												<td colspan="7">
+													<form method="POST">
+														<label class="control-label">操作：</label>
+														<button class="btn btn-default" type="button" data-toggle="modal" data-target="#addepg">增加EPG</button>
 													    <button class="btn btn-default" type="submit" name="bdpd" onclick="return confirm('自动绑定频道列表后,如果不准确请手动修改!!!')">绑定频道</button>
 														<button class="btn btn-default" type="submit" name="qkbd" onclick="return confirm('确定要清空绑定的频道列表吗？')">清空绑定</button>
+														<button class="btn btn-default" type="button" data-toggle="modal" data-target="#epgset">EPG接口设置</button>
 													</form>
 												</td>
 											</tr>
 											<tr align="center">
-												<td class="w-15">epg-id</td>
-												<td class="w-15">epg-name</td>
-												<td class="w-15">备注</td>
-												<td class="w-15">来源</td>
-												<td class="w-15">状态</td>
-												<td class="w-15">绑定频道</td>
-												<td class="w-15">操作</td>
+												<td class="w-5">#</td>
+												<td class="w-10">EPG名称</td>
+												<td class="w-5">备注</td>
+												<td class="w-5">来源</td>
+												<td class="w-5">状态</td>
+												<td class="w-10">绑定频道</td>
+												<td class="w-5">操作</td>
 											</tr>
-											<tbody>
+											<tbody style="font-size:12px;font-weight: bold;">
 												<?php
 												//获取EPG数据显示
 												$recStart=$recCounts*($page-1);
 												$result=mysqli_query($GLOBALS['conn'],"select * from luo2888_epg $searchparam limit $recStart,$recCounts");
 												if (!mysqli_num_rows($result)) {
 												    echo"<tr>";
-													echo"<td colspan=\"7\" align=\"center\" style=\"font-size:12px;color:red;height:35px;font-weight: bold;\">当前未有EPG数据！";
+													echo"<td align=\"center\" style=\"font-size:12px;color:red;height:35px;font-weight: bold;\">当前未有EPG数据！";
 													echo"</td>";
 													echo"</tr>";
 													echo"</table></tr></div>";
@@ -164,13 +136,13 @@ function quanxuan(a){
 															$epgname = '51zmt';
 													}
 													 echo"<tr>";
-													 echo"<td width=\"60\" align=\"center\" style=\"font-size:12px;height:35px;font-weight: bold;\">".$r["id"]."</td>";
-													 echo"<td width=\"300\" align=\"center\" style=\"font-size:12px;font-weight: bold;\">".$r["name"]."</td>";
-													 echo"<td width=\"140\" align=\"center\" style=\"font-size:12px;font-weight: bold;\"><font color=\"red\">".$r["remarks"]."</font></td>";
-													 echo"<td width=\"80\" align=\"center\" style=\"font-size:12px;font-weight: bold;\"><font color=\"red\">".$epgname."</font></td>";
-													 echo"<td width=\"80\" align=\"center\" style=\"font-size:12px;font-weight: bold;\">".$stu."</td>";
-													 echo"<td width=\"630\" align=\"left\" style=\"font-size:12px;font-weight: bold;\">".$r["content"]."</td>";
-													 echo"<td width=\"150\" align=\"center\" style=\"font-size:12px;font-weight: bold;\">
+													 echo"<td align=\"center\">".$r["id"]."</td>";
+													 echo"<td align=\"center\">".$r["name"]."</td>";
+													 echo"<td align=\"center\"><font color=\"red\">".$r["remarks"]."</font></td>";
+													 echo"<td align=\"center\"><font color=\"red\">".$epgname."</font></td>";
+													 echo"<td align=\"center\">".$stu."</td>";
+													 echo"<td align=\"left\">".$r["content"]."</td>";
+													 echo"<td align=\"center\">
 													 ".$stus."&nbsp;
 													 <a href=\"?act=edit&id=".$r["id"]."\">编辑</a>&nbsp;
 													 <a href=\"?act=dels&id=".$r["id"]."\"><font color=\"#8E388E\">删除</font></a>
@@ -183,6 +155,72 @@ function quanxuan(a){
 												?>
 											</tbody>
 										</table>
+										<div class="modal fade" id="addepg" tabindex="-1" role="dialog">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+														<h4 class="modal-title">增加EPG</h4>
+													</div>
+													<form method="post" action="?act=add">
+														<div class="modal-body">
+															<div class="form-group">
+																<label class="control-label">名称：</label>
+																<input type="text" class="form-control" name="name" placeholder="请输入名称">
+															</div>
+															<div class="form-group">
+																<label class="control-label">备注：</label>
+																<input type="text" class="form-control" name="remarks" placeholder="请输入备注">
+															</div>
+															<div class="form-group">
+																<label class="control-label">EPG来源：</label>
+																<select class="form-control btn btn-default dropdown-toggle" id="epg" name="epg">
+																	<option value="">请选EPG来源</option>
+																	<option value="cntv">CCTV官网</option>
+																	<option value="tvmao">电视猫</option>
+																	<option value="tvsou">搜视网</option>
+																	<option value="51zmt">51zmt</option>
+																	<option value="jisu">极速数据</option>
+																</select>
+															</div>
+														</div>
+														<div class="modal-footer">
+															<button class="btn btn-primary" type="submit" >新增</button>
+															<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+										<div class="modal fade" id="epgset" tabindex="-1" role="dialog">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+														<h4 class="modal-title">EPG接口设置</h4>
+													</div>
+													<form method="post">
+														<div class="modal-body">
+															<div class="form-group">
+																<label class="control-label">API_KEY：</label>
+																<input type="text" class="form-control" name="jisuapi_key" value="<?php echo $jisuapi_key?>" placeholder="请输入极速数据API_KEY">
+															</div>
+															<div class="form-group">
+																<label class="control-label">接口验证：</label>
+																<label class="lyear-checkbox checkbox-inline checkbox-primary">
+																	<input type="checkbox" name="epg_api_chk" onclick="alert('注意：非专用客户端打开后EPG会将不显示！');" <?php echo $epg_api_chk;?>>
+																	<span></span>
+																</label>
+															</div>
+														</div>
+														<div class="modal-footer">
+															<button class="btn btn-default" type="submit" name="submit">保存</button>
+															<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<nav>

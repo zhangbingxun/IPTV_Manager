@@ -10,7 +10,7 @@ if ($_SESSION['secret_key_status'] != "1") {
 include_once "../config.php";
 
 $ip=getuserip();
-if ($ip='' || $ip='127.0.0.1') {
+if ($ip=='' || $ip=='127.0.0.1') {
 	$ip='127.0.0.1';
 	$region='localhost';
 } else {

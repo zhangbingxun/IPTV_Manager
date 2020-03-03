@@ -83,7 +83,7 @@
 								</form>
 								<form class="pull-left" method="post" id="jumpto">
 									<input type="text" name="jumpto" style="border-width: 0px;text-align: right;" size=2 value="<?php echo $page?>">/<?php echo $pageCount?>
-									<button class="btn btn-xs btn-default" onclick="submitjump()">跳转</button>
+									<button class="btn btn-xs btn-default" onclick="submitForm()">跳转</button>
 								</form>
 							</div>
 						</div>
@@ -117,11 +117,10 @@
 											<form method="POST">
 												<?php
 													$recStart=$recCounts*($page-1);
-													if($order!='exp')$order=$order.' desc';
 													if($user=='admin'){
-													$sql="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,isvip from luo2888_users where status>0 $searchparam order by $order  limit $recStart,$recCounts";
+													$sql="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,isvip from luo2888_users where status>-1 $searchparam order by $order  limit $recStart,$recCounts";
 													}else{
-														$sql="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,isvip from luo2888_users where status>0 and author='$user' $searchparam order by $order limit $recStart,$recCounts";
+														$sql="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,isvip from luo2888_users where status>-1 and author='$user' $searchparam order by $order limit $recStart,$recCounts";
 													}
 													$result=mysqli_query($GLOBALS['conn'],$sql);
 													if (mysqli_num_rows($result)) {
@@ -217,10 +216,10 @@
 								</div>
 								<nav>
 									<ul class="pager">
-										<li><a href="<?php if($page>1){$p=$page-1;}else{$p=1;} echo '?keywords='.$keywords.'&page='.$p.'&order='.$order?>">上一页</a></li>
-										<li class="previous"><a href="<?php echo '?keywords='.$keywords.'&page=1&order='.$order?>"><span aria-hidden="true">&larr;</span> 首页</a></li>
-										<li class="next"><a href="<?php echo '?keywords='.$keywords.'&page='.$pageCount.'&order='.$order?>">尾页 <span aria-hidden="true">&rarr;</span></a></li>
-										<li><a href="<?php if($page<$pageCount){$p=$page+1;} else {$p=$page;} echo '?keywords='.$keywords.'&page='.$p.'&order='.$order?>">下一页</a></li>
+										<li><a href="<?php if($page>1){$p=$page-1;}else{$p=1;} echo '?page='.$p.'&order='.$order.'&keywords='.$keywords?>">上一页</a></li>
+										<li class="previous"><a href="<?php echo '?page=1&order='.$order.'&keywords='.$keywords?>">首页</a></li>
+										<li class="next"><a href="<?php echo '?page='.$pageCount.'&order='.$order.'&keywords='.$keywords?>">尾页</a></li>
+										<li><a href="<?php if($page<$pageCount){$p=$page+1;} else {$p=$page;} echo '?page='.$p.'&order='.$order.'&keywords='.$keywords?>">下一页</a></li>
 									</ul>
 								</nav>
 							</div>

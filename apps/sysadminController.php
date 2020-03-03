@@ -202,12 +202,7 @@ if (isset($_POST['submit']) && isset($_POST['adtext'])) {
     $showtime = $_POST['showtime'];
     $showinterval = $_POST['showinterval'];
     $qqinfo = $_POST['qqinfo'];
-    if (isset($_POST['showwea'])) {
-        $showwea = 1;
-    } else {
-        $showwea = 0;
-    } 
-    $sql = "update luo2888_appdata set adtext='$adtext',showtime=$showtime,showinterval=$showinterval,qqinfo='$qqinfo',showwea=$showwea";
+    $sql = "update luo2888_appdata set adtext='$adtext',showtime=$showtime,showinterval=$showinterval,qqinfo='$qqinfo'";
     mysqli_query($GLOBALS['conn'], $sql);
     echo"<script>showindex=0;alert('公告修改成功！');</script>";
 } 

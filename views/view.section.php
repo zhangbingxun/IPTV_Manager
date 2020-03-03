@@ -40,25 +40,18 @@
 						<li class="nav-item active"> <a href="epgadmin.php"><i class="mdi mdi-television-guide"></i>EPG</a> </li>
 						<li class="nav-item active"> <a href="channeladmin.php?categorytype=default"><i class="mdi mdi-television-classic"></i>频道列表</a> </li>
 						<li class="nav-item active"> <a href="channeladmin.php?categorytype=vip"><i class="mdi mdi-crown"></i>会员专区</a> </li>
-						<?php 
-							if ($_SERVER['REQUEST_URI'] !='/views/sysadmin.php'){ 
-								echo '<li class="nav-item active"> <a href="sysadmin.php"><i class="mdi mdi-settings-box"></i>系统设置</a> </li>';
-							}else{
-								echo '
 						<li class="nav-item nav-item-has-subnav">
 							<a href="javascript:void(0)"><i class="mdi mdi-menu"></i>系统设置</a>
 							<ul class="nav nav-subnav">
-								<li><a href="#" onclick="showli(0)">系统公告</a></li>
-								<li><a href="#" onclick="showli(1)">系统备份</a></li>
-								<li><a href="#" onclick="showli(2)">APP设置</a></li>
-								<li><a href="#" onclick="showli(3)">背景图片</a></li>
-								<li><a href="#" onclick="showli(4)">后台记录</a></li>		
-								<li><a href="#" onclick="showli(5)">修改密码</a></li>
-								<li><a href="#" onclick="showli(6)">管理员设置</a></li>
+								<li><a href="sysadmin.php?index=0">系统公告</a></li>
+								<li><a href="sysadmin.php?index=1">系统备份</a></li>
+								<li><a href="sysadmin.php?index=2">APP设置</a></li>
+								<li><a href="sysadmin.php?index=3">背景图片</a></li>
+								<li><a href="sysadmin.php?index=4">后台记录</a></li>		
+								<li><a href="sysadmin.php?index=5">修改密码</a></li>
+								<li><a href="sysadmin.php?index=6">管理员设置</a></li>
 							</ul>
-						</li>';
-							}
-						?>
+						</li>
 					</ul>
 				</nav>
 				

@@ -22,7 +22,7 @@ $("#appsetform").submit();
 						<input class="form-control" type="text" name="app_sign" value="<?php echo get_config('app_sign');?>" placeholder="应用签名" >
 					</div>
 					<div class="form-group">
-						<button class="btn btn-label btn-primary" type="submit" name="submit"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>确认提交</button>
+						<button class="btn btn-label btn-primary" type="submit" name="submitappinfo"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>确认提交</button>
 					</div>
 				</form>
 			</div>

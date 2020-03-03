@@ -1,11 +1,11 @@
 <?php include_once "view.section.php";include_once "../apps/sysadminController.php" ?>
 <script type="text/javascript">
-var showindex=0;
 function showli(index){
 	$(".main-content li").hide();
 	$($(".main-content li")[index]).fadeIn();
 	showindex=index;
 }
+showindex=<?php echo $_GET['index']; ?>
 </script>
     <!--页面主要内容-->
     <main class="lyear-layout-content">

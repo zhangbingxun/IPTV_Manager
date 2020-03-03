@@ -9,15 +9,16 @@ if ($_SESSION['secret_key_status'] != "1") {
 
 include_once "../config.php";
 
-if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
-    $ip = $_SERVER['HTTP_X_REAL_IP'];
+$ip=getuserip();
+if ($ip='' || $ip='127.0.0.1') {
+	$ip='127.0.0.1';
+	$region='localhost';
 } else {
-    $ip = $_SERVER['REMOTE_ADDR'];
+    $myurl = 'http://' . $_SERVER['HTTP_HOST'];
+    $json = file_get_contents("$myurl/getIpInfo.php?ip=$ip");
+    $obj = json_decode($json);
+    $region = $obj->data->region . $obj->data->city . $obj->data->isp;
 } 
-$myurl = 'http://' . $_SERVER['HTTP_HOST'];
-$json = file_get_contents("$myurl/getIpInfo.php?ip=$ip");
-$obj = json_decode($json);
-$region = $obj->data->region . $obj->data->city . $obj->data->isp;
 $time = date("Y-m-d H:i:s");
 
 if (!empty($_POST['username']) && !empty($_POST['password'])) {
@@ -46,7 +47,6 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
             unset($row);
             mysqli_free_result($result);
             mysqli_close($GLOBALS['conn']);
-            echo '<script language=JavaScript>lightyear.loading("hide");window.location.replace("views/index.php");</script>';
             header("location:views/index.php");
         } else {
             echo "<script>alert('密码错误！');</script>";
@@ -78,7 +78,6 @@ if (isset($_COOKIE['rememberpass'])) {
             unset($row);
             mysqli_free_result($result);
             mysqli_close($GLOBALS['conn']);
-            echo '<script language=JavaScript>lightyear.loading("hide");</script>';
             header("location:views/index.php");
         } 
     } 

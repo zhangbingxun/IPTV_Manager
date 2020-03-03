@@ -30,7 +30,6 @@ if (isset($_COOKIE['remembersecret_key'])) {
     $get_key = get_config('secret_key');
     if ($secret_key == $get_key) {
         $_SESSION['secret_key_status'] = '1';
-            echo '<script language=JavaScript>location.replace(location.href);</script>';
     } 
 } 
 

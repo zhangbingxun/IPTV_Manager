@@ -230,7 +230,7 @@ if (isset($_POST['submitexport'])) {
     } 
     unset($row);
     mysqli_free_result($result);
-    echo"<script>showindex=1;alert('数据已导出。请全选，复制后保存！');</script>";
+    echo"<script>showindex=1;alert('数据已导出。请全选复制后保存！');</script>";
 } 
 
 if (isset($_POST['submitimport'])) {

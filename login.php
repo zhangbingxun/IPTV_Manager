@@ -20,7 +20,7 @@ if (isset($_GET['id'])) {
 
 if(isset($_POST['login'])){
 
-	if(!empty($_SERVER['HTTP_X_REAL_IP'])){$ip=$_SERVER['HTTP_X_REAL_IP'];}else{$ip=$_SERVER['REMOTE_ADDR'];}
+	$ip=getuserip();
 	$sql = "SELECT `ip`,count(*) as num FROM `luo2888_users` WHERE ip='$ip'";
 	$result = mysqli_query($GLOBALS['conn'],$sql);
 	if($row = mysqli_fetch_array($result)){$num=$row['num'];}
@@ -40,6 +40,7 @@ if(isset($_POST['login'])){
 		$model=$obj->model;
 		$nettype=$obj->nettype;
 		$appname=$obj->appname;
+		if ($ip='' || $ip='127.0.0.1') {$ip='127.0.0.1';$region='localhost';}
 		if(empty($region)){
 			$myurl='http://'.$_SERVER['HTTP_HOST'];
 			$json=file_get_contents("$myurl/getIpInfo.php?ip=$ip");
@@ -161,17 +162,9 @@ if(isset($_POST['login'])){
 		if(get_config('showwea')==1){
 			$weaapi_id=get_config('weaapi_id');
 			$weaapi_key=get_config('weaapi_key');
-			unset($row);
-			mysqli_free_result($result);
 			$url="https://www.tianqiapi.com/api?version=v6&appid=$weaapi_id&appsecret=$weaapi_key&ip=$ip";
-			$curl = curl_init();
-			curl_setopt($curl, CURLOPT_URL, $url);
-			curl_setopt($curl, CURLOPT_TIMEOUT, 2);
-			curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-			$curljson = curl_exec($curl);
-			curl_close($curl);
-			$obj=json_decode($curljson);
+			$weajson = file_get_contents($url);
+			$obj=json_decode($weajson);
 			if(!empty($obj->city)){
 				$weather=date('n月d号') . $obj->week . '，' . $obj->city . '，' . $obj->tem . '℃'  . $obj->wea . '，' . '气温:' . $obj->tem2  . '℃' .'～' . $obj->tem1 . '℃' . '，' . $obj->win . $obj->win_speed . '，' . '相对湿度:' . $obj->humidity . '，' . '空气质量:' .  $obj->air_level . '，' . $obj->air_tips ;
 				$adtext=$weather . $adtext;

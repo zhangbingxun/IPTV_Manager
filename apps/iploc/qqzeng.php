@@ -145,6 +145,12 @@ if (empty($isp)) {
     $isp = $country;
 } 
 
+if ($isp=='保留') {
+    $region = '本地';
+    $city = '';
+    $isp = '内网';
+} 
+
 $obj->region = $region;
 $obj->city = $city . '，' ;
 $obj->isp = $isp;

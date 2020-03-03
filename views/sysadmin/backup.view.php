@@ -7,15 +7,7 @@
 					<form method="post">
 						<div class="form-group">
 							<label>用户数据</label>
-							<textarea class="form-control" style="height: 350px;" rows="5" name="userdata" ><?php echo $userdata;?></textarea>
-						</div>
-						<div class="form-group">
-							<label>授权天数</label>
-							<input class="form-control" type="text" name="exp" value="365" >
-						</div>
-						<div class="form-group">
-							<label>备注</label>
-							<input class="form-control" type="text" name="marks" value="" >
+							<textarea class="form-control" style="height: 350px;" rows="5" name="userdata" placeholder="用户ID,设备ID,MAC地址,型号,管理员,时间,备注,状态" ><?php echo $userdata;?></textarea>
 						</div>
 						<div class="form-group">
 							<button type="submit" name="submitimport" class="btn btn-default">导入用户数据</button>

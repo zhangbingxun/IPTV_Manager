@@ -5,25 +5,18 @@
 		var form = document.getElementById("recCounts");
 		form.submit();
 	}
+	function submitjump(){
+		var form = document.getElementById("jumpto");
+		form.submit();
+	}
 	function quanxuan(a){
 		var ck=document.getElementsByName("id[]");
 		for (var i = 0; i < ck.length; i++) {
-			var tr=ck[i].parentNode.parentNode;
 			if(a.checked){
 				ck[i].checked=true;
-				tr.style.backgroundColor="#bbccdd";
 			}else{
 				ck[i].checked=false;
-				tr.style.backgroundColor="#fff";
 			}
-		}
-	}
-	function changecolor(a){
-		var tr=a.parentNode.parentNode;
-		if(a.checked){
-			tr.style.backgroundColor="#bbccdd";
-		}else{
-			tr.style.backgroundColor="#fff";
 		}
 	}
 </script>
@@ -83,7 +76,7 @@
 								</form>
 								<form class="pull-left" method="post" id="jumpto">
 									<input type="text" name="jumpto" style="border-width: 0px;text-align: right;" size=2 value="<?php echo $page?>">/<?php echo $pageCount?>
-									<button class="btn btn-xs btn-default" onclick="submitForm()">跳转</button>
+									<button class="btn btn-xs btn-default" onclick="submitjump()">跳转</button>
 								</form>
 							</div>
 						</div>

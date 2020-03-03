@@ -20,7 +20,8 @@ if (isset($_GET['id'])) {
 
 if(isset($_POST['login'])){
 
-	$ip=getuserip();
+	$GetIP = new GetIP();
+	$ip=$GetIP->getuserip();
 	$sql = "SELECT `ip`,count(*) as num FROM `luo2888_users` WHERE ip='$ip'";
 	$result = mysqli_query($GLOBALS['conn'],$sql);
 	if($row = mysqli_fetch_array($result)){$num=$row['num'];}

@@ -35,5 +35,5 @@ CREATE TABLE `luo2888_users` (
   `marks` varchar(100) NOT NULL,
   `isvip` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `mac` (`mac`,`deviceid`,`model`)
+  UNIQUE KEY `mac` (`mac`,`deviceid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7897 DEFAULT CHARSET=utf8;

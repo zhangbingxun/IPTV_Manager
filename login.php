@@ -40,7 +40,7 @@ if(isset($_POST['login'])){
 		$model=$obj->model;
 		$nettype=$obj->nettype;
 		$appname=$obj->appname;
-		if ($ip='' || $ip='127.0.0.1') {$ip='127.0.0.1';$region='localhost';}
+		if ($ip=='' || $ip=='127.0.0.1') {$ip='127.0.0.1';$region='localhost';}
 		if(empty($region)){
 			$myurl='http://'.$_SERVER['HTTP_HOST'];
 			$json=file_get_contents("$myurl/getIpInfo.php?ip=$ip");

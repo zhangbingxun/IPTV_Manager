@@ -119,7 +119,7 @@
 													if (mysqli_num_rows($result)) {
 														while($row=mysqli_fetch_array($result)){
 															$status=$row['status'];
-															$lasttime=$status==2?'MAC导入未激活':date("Y-m-d H:i:s",$row['lasttime']);
+															$lasttime=date("Y-m-d H:i:s",$row['lasttime']);
 															$days=ceil(($row['exp']-time())/86400);
 															$expdate="到期时间：".date("Y-m-d H:i:s",$row['exp']);
 															$name=$row['name'];
@@ -132,18 +132,9 @@
 															$marks=$row['marks'];
 															$vpn=$row['vpn'];
 															if($row['isvip']==0){$isvip='否';$fontcolor='black';}else{$isvip='是';$fontcolor='red';}
+															if($row['exp']>time()){$days='剩'."$days".'天';}
 															if($row['exp']<time()){
 																$days='过期';
-															}
-															if($status==0){
-																$days='停用';
-																if($vpn>0){
-																   $days="禁用[".$vpn."]";
-																}
-															}
-															if($status==2){
-																$days=$row['exp'];
-																$expdate='MAC导入未激活';
 															}
 															if($status==999){
 																$days='永不到期';

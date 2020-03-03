@@ -111,9 +111,9 @@
 												<?php
 													$recStart=$recCounts*($page-1);
 													if($user=='admin'){
-													$sql="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,isvip from luo2888_users where status>-1 $searchparam order by $order  limit $recStart,$recCounts";
+													$sql="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,isvip from luo2888_users where status>0 $searchparam order by $order  limit $recStart,$recCounts";
 													}else{
-														$sql="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,isvip from luo2888_users where status>-1 and author='$user' $searchparam order by $order limit $recStart,$recCounts";
+														$sql="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,isvip from luo2888_users where status>0 and author='$user' $searchparam order by $order limit $recStart,$recCounts";
 													}
 													$result=mysqli_query($GLOBALS['conn'],$sql);
 													if (mysqli_num_rows($result)) {

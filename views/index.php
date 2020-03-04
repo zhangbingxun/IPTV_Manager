@@ -116,7 +116,7 @@
 							<tbody>
 								<?php
 								$num=1;
-								$result=mysqli_query($GLOBALS['conn'],"SELECT name from luo2888_category");
+								$result=mysqli_query($GLOBALS['conn'],"SELECT name from luo2888_category order by id");
 								while ($row=mysqli_fetch_array($result)) {
 									$categoryname=$row['name'];
 									$getchannelnum = mysqli_query($GLOBALS['conn'], "select count(*) from luo2888_channels where category='$categoryname'");

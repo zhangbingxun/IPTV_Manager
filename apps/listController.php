@@ -19,7 +19,7 @@ header("Content-type:text/json;charset=utf-8");
 
 function echoSource($category) {
     mysqli_query($GLOBALS['conn'], "SET NAMES 'UTF8'");
-    $sql = "SELECT distinct name,url FROM luo2888_channels where category='$category' order by id";
+    $sql = "SELECT distinct id,name,url FROM luo2888_channels where category='$category' order by id";
     $result = mysqli_query($GLOBALS['conn'], $sql);
     while ($row = mysqli_fetch_array($result)) {
         echo $row['name'] . "," . $row['url'] . "\n";

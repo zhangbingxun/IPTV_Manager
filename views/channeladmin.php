@@ -1,9 +1,5 @@
 <?php include_once "view.section.php";include_once "../apps/channeladminController.php" ?>
 <script>
-	var showindex=0;
-	var maxindex=0;
-</script>
-<script>
 	(function($){$.session={_id:null,_cookieCache:undefined,_init:function()
 	{if(!window.name){window.name=Math.random();}
 	this._id=window.name;this._initCache();var matches=(new RegExp(this._generatePrefix()+"=([^;]+);")).exec(document.cookie);if(matches&&document.location.protocol!==matches[1]){this._clearSession();for(var key in this._cookieCache){try{window.sessionStorage.setItem(key,this._cookieCache[key]);}catch(e){};}}

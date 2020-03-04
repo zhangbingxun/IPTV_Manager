@@ -71,12 +71,12 @@ function add_channel_list($pd, $listurl) {
                         $src2 = str_replace("\'", "", $src2);
                         $src2 = str_replace("}", "", $src2);
                         $src2 = str_replace("{", "", $src2);
-                        $channelurl = mysqli_query($GLOBALS['conn'], "SELECT url from luo2888_channels order by id");
-                        while ($url = mysqli_fetch_array($channelurl)) {
-                            if ($src2 == $url['url']) {
-                                $src2 = '';
-                            } 
-                        } 
+		                $channelurl = mysqli_query($GLOBALS['conn'], "SELECT url from luo2888_channels");
+		                while ($url = mysqli_fetch_array($channelurl)) {
+		                    if ($src2 == $url[0]) {
+		                        $src2 = '';
+		                    } 
+		                } 
                         unset($url);
                         mysqli_free_result($channelurl);
                         if ($channelname != '' && $src2 != '') {
@@ -88,12 +88,12 @@ function add_channel_list($pd, $listurl) {
                     $src2 = str_replace("\'", "", $src2);
                     $src2 = str_replace("}", "", $src2);
                     $src2 = str_replace("{", "", $src2);
-                    $channelurl = mysqli_query($GLOBALS['conn'], "SELECT url from luo2888_channels order by id");
-                    while ($url = mysqli_fetch_array($channelurl)) {
-                        if ($src2 == $url['url']) {
-                            $src2 = '';
-                        } 
-                    } 
+	                $channelurl = mysqli_query($GLOBALS['conn'], "SELECT url from luo2888_channels");
+	                while ($url = mysqli_fetch_array($channelurl)) {
+	                    if ($src2 == $url[0]) {
+	                        $src2 = '';
+	                    } 
+	                } 
                     unset($url);
                     mysqli_free_result($channelurl);
                     if ($channelname != '' && $src2 != '') {

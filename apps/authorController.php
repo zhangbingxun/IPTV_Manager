@@ -106,7 +106,7 @@ if (isset($_GET['page'])) {
 if (isset($_GET['order'])) {
     $order = $_GET['order'];
 } else {
-    $order = 'lasttime';
+    $order = 'lasttime desc';
 } 
 
 $result = mysqli_query($GLOBALS['conn'], "select count(*) from luo2888_users where status=-1 or status=-999 or status=0");

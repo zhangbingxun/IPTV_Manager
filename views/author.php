@@ -106,7 +106,7 @@
 												<form method="POST">
 													<?php
 													$recStart=$recCounts*($page-1);
-													$sql="select name,mac,deviceid,model,ip,region,lasttime,exp,status from luo2888_users where status=-1 or status=-999 or status=0 $searchparam order by $order desc limit $recStart,$recCounts";
+													$sql="select name,mac,deviceid,model,ip,region,lasttime,exp,status from luo2888_users where status=-1 or status=-999 or status=0 $searchparam order by $order  limit $recStart,$recCounts";
 													$result=mysqli_query($GLOBALS['conn'],$sql);
 													while($row=mysqli_fetch_array($result)){
 														$lasttime=date("Y-m-d H:i:s",$row['lasttime']);

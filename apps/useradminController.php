@@ -155,7 +155,7 @@ if (isset($_GET['page'])) {
 if (isset($_GET['order'])) {
     $order = $_GET['order'];
 } else {
-    $order = 'lasttime';
+    $order = 'lasttime desc';
 } 
 // 获取用户总数并根据每页显示数量计算页数
 $result = mysqli_query($GLOBALS['conn'], "select count(*) from luo2888_users where status>-1");

@@ -14,18 +14,6 @@ echo out_epg($id);
 exit;
 // 输出EPG节目地址
 function out_epg($id) {
-	if(mb_substr($id,mb_strlen($id,'utf-8')-2,mb_strlen($id,'utf-8'),'utf-8') == '高清' || mb_substr($id,mb_strlen($id,'utf-8')-2,mb_strlen($id,'utf-8'),'utf-8') == '标清'){
-     	$id = mb_substr($id,0,-2,'utf-8');
-    }else if(substr($id,-3) == 'FHD'){ 
-     	$id =substr($id, 0, -3);
-    }else if(substr($id,-2) == 'HD'){ 
-     	$id =substr($id, 0, -2);
-    }else if(substr($id,-4) == '[HD]'){ 
-     	$id =substr($id, 0, -4);
-    }else if($id == 'CCTV-5 '){ 
-     	$id ='cctv5plus';
-    }
-	$id =  str_replace(' ', '', $id);
     $tvdata = channel($id);
     $tvid = $tvdata['id'];
     $epgid = $tvdata['name'];
@@ -209,7 +197,7 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
 function channel($id) {
     $id = urldecode($id);
     $sql = "select * FROM luo2888_epg where status=1 AND FIND_IN_SET('$id',content)";
-    $result = mysqli_query($GLOBALS['conn'], "select * FROM luo2888_epg where FIND_IN_SET('$id',content)");
+    $result = mysqli_query($GLOBALS['conn'], $sql);
     if ($row = mysqli_fetch_array($result)) {
         return $row;
         mysqli_close($GLOBALS['conn']);

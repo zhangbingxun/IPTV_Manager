@@ -40,7 +40,10 @@ function chk_sort_id() {
     if ($row = mysqli_fetch_array($result)) {
         $minid = $row['min(id)'];
         $maxid = $row['max(id)'];
-    } 
+    } else {
+        $minid = 1;
+        $maxid = 1;
+    }
 } 
 chk_sort_id(); 
 // 增加频道列表

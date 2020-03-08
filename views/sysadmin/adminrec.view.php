@@ -23,7 +23,7 @@
 							</thead>
 							<tbody>
 								<?php
-								$result=mysqli_query($GLOBALS['conn'],"SELECT name,ip,loc,time,func from luo2888_adminrec");
+								$result=mysqli_query($GLOBALS['conn'],"SELECT name,ip,loc,time,func from luo2888_adminrec order by time desc");
 								while ($row=mysqli_fetch_array($result)) {
 									$loguser=$row['name'];
 									$logip=$row['ip'];

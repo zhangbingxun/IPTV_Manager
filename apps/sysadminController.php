@@ -142,7 +142,7 @@ if (isset($_POST['submit']) && isset($_POST['appver'])) {
 	} 
     $sql = "update luo2888_appdata set appver='$versionname',appurl='$appurl',up_size='$up_size',up_sets=$up_sets,up_text='$up_text' ";
     mysqli_query($GLOBALS['conn'], $sql);
-    echo"<script>showindex=2;alert('APP升级设置成功！');</script>";
+    echo"<script>showindex=2;alert('APP升级设置成功！$up_sets');</script>";
 } 
 
 if (isset($_POST['decodersel']) && isset($_POST['buffTimeOut'])) {

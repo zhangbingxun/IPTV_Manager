@@ -156,7 +156,7 @@ $("#appsetform").submit();
 						?>
 						<label>强制更新</label>
 						<label class="lyear-switch switch-primary">
-							<input type="checkbox" name="up_sets" checked="<?php echo $set;?>">
+							<input type="checkbox" name="up_sets" <?php echo $set;?>>
 							<span></span>
 						</label>
 					</div>

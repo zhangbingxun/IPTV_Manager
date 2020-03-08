@@ -152,7 +152,7 @@ if ($_GET["act"] == "edits") {
     $ids = implode(",", array_unique($_POST['ids']));
     $remarks = $_POST["remarks"];
     mysqli_query($GLOBALS['conn'], "update luo2888_epg set name='" . $epg_name . "',content='" . $ids . "',remarks='" . $remarks . "' where id=" . $id);
-    exit("<script>javascript:alert('EPG名为 " . $epg_name . " 修改成功!');self.location=document.referrer;</script>");
+    exit("<script>javascript:alert('EPG名为 " . $epg_name . " 修改成功!');history.go(-2);</script>");
 } 
 mysqli_free_result($result);
 // 极速数据API

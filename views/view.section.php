@@ -28,7 +28,7 @@
 		<aside class="lyear-layout-sidebar">
 			<!-- logo -->
 			<div id="logo" class="sidebar-header">
-				<a href="index.php"><img src="images/logo-sidebar.png" title="LightYear" alt="LightYear" /></a>
+				<a href="index.php"><img src="images/logo-sidebar.png" /></a>
 			</div>
 			<div class="lyear-layout-sidebar-scroll"> 
 				<nav class="sidebar-main">

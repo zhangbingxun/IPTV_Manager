@@ -63,7 +63,7 @@
 		<div class="lyear-login">
 			<div class="login-center">
 				<div class="login-header text-center">
-					<a href="index.php"> <img alt="light year admin" src="views/images/logo-sidebar.png"> </a>
+					<a href="index.php"> <img src="views/images/logo-sidebar.png"> </a>
 				</div>
 				<?php if($_SESSION['secret_key_status']=='1'){include "views/userlogin.php";}?>
 				<form id="secret_keyForm" method="post">

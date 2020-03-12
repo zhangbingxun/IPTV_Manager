@@ -183,14 +183,7 @@ if (isset($_POST['submit']) && isset($_POST['category'])) {
     if ($category == "") {
         echo "<script>alert('类别名称不能为空');</script>";
     } else {
-        $result = mysqli_query($GLOBALS['conn'], "SELECT max(id) from luo2888_category where type='$categorytype'");
-        if ($row = mysqli_fetch_array($result)) {
-            if ($row[0] > 0) {
-                $numCount = $row[0] + 1;
-            } 
-        } 
-        unset($row);
-        mysqli_free_result($result);
+        $numCount = $maxid + 1;
         $sql = "SELECT name FROM luo2888_category where name='$category'";
         $result = mysqli_query($GLOBALS['conn'], $sql);
         if (mysqli_fetch_array($result)) {
@@ -202,6 +195,7 @@ if (isset($_POST['submit']) && isset($_POST['category'])) {
             $showindex = mysqli_num_rows($result)-1;
             echo "<script>showindex=$showindex;alert('增加类别$category 成功');</script>";
             $pd = $category;
+            sort_id();
             mysqli_free_result($result);
         } 
     } 

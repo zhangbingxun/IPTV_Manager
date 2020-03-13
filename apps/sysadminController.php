@@ -129,19 +129,19 @@ if (isset($_POST['submit']) && isset($_POST['appver'])) {
     } else {
         $up_sets = 0;
     } 
-	$db->mSet("luo2888_config", "value=$versionname", "where name='appver'");
-	$db->mSet("luo2888_config", "value=$appurl", "where name='appurl'");
-	$db->mSet("luo2888_config", "value=$up_size", "where name='up_size'");
-	$db->mSet("luo2888_config", "value=$up_sets", "where name='up_sets'");
-	$db->mSet("luo2888_config", "value=$up_text", "where name='up_text'");
+	$db->mSet("luo2888_config", "value='$versionname'", "where name='appver'");
+	$db->mSet("luo2888_config", "value='$appurl'", "where name='appurl'");
+	$db->mSet("luo2888_config", "value='$up_size'", "where name='up_size'");
+	$db->mSet("luo2888_config", "value='$up_sets'", "where name='up_sets'");
+	$db->mSet("luo2888_config", "value='$up_text'", "where name='up_text'");
     echo"<script>showindex=4;alert('通用版APP升级设置成功！');</script>";
 } 
 // 设置APP升级信息
 if (isset($_POST['submit']) && isset($_POST['appver_sdk14'])) {
     $versionname = $_POST['appver_sdk14'];
     $appurl = $_POST['appurl_sdk14'];
-	$db->mSet("luo2888_config", "value=$versionname", "where name='appver_sdk14'");
-	$db->mSet("luo2888_config", "value=$appurl", "where name='appurl_sdk14'");
+	$db->mSet("luo2888_config", "value='$versionname'", "where name='appver_sdk14'");
+	$db->mSet("luo2888_config", "value='$appurl'", "where name='appurl_sdk14'");
     echo"<script>showindex=4;alert('盒子版APP升级设置成功！');</script>";
 } 
 
@@ -152,9 +152,9 @@ if (isset($_POST['decodersel']) && isset($_POST['buffTimeOut'])) {
     if ($trialdays == 0) {
         $db->mSet("luo2888_users", "exp=0", "where status=-1");
     } 
-	$db->mSet("luo2888_config", "value=$decoder", "where name='decoder'");
-	$db->mSet("luo2888_config", "value=$trialdays", "where name='trialdays'");
-	$db->mSet("luo2888_config", "value=$buffTimeOut", "where name='buffTimeOut'");
+	$db->mSet("luo2888_config", "value='$decoder'", "where name='decoder'");
+	$db->mSet("luo2888_config", "value='$trialdays'", "where name='trialdays'");
+	$db->mSet("luo2888_config", "value='$buffTimeOut'", "where name='buffTimeOut'");
     echo"<script>showindex=4;alert('设置成功！');</script>";
 } 
 
@@ -168,10 +168,10 @@ if (isset($_POST['submittipset'])) {
     $tipusernoreg = $_POST['tipusernoreg'];
     $tipuserexpired = $_POST['tipuserexpired'];
     $tipuserforbidden = $_POST['tipuserforbidden'];
-	$db->mSet("luo2888_config", "value=$tiploading", "where name='tiploading'");
-	$db->mSet("luo2888_config", "value=$tipusernoreg", "where name='tipusernoreg'");
-	$db->mSet("luo2888_config", "value=$tipuserexpired", "where name='tipuserexpired'");
-	$db->mSet("luo2888_config", "value=$tipuserforbidden", "where name='tipuserforbidden'");
+	$db->mSet("luo2888_config", "value='$tiploading'", "where name='tiploading'");
+	$db->mSet("luo2888_config", "value='$tipusernoreg'", "where name='tipusernoreg'");
+	$db->mSet("luo2888_config", "value='$tipuserexpired'", "where name='tipuserexpired'");
+	$db->mSet("luo2888_config", "value='$tipuserforbidden'", "where name='tipuserforbidden'");
     echo"<script>showindex=4;alert('提示信息已修改！');</script>";
 } 
 
@@ -204,10 +204,10 @@ if (isset($_POST['submit']) && isset($_POST['adtext'])) {
     $showtime = $_POST['showtime'];
     $showinterval = $_POST['showinterval'];
     $adinfo = $_POST['adinfo'];
-	$db->mSet("luo2888_config", "value=$adinfo", "where name='adinfo'");
-	$db->mSet("luo2888_config", "value=$adtext", "where name='adtext'");
-	$db->mSet("luo2888_config", "value=$showtime", "where name='showtime'");
-	$db->mSet("luo2888_config", "value=$showinterval", "where name='showinterval'");
+	$db->mSet("luo2888_config", "value='$adinfo'", "where name='adinfo'");
+	$db->mSet("luo2888_config", "value='$adtext'", "where name='adtext'");
+	$db->mSet("luo2888_config", "value='$showtime'", "where name='showtime'");
+	$db->mSet("luo2888_config", "value='$showinterval'", "where name='showinterval'");
     echo"<script>showindex=0;alert('公告修改成功！');</script>";
 } 
 

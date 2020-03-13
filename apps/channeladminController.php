@@ -1,58 +1,63 @@
 <?php
-include_once "../config.php";
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ERROR);
+require_once "../config.php";
+$db = Config::GetIntance();
 
 if ($_SESSION['channeladmin'] == 0) {
-    echo"<script>alert('你无权访问此页面！');history.go(-1);</script>";
-    exit();
+    exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
 } 
 
 ?>
 
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ERROR);
+$categorytype = $_GET['type'];
 // 对分类进行重新排序
-$categorytype = $_GET['categorytype'];
-
 function sort_id() {
-    global $categorytype;
+    global $categorytype, $db;
     if ($categorytype == 'default') {
         $numCount = 1;
-    } else {
+    } else if ($categorytype == 'province') {
         $numCount = 50;
+    } else if ($categorytype == 'chinanet') {
+        $numCount = 100;
+    } else if ($categorytype == 'unicom') {
+        $numCount = 150;
+    } else if ($categorytype == 'cmcc') {
+        $numCount = 200;
+    } else if ($categorytype == 'vip') {
+        $numCount = 250;
     } 
-    $result = mysqli_query($GLOBALS['conn'], "SELECT * from luo2888_category where type='$categorytype' order by id");
+    $result = $db->mQuery("SELECT * from luo2888_category where type='$categorytype' order by id");
     while ($row = mysqli_fetch_array($result)) {
         $name = $row['name'];
-        mysqli_query($GLOBALS['conn'], "UPDATE luo2888_category set id=$numCount where name='$name'");
+        $db->mSet("luo2888_category", "id=$numCount", "where name='$name'");
         unset($name);
         $numCount++;
     } 
     unset($row);
-    mysqli_free_result($result);
+	mysqli_free_result($result);
 } 
 sort_id();
 // 检测上下移的ID参数是否存在
 function chk_sort_id() {
-    global $categorytype, $minid, $maxid;
-    $result = mysqli_query($GLOBALS['conn'], "SELECT min(id),max(id) from luo2888_category where type='$categorytype'");
-    if ($row = mysqli_fetch_array($result)) {
+    global $categorytype, $minid, $maxid, $db;
+    if ($row = $db->mGetRow("luo2888_category", "min(id),max(id)", "where type='$categorytype'")) {
         $minid = $row['min(id)'];
         $maxid = $row['max(id)'];
-    } else {
-        $minid = 1;
-        $maxid = 1;
-    }
+    } 
 } 
 chk_sort_id(); 
 // 增加频道列表
-function add_channel_list($pd, $listurl) {
-    $getlist = file_get_contents($listurl);
-    if (!empty($getlist)) {
-        mysqli_query($GLOBALS['conn'], "delete from luo2888_channels where category='$pd'");
-        $rows = explode("\n", $getlist);
-        $rows = preg_replace('# #', '', $rows);
+function add_channel_list($cname, $srclist) {
+    global $db;
+    if (!empty($srclist && $cname)) {
+        $db->mDel("luo2888_channels", "where category='$cname'");
+        $repetnum = 0;
+        $rows = explode("\n", $srclist);
+        $rows = preg_replace('# ,#', ',', $rows);
+        $rows = preg_replace('#\r#', '', $rows);
         $rows = preg_replace('/高清/', '', $rows);
         $rows = preg_replace('/FHD/', '', $rows);
         $rows = preg_replace('/HD/', '', $rows);
@@ -74,16 +79,17 @@ function add_channel_list($pd, $listurl) {
                         $src2 = str_replace("\'", "", $src2);
                         $src2 = str_replace("}", "", $src2);
                         $src2 = str_replace("{", "", $src2);
-		                $channelurl = mysqli_query($GLOBALS['conn'], "SELECT url from luo2888_channels");
-		                while ($url = mysqli_fetch_array($channelurl)) {
-		                    if ($src2 == $url[0]) {
-		                        $src2 = '';
-		                    } 
-		                } 
+                        $channelurl = $db->mQuery("SELECT url from luo2888_channels");
+                        while ($url = mysqli_fetch_array($channelurl)) {
+                            if ($src2 == $url[0]) {
+                                $src2 = '';
+                                $repetnum++;
+                            } 
+                        } 
                         unset($url);
                         mysqli_free_result($channelurl);
                         if ($channelname != '' && $src2 != '') {
-                            mysqli_query($GLOBALS['conn'], "INSERT INTO luo2888_channels VALUES (null,'$channelname','$src2','$pd')");
+                            $db->mInt("luo2888_channels", "id,name,url,category", "NULL,'$channelname','$src2','$cname'");
                         } 
                     } 
                 } else {
@@ -91,112 +97,66 @@ function add_channel_list($pd, $listurl) {
                     $src2 = str_replace("\'", "", $src2);
                     $src2 = str_replace("}", "", $src2);
                     $src2 = str_replace("{", "", $src2);
-	                $channelurl = mysqli_query($GLOBALS['conn'], "SELECT url from luo2888_channels");
-	                while ($url = mysqli_fetch_array($channelurl)) {
-	                    if ($src2 == $url[0]) {
-	                        $src2 = '';
-	                    } 
-	                } 
-                    unset($url);
-                    mysqli_free_result($channelurl);
-                    if ($channelname != '' && $src2 != '') {
-                        mysqli_query($GLOBALS['conn'], "INSERT INTO luo2888_channels VALUES (null,'$channelname','$src2','$pd')");
-                    } 
-                } 
-            } 
-        } 
-        unset($rows, $getlist);
-        return 0;
-    } 
-    return 1;
-} 
-
-if (isset($_GET['pd'])) {
-    $pd = $_GET['pd'];
-} else {
-    $result = mysqli_query($GLOBALS['conn'], "SELECT name from luo2888_category order by id");
-    if ($row = mysqli_fetch_array($result)) {
-        $pd = $row['name'];
-        unset($row);
-        mysqli_free_result($result);
-    } else {
-        mysqli_free_result($result);
-        $pd = '';
-    } 
-} 
-
-mysqli_query($GLOBALS['conn'], "set names utf8");
-
-if (isset($_POST['submit']) && isset($_POST['pd']) && isset($_POST['srclist'])) {
-    $pd = $_POST['pd'];
-    $srclist = $_POST['srclist'];
-    $showindex = $_POST['showindex'];
-
-    mysqli_query($GLOBALS['conn'], "delete from luo2888_channels where category='$pd'");
-    $rows = explode("\r\n", $srclist);
-    foreach($rows as $row) {
-        if (strpos($row, ',') !== false) {
-            $ipos = strpos($row, ',');
-            $channelname = substr($row, 0, $ipos);
-            $source = substr($row, $ipos + 1);
-            if (strpos($source, '#') !== false) {
-                $sources = explode("#", $source);
-                foreach ($sources as $src) {
-                    $src2 = str_replace("\"", "", $src);
-                    $src2 = str_replace("\'", "", $src2);
-                    $src2 = str_replace("}", "", $src2);
-                    $src2 = str_replace("{", "", $src2);
-					$channelurl = mysqli_query($GLOBALS['conn'], "SELECT url from luo2888_channels");
+                    $channelurl = $db->mQuery("SELECT url from luo2888_channels");
                     while ($url = mysqli_fetch_array($channelurl)) {
                         if ($src2 == $url[0]) {
                             $src2 = '';
+                            $repetnum++;
                         } 
                     } 
+                    unset($url);
+					mysqli_free_result($channelurl);
                     if ($channelname != '' && $src2 != '') {
-                        mysqli_query($GLOBALS['conn'], "INSERT INTO luo2888_channels VALUES (null,'$channelname','$src2','$pd')");
+                        $db->mInt("luo2888_channels", "id,name,url,category", "NULL,'$channelname','$src2','$cname'");
                     } 
-                } 
-            } else {
-                $src2 = str_replace("\"", "", $source);
-                $src2 = str_replace("\'", "", $src2);
-                $src2 = str_replace("}", "", $src2);
-                $src2 = str_replace("{", "", $src2);
-				$channelurl = mysqli_query($GLOBALS['conn'], "SELECT url from luo2888_channels");
-                while ($url = mysqli_fetch_array($channelurl)) {
-                    if ($src2 == $url[0]) {
-                        $src2 = '';
-                    } 
-                } 
-                if ($channelname != '' && $src2 != '') {
-                    mysqli_query($GLOBALS['conn'], "INSERT INTO luo2888_channels VALUES (null,'$channelname','$src2','$pd')");
                 } 
             } 
         } 
+        unset($rows, $srclist);
+        return $repetnum;
     } 
-    unset($rows, $srclist);
-    echo"<script>showindex=$showindex;alert('保存成功');</script>。";
+    return -1;
 } 
-
+// 获取分类名称
+if (isset($_GET['category'])) {
+    $cname = $_GET['category'];
+} else {
+    if ($row = $db->mGetRow("luo2888_category", "name", "order by id")) {
+        $cname = $row['name'];
+        unset($row);
+    } else {
+        $cname = '';
+    } 
+} 
+// 修改频道列表
+if (isset($_POST['submit']) && isset($_POST['category']) && isset($_POST['srclist'])) {
+    $cname = $_POST['category'];
+    $srclist = $_POST['srclist'];
+    $showindex = $_POST['showindex'];
+    $listreturn = add_channel_list($cname, $srclist);
+    if ($listreturn != -1) {
+        echo"<script>showindex=$showindex;lightyear.notify('保存成功！$listreturn 个重复节目源！', 'success', 3000);</script>";
+    } else {
+        echo"<script>showindex=$showindex;lightyear.notify('保存失败,列表不能为空！', 'danger', 3000);</script>";
+    } 
+    unset($srclist);
+} 
+// 增加分类
 if (isset($_POST['submit']) && isset($_POST['category'])) {
     $category = $_POST['category'];
     $cpass = $_POST['cpass'];
     if ($category == "") {
-        echo "<script>alert('类别名称不能为空');</script>";
+        echo "<script>lightyear.notify('类别名称不能为空！', 'danger', 3000);</script>";
     } else {
         $numCount = $maxid + 1;
-        $sql = "SELECT name FROM luo2888_category where name='$category'";
-        $result = mysqli_query($GLOBALS['conn'], $sql);
-        if (mysqli_fetch_array($result)) {
-            mysqli_free_result($result);
-            echo "<script>showindex=$showindex;alert('该栏目已经存在');</script>";
-        } else {
-            mysqli_query($GLOBALS['conn'], "INSERT INTO luo2888_category (id,name,psw,type) VALUES ($numCount,'$category','$cpass','$categorytype')");
-            $result = mysqli_query($GLOBALS['conn'], "SELECT * from luo2888_category");
-            $showindex = mysqli_num_rows($result)-1;
-            echo "<script>showindex=$showindex;alert('增加类别$category 成功');</script>";
-            $pd = $category;
+        $categoryname = $db->mGetRow("luo2888_category", "name", "where name='$category'");
+        if (empty($categoryname)) {
+            $db->mInt("luo2888_category", "id,name,psw,type", "$numCount,'$category','$cpass','$categorytype'");
+            $showindex = $db->mGet("luo2888_category", "count(*)", "where type='$categorytype'") - 1;
+            echo "<script>showindex=$showindex;lightyear.notify('增加类别$category 成功！', 'success', 3000);</script>";
             sort_id();
             mysqli_free_result($result);
+            $cname = $category;
         } 
     } 
 } 
@@ -204,176 +164,139 @@ if (isset($_POST['submit']) && isset($_POST['category'])) {
 if (isset($_POST['addthirdlist'])) {
     $category = $_POST['thirdlistcategory'];
     $listurl = $_POST['thirdlisturl'];
+    $srclist = file_get_contents($listurl);
     if ($category == "") {
-        echo "<script>alert('类别名称不能为空');</script>";
+        echo "<script>lightyear.notify('类别名称不能为空！', 'danger', 3000);</script>";
     } else {
-        $result = mysqli_query($GLOBALS['conn'], "SELECT max(id) from luo2888_category where type='$categorytype'");
-        if ($row = mysqli_fetch_array($result)) {
-            if ($row[0] > 0) {
-                $numCount = $row[0] + 1;
-            } 
-        } 
-        unset($row);
-        mysqli_free_result($result);
-        $sql = "SELECT name FROM luo2888_category where name='$category'";
-        $result = mysqli_query($GLOBALS['conn'], $sql);
-        if (mysqli_fetch_array($result)) {
-            mysqli_free_result($result);
-            echo "<script>showindex=$showindex;alert('该栏目已经存在');</script>";
-        } else {
-            mysqli_query($GLOBALS['conn'], "INSERT INTO luo2888_category (id,name,psw,type,url) VALUES ($numCount,'$category','$cpass','$categorytype','$listurl')");
-            $result = mysqli_query($GLOBALS['conn'], "SELECT * from luo2888_category where $categorytype");
-            $showindex = mysqli_num_rows($result)-1;
-            mysqli_free_result($result);
-            if (add_channel_list($category, $listurl) == 0) {
-                echo "<script>showindex=$showindex;alert('增加列表$category 成功');</script>";
+        $numCount = $maxid + 1;
+        $categoryname = $db->mGetRow("luo2888_category", "name", "where name='$category'");
+        if (empty($categoryname)) {
+            $db->mInt("luo2888_category", "id,name,psw,type,url", "$numCount,'$category','$cpass','$categorytype','$listurl'");
+            $showindex = $db->mGet("luo2888_category", "count(*)", "where type='$categorytype'") - 1;
+            $addlist = add_channel_list($category, $srclist);
+            if ($addlist !== -1) {
+                echo "<script>showindex=$showindex;lightyear.notify('增加列表$category 成功！', 'success', 3000);</script>";
             } else {
-                echo "<script>showindex=$showindex;alert('增加列表$category 失败');</script>";
-                mysqli_query($GLOBALS['conn'], "delete from luo2888_category where name='$category'");
+                echo "<script>showindex=$showindex;lightyear.notify('增加列表$category 失败！', 'danger', 3000);</script>";
+                $db->mDel("luo2888_category", "where name='$category'");
             } 
+            sort_id();
         } 
     } 
 } 
 // 更新外部列表
 if (isset($_POST['updatelist'])) {
     $category = $_POST['thirdlist'];
+	$listurl=$db->mGet("luo2888_category", "url", "where name='$category'");
+    $srclist = file_get_contents($listurl);
     if ($category == "") {
-        echo "<script>alert('列表名称不能为空');</script>";
+        echo "<script>lightyear.notify('列表名称不能为空！', 'danger', 3000);</script>";
     } else {
-        $result = mysqli_query($GLOBALS['conn'], "SELECT * from luo2888_category where $categorytype");
-        $showindex = mysqli_num_rows($result)-1;
-        mysqli_free_result($result);
-        $listurl = mysqli_query($GLOBALS['conn'], "SELECT url from luo2888_category where name='$category'");
-        if ($row = mysqli_fetch_array($listurl)) {
-            $listurl = $row['url'];
-        } 
-        if (add_channel_list($category, $listurl) == 0) {
-            echo "<script>showindex=$showindex;alert('更新列表$category 成功');</script>";
+        $listurl = $db->mGetRow("luo2888_category", "url", "where name='$category'");
+        $addlist = add_channel_list($category, $srclist);
+        if ($addlist !== -1) {
+            echo "<script>$.alert({title: '成功',content: '更新列表$category 成功！',type: 'green',buttons: {confirm: {text: '好',btnClass: 'btn-primary',action: function(){location.replace(location.href);}}}});</script>";
         } else {
-            echo "<script>showindex=$showindex;alert('更新列表$category 失败');</script>";
+            echo "<script>$.alert({title: '成功',content: '更新列表$category 失败！',type: 'green',buttons: {confirm: {text: '好',btnClass: 'btn-primary',action: function(){location.replace(location.href);}}}});</script>";
         } 
     } 
 } 
-
+// 删除分类
 if (isset($_POST['submit_deltype']) && isset($_POST['category'])) {
     $category = $_POST['category'];
     $showindex = $_POST['showindex'];
     if ($category == "") {
-        echo "<script>alert('类别名称不能为空');</script>";
+        echo "<script>lightyear.notify('类别名称不能为空！', 'danger', 3000);</script>";
     } else {
-        $result = mysqli_query($GLOBALS['conn'], "SELECT id from luo2888_category where name='$category'");
-        if ($row = mysqli_fetch_array($result)) {
-            $categoryid = $row[0];
-            mysqli_query($GLOBALS['conn'], "UPDATE luo2888_category set id=id-1 where id>$categoryid");
+        if ($categoryid = $db->mGet("luo2888_category", "id", "where name='$category'")) {
+            $db->mSet("luo2888_category", "id=id-1", "where id>$categoryid");
         } 
-        $sql = "delete from luo2888_category where name='$category'";
-        mysqli_query($GLOBALS['conn'], $sql);
-        mysqli_query($GLOBALS['conn'], "delete from luo2888_channels where category='$category'");
+        $db->mDel("luo2888_category", "where name='$category'");
+        $db->mDel("luo2888_channels", "where category='$category'");
         sort_id();
-        echo "<script>showindex=$showindex-1;alert('$category 删除成功');</script>";
+        echo "<script>showindex=$showindex-1;lightyear.notify('$category 删除成功！', 'success', 3000);</script>";
     } 
 } 
-
+// 修改分类
 if (isset($_POST['submit_modifytype']) && isset($_POST['category'])) {
     $category = $_POST['category'];
     $cpass = $_POST['cpass'];
     $showindex = $_POST['showindex'];
     $category0 = $_POST['typename0'];
     if ($category == "") {
-        echo "<script>alert('类别名称不能为空');</script>";
+        echo "<script>lightyear.notify('类别名称不能为空！', 'danger', 3000);</script>";
     } else {
-        mysqli_query($GLOBALS['conn'], "update luo2888_category set name='$category',psw='$cpass' where name='$category0'");
-        mysqli_query($GLOBALS['conn'], "UPDATE luo2888_channels set category='$category' where category='$category0'");
-        echo "<script>showindex=$showindex;alert('$category 修改成功');</script>";
-        $pd = $category;
+        $db->mSet("luo2888_category", "name='$category',psw='$cpass'", "where name='$category0'");
+        $db->mSet("luo2888_channels", "category='$category'", "where category='$category0'");
+        echo "<script>showindex=$showindex;lightyear.notify('$category 修改成功！', 'success', 3000);</script>";
+        $cname = $category;
     } 
 } 
-
+// 上移分类
 if (isset($_POST['submit_moveup']) && isset($_POST['category'])) {
     $category = $_POST['category'];
     $showindex = $_POST['showindex'];
-    $result = mysqli_query($GLOBALS['conn'], "SELECT id from luo2888_category where name='$category'");
-    if ($row = mysqli_fetch_array($result)) {
-        $id = $row['id'];
+    if ($id = $db->mGet("luo2888_category", "id", "where name='$category'")) {
         $preid = $id-1;
         if ($preid >= $minid) {
-            mysqli_query($GLOBALS['conn'], "update luo2888_category set id=id+1	where id=$preid");
-            mysqli_query($GLOBALS['conn'], "update luo2888_category set id=id-1	where name='$category'");
-            unset($row);
-            mysqli_free_result($result);
+            $db->mSet("luo2888_category", "id=id+1", "where id=$preid");
+            $db->mSet("luo2888_category", "id=id-1", "where name='$category'");
             echo "<script>showindex=$showindex-1;</script>";
         } else {
-            echo "<script>showindex=$showindex-1;alert('已经上移到最顶了！！')</script>";
+            echo "<script>showindex=$showindex-1;lightyear.notify('已经上移到最顶了！', 'danger', 3000);</script>";
         } 
     } 
 } 
-
+// 下移分类
 if (isset($_POST['submit_movedown']) && isset($_POST['category'])) {
     $category = $_POST['category'];
     $showindex = $_POST['showindex'];
-    $result = mysqli_query($GLOBALS['conn'], "SELECT id from luo2888_category where name='$category'");
-    if ($row = mysqli_fetch_array($result)) {
-        $id = $row['id'];
+    if ($id = $db->mGet("luo2888_category", "id", "where name='$category'")) {
         $nextid = $id + 1;
         if ($nextid <= $maxid) {
-            mysqli_query($GLOBALS['conn'], "update luo2888_category set id=id-1	where id=$nextid'");
-            mysqli_query($GLOBALS['conn'], "update luo2888_category set id=id+1	where name='$category'");
-            unset($row);
-            mysqli_free_result($result);
+            $db->mSet("luo2888_category", "id=id-1", "where id=$nextid");
+            $db->mSet("luo2888_category", "id=id+1", "where name='$category'");
             echo "<script>showindex=$showindex+1;</script>";
         } else {
-            unset($row);
-            mysqli_free_result($result);
-            echo "<script>showindex=$showindex;alert('已经下移到最底了！！')</script>";
+            echo "<script>showindex=$showindex;lightyear.notify('已经下移到最底了！', 'danger', 3000);</script>";
         } 
     } 
 } 
-
+// 置顶分类
 if (isset($_POST['submit_movetop']) && isset($_POST['category'])) {
     $category = $_POST['category'];
-    $result = mysqli_query($GLOBALS['conn'], "SELECT Min(id) from luo2888_category where type='$categorytype'");
-    if ($row = mysqli_fetch_array($result)) {
-        $id = $row[0]-1;
-        mysqli_query($GLOBALS['conn'], "update luo2888_category set id=$id	where name='$category'");
+    if ($id = $db->mGet("luo2888_category", "Min(id)", "where type='$categorytype'")) {
+        $id = $id-1;
+        $db->mSet("luo2888_category", "id=$id", "where name='$category'");
         sort_id();
         echo "<script>showindex=0;</script>";
     } 
-    mysqli_free_result($result);
 } 
-
+// 列表设置
 if (isset($_POST['submit']) && isset($_POST['ver'])) {
     $updateinterval = $_POST['updateinterval'];
     if (isset($_POST['autoupdate'])) {
-        mysqli_query($GLOBALS['conn'], "update luo2888_appdata set autoupdate=1,updateinterval=$updateinterval");
+		$db->mSet("luo2888_config", "value='1'", "where name='autoupdate'");
+		$db->mSet("luo2888_config", "value='$updateinterval'", "where name='updateinterval'");
     } else {
         $ver = $_POST['ver'];
-        $sql = "update luo2888_appdata set dataver=$ver,autoupdate=0";
-        mysqli_query($GLOBALS['conn'], $sql);
+		$db->mSet("luo2888_config", "value='0'", "where name='autoupdate'");
+		$db->mSet("luo2888_config", "value='$ver'", "where name='dataver'");
     } 
-    echo "<script>alert('保存成功');</script>";
+    echo "<script>lightyear.notify('保存成功！', 'success', 3000);</script>";
 } 
-
+// 分类开关
 if (isset($_POST['checkpdname'])) {
-    mysqli_query($GLOBALS['conn'], "UPDATE luo2888_category set enable=0");
-    foreach ($_POST['enable'] as $pdenable) {
-        mysqli_query($GLOBALS['conn'], "UPDATE luo2888_category set enable=1 where name='$pdenable'");
+    $db->mSet("luo2888_category", "enable=0");
+    foreach ($_POST['enable'] as $categoryenable) {
+        $db->mSet("luo2888_category", "enable=1", "where name='$categoryenable'");
     } 
 } 
-
-$sql = "SELECT dataver,appver,autoupdate,updateinterval FROM luo2888_appdata";
-$result = mysqli_query($GLOBALS['conn'], $sql);
-if ($row = mysqli_fetch_array($result)) {
-    $ver = $row['dataver'];
-    $versionname = $row['appver'];
-    $autoupdate = $row['autoupdate'];
-    $updateinterval = $row['updateinterval'];
-} else {
-    $ver = "0";
-    $autoupdate = 0;
-    $updateinterval = 0;
-} 
-unset($row);
-mysqli_free_result($result);
+// 获取列表设置
+$ver = $db->mGet("luo2888_config", "value", "where name='dataver'");
+$versionname = $db->mGet("luo2888_config", "value", "where name='appver'");
+$autoupdate = $db->mGet("luo2888_config", "value", "where name='autoupdate'");
+$updateinterval = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
 
 if ($autoupdate == 1) {
     $checktext = "checked='true'";

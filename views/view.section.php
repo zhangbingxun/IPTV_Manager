@@ -1,4 +1,4 @@
-<?php include_once "../config.php";include_once "../apps/usercheck.php"; ?>
+<?php require_once "../config.php";require_once "../apps/usercheck.php"; ?>
 <!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
@@ -12,6 +12,8 @@
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/materialdesignicons.min.css" rel="stylesheet">
 <link href="css/style.min.css" rel="stylesheet">
+<link href="css/animate.css" rel="stylesheet">
+<link rel="stylesheet" href="js/jconfirm/jquery-confirm.min.css">
 </head>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -20,6 +22,8 @@
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
 <script type="text/javascript" src="js/lightyear.js"></script>
+<script src="js/jconfirm/jquery-confirm.min.js"></script>
+<script src="js/bootstrap-notify.min.js"></script>
 
 <body>
 <div class="lyear-layout-web">
@@ -28,28 +32,78 @@
 		<aside class="lyear-layout-sidebar">
 			<!-- logo -->
 			<div id="logo" class="sidebar-header">
-				<a href="index.php"><img src="images/logo-sidebar.png" /></a>
+				<a href="index.php"><img src="images/logo-sidebar.png"/></a>
 			</div>
 			<div class="lyear-layout-sidebar-scroll"> 
 				<nav class="sidebar-main">
 					<ul class="nav nav-drawer">
-						<li class="nav-item active"> <a href="index.php"><i class="mdi mdi-home"></i>首页</a> </li>
-						<li class="nav-item active"> <a href="author.php"><i class="mdi mdi-account-check"></i>授权</a> </li>
-						<li class="nav-item active"> <a href="useradmin.php"><i class="mdi mdi-account"></i>用户</a> </li>
-						<li class="nav-item active"> <a href="exception.php"><i class="mdi mdi-account-alert"></i>异常</a> </li>
-						<li class="nav-item active"> <a href="epgadmin.php"><i class="mdi mdi-television-guide"></i>EPG</a> </li>
-						<li class="nav-item active"> <a href="channeladmin.php?categorytype=default"><i class="mdi mdi-television-classic"></i>频道列表</a> </li>
-						<li class="nav-item active"> <a href="channeladmin.php?categorytype=vip"><i class="mdi mdi-crown"></i>会员专区</a> </li>
-						<li class="nav-item nav-item-has-subnav">
-							<a href="javascript:void(0)"><i class="mdi mdi-menu"></i>系统设置</a>
+						<?php
+						if (strpos($_SERVER['REQUEST_URI'],'index.php') !== false){
+							$index='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'author.php') !== false){
+							$author='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'useradmin.php') !== false){
+							$useradmin='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'exception.php') !== false){
+							$exception='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'mealsadmin.php') !== false){
+							$mealsadmin='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'epgadmin.php') !== false){
+							$epgadmin='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'mealsadmin.php') !== false){
+							$mealsadmin='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'type=default') !== false){
+							$default='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'type=province') !== false){
+							$province='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'type=chinanet') !== false){
+							$chinanet='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'type=unicom') !== false){
+							$unicom='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'type=cmcc') !== false){
+							$cmcc='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'type=vip') !== false){
+							$vip='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'index=0') !== false){
+							$index0='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'index=1') !== false){
+							$index1='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'index=2') !== false){
+							$index2='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'index=3') !== false){
+							$index3='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'index=4') !== false){
+							$index4='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'index=5') !== false){
+							$index5='active';
+						}
+						?>
+						<li class="nav-item <?php echo $index ?>"> <a href="index.php"><i class="mdi mdi-home"></i>首页</a> </li>
+						<li class="nav-item <?php echo $author ?>"> <a href="author.php"><i class="mdi mdi-account-check"></i>授权</a> </li>
+						<li class="nav-item <?php echo $useradmin ?>"> <a href="useradmin.php"><i class="mdi mdi-account"></i>用户</a> </li>
+						<li class="nav-item <?php echo $exception ?>"> <a href="exception.php"><i class="mdi mdi-account-alert"></i>异常</a> </li>
+						<li class="nav-item <?php echo $mealsadmin ?>"> <a href="mealsadmin.php"><i class="mdi mdi-shopping-music"></i>套餐</a> </li>
+						<li class="nav-item <?php echo $epgadmin ?>"> <a href="epgadmin.php"><i class="mdi mdi-television-guide"></i>EPG</a> </li>
+						<li class="nav-item nav-item-has-subnav channeladmin">
+							<a href="javascript:void(0)"><i class="mdi mdi-television-classic"></i>频道列表</a>
 							<ul class="nav nav-subnav">
-								<li><a href="sysadmin.php?index=0">系统公告</a></li>
-								<li><a href="sysadmin.php?index=1">系统备份</a></li>
-								<li><a href="sysadmin.php?index=2">APP设置</a></li>
-								<li><a href="sysadmin.php?index=3">背景图片</a></li>
-								<li><a href="sysadmin.php?index=4">后台记录</a></li>		
-								<li><a href="sysadmin.php?index=5">修改密码</a></li>
-								<li><a href="sysadmin.php?index=6">管理员设置</a></li>
+								<li class="<?php echo $default ?>"><a href="channeladmin.php?type=default">默认频道</a></li>
+								<li class="<?php echo $province ?>"><a href="channeladmin.php?type=province">省份频道</a></li>
+								<li class="<?php echo $chinanet ?>"><a href="channeladmin.php?type=chinanet">电信频道</a></li>
+								<li class="<?php echo $unicom ?>"><a href="channeladmin.php?type=unicom">联通频道</a></li>
+								<li class="<?php echo $cmcc ?>"><a href="channeladmin.php?type=cmcc">移动频道</a></li>
+								<li class="<?php echo $vip ?>"><a href="channeladmin.php?type=vip">会员频道</a></li>
+							</ul>
+						</li>
+						<li class="nav-item nav-item-has-subnav sysadmin">
+							<a href="javascript:void(0)"><i class="mdi mdi-settings-box"></i>系统设置</a>
+							<ul class="nav nav-subnav">
+								<li class="<?php echo $index0 ?>"><a href="sysadmin.php?index=0">系统公告</a></li>
+								<li class="<?php echo $index1 ?>"><a href="sysadmin.php?index=1">背景图片</a></li>
+								<li class="<?php echo $index2 ?>"><a href="sysadmin.php?index=2">后台记录</a></li>		
+								<li class="<?php echo $index3 ?>"><a href="sysadmin.php?index=3">后台设置</a></li>
+								<li class="<?php echo $index4 ?>"><a href="sysadmin.php?index=4">客户端设置</a></li>
+								<li class="<?php echo $index5 ?>"><a href="sysadmin.php?index=5">管理员设置</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -57,6 +111,7 @@
 				
 				<div class="sidebar-footer">
 					<p align="center"><?php echo date("Y-m-d H:i",time()); ?></p>
+					<p align="center">客户讨论QQ群：<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=55jH1sG">807073464</a></p>
 					<p class="copyright">Copyright &copy; 2020. <a target="_blank" href="http://www.luo2888.cn">luo2888</a> All rights reserved. </p>
 				</div>
 			</div>
@@ -74,15 +129,15 @@
 							<span class="lyear-toggler-bar"></span>
 						</div>
 						<span class="navbar-page-title">
-						<?php 
-						if ($_SERVER['REQUEST_URI'] =='/views/index.php'){ echo '&nbsp;首页&nbsp;'; }
-						else if ($_SERVER['REQUEST_URI'] =='/views/author.php'){ echo '&nbsp;授权&nbsp;'; }
-						else if ($_SERVER['REQUEST_URI'] =='/views/useradmin.php'){ echo '&nbsp;用户&nbsp;'; }
-						else if ($_SERVER['REQUEST_URI'] =='/views/exception.php'){ echo '&nbsp;异常&nbsp;'; }
-						else if ($_SERVER['REQUEST_URI'] =='/views/epgadmin.php'){ echo '&nbsp;EPG&nbsp;'; }
-						else if ($_SERVER['REQUEST_URI'] =='/views/channeladmin.php?categorytype=default'){ echo '&nbsp;频道列表&nbsp;'; }
-						else if ($_SERVER['REQUEST_URI'] =='/views/channeladmin.php?categorytype=vip'){ echo '&nbsp;会员专区&nbsp;'; }
-						else if ($_SERVER['REQUEST_URI'] =='/views/sysadmin.php'){ echo '&nbsp;系统设置&nbsp;'; }
+						<?php
+						if (strpos($_SERVER['REQUEST_URI'],'index.php') !== false){ echo '&nbsp;首页&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'author.php') !== false){ echo '&nbsp;授权&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'useradmin.php') !== false){ echo '&nbsp;用户&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'exception.php') !== false){ echo '&nbsp;异常&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'mealsadmin.php') !== false){ echo '&nbsp;套餐&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'epgadmin.php') !== false){ echo '&nbsp;EPG&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'channeladmin.php') !== false){ echo '&nbsp;频道列表&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'sysadmin.php') !== false){ echo '&nbsp;系统设置&nbsp;'; }
 						?>
 						</span>
 					</div>

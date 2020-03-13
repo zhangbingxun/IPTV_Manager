@@ -8,19 +8,19 @@
 						<form method="POST" style="padding: 20px">
 							<table class="table table-hover">
 								<thead>
-								<tr>
-									<th></th>
-									<th>用户名</th>
-									<th>识别授权</th>
-									<th>用户管理</th>
-									<th>异常检测</th>
-									<th>EPG管理</th>
-									<th>频道管理</th>
-								</tr>
+									<tr>
+										<th></th>
+										<th>用户名</th>
+										<th>识别授权</th>
+										<th>用户管理</th>
+										<th>异常检测</th>
+										<th>EPG管理</th>
+										<th>频道管理</th>
+									</tr>
 								</thead>
 								<tbody>
 									<?php
-									$result=mysqli_query($GLOBALS['conn'],"select name,author,useradmin,ipcheck,epgadmin,channeladmin from luo2888_admin");
+									$result=$db->mQuery("select name,author,useradmin,ipcheck,epgadmin,channeladmin from luo2888_admin");
 									while ($row=mysqli_fetch_array($result)) {
 										$adminname=$row['name'];
 										$author=$row['author'];
@@ -77,7 +77,6 @@
 									}
 									unset($row);
 									mysqli_free_result($result);
-									mysqli_close($GLOBALS['conn']);
 									?>
 								</tbody>
 							</table>
@@ -99,6 +98,23 @@
 						</form>
 					</div>
 				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="card">
+			<div class="card-header"><h4>修改管理员密码</h4></div>
+			<div class="card-body">
+				<form method="post">
+					<div class="example-box">
+					<label class="btn-block">用户名</label>
+						<input class="form-control" type="text" name="username" value="admin" size="80"><br>
+					<label class="btn-block">旧密码</label>
+						<input class="form-control" type="password" name="oldpassword" value="" size="80"><br>
+					<label class="btn-block">新密码</label>
+						<input class="form-control" type="password" name="newpassword" value="" size="80"><br>
+					</div>
+					<button class="btn btn-label btn-primary" type="submit" name="submit" value=""><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>修改密码</button>
+				</form>
 			</div>
 		</div>
 	</div>

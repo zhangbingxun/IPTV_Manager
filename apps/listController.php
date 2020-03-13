@@ -1,9 +1,10 @@
 <?php
-include_once "../config.php";
+require_once "../config.php";
+$db = Config::GetIntance();
+
 session_start();
 if (isset($_SESSION['user']))$user = $_SESSION['user'];
-$result = mysqli_query($GLOBALS['conn'], "select * from luo2888_admin where name='$user'");
-if ($row = mysqli_fetch_array($result)) {
+if ($row = $db->mGetRow("luo2888_admin", "*", "where name='$user'")) {
     $psw = $row['psw'];
 } else {
     $psw = '';
@@ -18,23 +19,22 @@ if (!isset($_SESSION['psw']) || $_SESSION['psw'] != $psw) {
 header("Content-type:text/json;charset=utf-8");
 
 function echoSource($category) {
-    mysqli_query($GLOBALS['conn'], "SET NAMES 'UTF8'");
-    $sql = "SELECT distinct id,name,url FROM luo2888_channels where category='$category' order by id";
-    $result = mysqli_query($GLOBALS['conn'], $sql);
+    global $db;
+    $db->mQuery("SET NAMES UTF8");
+    $result = $db->mQuery("SELECT distinct id,name,url FROM luo2888_channels where category='$category' order by id");
     while ($row = mysqli_fetch_array($result)) {
         echo $row['name'] . "," . $row['url'] . "\n";
     } 
     unset($row);
     mysqli_free_result($result);
-    mysqli_close($GLOBALS['conn']);
 } 
 
-if (isset($_GET['pd'])) {
-    $pd = $_GET['pd'];
+if (isset($_GET['category'])) {
+    $category = $_GET['category'];
 } else {
-    $pd = '未知';
+    $category = '未知';
 } 
 
-echoSource($pd);
+echoSource($category);
 
 ?>

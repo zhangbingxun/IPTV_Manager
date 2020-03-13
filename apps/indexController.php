@@ -4,9 +4,13 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
 include_once "../config.php";
+$db = Config::GetIntance();
 
-$result = mysqli_query($GLOBALS['conn'], "select count(*) from luo2888_users");
-if ($row = mysqli_fetch_array($result)) {
+?>
+
+<?php 
+// 用户总数统计
+if ($row = $db->mGetRow("luo2888_users", "count(*)")) {
     $userCount = $row[0];
     $pageCount = ceil($row[0] / $recCounts);
 } else {
@@ -14,71 +18,55 @@ if ($row = mysqli_fetch_array($result)) {
     $pageCount = 1;
 } 
 unset($row);
-mysqli_free_result($result);
-
+// 今日上线用户总数统计
 $todayTime = strtotime(date("Y-m-d"), time());
-$result = mysqli_query($GLOBALS['conn'], "select count(*) from luo2888_users where lasttime>$todayTime");
-if ($row = mysqli_fetch_array($result)) {
+if ($row = $db->mGetRow("luo2888_users", "count(*)", "where lasttime>$todayTime")) {
     $todayuserCount = $row[0];
 } else {
     $todayuserCount = 0;
-}
+} 
 unset($row);
-mysqli_free_result($result);
-
-$result = mysqli_query($GLOBALS['conn'], "select count(*) from luo2888_users where status>0 and authortime>$todayTime");
-if ($row = mysqli_fetch_array($result)) {
+// 今日授权用户总数统计
+if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>0 and authortime>$todayTime")) {
     $todayauthoruserCount = $row[0];
 } else {
     $todayauthoruserCount = 0;
 } 
 unset($row);
-mysqli_free_result($result);
-
-$result = mysqli_query($GLOBALS['conn'], "select count(*) from luo2888_users where vpn>0");
-if ($row = mysqli_fetch_array($result)) {
+// 异常用户总数统计
+if ($row = $db->mGetRow("luo2888_users", "count(*)", "where vpn>0")) {
     $exceptionuserCount = $row[0];
 } else {
     $exceptionuserCount = 0;
 } 
 unset($row);
-mysqli_free_result($result);
-
-$result = mysqli_query($GLOBALS['conn'], "select count(*) from luo2888_category");
-if ($row = mysqli_fetch_array($result)) {
+// 分类总数统计
+if ($row = $db->mGetRow("luo2888_category", "count(*)")) {
     $categoryCount = $row[0];
 } else {
     $categoryCount = 0;
 } 
 unset($row);
-mysqli_free_result($result);
-
-$result = mysqli_query($GLOBALS['conn'], "select count(*) from luo2888_channels");
-if ($row = mysqli_fetch_array($result)) {
+// 频道总数统计
+if ($row = $db->mGetRow("luo2888_channels", "count(*)")) {
     $channelCount = $row[0];
 } else {
     $channelCount = 0;
 } 
 unset($row);
-mysqli_free_result($result);
-
-
-$result = mysqli_query($GLOBALS['conn'], "select count(*) from luo2888_epg");
-if ($row = mysqli_fetch_array($result)) {
+// EPG总数统计
+if ($row = $db->mGetRow("luo2888_epg", "count(*)")) {
     $epgCount = $row[0];
 } else {
     $epgCount = 0;
 } 
 unset($row);
-mysqli_free_result($result);
-
-$result = mysqli_query($GLOBALS['conn'], "select count(*) from luo2888_users where isvip=1");
-if ($row = mysqli_fetch_array($result)) {
-    $vipCount = $row[0];
+// VIP用户总数统计
+if ($row = $db->mGetRow("luo2888_meals", "count(*)")) {
+    $mealsCount = $row[0];
 } else {
-    $vipCount = 0;
+    $mealsCount = 0;
 } 
 unset($row);
-mysqli_free_result($result);
 
 ?>

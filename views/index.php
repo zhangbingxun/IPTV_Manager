@@ -1,4 +1,4 @@
-<?php include_once "view.section.php";include_once "../apps/indexController.php"; ?>
+<?php require_once "view.section.php";require_once "../apps/indexController.php"; ?>
 
 <!--页面主要内容-->
 <main class="lyear-layout-content">
@@ -18,13 +18,13 @@
           </div>
           
           <div class="col-sm-6 col-lg-3">
-            <div class="card bg-info">
+            <div class="card bg-danger">
               <div class="card-body clearfix">
                 <div class="pull-right">
-                  <p class="h6 text-white m-t-0">VIP用户数量</p>
-                  <p class="h3 text-white m-b-0"><?php echo $vipCount; ?></p>
+                  <p class="h6 text-white m-t-0">异常用户</p>
+                  <p class="h3 text-white m-b-0"><?php echo $exceptionuserCount; ?></p>
                 </div>
-                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-account-star fa-1-5x"></i></span> </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-account-alert fa-1-5x"></i></span> </div>
               </div>
             </div>
           </div>
@@ -66,6 +66,18 @@
           </div>
           
           <div class="col-sm-6 col-lg-3">
+            <div class="card bg-info">
+              <div class="card-body clearfix">
+                <div class="pull-right">
+                  <p class="h6 text-white m-t-0">套餐数量</p>
+                  <p class="h3 text-white m-b-0"><?php echo $mealsCount; ?></p>
+                </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-shopping-music fa-1-5x"></i></span> </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-sm-6 col-lg-3">
             <div class="card bg-warning">
               <div class="card-body clearfix">
                 <div class="pull-right">
@@ -89,18 +101,6 @@
             </div>
           </div>
           
-          <div class="col-sm-6 col-lg-3">
-            <div class="card bg-danger">
-              <div class="card-body clearfix">
-                <div class="pull-right">
-                  <p class="h6 text-white m-t-0">异常用户</p>
-                  <p class="h3 text-white m-b-0"><?php echo $exceptionuserCount; ?></p>
-                </div>
-                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-account-alert fa-1-5x"></i></span> </div>
-              </div>
-            </div>
-          </div>
-          
 			<div class="card">
 				<div class="card-body">
 					<div class="card-header"><h4>频道分类统计</h4></div>
@@ -116,17 +116,15 @@
 							<tbody>
 								<?php
 								$num=1;
-								$result=mysqli_query($GLOBALS['conn'],"SELECT name from luo2888_category order by id");
+								$result=$db->mQuery("SELECT name from luo2888_category order by id");
 								while ($row=mysqli_fetch_array($result)) {
 									$categoryname=$row['name'];
-									$getchannelnum = mysqli_query($GLOBALS['conn'], "select count(*) from luo2888_channels where category='$categoryname'");
-									if ($channelnumdata = mysqli_fetch_array($getchannelnum)) {
+									if ($channelnumdata = $db->mGetRow("luo2888_channels","count(*)","where category='$categoryname'")) {
 									    $channelnum = $channelnumdata[0];
 									} else {
 									    $channelnum = 0;
 									} 
 									unset($channelnumdata);
-									mysqli_free_result($getchannelnum);
 									echo "<tr>
 										<td>$num</td>
 										<td>$categoryname</td>

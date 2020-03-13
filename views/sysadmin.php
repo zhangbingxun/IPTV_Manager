@@ -1,4 +1,4 @@
-<?php include_once "view.section.php";include_once "../apps/sysadminController.php" ?>
+<?php require_once "view.section.php";require_once "../apps/sysadminController.php" ?>
 <script type="text/javascript">
 function showli(index){
 	$(".main-content li").hide();
@@ -16,19 +16,16 @@ showindex=<?php echo $_GET['index']; ?>
 						<?php include "./sysadmin/notice.view.php" ?>
 					</li>
 					<li>
-						<?php include "./sysadmin/backup.view.php" ?>
-					</li>
-					<li>
-						<?php include "./sysadmin/appset.view.php" ?>
-					</li>
-					<li>
 						<?php include "./sysadmin/bgpic.view.php" ?>
 					</li>
 					<li>
 						<?php include "./sysadmin/adminrec.view.php" ?>
 					</li>
 					<li>
-						<?php include "./sysadmin/password.view.php" ?>
+						<?php include "./sysadmin/panelset.view.php" ?>
+					</li>
+					<li>
+						<?php include "./sysadmin/appset.view.php" ?>
 					</li>
 					<li>
 						<?php include "./sysadmin/admins.view.php" ?>
@@ -43,4 +40,5 @@ showindex=<?php echo $_GET['index']; ?>
 
 <script type="text/javascript">
 showli(showindex);
+$('.sysadmin').toggleClass( 'open' );
 </script>

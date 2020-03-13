@@ -1,5 +1,6 @@
 <?php
-include_once "config.php";
+require_once "config.php";
+$db = Config::GetIntance();
 class Aes
 {
     /**
@@ -70,9 +71,9 @@ class Aes
     }
 }
 
-$sig=get_config('app_sign');
-$appname=get_config('app_appname');
-$packagename=get_config('app_packagename');
+$sig=$db->mGet("luo2888_config","value","where name='app_sign'");
+$appname=$db->mGet("luo2888_config","value","where name='app_appname'");
+$packagename=$db->mGet("luo2888_config","value","where name='app_packagename'");
 $key=md5($sig.$appname.$packagename."AD80F93B542B");
 $key=md5($key.$appname.$packagename);
 ?>

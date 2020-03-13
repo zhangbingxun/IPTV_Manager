@@ -1,20 +1,18 @@
 <?php
 include_once "config.php";
+$db = Config::GetIntance();
 
-$appver='V1.0';
-$appUrl='';
-$sql = "SELECT appver,appurl,up_size,up_sets,up_text FROM luo2888_appdata";
-$result = mysqli_query($GLOBALS['conn'],$sql);
-if($row = mysqli_fetch_array($result)) {
-	$appver=$row['appver'];	
-	$appUrl=$row['appurl'];
-	$up_size=$row["up_size"];
-	$up_sets=$row["up_sets"];
-	$up_text=$row["up_text"];
+$sdk=$_GET['sdk'];
+if ($sdk == '14') {
+	$appver=$db->mGet("luo2888_config", "value", "where name='appver_sdk14'");
+	$appUrl=$db->mGet("luo2888_config", "value", "where name='appurl_sdk14'");
+} else {
+	$appver=$db->mGet("luo2888_config", "value", "where name='appver'");
+	$appUrl=$db->mGet("luo2888_config", "value", "where name='appurl'");
+	$up_size=$db->mGet("luo2888_config", "value", "where name='up_size'");
+	$up_sets=$db->mGet("luo2888_config", "value", "where name='up_sets'");
+	$up_text=$db->mGet("luo2888_config", "value", "where name='up_text'");
 }
-unset($row);
-mysqli_free_result($result);
-mysqli_close($GLOBALS['conn']);
 $obj=(Object)null;
 $obj->appver=$appver;
 $obj->appurl=$appUrl;

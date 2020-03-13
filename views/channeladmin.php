@@ -1,4 +1,4 @@
-<?php include_once "view.section.php";include_once "../apps/channeladminController.php" ?>
+<?php require_once "view.section.php";require_once "../apps/channeladminController.php" ?>
 <script>
 	(function($){$.session={_id:null,_cookieCache:undefined,_init:function()
 	{if(!window.name){window.name=Math.random();}
@@ -22,28 +22,28 @@
 </script>
 
 <script>
-	function togglepdcheck(pdname,catname){
-		$.get("../apps/togglepdController.php?pdname="+pdname+"&cat="+catname,function(data){$("#tip").html(data)});
+	function categorycheck(cname){
+		$.get("../apps/togglepdController.php?cname="+cname,function(data){$("#tip").html(data)});
 	}
 	function showlist(index){
 		$("#srclist").val("正在加载中...");
-		$("#srclist").load("../apps/listController.php?pd="+pdname[index],function(data){
+		$("#srclist").load("../apps/listController.php?category="+cname[index],function(data){
 			$("#srclist").val(data);
 		});
-		$("#typename").val(pdname[index]);
-		$("#typename0").val(pdname[index]);
-		$("#typepass").val(psw[index]);
-		$("#pd").val(pdname[index]);
+		$("#typename").val(cname[index]);
+		$("#typename0").val(cname[index]);
+		$("#typepass").val(cpass[index]);
+		$("#category").val(cname[index]);
 		$("#showindex").val(index);
 		$("#showindextype").val(index);
 		showindex=index;
-		$.session.set("<?php echo 'showindex';?>",showindex);
+		$.session.set("<?php echo '$showindex';?>",showindex);
 	}
-	if(showindex==-1) showindex=$.session.get("<?php echo 'showindex';?>");
+	if(showindex==-1) showindex=$.session.get("<?php echo '$showindex';?>");
 </script>
 
 <style type="text/css">
-	#pdlist{padding-left: 0px;padding-top: 5px;}
+	#categorylist{padding-left: 0px;padding-top: 5px;}
 	ul li{list-style: none}
 </style>
 
@@ -81,7 +81,7 @@
 												<div class="input-group-btn">
 													<select class="btn btn-sm btn-default dropdown-toggle" name="thirdlist">
 														<option selected="selected" value="">请选列表</option>
-															<?php $result=mysqli_query($GLOBALS['conn'],"SELECT name from luo2888_category where type='$categorytype' and url is not null");
+															<?php $result=$db->mQuery("SELECT name from luo2888_category where type='$categorytype' and url is not null");
 															while ($row=mysqli_fetch_array($result)) {
 																$listname=$row['name'];
 																echo "<option>$listname</option>";
@@ -128,7 +128,18 @@
 					</div>
 				</div>
 				<div class="card">
-					<div class="card-header"><h4>频道列表</h4></div>
+					<div class="card-header">
+						<h4>
+							<?php
+							if (strpos($_SERVER['REQUEST_URI'],'default') !== false){ echo '默认频道'; }
+							else if (strpos($_SERVER['REQUEST_URI'],'province') !== false){ echo '省份频道'; }
+							else if (strpos($_SERVER['REQUEST_URI'],'chinanet') !== false){ echo '电信频道'; }
+							else if (strpos($_SERVER['REQUEST_URI'],'unicom') !== false){ echo '联通频道'; }
+							else if (strpos($_SERVER['REQUEST_URI'],'cmcc') !== false){ echo '移动频道'; }
+							else if (strpos($_SERVER['REQUEST_URI'],'vip') !== false){ echo '会员频道'; }
+							?>
+						</h4>
+					</div>
             			<div class="card-body">
 	                		<div class="table-responsive" >
 								<table class="table table-bordered table-vcenter" style="min-width:850px;">
@@ -140,10 +151,10 @@
 									<div class="input-group-btn">
 										<input type="hidden" id="showindextype" name="showindex" value=""/>
 										<input type="hidden" id="typename0" name="typename0" value=""/>
-										<input class="form-control" style="width: 108px;height: 30px;" id="typename" type="text" size="10" name="category" value="<?PHP echo $pd?>" placeholder="请输入分类名称"/>
-										<input class="form-control" style="width: 135px;height: 30px;" id="typepass" type="text" size="10" name="cpass" value="<?PHP echo $cpass?>" placeholder="请输入分类密码"/>
+										<input class="form-control" style="width: 108px;height: 30px;" id="typename" type="text" size="10" name="category" value="<?PHP echo $category?>" placeholder="分类名称"/>
+										<input class="form-control" style="width: 115px;height: 30px;" id="typepass" type="text" size="10" name="cpass" value="<?PHP echo $cpass?>" placeholder="分类密码"/>
 										<button class="btn btn-sm btn-default" type="submit" name="submit">增加分类</button>
-										<button class="btn btn-sm btn-default" type="submit" name="submit_deltype" onclick="return confirm('确认删除频道分类吗？')">删除分类</button>
+										<button class="btn btn-sm btn-default" type="submit" name="submit_deltype">删除分类</button>
 										<button class="btn btn-sm btn-default" type="submit" name="submit_modifytype">修改分类</button>
 										<button class="btn btn-sm btn-default" type="submit" name="submit_moveup">上移分类</button>
 										<button class="btn btn-sm btn-default" type="submit" name="submit_movedown">下移分类</button>
@@ -154,24 +165,24 @@
 							</td>
 							</tr>
 							<tr>
-							<td align="center" valign="top" style="float: left;padding: 40px 0 0 0;width: 180px;height: 100%;border-width: 0px;">
+							<td align="center" valign="top" style="float: left;padding: 40px 0 0 0;border-width: 0px;width: 180px;height: 800px;overflow:auto;">
 								<div id="tip"></div>
 								<script type="text/javascript">
-									var pdname=[];
-									var psw=[];
+									var cname=[];
+									var cpass=[];
 								</script>
 								<div class="btn-group-vertical">
 									<label class="btn-block">分类列表</label>
 									<?php
 										if ($categorytype=='vip'){
-											$sql = "SELECT name,psw,enable FROM luo2888_category where type='$categorytype' order by id";
+											$func = "SELECT name,psw,enable FROM luo2888_category where type='$categorytype' order by id";
 										}else{
-											$sql = "SELECT name,psw,enable FROM luo2888_category where type='$categorytype' or type='thirdlist' order by id";
+											$func = "SELECT name,psw,enable FROM luo2888_category where type='$categorytype' or type='thirdlist' order by id";
 										}
-										$result = mysqli_query($GLOBALS['conn'],$sql);
+										$result = $db->mQuery($func);
 										$index=0;
 										while($row = mysqli_fetch_array($result)) {
-											$pdname=$row['name'];
+											$cname=$row['name'];
 											$enable=$row['enable'];
 											$cpass=$row['psw'];
 											if($enable==1){
@@ -184,33 +195,32 @@
 											}else{
 												$lockimg='*';
 											}
-											echo "<script>pdname[$index]='$pdname';psw[$index]='$cpass';</script>";
+											echo "<script>cname[$index]='$cname';cpass[$index]='$cpass';</script>";
 											echo "
-												<button id=\"pdlist\" class=\"btn btn-default\" onclick=\"showlist($index)\">
-													<div class='pdlist' style='text-align:left;padding: 5px;'>
+												<button id=\"categorylist\" class=\"btn btn-default\" onclick=\"showlist($index)\">
+													<div class='categorylist' style='text-align:left;padding: 5px;'>
 														<label class=\"lyear-checkbox checkbox-inline checkbox-cyan\">
-															<input type=\"checkbox\" $check onclick='togglepdcheck(\"$pdname\",\"luo2888_category\")'>
+															<input type=\"checkbox\" $check onclick='categorycheck(\"$cname\")'>
 															<span></span>
 														</label>				
-														$pdname $lockimg 
+														$cname $lockimg 
 													</div>
 												</button>";
 											$index++;
 										}
 										unset($row);
 										mysqli_free_result($result);
-										mysqli_close($GLOBALS['conn']);
 									?>
 								</div>
 							</td>
-							<td align="center" valign="top" style="padding-top: 5px;width: 100%;height: 100%;">
+							<td align="center" valign="top" style="padding-top: 5px;width: 100%;">
 								<form method="post">
 									<div class="input-group">
 										<div class="input-group-btn">
 											<div class="col-xs-12" style="padding: 15px;">
 												<button class="btn btn-sm btn-default" id="updatesrc" style="width:100%;" type="submit" name="submit">保存</button>
 											</div>
-											<input type="hidden" id="pd" name="pd" value=""/>
+											<input type="hidden" id="category" name="category" value=""/>
 											<input type="hidden" id="showindex" name="showindex" value=""/>
 											<div class="col-xs-12">
 												<textarea class="form-control" id="srclist" name="srclist" rows="35" placeholder="节目列表"></textarea>
@@ -228,8 +238,8 @@
 		</div>
 	</div>
 </main>
-    <!--End 页面主要内容-->
-  </div>
+<!--End 页面主要内容-->
+</div>
 </div>
 
 <script type="text/javascript">
@@ -243,4 +253,5 @@
 	$('#addthirdlist').on('click', function(){
 	    lightyear.loading('show');
 	});
+	$('.channeladmin').toggleClass( 'open' );
 </script>

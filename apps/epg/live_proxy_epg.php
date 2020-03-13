@@ -197,7 +197,7 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
 function channel($id) {
     $id = urldecode($id);
     $sql = "select * FROM luo2888_epg where status=1 AND FIND_IN_SET('$id',content)";
-    $result = mysqli_query($GLOBALS['conn'], $sql);
+    $result = mysqli_query($GLOBALS['conn'], "select * FROM luo2888_epg where FIND_IN_SET('$id',content)");
     if ($row = mysqli_fetch_array($result)) {
         return $row;
         mysqli_close($GLOBALS['conn']);

@@ -1,12 +1,8 @@
-<?php include_once "view.section.php";include_once "../apps/useradminController.php"; ?>
+<?php require_once "view.section.php";require_once "../apps/useradminController.php"; ?>
 
 <script type="text/javascript">
 	function submitForm(){
 		var form = document.getElementById("recCounts");
-		form.submit();
-	}
-	function submitjump(){
-		var form = document.getElementById("jumpto");
 		form.submit();
 	}
 	function quanxuan(a){
@@ -30,9 +26,10 @@
 						<div class="card-header"><h4>已授权用户列表</h4></div>
 						<div class="card-toolbar clearfix">
 							<div class="btn-block" >
-								<label>待授权用户：<?php echo $userCount; ?></label>
+								<label>用户总数：<?php echo $userCount; ?></label>
 								<label>今日上线：<?php echo $todayuserCount; ?></label>
 								<label>今日授权：<?php echo $todayauthoruserCount; ?></label>
+								<label>过期用户：<?php echo $expuserCount; ?></label>
 							</div>
 							<form class="pull-right search-bar" method="get" role="form">
 								<div class="input-group">
@@ -76,7 +73,7 @@
 								</form>
 								<form class="pull-left" method="post" id="jumpto">
 									<input type="text" name="jumpto" style="border-width: 0px;text-align: right;" size=2 value="<?php echo $page?>">/<?php echo $pageCount?>
-									<button class="btn btn-xs btn-default" onclick="submitjump()">跳转</button>
+									<button class="btn btn-xs btn-default" type="submit">跳转</button>
 								</form>
 							</div>
 						</div>
@@ -87,23 +84,23 @@
 									<table class="table table-hover">
 										<thead>
 										<tr>
-											<th>
+											<th class="w-1">
 												<label class="lyear-checkbox checkbox-primary">
 													<input type="checkbox" onclick="quanxuan(this)">
 													<span></span>
 												</label>
 											</th>
-											<th><a href="?order=name">账号</a></th>
-											<th><a href="?order=mac">MAC地址</a></th>
-											<th><a href="?order=deviceid">设备ID</a></th>
-											<th><a href="?order=model">型号</a></th>
-											<th><a href="?order=ip">IP</a></th>
-											<th><a href="?order=region">地区</a></th>
-											<th><a href="?order=lasttime">最后登陆</a></th>
-											<th><a href="?order=exp">状态</a></th>
-											<th><a href="?order=isvip">VIP</a></th>
-											<th><a href="?order=author">授权人</a></th>
-											<th><a href="?order=marks">备注</a></th>
+											<th class="w-5"><a href="?order=name">账号</a></th>
+											<th class="w-10"><a href="?order=meal">套餐</a></th>
+											<th class="w-15"><a href="?order=mac">MAC地址</a></th>
+											<th class="w-15"><a href="?order=deviceid">设备ID</a></th>
+											<th class="w-10"><a href="?order=model">型号</a></th>
+											<th class="w-10"><a href="?order=ip">IP</a></th>
+											<th class="w-15"><a href="?order=region">地区</a></th>
+											<th class="w-15"><a href="?order=lasttime">最后登陆</a></th>
+											<th class="w-5"><a href="?order=exp">状态</a></th>
+											<th class="w-5"><a href="?order=author">授权人</a></th>
+											<th class="w-10"><a href="?order=marks">备注</a></th>
 										</tr>
 										</thead>
 										<tbody>
@@ -111,11 +108,20 @@
 												<?php
 													$recStart=$recCounts*($page-1);
 													if($user=='admin'){
-													$sql="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,isvip from luo2888_users where status>0 $searchparam order by $order limit $recStart,$recCounts";
+													$func="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,meal from luo2888_users where status>0 $searchparam order by $order  limit $recStart,$recCounts";
 													}else{
-														$sql="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,isvip from luo2888_users where status>0 and author='$user' $searchparam order by $order limit $recStart,$recCounts";
+														$func="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,meal from luo2888_users where status>0 and author='$user' $searchparam order by $order limit $recStart,$recCounts";
 													}
-													$result=mysqli_query($GLOBALS['conn'],$sql);
+													$meals=$db->mQuery("select id,name from luo2888_meals");
+													if (mysqli_num_rows($meals)) {
+														$meals_arr = [];
+														while ($row = mysqli_fetch_array($meals, MYSQLI_ASSOC)) {
+															$meals_arr[$row["id"]] = $row["name"];
+														} 
+														unset($row);
+														mysqli_free_result($result);
+													} 
+													$result=$db->mQuery($func);
 													if (mysqli_num_rows($result)) {
 														while($row=mysqli_fetch_array($result)){
 															$status=$row['status'];
@@ -131,7 +137,11 @@
 															$author=$row['author'];
 															$marks=$row['marks'];
 															$vpn=$row['vpn'];
-															if($row['isvip']==0){$isvip='否';$fontcolor='black';}else{$isvip='是';$fontcolor='red';}
+															if (empty($meals_arr[$row["meal"]])) {
+																$meal = $row["meals"];
+															} else {
+																$meal = $meals_arr[$row["meal"]];
+															} 
 															if($row['exp']>time()){$days='剩'."$days".'天';}
 															if($row['exp']<time()){
 																$days='过期';
@@ -140,11 +150,12 @@
 																$days='永不到期';
 																$expdate=$days;
 															}
-															echo "<tr>
+															echo "<tr class=\"h-5\">
 																<td><label class=\"lyear-checkbox checkbox-primary\">
 																<input type=\"checkbox\" name=\"id[]\" value=\"$name\"><span></span>
 																</label></td>
-																<td><font color='$fontcolor'>$name </font></td>
+																<td>$name</td>
+																<td>$meal</td>
 																<td>$mac</td>
 																<td>".$deviceid."</td>
 																<td>$model</td>
@@ -152,7 +163,6 @@
 																<td>".$region."</td>
 																<td>".$lasttime ."</td>
 																<td title='$expdate'>".$days."</td>
-																<td>".$isvip."</td>
 																<td>".$author."</td>
 																<td>$marks</td>
 																</tr>";
@@ -162,37 +172,37 @@
 													    echo "<tr><td align='center' colspan='12'><font color='red'>对不起，当前未有已授权的用户数据！</font></td></tr>";
 													}
 													mysqli_free_result($result);
-													mysqli_close($GLOBALS['conn']);
 																?>
+												<div class="form-inline pull-left">
 												<tr>
 													<td colspan="12">
-															<div class="example-box">
-																<button class="btn btn-sm btn-primary" type="submit" name="submitsetvip">设为VIP用户</button>
-																<button class="btn btn-sm btn-primary" type="submit" name="submitclearvip">取消VIP用户</button>
-																<button class="btn btn-sm btn-primary" type="submit" name="submitNotExpired">设为永不到期</button>
-																<button class="btn btn-sm btn-primary" type="submit" name="submitCancelNotExpired">取消永不到期</button>
-																<button class="btn btn-sm btn-primary" type="submit" name="submitforbidden">取消授权</button>
-																<button class="btn btn-sm btn-primary" type="submit" name="submitdel" onclick="return confirm('确定删除选中用户吗？')">删除</button>
+														<div class="input-group">
+															<div class="input-group-btn">
+																<select class="btn btn-sm btn-default dropdown-toggle" style="width: 115px;height: 30px;" name="s_meals">
+																	<option value="">请选择套餐</option>
+																	<?php 
+																		foreach($meals_arr as $mealid => $mealname) {
+																			echo "<option value=\"$mealid\">$mealname";
+																		} 
+																		unset($meals_arr);
+																	?>
+																</select>
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="e_meals">修改套餐</button>
+																<input class="btn btn-default " style="width: 115px;height: 30px;" type="text" name="marks" size="3" placeholder="请输入备注">
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitmodifymarks">修改备注</button>
+																<input class="btn btn-default " style="width: 85px;height: 30px;" type="text" name="exp" size="3" placeholder="授权天数">
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitmodify">修改天数</button>
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitadddays">增加天数</button>
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitNotExpired">设为永不到期</button>
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitCancelNotExpired">取消永不到期</button>
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitforbidden">取消授权</button>
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitdel" onclick="return confirm('确定删除选中用户吗？')">删除</button>
 																<button class="btn btn-sm btn-primary" type="submit" name="submitdelall" onclick="return confirm('确认删除所有已过期授权信息？')">清空过期用户</button>
 															</div>
 														</div>
 													</td>
 												</tr>
-												<tr>
-													<td colspan="12">
-														<div class="input-group">
-															<div class="input-group-btn">
-																<input class="form-control" style="width: 85px;height: 30px;" type="text" name="marks" size="3" placeholder="备注">
-																<button class="btn btn-sm btn-primary" type="submit" name="submitmodifymarks">修改备注</button>
-															</div>
-															<div class="input-group-btn">
-																<input class="form-control" style="width: 85px;height: 30px;" type="text" name="exp" size="3" placeholder="天数">
-																<button class="btn btn-sm btn-primary" type="submit" name="submitmodify">修改天数</button>
-																<button class="btn btn-sm btn-primary" type="submit" name="submitadddays">增加天数</button>
-															</div>
-														</div>
-													</td>
-												</tr>
+												</div>
 											</form>
 										</tbody>
 									</table>

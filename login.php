@@ -1,197 +1,180 @@
 <?php
-ini_set('display_errors',1); 
-ini_set('display_startup_errors',1); 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
-include_once "aes.php";
-include_once "config.php";
+require_once "aes.php";
+require_once "config.php";
+$db = Config::GetIntance();
 
 if (isset($_GET['id'])) {
     $androidid = $_GET['id'];
-    $sql = "SELECT isvip FROM luo2888_users where deviceid='$androidid'";
-    $result = mysqli_query($GLOBALS['conn'], $sql);
-    if ($row = mysqli_fetch_array($result)) {
-        $isvip = $row['isvip'];
-        if ($isvip == '1') {echo 'VIP用户';} else {echo '免费用户';}
-    }else{
-    	echo '免费用户';
-	}
-}
+    $mealid = $db->mGet("luo2888_users", "meal", "where deviceid='$androidid'");
+    $mealname = $db->mGet("luo2888_meals", "name", "where id='$mealid'");
+    echo $mealname;
+} 
 
-if(isset($_POST['login'])){
+if (isset($_POST['login'])) {
+    $GetIP = new GetIP();
+    $ip = $GetIP->getuserip();
+    $num = $db->mGet("luo2888_users", "count(*)", "where ip='$ip'");
+    if ($num >= $db->mGet("luo2888_config", "value", "where name='max_sameip_user'")) {
+        header('HTTP/1.1 403 Forbidden');
+        exit();
+    } else {
+        $json = $_POST['login'];
+        $obj = json_decode($json);
+        $region = $obj->region;
+        $androidid = $obj->androidid;
+        $mac = $obj->mac;
+        $model = $obj->model;
+        $nettype = $obj->nettype;
+        $appname = $obj->appname; 
+        if ($ip == '' || $ip == '127.0.0.1') {
+	        $ip = '127.0.0.1';
+	        $region = 'localhost'; 
+        }
+        if (empty($region)) {
+            $myurl = 'http://' . $_SERVER['HTTP_HOST'];
+            $json = file_get_contents("$myurl/getIpInfo.php?ip=$ip");
+            $obj = json_decode($json);
+            $region = $obj->data->region . $obj->data->city . $obj->data->isp;
+        } 
+        function genName() {
+            global $db;
+            $name = rand(1000, 999999);
+            $result = $db->mGet("luo2888_users", "*", "where name=$name");
+            if (!$result) {
+                unset($result);
+                return $name;
+            } else {
+                genName();
+            } 
+        } 
+        // status=1,正常用户；
+        // status=0,停用用户;
+        // status=-1,未授权用户
+        // status=999为永不到期
+        $nowtime = time(); 
+        // androidID是否匹配
+        if ($row = $db->mCheckRow("luo2888_users", "name,status,exp,deviceid,model,meal", "where deviceid='$androidid'")) {
+            // 匹配成功
+            $days = ceil(($row['exp'] - time()) / 86400);
+            $status = intval($row['status']);
+            $name = $row['name'];
+            $mealid = $row['meal'];
+            $exp = $row["exp"]; //收视期限，时间戳
+            $status2 = $status;
+            if ($days > 0 && $status == -1) {
+                $status = 1;
+            } else if ($status2 == -999) {
+                $status = 1;
+            } 
+            // 更新位置，登陆时间
+            $db->mSet("luo2888_users", "region='$region',ip='$ip',lasttime=$nowtime", "where deviceid='$androidid'"); 
+            // 数据库中找到该用户该IP的登陆记录
+            $result = $db->mGet("luo2888_loginrec", "logintime", "where deviceid='$androidid' and ip='$ip'"); 
+            // 生成用户访问记录
+            if (empty($result)) {
+                $db->mInt("luo2888_loginrec", "userid,deviceid,mac,model,ip,region,logintime", "$name,'$androidid','$mac','$model','$ip','$region','$nowtime'");
+            } else {
+                $db->mSet("luo2888_loginrec", "logintime=$nowtime", "where deviceid='$androidid' and ip='$ip'");
+                unset($result);
+            } 
+        } else {
+            // 用户验证失败，识别用户信息存入后台
+            $name = genName();
+            $days = $db->mGet("luo2888_config", "value", "where name='trialdays'");
+            if (empty($days)) {
+                $days = 0;
+            } 
+            if ($days > 0) {
+                $status = -1;
+                $marks = '试用';
+            } else if ($days == "-999") {
+                $status = -999;
+                $marks = '免费';
+                $days = 3;
+            } else {
+                $status = -1;
+                $marks = '未授权';
+            } 
+            $status2 = $status;
+            $exp = strtotime(date("Y-m-d"), time()) + 86400 * $days;
+            $db->mInt("luo2888_users", "name,mac,deviceid,model,exp,ip,status,region,lasttime,marks", "$name,'$mac','$androidid','$model',$exp,'$ip',$status,'$region',$nowtime,'$marks'");
+            if ($days > 0 && $status == -1) {
+                $status = 1;
+            } else if ($status2 == -999) {
+                $status = 1;
+            } 
+        } 
+        unset($row);
 
-	$GetIP = new GetIP();
-	$ip=$GetIP->getuserip();
-	$sql = "SELECT `ip`,count(*) as num FROM `luo2888_users` WHERE ip='$ip'";
-	$result = mysqli_query($GLOBALS['conn'],$sql);
-	if($row = mysqli_fetch_array($result)){$num=$row['num'];}
-	if($num >= get_config('max_sameip_user')){
-		header('HTTP/1.1 403 Forbidden');
-		mysqli_free_result($result);
-		mysqli_close($GLOBALS['conn']);
-		exit();
-	}else{
-		unset($row);
-		mysqli_free_result($result);
-		$json=$_POST['login'];
-		$obj=json_decode($json);
-		$region=$obj->region;
-		$androidid=$obj->androidid;
-		$mac=$obj->mac;
-		$model=$obj->model;
-		$nettype=$obj->nettype;
-		$appname=$obj->appname;
-		if ($ip=='' || $ip=='127.0.0.1') {$ip='127.0.0.1';$region='localhost';}
-		if(empty($region)){
-			$myurl='http://'.$_SERVER['HTTP_HOST'];
-			$json=file_get_contents("$myurl/getIpInfo.php?ip=$ip");
-			$obj=json_decode($json);
-			$region=$obj->data->region . $obj->data->city . $obj->data->isp;
-		}
-		function genName(){
-			$name=rand(1000,999999);
-			$result = mysqli_query($GLOBALS['conn'],"SELECT * from luo2888_users where name=$name");
-			if($row=mysqli_fetch_array($result)){
-				unset($row);
-				mysqli_free_result($result);
-				genName();
-			}else{
-				$result = mysqli_query($GLOBALS['conn'],"SELECT * from luo2888_serialnum where sn=$name");
-				if($row=mysqli_fetch_array($result)){
-					unset($row);
-					mysqli_free_result($result);
-					genName();
-				}else{
-					mysqli_free_result($result);
-					return $name;
-				}
-			}
-		}
-	
-		//status=1,正常用户；
-		//status=0,停用用户;
-		//status=-1,未授权用户
-		//status=999为永不到期
-		$nowtime=time();
+        $app_appname = $db->mGet("luo2888_config", "value", "where name='app_appname'");
+        $dataver = $db->mGet("luo2888_config", "value", "where name='dataver'");
+        $appUrl = $db->mGet("luo2888_config", "value", "where name='appurl'");
+        $appver = $db->mGet("luo2888_config", "value", "where name='appver'");
+        $setver = $db->mGet("luo2888_config", "value", "where name='setver'");
+        $adinfo = $db->mGet("luo2888_config", "value", "where name='adinfo'");
+        $adtext = $db->mGet("luo2888_config", "value", "where name='adtext'");
+        $showwea = $db->mGet("luo2888_config", "value", "where name='showwea'");
+        $showtime = $db->mGet("luo2888_config", "value", "where name='showtime'");
+        $showinterval = $db->mGet("luo2888_config", "value", "where name='showinterval'");
+        $decoder = $db->mGet("luo2888_config", "value", "where name='decoder'");
+        $buffTimeOut = $db->mGet("luo2888_config", "value", "where name='buffTimeOut'");
+        $needauthor = $db->mGet("luo2888_config", "value", "where name='needauthor'");
+        $autoupdate = $db->mGet("luo2888_config", "value", "where name='autoupdate'");
+        $randkey = $db->mGet("luo2888_config", "value", "where name='randkey'");
+        $updateinterval = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
+        $tiploading = $db->mGet("luo2888_config", "value", "where name='tiploading'");
+        $tipusernoreg = $db->mGet("luo2888_config", "value", "where name='tipusernoreg'");
+        $tipuserexpired = '当前账号' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserexpired'");
+        $tipuserforbidden = '当前账号' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserforbidden'");
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
+        $dataurl = dirname($url) . "/data.php";
 
-		//androidID是否匹配
-		$sql = "SELECT name,status,exp,deviceid,model FROM luo2888_users where deviceid='$androidid'";
-		$result = mysqli_query($GLOBALS['conn'],$sql);
-		if($row = mysqli_fetch_array($result)){
-			//匹配成功
-			$days=ceil(($row['exp']-time())/86400);
-			$status=intval($row['status']);
-			$name=$row['name'];
-			$exp=$row["exp"];  //收视期限，时间戳
-			$status2=$status;
-			if($days>0&&$status==-1){
-				$status=1;
-			}else if($status2==-999){
-				$status=1;
-			}
-			//更新位置，登陆时间
-			mysqli_query($GLOBALS['conn'],"UPDATE luo2888_users set region='$region',ip='$ip',lasttime=$nowtime where  deviceid='$androidid'");
-			//生成用户访问记录
-			$result=mysqli_query($GLOBALS['conn'],"SELECT logintime from luo2888_loginrec where deviceid='$androidid' and ip='$ip'");
-			if($row=mysqli_fetch_array($result)){//数据库中找到该用户该IP的登陆记录
-				mysqli_query($GLOBALS['conn'],"UPDATE luo2888_loginrec set logintime=$nowtime where deviceid='$androidid' and ip='$ip'");
-			}else{
-				mysqli_query($GLOBALS['conn'],"INSERT into luo2888_loginrec values($name,'$androidid','$mac','$model','$ip','$region','$nowtime')");
-			}
-			mysqli_free_result($result);
-		}else{
-			//用户验证失败，识别用户信息存入后台
-			$name=genName();
-			$sql = "SELECT trialdays FROM luo2888_appdata";
-			$result = mysqli_query($GLOBALS['conn'],$sql);
-			if($row = mysqli_fetch_array($result)) {
-				$days=$row['trialdays']; 
-			}else{
-				$days=0;
-			}
-			mysqli_free_result($result);
-			if($days>0){
-				$status=-1;
-				$marks='试用';
-			}elseif($days=="-999") {
-				$status=-999;
-				$marks='免费';
-			}else{
-				$status=-1;
-				$marks='未授权';
-			}
-			$status2=$status;
-			$exp=strtotime(date("Y-m-d"),time())+86400*$days;
-			mysqli_query($GLOBALS['conn'],"INSERT into luo2888_users (name,mac,deviceid,model,exp,ip,status,region,lasttime,marks) values($name,'$mac','$androidid','$model',$exp,'$ip',$status,'$region',$nowtime,'$marks')");
-			if($days>0&&$status==-1){$status=1;}else if($status2==-999){$status=1;}
-		}
-		unset($row);
-		mysqli_free_result($result);
-	
-		$sql = "SELECT dataver,appver,setver,adtext,qqinfo,showtime,showinterval,dataurl,appurl,decoder,buffTimeOut,tiploading,tipusernoreg,tipuserexpired,tipuserforbidden,needauthor,autoupdate,randkey,updateinterval,trialdays FROM luo2888_appdata";
-		$result = mysqli_query($GLOBALS['conn'],$sql);
-		if($row = mysqli_fetch_array($result)) {
-			$dataver=$row['dataver'];
-			$appver=$row['appver']; 
-			$setver=$row['setver'];
-			$adtext=$row['adtext'];
-			$qqinfo=$row['qqinfo'];
-			$showwea=$row['showwea'];
-			$showtime=$row['showtime'];
-			$showinterval=$row['showinterval'];
-			$decoder=$row['decoder'];
-			$buffTimeOut=$row['buffTimeOut'];
-			$tiploading=$row['tiploading'];
-			$tipusernoreg=$row['tipusernoreg'];
-			$tipuserexpired='当前账号'.$name.'，'.$row['tipuserexpired'];
-			$tipuserforbidden='当前账号'.$name.'，'.$row['tipuserforbidden'];
-			$needauthor=$row['needauthor'];
-			$autoupdate=$row['autoupdate'];
-			$randkey=$row['randkey'];
-			$updateinterval=$row['updateinterval'];
-			$url='http://'.$_SERVER['HTTP_HOST'].$_SERVER["REQUEST_URI"]; 
-			$dataurl=dirname($url)."/data.php";
-			$appUrl=$row['appurl'];
-		}
-		unset($row);
-		mysqli_free_result($result);
-	
-		if($needauthor==0 || ($status2==-999) ){
-			$status=999;
-		}
+        if ($needauthor == 0 || ($status2 == -999)) {
+            $status = 999;
+        } 
 
-		if(get_config('showwea')==1){
-			$weaapi_id=get_config('weaapi_id');
-			$weaapi_key=get_config('weaapi_key');
-			$url="https://www.tianqiapi.com/api?version=v6&appid=$weaapi_id&appsecret=$weaapi_key&ip=$ip";
-			$weajson = file_get_contents($url);
-			$obj=json_decode($weajson);
-			if(!empty($obj->city)){
-				$weather=date('n月d号') . $obj->week . '，' . $obj->city . '，' . $obj->tem . '℃'  . $obj->wea . '，' . '气温:' . $obj->tem2  . '℃' .'～' . $obj->tem1 . '℃' . '，' . $obj->win . $obj->win_speed . '，' . '相对湿度:' . $obj->humidity . '，' . '空气质量:' .  $obj->air_level . '，' . $obj->air_tips ;
-				$adtext=$weather . $adtext;
-			}
-		}
-		
-		if($status<1){
-			$dataurl='';
-			$appUrl='';
-		}
+        $mealname = $db->mGet("luo2888_meals", "name", "where id='$mealid'");
+        $adtext = '尊敬的用户，欢迎使用' . $app_appname . '，当前套餐：' . $mealname . '。';
 
-		$objres= array('status' => $status, 'dataurl'=>$dataurl,'appurl'=>$appUrl,'dataver' =>$dataver,'appver'=>$appver,'setver'=>$setver,'adtext'=>$adtext,'showinterval'=>$showinterval,'categoryCount'=>0,'exp' => $days,'ip'=>$ip,'showtime'=>$showtime ,'id'=>$name,'decoder'=>$decoder,'buffTimeOut'=>$buffTimeOut,'tipusernoreg'=>$tipusernoreg,'tiploading'=>$tiploading,'tipuserforbidden'=>$tipuserforbidden,'tipuserexpired'=>$tipuserexpired,'qqinfo'=>$qqinfo,'arrsrc'=>$src,'location'=>$region,'nettype'=>$nettype,'autoupdate'=>$autoupdate,'updateinterval'=>$updateinterval,'randkey'=>$randkey,'exps'=>$exp,'stus'=>$status2);
-		$objres=str_replace("\\/", "/", json_encode($objres,JSON_UNESCAPED_UNICODE));
-		$key=substr($key,5,16);
-		$aes2 = new Aes($key);
-		$encrypted =$aes2->encrypt($objres);
-		unset($objres);
-	
-		echo $encrypted;
-		mysqli_close($GLOBALS['conn']);
-	}
-    
-}else{
+        if ($showwea == 1) {
+            $weaapi_id = $db->mGet("luo2888_config", "value", "where name='weaapi_id'");
+            $weaapi_key = $db->mGet("luo2888_config", "value", "where name='weaapi_key'");
+            $url = "https://www.tianqiapi.com/api?version=v6&appid=$weaapi_id&appsecret=$weaapi_key&ip=$ip";
+            $weajson = file_get_contents($url);
+            $obj = json_decode($weajson);
+            if (!empty($obj->city)) {
+                $weather = date('今天n月d号') . $obj->week . '，' . $obj->city . '，' . $obj->tem . '℃' . $obj->wea . '，' . '气温:' . $obj->tem2 . '℃' . '～' . $obj->tem1 . '℃' . '，' . $obj->win . $obj->win_speed . '，' . '相对湿度:' . $obj->humidity . '，' . '空气质量:' . $obj->air_level . '，' . $obj->air_tips ;
+                $adtext = $adtext . $weather;
+            } 
+        } 
 
-  mysqli_close($GLOBALS['conn']);
-  exit();
+        if ($status < 1) {
+            $dataurl = '';
+            $appUrl = '';
+        } 
 
-}
+        $result = $db->mQuery("SELECT name from luo2888_category where enable=1 and type='province' order by id");
+        while ($row = mysqli_fetch_array($result)) {
+            $arrprov[] = $row[0];
+        } 
+        $arrcanseek[] = '';
+        $objres = array('status' => $status, 'mealname' => $mealname, 'dataurl' => $dataurl, 'appurl' => $appUrl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'categoryCount' => 0, 'exp' => $days, 'ip' => $ip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'id' => $name, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'qqinfo' => $adinfo, 'arrsrc' => $src, 'arrproxy' => $proxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => $autoupdate, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp, 'stus' => $stus);
+
+        $objres = str_replace("\\/", "/", json_encode($objres, JSON_UNESCAPED_UNICODE)); 
+        // echo $objres;
+        $key = substr($key, 5, 16);
+        $aes2 = new Aes($key);
+        $encrypted = $aes2->encrypt($objres);
+        mysqli_free_result($result);
+        unset($arrprov, $objres);
+        echo $encrypted;
+    } 
+} else {
+    exit();
+} 
+
 ?>

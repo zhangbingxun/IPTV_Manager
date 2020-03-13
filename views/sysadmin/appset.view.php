@@ -11,15 +11,15 @@ $("#appsetform").submit();
 				<form class="form-inline"method="post" id="weaform" >
 					<div class="form-group">
 						<label>应用名</label>
-						<input class="form-control" type="text" name="app_appname" value="<?php echo get_config('app_appname');?>" placeholder="应用名" >
+						<input class="form-control" type="text" name="app_appname" value="<?php echo $app_appname; ?>" placeholder="应用名" >
 					</div>
 					<div class="form-group">
 						<label>应用包名</label>
-						<input class="form-control" type="text" name="app_packagename" value="<?php echo get_config('app_packagename');?>" placeholder="应用包名" >
+						<input class="form-control" type="text" name="app_packagename" value="<?php echo $app_packagename; ?>" placeholder="应用包名" >
 					</div>
 					<div class="form-group">
 						<label>应用签名</label>
-						<input class="form-control" type="text" name="app_sign" value="<?php echo get_config('app_sign');?>" placeholder="应用签名" >
+						<input class="form-control" type="text" name="app_sign" value="<?php echo $app_sign; ?>" placeholder="应用签名" >
 					</div>
 					<div class="form-group">
 						<button class="btn btn-label btn-primary" type="submit" name="submitappinfo"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>确认提交</button>
@@ -112,6 +112,7 @@ $("#appsetform").submit();
 		</div>
 
 		<div class="card">
+			<div class="card-header"><h4>数据设置</h4></div>
 			<div class="card-body">
 				<form method="post">
 					<div class="form-group">
@@ -132,6 +133,7 @@ $("#appsetform").submit();
 		</div>
 
 		<div class="card">
+			<div class="card-header"><h4>通用版升级设置</h4></div>
 			<div class="card-body">
 				<form method="post">
 					<div class="form-group">
@@ -170,7 +172,28 @@ $("#appsetform").submit();
 				</form>
 			</div>
 		</div>
+
 		<div class="card">
+			<div class="card-header"><h4>盒子版升级设置</h4></div>
+			<div class="card-body">
+				<form method="post">
+					<div class="form-group">
+						<label class="btn-block">升级地址</label>
+						<input class="form-control" type="text" size="80" name="appurl_sdk14" value="<?php echo $appurl_sdk14; ?>"/>
+					</div>
+					<div class="form-group">
+						<label class="btn-block">当前版本</label>
+						<input class="form-control" type="text" name="appver_sdk14" value="<?php echo $appver_sdk14; ?>"/>
+					</div>
+					<div class="form-group">
+						<button class="btn btn-label btn-primary" type="submit" name="submit"><label><i class="mdi mdi-upload"></i></label>推送更新</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	
+		<div class="card">
+			<div class="card-header"><h4>提示设置</h4></div>
 			<div class="card-body">
 				<form method="post">
 					<p>节目加载提示：<input class="form-control" type="text" name="tiploading" value="<?php echo $tiploading;?>"></p>

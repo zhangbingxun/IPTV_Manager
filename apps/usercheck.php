@@ -1,5 +1,6 @@
 <?php
 session_start();
+$db = Config::getIntance();
 
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
@@ -8,8 +9,7 @@ if (isset($_SESSION['user'])) {
     exit();
 } 
 
-$result = mysqli_query($GLOBALS['conn'], "select * from luo2888_admin where name='$user'");
-if ($row = mysqli_fetch_array($result)) {
+if ($row = $db->mGetRow("luo2888_admin", "*", "where name='$user'")) {
     $psw = $row['psw'];
 } else {
     $psw = '';

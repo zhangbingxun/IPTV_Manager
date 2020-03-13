@@ -12,12 +12,12 @@ function weaForm(){
 					<form method="post" id="weaform" >
 						<div class="form-group">
 							<label>天气APP_ID</label>
-							<input class="form-control" type="text" name="weaapi_id" value="<?php echo get_config('weaapi_id');?>" placeholder="天气APP_ID" >
+							<input class="form-control" type="text" name="weaapi_id" value="<?php echo $weaapi_id ?>" placeholder="天气APP_ID" >
 						</div>
 						<div class="form-group">
 							<small class="help-block">请先到<a href="https://tianqiapi.com" target="_blank">这里</a>注册账号</small>
 							<label>天气APP_KEY</label>
-							<input class="form-control" type="text" name="weaapi_key" value="<?php echo get_config('weaapi_key');?>" placeholder="天气APP_KEY" >
+							<input class="form-control" type="text" name="weaapi_key" value="<?php echo $weaapi_key ?>" placeholder="天气APP_KEY" >
 						</div>
 						<div class="form-group">
 							<label>显示天气</label>
@@ -36,7 +36,7 @@ function weaForm(){
 						</div>
                     	<div class="form-group">
 							<label>预留文字</label>
-                    		<textarea class="form-control" rows="5" name="qqinfo" placeholder="请输入文字内容" ><?php echo $qqinfo;?></textarea>
+                    		<textarea class="form-control" rows="5" name="adinfo" placeholder="请输入文字内容" ><?php echo $adinfo;?></textarea>
 						</div>
 						<div class="form-group">
 							<label>显示时间（秒）</label>

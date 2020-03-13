@@ -3,6 +3,12 @@ include_once "../../config.php";
 $db = Config::GetIntance();
 
 $value = $db->mGet("luo2888_config", "value", "where name='epg_api_chk'");
+$tipepgerror_1000 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1000'");
+$tipepgerror_1001 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1001'");
+$tipepgerror_1002 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1002'");
+$tipepgerror_1003 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1003'");
+$tipepgerror_1004 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1004'");
+$tipepgerror_1005 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1005'");
 if ($value != 0) {
     function msg($code, $msg) {
         date_default_timezone_set("Asia/Shanghai");
@@ -23,22 +29,24 @@ if ($value != 0) {
         exit;
     } 
 
-    $utoken = !empty($_SERVER["HTTP_USER_TOKEN"])?$_SERVER["HTTP_USER_TOKEN"]:msg(200, "1000_EPG接口验证失败!如有疑问请联系公众号客服：luo2888的工作室");
-    $uid = !empty($_SERVER["HTTP_USER_ID"])?$_SERVER["HTTP_USER_ID"]:msg(200, "1001_EPG接口验证失败系!如有疑问请联系公众号客服：luo2888的工作室");
-    $uip = !empty($_SERVER["HTTP_USER_IP"])?$_SERVER["HTTP_USER_IP"]:msg(200, "1002_EPG接口验证失败!如有疑问请联系公众号客服：luo2888的工作室");
+    $utoken = !empty($_SERVER["HTTP_USER_TOKEN"])?$_SERVER["HTTP_USER_TOKEN"]:msg(200, $tipepgerror_1000);
+    $uid = !empty($_SERVER["HTTP_USER_ID"])?$_SERVER["HTTP_USER_ID"]:msg(200, $tipepgerror_1001);
+    $uip = !empty($_SERVER["HTTP_USER_IP"])?$_SERVER["HTTP_USER_IP"]:msg(200, $tipepgerror_1002);
 
     $randkey = $db->mGet("luo2888_config", "value", "where name='randkey'");
     if ($utoken != $randkey) {
-        msg(200, "1003_EPG接口验证失败!如有疑问请联系公众号客服：luo2888的工作室");
+        msg(200, $tipepgerror_1003);
         exit();
     } 
 
     $ip = $db->mGet("luo2888_users", "ip", "where where name='$uid'");
-    if ($uip != $ip) {
-        msg(200, "1004_EPG接口验证失败!如有疑问请联系公众号客服：luo2888的工作室");
-        exit();
+    if (!empty($ip)) {
+        if ($uip != $ip) {
+            msg(200, $tipepgerror_1004);
+            exit();
+        } 
     } else {
-        msg(200, "1005_EPG接口验证失败!如有疑问请联系公众号客服：luo2888的工作室");
+        msg(200, $tipepgerror_1005);
         exit();
     } 
 } 

@@ -23,19 +23,16 @@ if ($_GET["act"]=="edit") {
 	$remarks=$row["remarks"];
 	if(strstr($row["name"],"cntv") != false){
 		$epgname = substr($row["name"], 5);
-		$epgopt = '<option value="cntv" selected>CCTV官网</option><option value="jisu">极速数据</option><option value="tvmao">电视猫</option><option value="tvsou">搜视网</option><option value="51zmt">51zmt</option>';
-	}else if(strstr($row["name"],"jisu") != false){
-		$epgname = substr($row["name"], 5);
-		$epgopt = '<option value="cntv">CCTV官网</option><option value="jisu" selected>极速数据</option><option value="tvmao">电视猫</option><option value="tvsou">搜视网</option><option value="51zmt">51zmt</option>';
+		$epgopt = '<option value="cntv" selected>CCTV官网</option><option value="tvmao">电视猫</option><option value="tvsou">搜视网</option><option value="51zmt">51zmt</option>';
 	}else if(strstr($row["name"],"tvmao") != false){
 		$epgname = substr($row["name"], 6);
-		$epgopt = '<option value="cntv">CCTV官网</option><option value="jisu">极速数据</option><option value="tvmao"  selected>电视猫</option><option value="tvsou">搜视网</option><option value="51zmt">51zmt</option>';
+		$epgopt = '<option value="cntv">CCTV官网</option><option value="tvmao"  selected>电视猫</option><option value="tvsou">搜视网</option><option value="51zmt">51zmt</option>';
 	}else if(strstr($row["name"],"tvsou") != false){
 		$epgname = substr($row["name"], 6);
-		$epgopt = '<option value="cntv">CCTV官网</option><option value="jisu">极速数据</option><option value="tvmao">电视猫</option><option value="tvsou"  selected>搜视网</option><option value="51zmt">51zmt</option>';
+		$epgopt = '<option value="cntv">CCTV官网</option><option value="tvmao">电视猫</option><option value="tvsou"  selected>搜视网</option><option value="51zmt">51zmt</option>';
 	}else if(strstr($row["name"],"51zmt") != false){
 		$epgname = substr($row["name"], 6);
-		$epgopt = '<option value="cntv">CCTV官网</option><option value="jisu">极速数据</option><option value="tvmao">电视猫</option><option value="tvsou">搜视网</option><option value="51zmt"  selected>51zmt</option>';
+		$epgopt = '<option value="cntv">CCTV官网</option><option value="tvmao">电视猫</option><option value="tvsou">搜视网</option><option value="51zmt"  selected>51zmt</option>';
 	}
 	unset($row);
 	mysqli_free_result($result);

@@ -102,16 +102,26 @@ if ($_GET["act"] == "add") {
     $db->mInt("luo2888_epg", "name,remarks", "'" . $epg_name . "','" . $remarks . "'");
     exit("<script>$.alert({title: '成功',content: 'EPG " . $epg_name . " 已增加！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
 } 
-// 极速数据API
-if (isset($_POST['submit']) && isset($_POST['jisuapi_key'])) {
-    if (isset($_POST['epg_api_chk'])) {
-        $epg_api_chk = 1;
+// EPG接口验证
+if (isset($_POST['submitepgapi_chk'])) {
+    $tipepgerror_1000 = $_POST['tipepgerror_1000'];
+    $tipepgerror_1001 = $_POST['tipepgerror_1001'];
+    $tipepgerror_1002 = $_POST['tipepgerror_1002'];
+    $tipepgerror_1003 = $_POST['tipepgerror_1003'];
+    $tipepgerror_1004 = $_POST['tipepgerror_1004'];
+    $tipepgerror_1005 = $_POST['tipepgerror_1005'];
+    if (isset($_POST['epgapi_chk'])) {
+        $epgapi_chk = 1;
     } else {
-        $epg_api_chk = 0;
+        $epgapi_chk = 0;
     } 
+    $db->mSet("luo2888_config", "value=$tipepgerror_1000", "where name='tipepgerror_1000'");
+    $db->mSet("luo2888_config", "value=$tipepgerror_1001", "where name='tipepgerror_1001'");
+    $db->mSet("luo2888_config", "value=$tipepgerror_1002", "where name='tipepgerror_1002'");
+    $db->mSet("luo2888_config", "value=$tipepgerror_1003", "where name='tipepgerror_1003'");
+    $db->mSet("luo2888_config", "value=$tipepgerror_1004", "where name='tipepgerror_1004'");
+    $db->mSet("luo2888_config", "value=$tipepgerror_1005", "where name='tipepgerror_1005'");
     $db->mSet("luo2888_config", "value=$epg_api_chk", "where name='epg_api_chk'");
-    $jisuapi_key = $_POST['jisuapi_key'];
-    $db->mSet("luo2888_config", "value=$jisuapi_key", "where name='jisuapi_key'");
     exit("<script>$.alert({title: '成功',content: '设置已保存！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
 } 
 // 初始化数据
@@ -121,7 +131,12 @@ if ($epg_api_chk == 1) {
 } else {
     $epg_api_chk = "";
 } 
-$jisuapi_key = $db->mGet("luo2888_config", "value", "where name='jisuapi_key'");
+$tipepgerror_1000 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1000'");
+$tipepgerror_1001 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1001'");
+$tipepgerror_1002 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1002'");
+$tipepgerror_1003 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1003'");
+$tipepgerror_1004 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1004'");
+$tipepgerror_1005 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1005'");
 // 搜索关键字
 if (isset($_GET['keywords'])) {
     $keywords = $_GET['keywords'];

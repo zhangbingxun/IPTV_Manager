@@ -110,8 +110,6 @@ function submitForm(){
 												$epg = explode("-",$row['name']);
 												if($epg[0] == 'cntv'){
 														$epgname = 'CCTV官网';
-												}else if($epg[0] == 'jisu'){
-														$epgname = '极速数据';
 												}else if($epg[0] == 'tvmao'){
 														$epgname = '电视猫';
 												}else if($epg[0] == 'tvsou'){
@@ -163,7 +161,6 @@ function submitForm(){
 																<option value="tvmao">电视猫</option>
 																<option value="tvsou">搜视网</option>
 																<option value="51zmt">51zmt</option>
-																<option value="jisu">极速数据</option>
 															</select>
 														</div>
 													</div>
@@ -185,19 +182,39 @@ function submitForm(){
 												<form method="post">
 													<div class="modal-body">
 														<div class="form-group">
-															<label class="control-label">API_KEY：</label>
-															<input type="text" class="form-control" name="jisuapi_key" value="<?php echo $jisuapi_key?>" placeholder="请输入极速数据API_KEY">
+															<label class="control-label">请求头没有面板RandKey报错提示：</label>
+															<input type="text" class="form-control" name="tipepgerror_1000" value="<?php echo $tipepgerror_1000?>">
+														</div>
+														<div class="form-group">
+															<label class="control-label">请求头没有用户ID报错提示：</label>
+															<input type="text" class="form-control" name="tipepgerror_1001" value="<?php echo $tipepgerror_1001?>">
+														</div>
+														<div class="form-group">
+															<label class="control-label">请求头没有用户IP报错提示：</label>
+															<input type="text" class="form-control" name="tipepgerror_1002" value="<?php echo $tipepgerror_1002?>">
+														</div>
+														<div class="form-group">
+															<label class="control-label">验证面板RandKey失败报错提示：</label>
+															<input type="text" class="form-control" name="tipepgerror_1003" value="<?php echo $tipepgerror_1003?>">
+														</div>
+														<div class="form-group">
+															<label class="control-label">验证用户IP失败报错提示：</label>
+															<input type="text" class="form-control" name="tipepgerror_1004" value="<?php echo $tipepgerror_1004?>">
+														</div>
+														<div class="form-group">
+															<label class="control-label">用户没有IP报错提示：</label>
+															<input type="text" class="form-control" name="tipepgerror_1005" value="<?php echo $tipepgerror_1005?>">
 														</div>
 														<div class="form-group">
 															<label class="control-label">接口验证：</label>
 															<label class="lyear-checkbox checkbox-inline checkbox-primary">
-																<input type="checkbox" name="epg_api_chk" onclick="alert('注意：非专用客户端打开后EPG会将不显示！');" <?php echo $epg_api_chk;?>>
+																<input type="checkbox" name="epgapi_chk" onclick="alert('注意：非专用客户端打开后EPG会将不显示！');" <?php echo $epg_api_chk;?>>
 																<span></span>
 															</label>
 														</div>
 													</div>
 													<div class="modal-footer">
-														<button class="btn btn-default" type="submit" name="submit">保存</button>
+														<button class="btn btn-default" type="submit" name="submitepgapi_chk">保存</button>
 														<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 													</div>
 												</form>

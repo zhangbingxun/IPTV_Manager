@@ -29,11 +29,11 @@
 							<label>今日上线：<?php echo $todayuserCount; ?></label>
 							<label>今日授权：<?php echo $todayauthoruserCount; ?></label>
 						</div>
-						<form class="pull-right search-bar" method="get" role="form">
+						<form class="pull-right search-bar" method="get">
 							<div class="input-group">
 								<div class="input-group-btn">
 									<input class="form-control" style="width: 225px;" type="text" name="keywords" value="<?php echo $keywords;?>" placeholder="请输入名称">
-									<button class="btn btn-default" type="submit" name="submitsearch" >搜索</button>
+									<button class="btn btn-default" type="submit">搜索</button>
 								</div>
 							</div>
 						</form>
@@ -116,7 +116,7 @@
 													mysqli_free_result($result);
 												} 
 												$recStart=$recCounts*($page-1);
-												$result=$db->mQuery("select name,mac,deviceid,model,ip,region,lasttime,exp,status from luo2888_users where status=-1 or status=-999 or status=0 $searchparam order by $order limit $recStart,$recCounts");
+												$result=$db->mQuery("select name,mac,deviceid,model,ip,region,lasttime,exp,status from luo2888_users where status<1 $searchparam order by $order limit $recStart,$recCounts");
 												while($row=mysqli_fetch_array($result)){
 													$lasttime=date("Y-m-d H:i:s",$row['lasttime']);
 													$name=$row['name'];

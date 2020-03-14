@@ -3,9 +3,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
-require_once "../config.php";
-$db = Config::GetIntance();
-
 if ($_SESSION['useradmin'] == 0) {
     echo"<script>alert('你无权访问此页面！');history.go(-1);</script>";
 } 
@@ -13,7 +10,6 @@ if ($_SESSION['useradmin'] == 0) {
 ?>
 
 <?php
-
 if (isset($_POST['submitdelall'])) {
     $nowtime = time();
     $db->mDel("luo2888_users", "where status=1 and exp<$nowtime");
@@ -120,17 +116,12 @@ if (isset($_POST['recCounts'])) {
     $recCounts = $_POST['recCounts'];
     $db->mSet("luo2888_admin", "showcounts=$recCounts", "where name='$user'");
 } 
-
-$searchparam = '';
+// 搜索关键字
 if (isset($_GET['keywords'])) {
     $keywords = trim($_GET['keywords']);
-    $searchparam = "and (name like '%$keywords%' or deviceid like '%$keywords%' or mac like '%$keywords%' or name like '%$keywords%' or model like '%$keywords%' or ip like '%$keywords%' or region like '%$keywords%' or author like '%$keywords%' or marks like '%$keywords%')";
+    $searchparam = "and (name like '%$keywords%' or deviceid like '%$keywords%' or mac like '%$keywords%' or name like '%$keywords%' or model like '%$keywords%' or ip like '%$keywords%' or region like '%$keywords%' or author like '%$keywords%' or marks like '%$keywords%' or status like '%$keywords%')";
 } 
-
-if (isset($_GET['submitsearch'])) {
-    $keywords = trim($_GET['keywords']);
-    $searchparam = "and (name like '%$keywords%' or deviceid like '%$keywords%' or mac like '%$keywords%' or name like '%$keywords%' or model like '%$keywords%' or ip like '%$keywords%' or region like '%$keywords%' or author like '%$keywords%' or marks like '%$keywords%')";
-} 
+$keywords = trim($_GET['keywords']);
 // 获取每页显示数量
 if ($row = $db->mGetRow("luo2888_admin", "showcounts", "where name='$user'")) {
     $recCounts = $row['showcounts'];

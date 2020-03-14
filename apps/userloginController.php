@@ -2,12 +2,10 @@
 ini_set("error_reporting", "E_ALL & ~E_NOTICE");
 
 session_start();
-if ($_SESSION['secret_key_status'] != "1") {
-    header('location:../index.php');
-    exit();
-} 
-
+require_once "config.php";
 $GetIP = new GetIP();
+$db = Config::GetIntance();
+
 $ip=$GetIP->getuserip();
 if ($ip=='' || $ip=='127.0.0.1') {
 	$ip='127.0.0.1';
@@ -19,6 +17,54 @@ if ($ip=='' || $ip=='127.0.0.1') {
     $region = $obj->data->region . $obj->data->city . $obj->data->isp;
 } 
 $time = date("Y-m-d H:i:s");
+
+$getkey =  $db->mGet("luo2888_config","value","where name='secret_key'");
+if (empty($getkey)) {
+        $_SESSION['secret_key_status'] = '1';}
+        
+if (isset($_COOKIE['remembersecret_key'])) {
+    $secret_key = $db->mEscape_string($_COOKIE['secret_key']);
+    if ($secret_key == $getkey) {
+        $_SESSION['secret_key_status'] = '1';
+    } 
+} 
+
+if (isset($_COOKIE['rememberpass'])) {
+    $user = $db->mEscape_string($_COOKIE['username']);
+    $psw = $db->mEscape_string($_COOKIE['password']);
+    if ($row = $db->mGetRow("luo2888_admin","*","where name='$user'")) {
+        if ($psw == $row['psw']) {
+            $_SESSION['user'] = $user;
+            $_SESSION['psw'] = $psw;
+            $_SESSION['author'] = $row['author'];
+            $_SESSION['useradmin'] = $row['useradmin'];
+            $_SESSION['ipcheck'] = $row['ipcheck'];
+            $_SESSION['epgadmin'] = $row['epgadmin'];
+            $_SESSION['mealsadmin'] = $row['mealsadmin'];
+            $_SESSION['channeladmin'] = $row['channeladmin'];
+            $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'$user','$ip','$region','$time','用户登入'");
+            echo '<script type="text/javascript">window.location.href="views/index.php";</script>';
+        } 
+    }
+	unset($row);
+} 
+
+if (isset($_POST['secret_key_enter'])) {
+    $secret_key = $_POST['secret_key'];
+    $secret_key = $db->mEscape_string($_POST['secret_key']);
+    $secret_key = md5($secret_key);
+    if ($secret_key == $getkey) {
+        if (isset($_POST['remembersecret_key'])) {
+            setcookie("secret_key", $getkey, time() + 3600 * 24 * 7, "/");
+            setcookie("remembersecret_key", "1", time() + 3600 * 24 * 7, "/");
+        } else {
+            setcookie("remembersecret_key", "1", time()-3600, "/");
+        } 
+        $_SESSION['secret_key_status'] = '1';
+    } else {
+        echo "<script>alert('安全码错误！');</script>";
+    }
+} 
 
 if (!empty($_POST['username']) && !empty($_POST['password'])) {
     $user = $db->mEscape_string($_POST['username']);
@@ -36,14 +82,14 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
             $_SESSION['mealsadmin'] = $row['mealsadmin'];
             $_SESSION['channeladmin'] = $row['channeladmin'];
             if (isset($_POST['rememberpass'])) {
-                setcookie("username", $user, time() + 3600 * 24 * 7);
-                setcookie("psw", $row['psw'], time() + 3600 * 24 * 7);
-                setcookie("rememberpass", "1", time() + 3600 * 24 * 7);
+                setcookie("username", $user, time() + 3600 * 24 * 7, "/");
+                setcookie("password", $row['psw'], time() + 3600 * 24 * 7, "/");
+                setcookie("rememberpass", "1", time() + 3600 * 24 * 7, "/");
             } else {
-                setcookie("rememberpass", "1", time()-3600);
+                setcookie("rememberpass", "1", time()-3600, "/");
             } 
             $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'$user','$ip','$region','$time','用户登入'");
-            header("location:views/index.php");
+            echo '<script type="text/javascript">window.location.href="views/index.php";</script>';
         } else {
             echo "<script>alert('密码错误！');</script>";
             $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'$user','$ip','$region','$time','输入错误密码'");
@@ -51,26 +97,6 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
     } else {
         echo "<script>alert('用户不存在！');</script>";
         $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'$user','$ip','$region','$time','尝试登陆'");
-    }
-	unset($row);
-} 
-
-if (isset($_COOKIE['rememberpass'])) {
-    $user = $db->mEscape_string($_COOKIE['username']);
-    $psw = $db->mEscape_string($_COOKIE['password']);
-    if ($row = $db->mGetRow("luo2888_admin","*","name='$user'")) {
-        if ($psw == $row['psw']) {
-            $_SESSION['user'] = $user;
-            $_SESSION['psw'] = $psw;
-            $_SESSION['author'] = $row['author'];
-            $_SESSION['useradmin'] = $row['useradmin'];
-            $_SESSION['ipcheck'] = $row['ipcheck'];
-            $_SESSION['epgadmin'] = $row['epgadmin'];
-            $_SESSION['mealsadmin'] = $row['mealsadmin'];
-            $_SESSION['channeladmin'] = $row['channeladmin'];
-            $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'$user','$ip','$region','$time','用户登入'");
-            header("location:views/index.php");
-        } 
     }
 	unset($row);
 } 

@@ -40,12 +40,6 @@ body.document-loaded .form__content {
     align-items: flex-start !important;
     justify-content: center !important;
 }
-@media screen and (max-width: 524px){
-	.lyear-login {
-	    padding-left: 3.5em;
-	    padding-right: 2.5em;
-	}
-}
 .login-center {
     height: auto;
     background: rgba(255,255,255,0.92);

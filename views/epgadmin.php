@@ -74,6 +74,7 @@ function submitForm(){
 													<button class="btn btn-default" type="button" data-toggle="modal" data-target="#addepg">增加EPG</button>
 													<button class="btn btn-default" type="submit" name="bindchannel" onclick="return confirm('自动绑定频道列表后,如果不准确请手动修改!!!')">绑定频道</button>
 													<button class="btn btn-default" type="submit" name="clearbind" onclick="return confirm('确定要清空绑定的频道列表吗？')">清空绑定</button>
+													<button class="btn btn-default" type="submit" name="clearcache" onclick="return confirm('确定要清空EPG缓存吗？')">清空EPG缓存</button>
 													<button class="btn btn-default" type="button" data-toggle="modal" data-target="#epgset">EPG接口设置</button>
 												</form>
 											</td>

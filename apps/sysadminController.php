@@ -1,10 +1,15 @@
 <?php
-require_once "../config.php";
-$db = Config::GetIntance();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ERROR);
 
 if ($user != 'admin') {
     exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
 } 
+
+?>
+
+<?php 
 // 修改密码操作
 if (isset($_POST['submit']) && isset($_POST['newpassword'])) {
     if (empty($_POST['oldpassword']) || empty($_POST['newpassword'])) {

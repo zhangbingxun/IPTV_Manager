@@ -3,9 +3,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
-require_once "../config.php";
-$db = Config::GetIntance();
-
 if ($_SESSION['author'] == 0) {
     exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
 } 
@@ -94,9 +91,10 @@ if (isset($_POST['submitdelall'])) {
 } 
 // 搜索关键字
 if (isset($_GET['keywords'])) {
-    $keywords = $_GET['keywords'];
-    $searchparam = "and (name like '%$keywords%' or mac like '%$keywords%' or deviceid like '%$keywords%' or model like '%$keywords%' or ip like '%$keywords%' or region like '%$keywords%' or lasttime like '%$keywords%')";
+    $keywords = trim($_GET['keywords']);
+    $searchparam = "and (name like '%$keywords%' or mac like '%$keywords%' or deviceid like '%$keywords%' or model like '%$keywords%' or ip like '%$keywords%' or region like '%$keywords%' or status like '%$keywords%')";
 } 
+$keywords = trim($_GET['keywords']);
 // 设置每页显示数量
 if (isset($_POST['recCounts'])) {
     $recCounts = $_POST['recCounts'];

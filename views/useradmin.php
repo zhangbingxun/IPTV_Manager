@@ -31,7 +31,7 @@
 								<label>今日授权：<?php echo $todayauthoruserCount; ?></label>
 								<label>过期用户：<?php echo $expuserCount; ?></label>
 							</div>
-							<form class="pull-right search-bar" method="get" role="form">
+							<form class="pull-right search-bar" method="get">
 								<div class="input-group">
 									<div class="input-group-btn">
 										<input class="form-control" style="width: 225px;" type="text" name="keywords" value="<?php echo $keywords;?>" placeholder="请输入名称">
@@ -39,7 +39,6 @@
 									</div>
 								</div>
 							</form>
-
 	                		<div class="toolbar-btn-action">
 								<form class="pull-left" method="POST" id="recCounts">
 										<label>每页</label>
@@ -108,7 +107,7 @@
 												<?php
 													$recStart=$recCounts*($page-1);
 													if($user=='admin'){
-													$func="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,meal from luo2888_users where status>0 $searchparam order by $order  limit $recStart,$recCounts";
+													$func="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,meal from luo2888_users where status>0 $searchparam order by $order limit $recStart,$recCounts";
 													}else{
 														$func="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,meal from luo2888_users where status>0 and author='$user' $searchparam order by $order limit $recStart,$recCounts";
 													}

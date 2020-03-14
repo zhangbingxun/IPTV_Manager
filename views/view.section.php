@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=0.92, maximum-scale=1, user-scalable=no" />
 <meta name="keywords" content="IPTV,后台管理系统">
 <meta name="description" content="IPTV后台管理系统">
 <meta name="author" content="luo2888">

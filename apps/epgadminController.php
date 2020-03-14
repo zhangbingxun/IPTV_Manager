@@ -3,9 +3,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
-require_once "../config.php";
-$db = Config::GetIntance();
-
 if ($_SESSION['epgadmin'] == 0) {
     exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
 } 
@@ -13,6 +10,16 @@ if ($_SESSION['epgadmin'] == 0) {
 ?>
 
 <?php 
+// 清除EPG缓存
+if (isset($_POST['clearcache'])) {
+    $num = 0;
+    $files = glob("../apps/epg/cache/*");
+    foreach ($files as $file) {
+        unlink($file);
+        $num++;
+    } 
+    exit("<script>$.alert({title: '成功',content: '已清除" . $num . "个EPG缓存文件！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
+} 
 // 清除频道绑定
 if (isset($_POST['clearbind'])) {
     if (isset($_POST['id'])) {

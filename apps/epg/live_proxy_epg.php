@@ -3,17 +3,20 @@ header("Content-Type:application/json;chartset=uft-8");
 include_once "proxy_chk.php";
 include_once "curl.class.php";
 include_once "caches.class.php";
-mysqli_query($GLOBALS['conn'], "SET NAMES 'UTF8'");
 
 $cachedir = "./cache";
 if (! is_dir ($cachedir)) {
     @mkdir ($cachedir, 0755, true) or die ('创建文件夹失败');
 } 
 $id = !empty($_GET["id"])?$_GET["id"]:exit(json_encode(["code" => 500, "msg" => "EPG频道参数不能为空!", "name" => $name, "date" => null, "data" => null], JSON_UNESCAPED_UNICODE));
-echo out_epg($id);
+if(!empty($_GET["is_ez"])){
+	echo out_epg($id,true);
+}else{
+	echo out_epg($id);
+}
 exit;
 // 输出EPG节目地址
-function out_epg($id) {
+function out_epg($id,$is_ez=false) {
     $tvdata = channel($id);
     $tvid = $tvdata['id'];
     $epgid = $tvdata['name'];
@@ -30,9 +33,63 @@ function out_epg($id) {
         // 重新写入当天时间缓存文件
         cache("time_out_chk", "cache_time_out");
     } 
-    $ejson = cache($tvid, "get_epg_data", [$tvid, $epgid, $id]);
+	$ejson=cache($tvid,"get_epg_data",[$tvid,$epgid,$id]);
     return $ejson;
 } 
+//获取当前播放位置
+function getPos($json,$which_api) {
+	$curpos_sure=false;
+	$cur=date("H:i");
+	$pos=0;
+	foreach($json as $v) {
+		$list_index=1;
+		foreach($v as $v1) {
+			$i=0;
+			foreach($v1 as $v2) {
+				if($which_api==6) {
+					//天脉接口计算
+					if($i==9) {
+						if($list_index ==count($v)&&!$curpos_sure) {
+							//最后一个
+							$pos = $list_index;
+							$curpos_sure=true;
+						}
+						if(strtotime($cur)>strtotime($v2)) {
+							//当前正在播放
+							$curpos_sure=true;
+						} else {
+							if(curpos_sure) {
+								$pos = $list_index;
+								break;
+							}
+						}
+					}
+				} else {
+					if($i==1) {
+						//echo $v2."\n";
+						if($list_index ==count($v)&&!$curpos_sure) {
+							//最后一个
+							$pos = $list_index;
+							$curpos_sure=true;
+						}
+						if(strtotime($cur)<strtotime($v2)) {
+							//当前正在播放
+							$curpos_sure=true;
+						} else {
+							if($curpos_sure) {
+								$pos = $list_index;
+								break;
+							}
+						}
+					}
+				}
+				$i++;
+			}
+			$list_index++;
+		}
+	}
+	return ($pos-1);
+}
 // 缓存EPG节目数据
 function cache($key, $f_name, $ff = []) {
     Cache::$cache_path = "./cache/";
@@ -52,8 +109,7 @@ function cache_time_out() {
     return $tt;
 } 
 // 请求频道的EPG数据
-// CNTV
-function get_epg_data($tvid, $epgid, $name = "", $date = "") {
+function get_epg_data($tvid, $epgid, $name = "", $date = "") {  // CNTV
     if (strstr($epgid, "cntv") != false) {
         $url = "https://api.cntv.cn/epg/epginfo?serviceId=cbox&c=" . substr($epgid, 5) . "&d=" . date('Ymd');
         $str = curl::c()->set_ssl()->get($url);
@@ -66,27 +122,9 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
             return json_encode($data, JSON_UNESCAPED_UNICODE);
         } 
         $data = ["code" => 500, "msg" => "请求失败!", "name" => $name, "date" => null, "data" => null];
+		//$data["pos"] = getPos($data);  //当前播放位置
         return json_encode($data, JSON_UNESCAPED_UNICODE);
-        // 极速数据
-    } else if (strstr($epgid, "jisu") != false) {
-        $appkey = get_config('jisuapi_key');;
-        $url = "https://api.jisuapi.com/tv/query?appkey=" . $appkey . "&tvid=" . substr($epgid, 5) . "&date=" . date('Y-m-d');
-        $str = curl::c()->set_ssl()->get($url);
-        $re = json_decode($str, true);
-        if ($re["status"] == 0) {
-            $data = [];
-            $data["code"] = 200;
-            $data["msg"] = "请求成功!";
-            $data["name"] = $re["result"]["name"];
-            $data["tvid"] = $re["result"]["tvid"];
-            $data["date"] = $re["result"]["date"];
-            $data["data"] = $re["result"]["program"];
-            return json_encode($data, JSON_UNESCAPED_UNICODE);
-        } 
-        $data = ["code" => 500, "msg" => "请求失败!", "name" => $name, "date" => null, "data" => null];
-        return json_encode($data, JSON_UNESCAPED_UNICODE);
-        // 搜视网
-    } else if (strstr($epgid, "tvsou") != false) {
+    } else if (strstr($epgid, "tvsou") != false) {   // 搜视网
         $wday = intval(date('w', strtotime(date('Y-m-d'))));
         if ($wday == 0)$wday = 7;
         $url = "https://www.tvsou.com/epg/" . substr($epgid, 6) . "/w" . $wday;
@@ -95,25 +133,25 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
         $pos = strpos($file, "</tbody>");
         $file = substr($file, 0, $pos);
         $file = preg_replace(array("/<script[\s\S]*?<\/script>/i", "/<a .*?href='(.*?)'.*?>/is", "/<tbody>/i", "/<\/a>/i"), '', $file);
-        $file = trim($file);
-        $file = str_replace("</td><td style='width: 100px;'></td></tr> <tr><td>", '|', $file);
-        $file = str_replace("</td><td style='width: 100px;'></td></tr>", '', $file);
-        $file = str_replace("<tr><td>", '', $file);
-        $file = str_replace("</td><td>", '#', $file);
-        $preview = $file;
-        if (!empty($preview)) {
-            $data = array("code" => 200, "msg" => "请求成功!", "name" => $name, "tvid" => $tvid, "date" => date('Y-m-d'));
-            $preview = explode('|', $preview);
-            foreach($preview as $row) {
-                $row1 = explode('#', $row);
-                $data["data"][] = array("name" => $row1[1], "starttime" => $row1[0]);
-            } 
+		$file =  str_replace("</td><td></td></tr> ", '|', $file);
+		$file =  str_replace("</td><td>", '#', $file);
+		$file =  str_replace(array("<tr><td>","\r","\n","\r\n"," "), '', $file);
+		$preview = substr($file,0,strlen($file)-1);
+		if (!empty($preview)) {
+			$data=array("code"=>200,"msg"=>"请求成功!","name"=>$name,"tvid"=>$tvid,"date"=>date('Y-m-d'));
+			$preview =  str_replace("</td><tdstyle='width:100px;'></td></tr>", '|', $preview);
+			$preview =  str_replace("</td><tdstyle='width:100px;'></td></tr", '', $preview);
+			$preview = explode('|',$preview);
+			foreach($preview as $row) {
+				$row1 = explode('#',$row);
+				$data["data"][]= array("name"=> $row1[1],"starttime"=> $row1[0]);
+			}
+			$data["pos"] = getPos($data);  //当前播放位置
             return json_encode($data, JSON_UNESCAPED_UNICODE);;
         } 
         $data = ["code" => 500, "msg" => "请求失败!", "name" => $name, "date" => null, "data" => null];
         return json_encode($data, JSON_UNESCAPED_UNICODE);
-        // 电视猫
-    } else if (strstr($epgid, "tvmao") != false) {
+    } else if (strstr($epgid, "tvmao") != false) {  // 电视猫
         $keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
         $wday = intval(date('w', strtotime(date('Y-m-d'))));
         if ($wday == 0)
@@ -130,7 +168,7 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
         $str1 = str_replace('"]', '', $str1);
         $str1 = str_replace('\n', '', $str1);
         $str1 = substr($str1, 0, strlen($str1)-1);
-        $preview = $str1;
+		$preview = substr($str1,0,strlen($str1)-1);
         if (!empty($preview)) {
             $data = array("code" => 200, "msg" => "请求成功!", "name" => $name, "tvid" => $tvid, "date" => date('Y-m-d'));
             $preview = explode('|', $preview);
@@ -138,23 +176,42 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
                 $row1 = explode('#', $row);
                 $data["data"][] = array("name" => $row1[1], "starttime" => $row1[0]);
             } 
+			$data["pos"] = getPos($data);  //当前播放位置
             return json_encode($data, JSON_UNESCAPED_UNICODE);
         } 
         $data = ["code" => 500, "msg" => "请求失败!", "name" => $name, "date" => null, "data" => null]; 
-        // echo "失败";
         return json_encode($data, JSON_UNESCAPED_UNICODE); 
+	} else if(strstr($epgid,"tvming") != false) {  //天脉接口
+		$url = "http://passport.live.tvmining.com/approve/epginfo?channel=";
+		// 通过 php 的 file_get_contents 函数传给 $html 变量
+		$html = file_get_contents($url.substr($epgid, 7));
+		// 把字符串$html转为XML
+		$xml = simplexml_load_string($html, 'SimpleXMLElement', LIBXML_NOCDATA);
+		// 把XML转成数组$arr
+		$arr = object_array($xml);
+		foreach($arr["epg"] as &$epg) {
+			foreach($epg["program"] as &$val) {
+				$val["name"] = $val["title"];
+				$val["starttime"] = date("H:i", $val["start_time"]);
+			}
+		}
+		unset($epg);
+		unset($val);
+		// $arr["epg"][0]["date"] 里面的0代表今天
+		// 改成1是昨天的 改成2是前天的
+		// 最多改成6是一周前的
+		$newar= array(
+			"name" => $arr["channel"],
+			"date" => $arr["epg"][0]["date"],
+			"which" => 6,
+			"data" => $arr["epg"][0]["program"]
+		);
+		return json_encode($newar, JSON_UNESCAPED_UNICODE);
         // 51zmt
     } else if (strstr($epgid, "51zmt") != false) {
         $cachefile = "./cache/51zmt.xml";
         $url = "http://epg.51zmt.top:8000/e.xml";
-        if (file_exists($cachefile)) {
-            $filemtime = filemtime ($cachefile);
-            if (time() - $filemtime >= 259200) {
-                unlink($cachefile);
-                $file = curl::c()->get($url);
-                file_put_contents($cachefile, $file) ;
-            } 
-        } else {
+        if (!file_exists($cachefile)) {
             $file = curl::c()->get($url);
             file_put_contents($cachefile, $file) ;
         } 
@@ -193,14 +250,24 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
         return json_encode($data, JSON_UNESCAPED_UNICODE);
     } 
 } 
+//天脉工具
+function object_array($array) {
+	if(is_object($array)) {
+		$array = (array)$array;
+	}
+	if(is_array($array)) {
+		foreach($array as $key=>$value) {
+			$array[$key] = object_array($value);
+		}
+	}
+	return $array;
+}
 // 频道映射对应表
 function channel($id) {
+    global $db;
     $id = urldecode($id);
-    $sql = "select * FROM luo2888_epg where status=1 AND FIND_IN_SET('$id',content)";
-    $result = mysqli_query($GLOBALS['conn'], "select * FROM luo2888_epg where FIND_IN_SET('$id',content)");
-    if ($row = mysqli_fetch_array($result)) {
+    if ($row = $db->mGetRow("luo2888_epg", "*", "where status=1 AND FIND_IN_SET('$id',content)")) {
         return $row;
-        mysqli_close($GLOBALS['conn']);
     } else {
         $data = ["code" => 500, "msg" => "频道不存在!", "name" => null, "date" => null, "data" => null];
         exit(json_encode($data, JSON_UNESCAPED_UNICODE));

@@ -142,7 +142,7 @@
 					</div>
             			<div class="card-body">
 	                		<div class="table-responsive" >
-								<table class="table table-bordered table-vcenter" style="min-width:850px;">
+								<table class="table table-bordered table-vcenter" style="min-width:750px;">
 										    <tr>
 											    <td colspan="5">
 							<form class="form-inline" method="post" style="padding: 0 15px 0 15px;">
@@ -165,13 +165,13 @@
 							</td>
 							</tr>
 							<tr>
-							<td align="center" valign="top" style="float: left;padding: 40px 0 0 0;border-width: 0px;width: 180px;height: 800px;overflow:auto;">
+							<td align="center" valign="top" style="float: left;padding: 40px 0 0 0;border-width: 0px;height: 800px;overflow:auto;">
 								<div id="tip"></div>
 								<script type="text/javascript">
 									var cname=[];
 									var cpass=[];
 								</script>
-								<div class="btn-group-vertical">
+								<div class="btn-group-vertical" style="padding-left: 15px;">
 									<label class="btn-block">分类列表</label>
 									<?php
 										if ($categorytype=='vip'){

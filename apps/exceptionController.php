@@ -3,17 +3,14 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
-require_once "../config.php";
-$db = Config::GetIntance();
-
-?>
-
-<?php
 if ($_SESSION['ipcheck'] == 0) {
     echo"<script>alert('你无权访问此页面！');history.go(-1);</script>";
     exit();
 } 
 
+?>
+
+<?php
 if (isset($_POST['clearvpn'])) {
     $db->mSet("luo2888_users", "vpn=0");
     exit('<script>javascript:self.location=document.referrer;alert("抓包记录已清空")</script>');

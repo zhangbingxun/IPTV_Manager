@@ -165,7 +165,6 @@ if (isset($_POST['login'])) {
         $objres = array('status' => $status, 'mealname' => $mealname, 'dataurl' => $dataurl, 'appurl' => $appUrl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'categoryCount' => 0, 'exp' => $days, 'ip' => $ip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'id' => $name, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'qqinfo' => $adinfo, 'arrsrc' => $src, 'arrproxy' => $proxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => $autoupdate, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp, 'stus' => $stus);
 
         $objres = str_replace("\\/", "/", json_encode($objres, JSON_UNESCAPED_UNICODE)); 
-        // echo $objres;
         $key = substr($key, 5, 16);
         $aes2 = new Aes($key);
         $encrypted = $aes2->encrypt($objres);

@@ -1,12 +1,15 @@
 <script type="text/javascript">
-function submitForm(){
+function submitappset(){
 $("#appsetform").submit();
+}
+function submitipchk(){
+$("#ipchkform").submit();
 }
 </script>
 <div class="row">
 	<div class="col-lg-12">
 		<div class="card">
-			<div class="card-header"><h4>APP设置</h4></div>
+			<div class="card-header"><h4>应用配置</h4></div>
 			<div class="card-body">
 				<form class="form-inline"method="post" id="weaform" >
 					<div class="form-group">
@@ -29,11 +32,12 @@ $("#appsetform").submit();
 		</div>
 
 		<div class="card">
-			<div class="card-header"><h4>默认解码模式与超时跳转</h4></div>
+			<div class="card-header"><h4>应用默认设置</h4></div>
 			<div class="card-body">
 				<form method="post" id="appsetform">
 					<div class="form-group">
-						<select name="decodersel" onchange="submitForm()" class="form-control btn btn-secondary dropdown-toggle">
+						<label class="btn-block">默认解码模式</label>
+						<select name="decodersel" onchange="submitappset()" class="form-control btn btn-secondary dropdown-toggle" style="width: 115px;">
 							<?php
 							switch ($decoder) {
 								case '0':
@@ -61,7 +65,8 @@ $("#appsetform").submit();
 					</div>
 
 					<div class="form-group">
-						<select name="buffTimeOut" onchange="submitForm()" class="form-control btn btn-secondary dropdown-toggle">
+						<label class="btn-block">默认超时跳转时长</label>
+						<select name="buffTimeOut" onchange="submitappset()" class="form-control btn btn-secondary dropdown-toggle" style="width: 115px;">
 							<?php
 							$checkString5='';
 							$checkString10='';
@@ -102,8 +107,8 @@ $("#appsetform").submit();
 					</div>
 
 					<div class="form-group">
-						<label>试用天数</label>
-						<input class="form-control" type="text" name="trialdays" value="<?php echo $trialdays ?>" size="3">
+						<label class="btn-block">试用天数</label>
+						<input class="form-control" style="width: 115px;" type="text" name="trialdays" value="<?php echo $trialdays ?>" size="3">
 						<small class="help-block">提示：-999为永不到期。</small>
 					</div>
 					<button class="btn btn-label btn-primary" type="submit" name="submittrialdays"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>修改</button>
@@ -114,6 +119,13 @@ $("#appsetform").submit();
 		<div class="card">
 			<div class="card-header"><h4>数据设置</h4></div>
 			<div class="card-body">
+				<form method="post" id="ipchkform">
+					<label class="btn-block">IP数据库设置</label>
+					<select name="ipchk" onchange="submitipchk()" class="form-control btn btn-secondary dropdown-toggle" style="width: 115px;">
+						<option value='1' <?php echo $ipchkselected1;?> >QQzeng</option>
+						<option value='2' <?php echo $ipchkselected2;?> >淘宝</option>
+					</select>
+				</form>
 				<form method="post">
 					<div class="form-group">
 						<label class="btn-block">授权设置</label>

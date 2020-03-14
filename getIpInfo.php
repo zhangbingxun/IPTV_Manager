@@ -9,10 +9,10 @@ $db = Config::GetIntance();
 if ($_GET['ip']=='myip'){$ip=$GetIP->getuserip();}else{$ip=$_GET['ip'];}
 $myurl=dirname('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
-$ip_chk = $db->mGet("luo2888_config", "value", "where name='ip_chk'");
-if($ip_chk=='1'){
+$ipchk = $db->mGet("luo2888_config", "value", "where name='ipchk'");
+if($ipchk=='1'){
 	echo file_get_contents("$myurl/apps/iploc/qqzeng.php?ip=$ip");
-}else if($ip_chk=='2'){
+}else if($ipchk=='2'){
 	echo file_get_contents("$myurl/apps/iploc/taobao.php?ip=$ip");
 }
 

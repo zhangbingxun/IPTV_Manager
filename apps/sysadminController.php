@@ -275,6 +275,12 @@ if (isset($_POST['clearlog'])) {
     $db->mDel("luo2888_adminrec");
     echo"<script>showindex=2;alert('后台记录已清空!');</script>";
 } 
+
+if (isset($_POST['ipchk'])) {
+    $ipchk = $_POST['ipchk'];
+    $db->mSet("luo2888_config", "value='$ipchk'", "where name='ipchk'");
+    echo"<script>showindex=2;alert('IP数据库已更换!');</script>";
+} 
 // 创建目录
 $imgdir = "../images";
 if (! is_dir ($imgdir)) {
@@ -325,4 +331,10 @@ if ($showwea_value == 1) {
     $showwea = "";
 } 
 
+$ipchk = $db->mGet("luo2888_config", "value", "where name='ipchk'");
+if ($ipchk == 1) {
+    $ipchkselected1 = "selected";
+} else {
+    $ipchkselected2 = "selected";
+} 
 ?>

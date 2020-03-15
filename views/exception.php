@@ -13,7 +13,7 @@
 								<label>允许同一个IP授权数量：</label>
 								<div class="input-group">
 									<div class="input-group-btn">
-									<input style="width: 85px;height: 30px;" class="form-control" type="text" name="sameip_user" size="2" value="<?php echo $db->mGet("luo2888_config", "value", "where name='max_sameip_user'");?>">
+									<input style="width: 85px;height: 30px;" class="form-control" type="text" name="sameip_user" size="2" value="<?php echo $max_sameip_user; ?>">
 									<button type="submit" name="submitsameip_user" class="btn btn-sm btn-primary m-r-5">保存</button>
 									</div>
 								</div>
@@ -22,7 +22,7 @@
 								<label>IP异常数量：</label>
 								<div class="input-group">
 									<div class="input-group-btn">
-										<input class="form-control" style="width: 85px;height: 30px;" type="text" name="ipcount" size="5" value="<?php echo $ipcount;?>">
+										<input class="form-control" style="width: 85px;height: 30px;" type="text" name="ipcount" size="5" value="<?php echo $ipcount; ?>">
 										<button class="btn btn-sm btn-primary m-r-5" type="submit" name="submitmodifyipcount">设定</button>
 										<button class="btn btn-sm btn-danger m-r-5" type="submit" name="submitclearold">清空一天前记录</button>
 										<button class="btn btn-sm btn-danger m-r-5" type="submit" name="submitclearall">清空所有记录</button>

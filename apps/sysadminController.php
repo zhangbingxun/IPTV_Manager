@@ -30,40 +30,40 @@ if (isset($_POST['submit']) && isset($_POST['newpassword'])) {
 // 修改安全码操作
 if (isset($_POST['submit']) && isset($_POST['newsecret_key'])) {
     if (empty($_POST['newsecret_key']) || empty($_POST['newsecret_key_confirm'])) {
-        echo"<script>showindex=3;alert('安全码不能为空！');</script>";
+        echo"<script>showindex=3;lightyear.notify('安全码不能为空！', 'danger', 3000);</script>";
     } else {
         $newsecret_key_input = $_POST['newsecret_key'];
         $newsecret_key_confirm = $_POST['newsecret_key_confirm'];
         if ($newsecret_key_input == $newsecret_key_confirm) {
             $newsecret_key = md5($_POST['newsecret_key']);
             $db->mSet("luo2888_config", "value='$newsecret_key'", "where name='secret_key'");
-            echo"<script>showindex=3;alert('安全码修改成功！');</script>";
+            echo"<script>showindex=3;lightyear.notify('安全码修改成功！', 'success', 3000);</script>";
         } else {
-            echo"<script>showindex=3;alert('两次输入不匹配！');</script>";
+            echo"<script>showindex=3;lightyear.notify('两次输入不匹配！', 'danger', 3000);</script>";
         } 
     } 
 } 
 
 if (isset($_POST['closesecret_key'])) {
     $db->mSet("luo2888_config", "value=NULL", "where name='secret_key'");
-    echo"<script>showindex=3;alert('安全码验证已关闭！');</script>";
+    echo"<script>showindex=3;lightyear.notify('安全码验证已关闭！', 'success', 3000);</script>";
 } 
 // 添加管理员操作
 if (isset($_POST['adminadd'])) {
     if (empty($_POST['addadminname']) || empty($_POST['addadminpsw'])) {
-        echo"<script>showindex=5;alert('管理员的账号或是密码不能为空！');</script>";
+        echo"<script>showindex=5;lightyear.notify('管理员的账号或是密码不能为空！', 'danger', 3000);</script>";
     } else {
         $adminname = $_POST['addadminname'];
         $adminpsw = md5(PANEL_MD5_KEY . $_POST['addadminpsw']);
         if ($row = $db->mGetRow("luo2888_admin", "*")) {
             if ($row[0] > 5) {
-                echo"<script>showindex=5;alert('管理员数量已达上限！');</script>";
+                echo"<script>showindex=5;lightyear.notify('管理员数量已达上限！', 'danger', 3000);</script>";
             } else {
                 if ($db->mGetRow("luo2888_admin", "*", "where name='$adminname'")) {
-                    echo"<script>showindex=5;alert('用户名已存在！');</script>";
+                    echo"<script>showindex=5;lightyear.notify('管理员[$adminname]已存在！', 'danger', 3000);</script>";
                 } else {
                     $db->mInt("luo2888_admin", "name,psw", "'$adminname','$adminpsw'");
-                    echo"<script>showindex=5;alert('管理员添加成功！');</script>";
+                    echo"<script>showindex=5;lightyear.notify('管理员[$adminname]添加成功！', 'success', 3000);</script>";
                 } 
             } 
         } 
@@ -73,18 +73,14 @@ if (isset($_POST['adminadd'])) {
 // 删除账号操作
 if (isset($_POST['deleteadmin'])) {
     if (empty($_POST['adminname'])) {
-        echo"<script>showindex=5;alert('请选择要删除的帐号！');</script>";
+        echo"<script>showindex=5;lightyear.notify('请选择要删除的帐号！', 'danger', 3000);</script>";
     } else {
         foreach ($_POST['adminname'] as $name) {
             if ($name <> 'admin') {
                 $db->mDel("luo2888_admin", "name='$name'");
-                echo"<script>showindex=5;alert('管理员[$name]已删除！');</script>";
+                echo"<script>showindex=5;');lightyear.notify('管理员[$name]已删除！', 'success', 3000);</script>";
             } else {
-                if ($name == "admin") {
-                    echo"<script>showindex=5;alert('超级管理员[$name]不允许删除！');</script>";
-                } else {
-                    echo"<script>showindex=5;alert('删除失败！');</script>";
-                } 
+                echo"<script>showindex=5;lightyear.notify('管理员[$name]删除失败！', 'danger', 3000);</script>";
             } 
         } 
     } 
@@ -118,9 +114,9 @@ if (isset($_POST['saveauthorinfo'])) {
                 $db->mSet("luo2888_admin", "channeladmin=1", "where name='$adminname'");
             } 
         } 
-        echo"<script>showindex=5;alert('管理员权限设定已保存！');</script>";
+        echo"<script>showindex=5;lightyear.notify('管理员权限设定已保存！', 'success', 3000);</script>";
     } else {
-        echo"<script>showindex=5;alert('请选择管理员！');</script>";
+        echo"<script>showindex=5;lightyear.notify('请选择管理员！', 'danger', 3000);</script>";
     } 
 } 
 // 设置APP升级信息
@@ -139,7 +135,7 @@ if (isset($_POST['submit']) && isset($_POST['appver'])) {
 	$db->mSet("luo2888_config", "value='$up_size'", "where name='up_size'");
 	$db->mSet("luo2888_config", "value='$up_sets'", "where name='up_sets'");
 	$db->mSet("luo2888_config", "value='$up_text'", "where name='up_text'");
-    echo"<script>showindex=4;alert('通用版APP升级设置成功！');</script>";
+    echo"<script>showindex=4;lightyear.notify('通用版APP升级设置成功！', 'success', 3000);</script>";
 } 
 // 设置APP升级信息
 if (isset($_POST['submit']) && isset($_POST['appver_sdk14'])) {
@@ -147,7 +143,7 @@ if (isset($_POST['submit']) && isset($_POST['appver_sdk14'])) {
     $appurl = $_POST['appurl_sdk14'];
 	$db->mSet("luo2888_config", "value='$versionname'", "where name='appver_sdk14'");
 	$db->mSet("luo2888_config", "value='$appurl'", "where name='appurl_sdk14'");
-    echo"<script>showindex=4;alert('盒子版APP升级设置成功！');</script>";
+    echo"<script>showindex=4;lightyear.notify('盒子版APP升级设置成功！', 'success', 3000);</script>";
 } 
 
 if (isset($_POST['decodersel']) && isset($_POST['buffTimeOut'])) {
@@ -160,12 +156,12 @@ if (isset($_POST['decodersel']) && isset($_POST['buffTimeOut'])) {
 	$db->mSet("luo2888_config", "value='$decoder'", "where name='decoder'");
 	$db->mSet("luo2888_config", "value='$trialdays'", "where name='trialdays'");
 	$db->mSet("luo2888_config", "value='$buffTimeOut'", "where name='buffTimeOut'");
-    echo"<script>showindex=4;alert('设置成功！');</script>";
+    echo"<script>showindex=4;lightyear.notify('设置成功！', 'success', 3000);</script>";
 } 
 
 if (isset($_POST['submitsetver'])) {
 	$db->mSet("luo2888_config", "value=value+1", "where name='setver'");
-    echo"<script>showindex=4;alert('推送成功，用户下次启动将恢复出厂设置！');</script>";
+    echo"<script>showindex=4;lightyear.notify('推送成功，用户下次启动将恢复默认设置！', 'success', 3000);</script>";
 } 
 
 if (isset($_POST['submittipset'])) {
@@ -177,16 +173,16 @@ if (isset($_POST['submittipset'])) {
 	$db->mSet("luo2888_config", "value='$tipusernoreg'", "where name='tipusernoreg'");
 	$db->mSet("luo2888_config", "value='$tipuserexpired'", "where name='tipuserexpired'");
 	$db->mSet("luo2888_config", "value='$tipuserforbidden'", "where name='tipuserforbidden'");
-    echo"<script>showindex=4;alert('提示信息已修改！');</script>";
+    echo"<script>showindex=4;lightyear.notify('提示信息已修改！', 'success', 3000);</script>";
 } 
 
 if (isset($_POST['weaapi_id']) && isset($_POST['weaapi_key'])) {
     $weaapi_id = $_POST['weaapi_id'];
     $weaapi_key = $_POST['weaapi_key'];
     if (empty($weaapi_id)) {
-        echo("<script>showindex=0;alert('请填写天气APP_ID！');</script>");
+        echo("<script>showindex=0;lightyear.notify('请填写天气APP_ID！', 'danger', 3000);</script>");
     } else if (empty($weaapi_key)) {
-        echo("<script>showindex=0;alert('请填写天气APP_KEY！');</script>");
+        echo("<script>showindex=0;lightyear.notify('请填写天气APP_KEY！', 'danger', 3000);</script>");
     } else {
         if (isset($_POST['showwea'])) {
             $showwea = 1;
@@ -197,9 +193,9 @@ if (isset($_POST['weaapi_id']) && isset($_POST['weaapi_key'])) {
         $db->mSet("luo2888_config", "value='$weaapi_id'", "where name='weaapi_id'");
         $db->mSet("luo2888_config", "value='$weaapi_key'", "where name='weaapi_key'");
         if ($showwea == 0) {
-            echo"<script>showindex=0;alert('天气显示已关闭！');</script>";
+            echo"<script>showindex=0;lightyear.notify('天气显示已关闭！', 'success', 3000);</script>";
         } else {
-            echo"<script>showindex=0;alert('天气显示已开启!');</script>";
+            echo"<script>showindex=0;lightyear.notify('天气显示已开启！', 'success', 3000);</script>";
         } 
     } 
 } 
@@ -213,7 +209,7 @@ if (isset($_POST['submit']) && isset($_POST['adtext'])) {
 	$db->mSet("luo2888_config", "value='$adtext'", "where name='adtext'");
 	$db->mSet("luo2888_config", "value='$showtime'", "where name='showtime'");
 	$db->mSet("luo2888_config", "value='$showinterval'", "where name='showinterval'");
-    echo"<script>showindex=0;alert('公告修改成功！');</script>";
+    echo"<script>showindex=0;lightyear.notify('公告修改成功！', 'success', 3000);</script>";
 } 
 
 if (isset($_POST['submitappinfo'])) {
@@ -223,7 +219,7 @@ if (isset($_POST['submitappinfo'])) {
     $db->mSet("luo2888_config", "value='$app_sign'", "where name='app_sign'");
     $db->mSet("luo2888_config", "value='$app_appname'", "where name='app_appname'");
     $db->mSet("luo2888_config", "value='$app_packagename'", "where name='app_packagename'");
-    echo"<script>showindex=4;alert('保存成功！');</script>";
+    echo"<script>showindex=4;lightyear.notify('保存成功！', 'success', 3000);</script>";
 } 
 
 function genName() {
@@ -245,41 +241,40 @@ if (isset($_POST['submitsplash'])) {
             move_uploaded_file($_FILES["splash"]["tmp_name"], $savefile);
             $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER["REQUEST_URI"];
             $splashurl = dirname($url) . '/' . $savefile;
-            echo "<script>alert('上传成功！')</script>";
+            echo "<script>showindex=1;lightyear.notify('上传成功！', 'success', 3000);</script>";
         } 
     } else {
-        echo "<script>alert('图片仅支持PNG格式，大小不能超过800KB。')</script>";
+        echo "<script>showindex=1;lightyear.notify('图片仅支持PNG格式，大小不能超过800KB！', 'danger', 3000);</script>";
     } 
-    echo"<script>showindex=1;</script>";
 } 
 // 删除背景图片
 if (isset($_POST['submitdelbg'])) {
     $file = $_POST['file'];
     unlink('../images/' . $file);
-    echo"<script>showindex=1;alert('删除成功！');</script>";
+    echo"<script>showindex=1;lightyear.notify('删除成功！', 'success', 3000);</script>";
 } 
 
 if (isset($_POST['submitcloseauthor'])) {
     $needauthor = $_POST['needauthor'];
     if ($needauthor == 1) {
         $needauthor = 0;
-        echo"<script>showindex=4;alert('用户授权已关闭！');</script>";
+        echo"<script>showindex=4;lightyear.notify('用户授权已关闭！', 'success', 3000);</script>";
     } else {
         $needauthor = 1;
-        echo"<script>showindex=4;alert('用户授权已开启!');</script>";
+        echo"<script>showindex=4;lightyear.notify('用户授权已开启！', 'success', 3000);</script>";
     } 
     $db->mSet("luo2888_config", "value='$needauthor'", "where name='needauthor'");
 } 
 
 if (isset($_POST['clearlog'])) {
     $db->mDel("luo2888_adminrec");
-    echo"<script>showindex=2;alert('后台记录已清空!');</script>";
+    echo"<script>showindex=2;lightyear.notify('后台记录已清空！', 'success', 3000);</script>";
 } 
 
 if (isset($_POST['ipchk'])) {
     $ipchk = $_POST['ipchk'];
     $db->mSet("luo2888_config", "value='$ipchk'", "where name='ipchk'");
-    echo"<script>showindex=2;alert('IP数据库已更换!');</script>";
+    echo"<script>showindex=2;lightyear.notify('IP数据库已更换！', 'success', 3000);</script>";
 } 
 // 创建目录
 $imgdir = "../images";

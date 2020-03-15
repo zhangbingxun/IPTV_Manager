@@ -241,22 +241,6 @@ INSERT INTO `luo2888_epg` (`id`, `name`, `content`, `status`, `remarks`) VALUES
 -- --------------------------------------------------------
 
 --
--- 表的结构 `luo2888_loginrec`
---
-
-CREATE TABLE `luo2888_loginrec` (
-  `userid` bigint(15) NOT NULL,
-  `deviceid` varchar(32) NOT NULL,
-  `mac` varchar(32) NOT NULL,
-  `model` varchar(32) NOT NULL,
-  `ip` varchar(16) NOT NULL,
-  `region` varchar(32) DEFAULT NULL,
-  `logintime` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- 表的结构 `luo2888_meals`
 --
 

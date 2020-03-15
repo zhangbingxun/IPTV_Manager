@@ -13,7 +13,7 @@ if ($_SESSION['ipcheck'] == 0) {
 <?php
 if (isset($_POST['clearvpn'])) {
     $db->mSet("luo2888_users", "vpn=0");
-    exit('<script>javascript:self.location=document.referrer;alert("抓包记录已清空")</script>');
+    echo"<script>lightyear.notify('抓包记录已清空！', 'success', 3000);</script>";
 } 
 
 if (isset($_POST['stopuse'])) {
@@ -29,7 +29,8 @@ if (isset($_POST['startuse'])) {
 
 if (isset($_POST['submitmodifyipcount'])) {
     $ipcount = $_POST['ipcount'];
-    $db->mSet("luo2888_appdata", "ipcount=$ipcount");
+    $db->mSet("luo2888_config", "value='$ipcount'", "where name='ipcount'");
+    echo"<script>lightyear.notify('保存成功！', 'success', 3000);</script>";
 } 
 
 if (isset($_POST['submitclearold'])) {
@@ -44,13 +45,9 @@ if (isset($_POST['submitclearall'])) {
 if (isset($_POST['submitsameip_user'])) {
     $sameip_user = $_POST['sameip_user'];
     $db->mSet("luo2888_config", "value='$sameip_user'", "where name='max_sameip_user'");
-    echo('<script>javascript:self.location=document.referrer;alert("保存成功！")</script>');
+    echo"<script>lightyear.notify('保存成功！', 'success', 3000);</script>";
 } 
-// 获取每日允许登陆IP数量
-if ($row = $db->mGetRow("luo2888_appdata", "ipcount")) {
-    $ipcount = $row['ipcount'];
-} else {
-    $ipcount = 5;
-} 
-
+// 获取允许注册最大数量和允许登陆IP最大数量
+$ipcount = $db->mGet("luo2888_config", "value", "where name='ipcount'");
+$max_sameip_user = $db->mGet("luo2888_config", "value", "where name='max_sameip_user'");
 ?>

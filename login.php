@@ -72,15 +72,6 @@ if (isset($_POST['login'])) {
             } 
             // 更新位置，登陆时间
             $db->mSet("luo2888_users", "region='$region',ip='$ip',lasttime=$nowtime", "where deviceid='$androidid'"); 
-            // 数据库中找到该用户该IP的登陆记录
-            $result = $db->mGet("luo2888_loginrec", "logintime", "where deviceid='$androidid' and ip='$ip'"); 
-            // 生成用户访问记录
-            if (empty($result)) {
-                $db->mInt("luo2888_loginrec", "userid,deviceid,mac,model,ip,region,logintime", "$name,'$androidid','$mac','$model','$ip','$region','$nowtime'");
-            } else {
-                $db->mSet("luo2888_loginrec", "logintime=$nowtime", "where deviceid='$androidid' and ip='$ip'");
-                unset($result);
-            } 
         } else {
             // 用户验证失败，识别用户信息存入后台
             $name = genName();

@@ -15,66 +15,12 @@
 									<div class="input-group-btn">
 									<input style="width: 85px;height: 30px;" class="form-control" type="text" name="sameip_user" size="2" value="<?php echo $max_sameip_user; ?>">
 									<button type="submit" name="submitsameip_user" class="btn btn-sm btn-primary m-r-5">保存</button>
+									<button type="submit" name="clearvpn" class="btn btn-sm btn-danger">清空抓包记录</button>
 									</div>
 								</div>
 							</form>
-							<form class="form-inline" method="POST" style="padding: 0px 10px 10px 0px;" >
-								<label>IP异常数量：</label>
-								<div class="input-group">
-									<div class="input-group-btn">
-										<input class="form-control" style="width: 85px;height: 30px;" type="text" name="ipcount" size="5" value="<?php echo $ipcount; ?>">
-										<button class="btn btn-sm btn-primary m-r-5" type="submit" name="submitmodifyipcount">设定</button>
-										<button class="btn btn-sm btn-danger m-r-5" type="submit" name="submitclearold">清空一天前记录</button>
-										<button class="btn btn-sm btn-danger m-r-5" type="submit" name="submitclearall">清空所有记录</button>
-									</div>
-									<div class="input-group-btn">
-									</div>
-								</div>
-							</form>
-							<div class="form-group">
-								<div class="table-responsive">
-									<table class="table table-hover">
-										<thead>
-										<tr>
-											<th>账号</th>
-											<th>登陆信息</th>
-											<th>登陆信息</th>
-											<th>登陆信息</th>
-											<th>登陆信息</th>
-											<th>登陆信息</th>
-											<th>IP数量</th>
-										</tr>
-										</thead>
-										<tbody>
-											<?php
-												$pre24time=strtotime(date("Y-m-d"),time());
-												$result=$db->mQuery("SELECT userid,deviceid,mac,model,ip,region,logintime from luo2888_loginrec where logintime>$pre24time order by userid,deviceid,mac,model");
-												$arrLoginInfo = array();
-												while($row=mysqli_fetch_array($result)){
-													$logintime=date("Y-m-d H:i:s",$row['logintime']);
-													$userid=$row['userid'];
-													$arrLoginInfo[$userid][]=$row['region']."<br>".$row['ip']."<br>".$logintime;
-												}
-												foreach ($arrLoginInfo as $key => $value) {
-													if(count($value)>=$ipcount){
-														echo "<tr>
-															<td>".$key."</td>
-															<td>".$arrLoginInfo[$key][0]."</td>
-															<td>".$arrLoginInfo[$key][1]."</td>
-															<td>".$arrLoginInfo[$key][2]."</td>
-															<td>".$arrLoginInfo[$key][3]."</td>
-															<td>".$arrLoginInfo[$key][4]."</td>
-															<td>".count($value)."</td>
-														</tr>";
-													}
-												}
-											?>
-										</tbody>
-									</table>
-								</div>
-							</div>
 							<form align="center" style="padding: 5px;" method="POST" >
-								<button type="submit" name="clearvpn" class="btn btn-label btn-danger"><label><i class="mdi mdi-delete-empty"></i></label> 清空记录</button>
+								
 							</form>
 							<div class="form-group">
 								<div class="table-responsive">

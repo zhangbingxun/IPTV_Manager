@@ -33,15 +33,6 @@ if (isset($_POST['submitmodifyipcount'])) {
     echo"<script>lightyear.notify('保存成功！', 'success', 3000);</script>";
 } 
 
-if (isset($_POST['submitclearold'])) {
-    $oldtime = strtotime(date("Y-m-d"), time());
-    $db->mDel("luo2888_loginrec", "where logintime<$oldtime");
-} 
-
-if (isset($_POST['submitclearall'])) {
-    $db->mDel("luo2888_loginrec");
-} 
-
 if (isset($_POST['submitsameip_user'])) {
     $sameip_user = $_POST['sameip_user'];
     $db->mSet("luo2888_config", "value='$sameip_user'", "where name='max_sameip_user'");

@@ -165,7 +165,7 @@ INSERT INTO `luo2888_config` (`id`, `name`, `value`) VALUES
 (13, 'decoder', '1'),
 (14, 'epg_api_chk', '0'),
 (15, 'ipcount', '2'),
-(16, 'ip_chk', '1'),
+(16, 'ipchk', '1'),
 (17, 'max_sameip_user', '5'),
 (18, 'needauthor', '1'),
 (19, 'randkey', '6d7caa26b6de5941e3b24fd7c573d0bb'),

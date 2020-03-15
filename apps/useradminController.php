@@ -33,7 +33,7 @@ if (isset($_POST['submitmodify'])) {
     } else {
         $exp = strtotime(date("Y-m-d"), time()) + 86400 * $_POST['exp'];
         foreach ($_POST['id'] as $id) {
-            $db->mSet("luo2888_users", "exp=$exp", "where name=$id and status=1");
+            $db->mSet("luo2888_users", "status=1,exp=$exp", "where name=$id");
             echo("<script>lightyear.notify('用户$id 授权天数已修改！', 'success', 3000);</script>");
         } 
     } 

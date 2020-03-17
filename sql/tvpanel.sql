@@ -190,7 +190,10 @@ INSERT INTO `luo2888_config` (`id`, `name`, `value`) VALUES
 (38, 'up_sets', '0'),
 (39, 'up_text', '1.公告测试'),
 (40, 'weaapi_id', NULL),
-(41, 'weaapi_key', NULL);
+(41, 'weaapi_key', NULL),
+(42, 'alipay_appid', NULL),
+(43, 'alipay_privatekey', NULL),
+(44, 'alipay_publickey', NULL);
 
 -- --------------------------------------------------------
 
@@ -257,9 +260,9 @@ CREATE TABLE `luo2888_meals` (
 -- 转存表中的数据 `luo2888_meals`
 --
 
-INSERT INTO `luo2888_meals` (`id`, `name`, `content`, `status`) VALUES
-(1000, '试看套餐', '试看频道', 1),
-(1002, '会员套餐', 'HomeNET_Sason_重庆_河南_广东_湖北_河北_安徽_江西_黑龙江_天津_上海_山西_吉林_江苏_福建_海南_贵州_云南_陕西_西藏_宁夏_内蒙古_北京_湖南_广西_甘肃_浙江_新疆_山东_四川_隐藏频道', 1);
+INSERT INTO `luo2888_meals` (`id`, `name`, `amount`, `content`, `status`) VALUES
+(1000, '试看套餐', 0, '试看频道', 1),
+(1002, '会员套餐', 5, 'HomeNET_Sason_重庆_河南_广东_湖北_河北_安徽_江西_黑龙江_天津_上海_山西_吉林_江苏_福建_海南_贵州_云南_陕西_西藏_宁夏_内蒙古_北京_湖南_广西_甘肃_浙江_新疆_山东_四川_隐藏频道', 1);
 
 -- --------------------------------------------------------
 
@@ -267,7 +270,7 @@ INSERT INTO `luo2888_meals` (`id`, `name`, `content`, `status`) VALUES
 -- 表的结构 `luo2888_payment`
 --
 
-CREATE TABLE IF NOT EXISTS `luo2888_payment` (
+CREATE TABLE `luo2888_payment` (
   `userid` bigint(20) NOT NULL,
   `order_id` varchar(128) NOT NULL,
   `meal` int(4) NOT NULL,

@@ -2,6 +2,7 @@
 //套餐修改区域
 if ($_GET["act"]=="edits") {
 	$id=!empty($_POST["id"])?$_POST["id"]:exit("<script>$.alert({title: '错误',content: '参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
+	$amount=!empty($_POST["amount"])?$_POST["amount"]:exit("<script>$.alert({title: '错误',content: '金额参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
 	$meal_name=!empty($_POST["name"])?$_POST["name"]:exit("<script>$.alert({title: '错误',content: '请填写套餐名称！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
 	$ids="";
 	if (!empty($_POST["ids"])) {
@@ -12,19 +13,20 @@ if ($_GET["act"]=="edits") {
 			}
 		}
 	}
-    $db->mSet("luo2888_meals", "name='".$meal_name."',content='".$ids."'", "where id=" . $id);
+    $db->mSet("luo2888_meals", "name='".$meal_name."',content='".$ids."',amount='".$amount."'", "where id=" . $id);
 	exit("<script>$.alert({title: '成功',content: '套餐 " . $meal_name . " 修改成功！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
 }
 if ($_GET["act"]=="edit") { 
 	$id=!empty($_GET["id"])?$_GET["id"]:exit("<script>$.alert({title: '错误',content: '参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
 	//检查套餐是否存在
-	$result=$db->mQuery("SELECT name,content FROM luo2888_meals WHERE id=".$id);
+	$result=$db->mQuery("SELECT name,content,amount FROM luo2888_meals WHERE id=".$id);
 	if (!mysqli_num_rows($result)) {
 		mysqli_free_result($result);
 		exit("<script>$.alert({title: '错误',content: '套餐不存在！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';</script>");
 	}
 	$row=mysqli_fetch_array($result,MYSQLI_ASSOC);
 	$mealname=$row["name"];     //套餐名称
+	$amount=$row["amount"];   //套餐金额
 	$content=$row["content"];   //套餐内容
 	unset($row);
 	mysqli_free_result($result);
@@ -48,18 +50,19 @@ function quanxuan(a){
 		}
 	}
 }
-$("#listctr").hide();
 </script>
 
 	<table class="table table-bordered table-striped table-vcenter" align="center">
 		<form method="post" action="?act=edits">
 		<tr>
 			<td>
-				<div class="input-group">
-					<div class="input-group-btn">
-						<label class="control-label">套餐名称:</label>
-						<input type="hidden" name="id" value="<?php echo $id;?>">
-						<input class="form-control" type="text" name="name" value="<?php echo $mealname;?>">
+				<div class="input-group form-inline">
+					<div class="input-group">
+						<div class="input-group-btn">
+							<input type="hidden" name="id" value="<?php echo $id;?>">
+							<input class="form-control" type="text" name="name" value="<?php echo $mealname;?>">
+							<input class="form-control" type="text" name="amount" value="<?php echo $amount;?>">
+						</div>
 					</div>
 				</div>
 			</td>

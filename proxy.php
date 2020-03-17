@@ -35,7 +35,9 @@ if (isset($_GET['vid'])) {
 
 	if ($vid=='iptv805') {
 		$id=$_GET['id'];
-		$url="http://m.iptv805.com/iptv.php?act=play&tid=gt&id=$id";
+		$part=$_GET['p'];
+		$tid=$_GET['tid'];
+		$url="http://m.iptv805.com/iptv.php?act=play&tid=$tid&id=$id". $part;
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_TIMEOUT, 5);

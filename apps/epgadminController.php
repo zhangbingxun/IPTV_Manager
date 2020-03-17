@@ -122,13 +122,13 @@ if (isset($_POST['submitepgapi_chk'])) {
     } else {
         $epgapi_chk = 0;
     } 
-    $db->mSet("luo2888_config", "value=$tipepgerror_1000", "where name='tipepgerror_1000'");
-    $db->mSet("luo2888_config", "value=$tipepgerror_1001", "where name='tipepgerror_1001'");
-    $db->mSet("luo2888_config", "value=$tipepgerror_1002", "where name='tipepgerror_1002'");
-    $db->mSet("luo2888_config", "value=$tipepgerror_1003", "where name='tipepgerror_1003'");
-    $db->mSet("luo2888_config", "value=$tipepgerror_1004", "where name='tipepgerror_1004'");
-    $db->mSet("luo2888_config", "value=$tipepgerror_1005", "where name='tipepgerror_1005'");
-    $db->mSet("luo2888_config", "value=$epg_api_chk", "where name='epg_api_chk'");
+    $db->mSet("luo2888_config", "value='$tipepgerror_1000'", "where name='tipepgerror_1000'");
+    $db->mSet("luo2888_config", "value='$tipepgerror_1001'", "where name='tipepgerror_1001'");
+    $db->mSet("luo2888_config", "value='$tipepgerror_1002'", "where name='tipepgerror_1002'");
+    $db->mSet("luo2888_config", "value='$tipepgerror_1003'", "where name='tipepgerror_1003'");
+    $db->mSet("luo2888_config", "value='$tipepgerror_1004'", "where name='tipepgerror_1004'");
+    $db->mSet("luo2888_config", "value='$tipepgerror_1005'", "where name='tipepgerror_1005'");
+    $db->mSet("luo2888_config", "value='$epg_api_chk'", "where name='epg_api_chk'");
     exit("<script>$.alert({title: '成功',content: '设置已保存！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
 } 
 // 初始化数据

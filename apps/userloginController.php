@@ -43,7 +43,7 @@ if (isset($_COOKIE['rememberpass'])) {
             $_SESSION['mealsadmin'] = $row['mealsadmin'];
             $_SESSION['channeladmin'] = $row['channeladmin'];
             $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'$user','$ip','$region','$time','用户登入'");
-            echo '<script type="text/javascript">window.location.href="views/index.php";</script>';
+            header("location:views/index.php");
         } 
     }
 	unset($row);
@@ -89,7 +89,7 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
                 setcookie("rememberpass", "1", time()-3600, "/");
             } 
             $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'$user','$ip','$region','$time','用户登入'");
-            echo '<script type="text/javascript">window.location.href="views/index.php";</script>';
+            header("location:views/index.php");
         } else {
             echo "<script>alert('密码错误！');</script>";
             $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'$user','$ip','$region','$time','输入错误密码'");

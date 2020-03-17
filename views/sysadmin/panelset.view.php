@@ -19,6 +19,25 @@
 		</div>
 		<hr>
 		<div class="card">
+			<div class="card-header"><h4>支付宝接口设置</h4></div>
+			<div class="card-body">
+				<form method="post">
+					<div class="form-group">
+					<label class="btn-block">支付宝应用ID</label>
+						<input class="form-control" type="text" name="alipay_appid" value="<?php echo $alipay_appid; ?>">
+					<label class="btn-block">支付宝公钥</label>
+						<input class="form-control" type="text" name="alipay_publickey" value="<?php echo $alipay_publickey; ?>">
+					<label class="btn-block">支付宝私钥</label>
+						<input class="form-control" type="text" name="alipay_privatekey" value="<?php echo $alipay_privatekey; ?>">
+					</div>
+					<div class="form-group">
+						<button class="btn btn-label btn-primary" type="submit" name="alipay_set" value=""><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>提交修改</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<hr>
+		<div class="card">
 			<div class="card-header"><h4>数据库操作</h4></div>
 			<div class="card-body">
 				<div class="input-group">

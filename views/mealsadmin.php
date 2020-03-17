@@ -33,6 +33,7 @@ function submitForm(){
 										<tr align="center">
 											<td class="w-5">套餐编号</td>
 											<td class="w-5">套餐名称</td>
+											<td class="w-5">套餐金额</td>
 											<td class="w-5">套餐状态</td>
 											<td class="w-15">收视内容</td>
 											<td class="w-5">操作</td>
@@ -59,6 +60,7 @@ function submitForm(){
 												echo"<tr>";
 												echo"<td align=\"center\" style=\"font-size:12px;height:35px;font-weight: bold;\">".$row["id"]."</td>";
 												echo"<td align=\"center\" style=\"font-size:12px;font-weight: bold;\">".$row["name"]."</td>";
+												echo"<td align=\"center\" style=\"font-size:12px;font-weight: bold;\">".$row["amount"]."元/月</td>";
 												echo"<td align=\"center\" style=\"font-size:12px;font-weight: bold;\">".$stu."</td>";
 												echo"<td align=\"left\" style=\"font-size:12px;font-weight: bold;\">".$row["content"]."</td>";
 												echo"<td align=\"center\" style=\"font-size:12px;font-weight: bold;\">

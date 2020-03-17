@@ -222,15 +222,16 @@ if (isset($_POST['submitappinfo'])) {
     echo"<script>showindex=4;lightyear.notify('保存成功！', 'success', 3000);</script>";
 } 
 
-function genName() {
-    $name = rand(10000000, 99999999);
-    if ($row = $db->mGetRow("luo2888_users", "*", "where name='$name'")) {
-        unset($row);
-        genName();
-    } else {
-        return $name;
-    } 
+if (isset($_POST['alipay_set'])) {
+    $alipay_appid = $_POST['alipay_appid'];
+    $alipay_publickey = $_POST['alipay_publickey'];
+    $alipay_privatekey = $_POST['alipay_privatekey'];
+	$db->mSet("luo2888_config", "value='$alipay_appid'", "where name='alipay_appid'");
+	$db->mSet("luo2888_config", "value='$alipay_publickey'", "where name='alipay_publickey'");
+	$db->mSet("luo2888_config", "value='$alipay_privatekey'", "where name='alipay_privatekey'");
+    echo"<script>showindex=0;lightyear.notify('提交修改成功！', 'success', 3000);</script>";
 } 
+
 // 上传APP背景图片
 if (isset($_POST['submitsplash'])) {
     if ($_FILES["splash"]["type"] == "image/png") {
@@ -312,6 +313,9 @@ $weaapi_key = $db->mGet("luo2888_config", "value", "where name='weaapi_key'");
 $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
 $app_appname = $db->mGet("luo2888_config", "value", "where name='app_appname'");
 $app_packagename = $db->mGet("luo2888_config", "value", "where name='app_packagename'");
+$alipay_appid = $db->mGet("luo2888_config", "value", "where name='alipay_appid'");
+$alipay_publickey = $db->mGet("luo2888_config", "value", "where name='alipay_publickey'");
+$alipay_privatekey = $db->mGet("luo2888_config", "value", "where name='alipay_privatekey'");
 
 if ($needauthor == 1) {
     $closeauthor = "关闭授权";

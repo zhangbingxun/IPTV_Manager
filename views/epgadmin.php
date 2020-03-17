@@ -115,6 +115,8 @@ function submitForm(){
 														$epgname = '电视猫';
 												}else if($epg[0] == 'tvsou'){
 														$epgname = '搜视网';
+												}else if($epg[0] == 'tvming'){
+														$epgname = '天脉聚源';
 												}else if($epg[0] == '51zmt'){
 														$epgname = '51zmt';
 												}
@@ -161,6 +163,7 @@ function submitForm(){
 																<option value="cntv">CCTV官网</option>
 																<option value="tvmao">电视猫</option>
 																<option value="tvsou">搜视网</option>
+																<option value="tvming">天脉聚源</option>
 																<option value="51zmt">51zmt</option>
 															</select>
 														</div>

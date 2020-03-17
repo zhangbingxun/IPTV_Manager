@@ -3,6 +3,7 @@
 if ($_GET["act"]=="edits") {
 	$id=!empty($_POST["id"])?$_POST["id"]:exit("<script>$.alert({title: '错误',content: '参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
 	$amount=!empty($_POST["amount"])?$_POST["amount"]:exit("<script>$.alert({title: '错误',content: '金额参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
+	$days=!empty($_POST["days"])?$_POST["days"]:exit("<script>$.alert({title: '错误',content: '期限参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
 	$meal_name=!empty($_POST["name"])?$_POST["name"]:exit("<script>$.alert({title: '错误',content: '请填写套餐名称！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
 	$ids="";
 	if (!empty($_POST["ids"])) {
@@ -19,7 +20,7 @@ if ($_GET["act"]=="edits") {
 if ($_GET["act"]=="edit") { 
 	$id=!empty($_GET["id"])?$_GET["id"]:exit("<script>$.alert({title: '错误',content: '参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
 	//检查套餐是否存在
-	$result=$db->mQuery("SELECT name,content,amount FROM luo2888_meals WHERE id=".$id);
+	$result=$db->mQuery("SELECT name,content,amount,days FROM luo2888_meals WHERE id=".$id);
 	if (!mysqli_num_rows($result)) {
 		mysqli_free_result($result);
 		exit("<script>$.alert({title: '错误',content: '套餐不存在！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';</script>");
@@ -27,6 +28,7 @@ if ($_GET["act"]=="edit") {
 	$row=mysqli_fetch_array($result,MYSQLI_ASSOC);
 	$mealname=$row["name"];     //套餐名称
 	$amount=$row["amount"];   //套餐金额
+	$days=$row["days"];   //套餐期限
 	$content=$row["content"];   //套餐内容
 	unset($row);
 	mysqli_free_result($result);
@@ -56,14 +58,14 @@ function quanxuan(a){
 		<form method="post" action="?act=edits">
 		<tr>
 			<td>
-				<div class="input-group form-inline">
-					<div class="input-group">
-						<div class="input-group-btn">
-							<input type="hidden" name="id" value="<?php echo $id;?>">
-							<input class="form-control" type="text" name="name" value="<?php echo $mealname;?>">
-							<input class="form-control" type="text" name="amount" value="<?php echo $amount;?>">
-						</div>
-					</div>
+				<div class="form-inline">
+					<input type="hidden" name="id" value="<?php echo $id;?>">
+					<label class="control-label">套餐名称：</label>
+					<input class="form-control" type="text" name="name" value="<?php echo $mealname;?>">
+					<label class="control-label">套餐金额：</label>
+					<input class="form-control" type="text" name="amount" value="<?php echo $amount;?>">
+					<label class="control-label">套餐期限：</label>
+					<input class="form-control" type="text" name="days" value="<?php echo $days;?>">
 				</div>
 			</td>
 		</tr>

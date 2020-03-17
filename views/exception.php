@@ -19,9 +19,6 @@
 									</div>
 								</div>
 							</form>
-							<form align="center" style="padding: 5px;" method="POST" >
-								
-							</form>
 							<div class="form-group">
 								<div class="table-responsive">
 									<table class="table table-hover">

@@ -15,13 +15,13 @@ $appname = $db->mGet("luo2888_config", "value", "where name='app_appname'");  //
 $rsaPrivateKey = $db->mGet("luo2888_config", "value", "where name='alipay_privatekey'");  //商户私钥
 
 if (isset($_POST['dopay'])) {
-	$days=$_POST['days'];
 	$userid=$_POST['userid'];
     $mealid = $_POST['mealid'];
     $mealname = $db->mGet("luo2888_meals", "name", "where id=$mealid");
     $amount = $db->mGet("luo2888_meals", "amount", "where id=$mealid");
+	$days = $db->mGet("luo2888_meals", "days", "where id=$mealid");
 	$orderName = $appname . $mealname;  //订单标题
-	$payAmount = $amount * ($days / 30);  //付款金额
+	$payAmount = $amount;  //付款金额
 	$outTradeNo = uniqid(rand(100000000000000, 999999999999999));  //生成订单号
 	$aliPay = new AlipayService();
 	$aliPay->setAppid($appid);
@@ -31,7 +31,7 @@ if (isset($_POST['dopay'])) {
 	$aliPay->setOutTradeNo($outTradeNo);
 	$aliPay->setOrderName($orderName);
     if (empty($days) || empty($mealid)) {
-        exit("<script>$.alert({title: '警告',content: '请选择要授权的套餐和天数！',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){window.location.href='payment.php';}}}});</script>");
+        exit("<script>$.alert({title: '警告',content: '请选择要购买的套餐和天数！',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){window.location.href='payment.php';}}}});</script>");
     } else {
     	if ($db->mGetRow("luo2888_payment", "*", "where userid=$userid and status=0")){
     		$db->mDel("luo2888_payment", "where userid=$userid and status=0");

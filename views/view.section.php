@@ -52,6 +52,8 @@
 							$epgadmin='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'mealsadmin.php') !== false){
 							$mealsadmin='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'ordersadmin.php') !== false){
+							$ordersadmin='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'type=default') !== false){
 							$default='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'type=province') !== false){
@@ -82,7 +84,8 @@
 						<li class="nav-item <?php echo $author ?>"> <a href="author.php"><i class="mdi mdi-account-check"></i>授权</a> </li>
 						<li class="nav-item <?php echo $useradmin ?>"> <a href="useradmin.php"><i class="mdi mdi-account"></i>用户</a> </li>
 						<li class="nav-item <?php echo $exception ?>"> <a href="exception.php"><i class="mdi mdi-account-alert"></i>异常</a> </li>
-						<li class="nav-item <?php echo $mealsadmin ?>"> <a href="mealsadmin.php"><i class="mdi mdi-shopping-music"></i>套餐</a> </li>
+						<li class="nav-item <?php echo $mealsadmin ?>"> <a href="mealsadmin.php"><i class="mdi mdi-shopping"></i>套餐</a></li>
+						<li class="nav-item <?php echo $ordersadmin ?>"> <a href="ordersadmin.php"><i class="mdi mdi-wallet-giftcard"></i>订单</a></li>
 						<li class="nav-item <?php echo $epgadmin ?>"> <a href="epgadmin.php"><i class="mdi mdi-television-guide"></i>EPG</a> </li>
 						<li class="nav-item nav-item-has-subnav channeladmin">
 							<a href="javascript:void(0)"><i class="mdi mdi-television-classic"></i>频道列表</a>
@@ -135,6 +138,7 @@
 						else if (strpos($_SERVER['REQUEST_URI'],'useradmin.php') !== false){ echo '&nbsp;用户&nbsp;'; }
 						else if (strpos($_SERVER['REQUEST_URI'],'exception.php') !== false){ echo '&nbsp;异常&nbsp;'; }
 						else if (strpos($_SERVER['REQUEST_URI'],'mealsadmin.php') !== false){ echo '&nbsp;套餐&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'ordersadmin.php') !== false){ echo '&nbsp;订单&nbsp;'; }
 						else if (strpos($_SERVER['REQUEST_URI'],'epgadmin.php') !== false){ echo '&nbsp;EPG&nbsp;'; }
 						else if (strpos($_SERVER['REQUEST_URI'],'channeladmin.php') !== false){ echo '&nbsp;频道列表&nbsp;'; }
 						else if (strpos($_SERVER['REQUEST_URI'],'sysadmin.php') !== false){ echo '&nbsp;系统设置&nbsp;'; }

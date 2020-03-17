@@ -250,9 +250,10 @@ INSERT INTO `luo2888_epg` (`id`, `name`, `content`, `status`, `remarks`) VALUES
 CREATE TABLE `luo2888_meals` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
+  `amount` int(4) NOT NULL DEFAULT '0',
+  `days` int(4) NOT NULL DEFAULT '0',
   `content` text,
   `status` tinyint(1) NOT NULL DEFAULT '1',
-  `amount` int(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1003 DEFAULT CHARSET=utf8;
 
@@ -261,8 +262,8 @@ CREATE TABLE `luo2888_meals` (
 --
 
 INSERT INTO `luo2888_meals` (`id`, `name`, `amount`, `content`, `status`) VALUES
-(1000, '试看套餐', 0, '试看频道', 1),
-(1002, '会员套餐', 5, 'HomeNET_Sason_重庆_河南_广东_湖北_河北_安徽_江西_黑龙江_天津_上海_山西_吉林_江苏_福建_海南_贵州_云南_陕西_西藏_宁夏_内蒙古_北京_湖南_广西_甘肃_浙江_新疆_山东_四川_隐藏频道', 1);
+(1000, '试看套餐', 0, 0, '试看频道', 1),
+(1002, '会员套餐', 7, 999, 'HomeNET_Sason_重庆_河南_广东_湖北_河北_安徽_江西_黑龙江_天津_上海_山西_吉林_江苏_福建_海南_贵州_云南_陕西_西藏_宁夏_内蒙古_北京_湖南_广西_甘肃_浙江_新疆_山东_四川_隐藏频道', 1);
 
 -- --------------------------------------------------------
 

@@ -34,6 +34,7 @@ function submitForm(){
 											<td class="w-5">套餐编号</td>
 											<td class="w-5">套餐名称</td>
 											<td class="w-5">套餐金额</td>
+											<td class="w-5">套餐期限</td>
 											<td class="w-5">套餐状态</td>
 											<td class="w-15">收视内容</td>
 											<td class="w-5">操作</td>
@@ -51,20 +52,26 @@ function submitForm(){
 											}
 											while ($row=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
 												if ($row["status"]) {
-													$stu="<font color=\"#33a996\">上线</font>";
-													$stus="<a href=\"?act=downline&id=".$row["id"]."\"><font color=\"red\">下线</font></a>";
+													$status="<font color=\"#33a996\">上线</font>";
+													$func="<a href=\"?act=downline&id=".$row["id"]."\"><font color=\"red\">下线</font></a>";
 												}else {
-													$stu="<font color=\"red\">下线</font>";
-													$stus="<a href=\"?act=online&id=".$row["id"]."\"><font color=\"#33a996\">上线</font></a>";
+													$status="<font color=\"red\">下线</font>";
+													$func="<a href=\"?act=online&id=".$row["id"]."\"><font color=\"#33a996\">上线</font></a>";
+												}
+												if ($row["days"] == 999) {
+													$days = "永久授权";
+												} else {
+													$days = $row["days"] . "天";
 												}
 												echo"<tr>";
 												echo"<td align=\"center\" style=\"font-size:12px;height:35px;font-weight: bold;\">".$row["id"]."</td>";
 												echo"<td align=\"center\" style=\"font-size:12px;font-weight: bold;\">".$row["name"]."</td>";
-												echo"<td align=\"center\" style=\"font-size:12px;font-weight: bold;\">".$row["amount"]."元/月</td>";
-												echo"<td align=\"center\" style=\"font-size:12px;font-weight: bold;\">".$stu."</td>";
+												echo"<td align=\"center\" style=\"font-size:12px;font-weight: bold;\">".$row["amount"]."元</td>";
+												echo"<td align=\"center\" style=\"font-size:12px;font-weight: bold;\">".$days."</td>";
+												echo"<td align=\"center\" style=\"font-size:12px;font-weight: bold;\">".$status."</td>";
 												echo"<td align=\"left\" style=\"font-size:12px;font-weight: bold;\">".$row["content"]."</td>";
 												echo"<td align=\"center\" style=\"font-size:12px;font-weight: bold;\">
-												".$stus."&nbsp;
+												".$func."&nbsp;
 												<a href=\"?act=edit&id=".$row["id"]."\">编辑</a>&nbsp;
 												<a href=\"?act=dels&id=".$row["id"]."\"><font color=\"#8E388E\">删除</font></a>
 												</td>";

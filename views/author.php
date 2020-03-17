@@ -29,7 +29,7 @@
 							<label>今日上线：<?php echo $todayuserCount; ?></label>
 							<label>今日授权：<?php echo $todayauthoruserCount; ?></label>
 						</div>
-						<form class="pull-right search-bar" method="get">
+						<form class="pull-right search-bar" method="GET">
 							<div class="input-group">
 								<div class="input-group-btn">
 									<input class="form-control" style="width: 225px;" type="text" name="keywords" value="<?php echo $keywords;?>" placeholder="请输入名称">

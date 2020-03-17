@@ -31,11 +31,11 @@
 								<label>今日授权：<?php echo $todayauthoruserCount; ?></label>
 								<label>过期用户：<?php echo $expuserCount; ?></label>
 							</div>
-							<form class="pull-right search-bar" method="get">
+							<form class="pull-right search-bar" method="GET">
 								<div class="input-group">
 									<div class="input-group-btn">
 										<input class="form-control" style="width: 225px;" type="text" name="keywords" value="<?php echo $keywords;?>" placeholder="请输入名称">
-										<button class="btn btn-default" type="submit" name="submitsearch" >搜索</button>
+										<button class="btn btn-default" type="submit">搜索</button>
 									</div>
 								</div>
 							</form>
@@ -118,7 +118,7 @@
 															$meals_arr[$row["id"]] = $row["name"];
 														} 
 														unset($row);
-														mysqli_free_result($result);
+														mysqli_free_result($meals);
 													} 
 													$result=$db->mQuery($func);
 													if (mysqli_num_rows($result)) {

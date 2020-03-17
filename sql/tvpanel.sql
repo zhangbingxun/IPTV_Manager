@@ -249,6 +249,7 @@ CREATE TABLE `luo2888_meals` (
   `name` varchar(128) NOT NULL,
   `content` text,
   `status` tinyint(1) NOT NULL DEFAULT '1',
+  `amount` int(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1003 DEFAULT CHARSET=utf8;
 
@@ -259,6 +260,20 @@ CREATE TABLE `luo2888_meals` (
 INSERT INTO `luo2888_meals` (`id`, `name`, `content`, `status`) VALUES
 (1000, '试看套餐', '试看频道', 1),
 (1002, '会员套餐', 'HomeNET_Sason_重庆_河南_广东_湖北_河北_安徽_江西_黑龙江_天津_上海_山西_吉林_江苏_福建_海南_贵州_云南_陕西_西藏_宁夏_内蒙古_北京_湖南_广西_甘肃_浙江_新疆_山东_四川_隐藏频道', 1);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `luo2888_payment`
+--
+
+CREATE TABLE IF NOT EXISTS `luo2888_payment` (
+  `userid` bigint(20) NOT NULL,
+  `order_id` varchar(128) NOT NULL,
+  `meal` int(4) NOT NULL,
+  `days` int(4) NOT NULL,
+  `status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 

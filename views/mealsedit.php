@@ -14,7 +14,7 @@ if ($_GET["act"]=="edits") {
 			}
 		}
 	}
-    $db->mSet("luo2888_meals", "name='".$meal_name."',content='".$ids."',amount='".$amount."'", "where id=" . $id);
+    $db->mSet("luo2888_meals", "name='".$meal_name."',content='".$ids."',amount='".$amount."',days='".$days."'", "where id=" . $id);
 	exit("<script>$.alert({title: '成功',content: '套餐 " . $meal_name . " 修改成功！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
 }
 if ($_GET["act"]=="edit") { 

@@ -31,7 +31,7 @@ if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>0 and authort
 } 
 unset($row);
 // 异常用户总数统计
-if ($row = $db->mGetRow("luo2888_users", "count(*)", "where vpn>0")) {
+if ($row = $db->mGetRow("luo2888_users", "count(*)", "where vpn>0 or idchange>0")) {
     $exceptionuserCount = $row[0];
 } else {
     $exceptionuserCount = 0;

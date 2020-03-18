@@ -36,10 +36,6 @@ class NotifyService
         } else {
             $result = (bool)openssl_verify($data, base64_decode($sign), $res);
         }
-//        if(!$this->checkEmpty($this->alipayPublicKey)) {
-//            //释放资源
-//            openssl_free_key($res);
-//        }
         return $result;
     }
 
@@ -89,7 +85,6 @@ class NotifyService
             $fileType = $this->charset;
             if (strcasecmp($fileType, $targetCharset) != 0) {
                 $data = mb_convert_encoding($data, $targetCharset, $fileType);
-                //$data = iconv($fileType, $targetCharset.'//IGNORE', $data);
             }
         }
         return $data;

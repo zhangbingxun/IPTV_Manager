@@ -27,9 +27,9 @@
 						<input class="form-control" type="text" name="alipay_appid" value="<?php echo $alipay_appid; ?>">
 						<small class="help-block"><a href="https://docs.open.alipay.com/200/105310" target="_blank">应用生成参考教程</a></small>
 						<label class="btn-block">支付宝公钥</label>
-						<input class="form-control" type="text" name="alipay_publickey" value="<?php echo $alipay_publickey; ?>">
+						<textarea class="form-control" rows="5" name="alipay_publickey"><?php echo $alipay_publickey; ?></textarea>
 						<label class="btn-block">支付宝私钥</label>
-						<input class="form-control" type="text" name="alipay_privatekey" value="<?php echo $alipay_privatekey; ?>">
+						<textarea class="form-control" rows="5" name="alipay_privatekey"><?php echo $alipay_privatekey; ?></textarea>
 						<small class="help-block"><a href="https://docs.open.alipay.com/291/105971" target="_blank">秘钥生成参考教程</a></small>
 					</div>
 					<div class="form-group">

@@ -295,6 +295,7 @@ CREATE TABLE `luo2888_users` (
   `region` varchar(32) DEFAULT NULL,
   `exp` bigint(20) NOT NULL,
   `vpn` tinyint(5) NOT NULL DEFAULT '0',
+  `idchange` tinyint(5) NOT NULL DEFAULT '0',
   `author` varchar(16) DEFAULT NULL,
   `authortime` bigint(20) NOT NULL DEFAULT '0',
   `status` int(4) NOT NULL DEFAULT '-1',

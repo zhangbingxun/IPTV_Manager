@@ -16,6 +16,11 @@ if (isset($_POST['clearvpn'])) {
     echo"<script>lightyear.notify('抓包记录已清空！', 'success', 3000);</script>";
 } 
 
+if (isset($_POST['clearidchange'])) {
+    $db->mSet("luo2888_users", "idchange=0");
+    echo"<script>lightyear.notify('设备ID更换记录已清空！', 'success', 3000);</script>";
+} 
+
 if (isset($_POST['stopuse'])) {
     $name = $_POST['name'];
     $now = time();

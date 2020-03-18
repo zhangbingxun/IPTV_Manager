@@ -56,12 +56,18 @@ if (isset($_POST['login'])) {
         // status=-1,未授权用户
         // status=999为永不到期
         $nowtime = time(); 
-        // androidID是否匹配
-        if ($row = $db->mCheckRow("luo2888_users", "name,status,exp,deviceid,model,meal", "where deviceid='$androidid'")) {
+        // 没有mac禁止登陆
+	    if(strstr($mac,"获取地址失败") != false) {
+	        header('HTTP/1.1 403 Forbidden');
+	        exit();
+	    }
+        // mac是否匹配
+        if ($row = $db->mCheckRow("luo2888_users", "name,status,exp,deviceid,mac,model,meal", "where mac='$mac'")) {
             // 匹配成功
             $days = ceil(($row['exp'] - time()) / 86400);
             $status = intval($row['status']);
             $name = $row['name'];
+            $deviceid = $row['deviceid'];
             $mealid = $row['meal'];
             $exp = $row["exp"]; //收视期限，时间戳
             $status2 = $status;
@@ -70,8 +76,11 @@ if (isset($_POST['login'])) {
             } else if ($status2 == -999) {
                 $status = 1;
             } 
+            if ($deviceid != $androidid){
+            	$db->mSet("luo2888_users", "deviceid='$androidid',idchange=idchange+1", "where mac='$mac'"); 
+            }
             // 更新位置，登陆时间
-            $db->mSet("luo2888_users", "region='$region',ip='$ip',lasttime=$nowtime", "where deviceid='$androidid'"); 
+            $db->mSet("luo2888_users", "region='$region',ip='$ip',lasttime=$nowtime", "where mac='$mac'"); 
         } else {
             // 用户验证失败，识别用户信息存入后台
             $name = genName();
@@ -90,6 +99,7 @@ if (isset($_POST['login'])) {
                 $status = -1;
                 $marks = '未授权';
             } 
+            $mealid = 1000;
             $status2 = $status;
             $exp = strtotime(date("Y-m-d"), time()) + 86400 * $days;
             $db->mInt("luo2888_users", "name,mac,deviceid,model,exp,ip,status,region,lasttime,marks", "$name,'$mac','$androidid','$model',$exp,'$ip',$status,'$region',$nowtime,'$marks'");

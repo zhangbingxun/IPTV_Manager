@@ -85,9 +85,9 @@
 										<input type="hidden" name="userid" value="'. $userid .'"/>
 										<select class="btn btn-sm btn-default dropdown-toggle" style="height: 30px;" name="mealid">
 											<option value="">请选择</option>';
-											$result=$db->mQuery("select id,name from luo2888_meals where status=1 and id<>1000 ORDER BY id ASC");
+											$result=$db->mQuery("select id,name,amount from luo2888_meals where status=1 and id<>1000 ORDER BY id ASC");
 											while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-												echo '<option value="' . $row["id"] . '">' . $row["name"] . '</option>';
+												echo '<option value="' . $row["id"] . '">' . $row["name"] . ' | ' . $row["amount"] . '元' . '</option>';
 											} 
 											mysqli_free_result($result);
 						echo			'</select>

@@ -6,8 +6,14 @@ if (isset($_GET['vid'])) {
 
 	if ($vid=='tvb') {
 		$id=$_GET['id'];
-		$info=file_get_contents("http://news.tvb.com/live/$id?is_hd");
-		preg_match('/<source src="(.*?)"/i',$info,$sn);
+		$url="http://news.tvb.com/live/$id?is_hd";
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_TIMEOUT, 5);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
+		$curlobj = curl_exec($curl);
+		preg_match('/<source src="(.*?)"/i',$curlobj,$sn);
 		$playurl=$sn[1];
 	    header('location:'.urldecode($playurl));
 		exit;
@@ -46,8 +52,9 @@ if (isset($_GET['vid'])) {
 		$curlobj = curl_exec($curl);
 		preg_match('/<option value="(.*?)"/i',$curlobj,$sn);
 		$playurl=$sn[1];
-        $playurl = preg_replace('#http://m.iptv.com/player.m3u8#', 'http://play.ggiptv.com:13164/play.m3u8', $playurl);
-		header('location:'.urldecode($playurl));
+	        $playurl = preg_replace('#http://m.iptv.com/player.m3u8#', 'http://play.ggiptv.com:13164/play.m3u8', $playurl);
+		//echo $playurl;
+		header('location:'.$playurl);
 		exit;
 	}
 

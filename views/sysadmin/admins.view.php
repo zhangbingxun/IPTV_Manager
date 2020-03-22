@@ -81,7 +81,7 @@
 								</tbody>
 							</table>
 							<button class="btn btn-label btn-primary" type="submit" name="saveauthorinfo"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>保存权限设定</button>
-							<button type="submit" name="deleteadmin" class="btn btn-label btn-danger"><label><i class="mdi mdi-delete-empty"></i></label> 删除选中</button>
+							<button class="btn btn-label btn-danger" type="submit" name="deleteadmin"><label><i class="mdi mdi-delete-empty"></i></label>删除选中</button>
 						</form>
 						<form class="form-inline" method="post">
 							<div class="form-group">

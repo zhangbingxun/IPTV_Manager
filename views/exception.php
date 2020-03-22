@@ -16,7 +16,7 @@
 									<input style="width: 85px;height: 30px;" class="form-control" type="text" name="sameip_user" size="2" value="<?php echo $max_sameip_user; ?>">
 									<button type="submit" name="submitsameip_user" class="btn btn-sm btn-primary m-r-5">保存</button>
 									<button type="submit" name="clearvpn" class="btn btn-sm btn-danger m-r-5">清空抓包记录</button>
-									<button type="submit" name="clearvpn" class="btn btn-sm btn-danger">清空设备ID更换记录</button>
+									<button type="submit" name="clearidchange" class="btn btn-sm btn-danger">清空设备ID更换记录</button>
 									</div>
 								</div>
 							</form>

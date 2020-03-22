@@ -29,12 +29,7 @@ function out_epg($id) {
         // 重新写入当天时间缓存文件
         cache("time_out_chk", "cache_time_out");
     } 
-    if(strstr($epgid,"tvming") != false) {
-    	$ejson = get_epg_data($tvid, $epgid, $id);
-    } else {
-    	$ejson = cache($tvid, "get_epg_data", [$tvid, $epgid, $id]);
-    }
-    
+    $ejson = cache($tvid, "get_epg_data", [$tvid, $epgid, $id]);
     return $ejson;
 } 
 // 缓存EPG节目数据
@@ -149,13 +144,13 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
         // 天脉聚源
 	} else if(strstr($epgid,"tvming") != false) {
 		$url = "http://stream.suntv.sungole.com/approve/epginfo?channel=";
-		$str = curl::c()->set_ssl()->get($url.substr($epgid, 7));
+		$str = curl::c()->set_ssl()->get($url.substr($epgid, 7).'&date='.date('Y-m-d'));
 		$xml = simplexml_load_string($str);
 		$arr = json_encode($xml);
 		$arr = json_decode($arr,true);
         if (!empty($arr)) {
             $data = array("code" => 200, "msg" => "请求成功!", "name" => $name, "tvid" => $tvid, "date" => date('Y-m-d'));
-				foreach($arr["epg"][0]["program"] as &$val) {
+				foreach($arr["epg"]["program"] as &$val) {
 	                $epgarr[] = array("name" => $val["title"], "starttime" => date("H:i", $val["start_time"]));
 				}
 				$data["data"]= array_reverse($epgarr);

@@ -15,18 +15,20 @@
 										<th>用户管理</th>
 										<th>异常检测</th>
 										<th>EPG管理</th>
+										<th>套餐管理</th>
 										<th>频道管理</th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php
-									$result=$db->mQuery("select name,author,useradmin,ipcheck,epgadmin,channeladmin from luo2888_admin");
+									$result=$db->mQuery("select name,author,useradmin,ipcheck,epgadmin,mealsadmin,channeladmin from luo2888_admin");
 									while ($row=mysqli_fetch_array($result)) {
 										$adminname=$row['name'];
 										$author=$row['author'];
 										$useradmin=$row['useradmin'];
 										$ipcheck=$row['ipcheck'];
 										$epgadmin=$row['epgadmin'];
+										$mealsadmin=$row['mealsadmin'];
 										$channeladmin=$row['channeladmin'];
 										if($author==1){
 											$authorchecked=" checked='true'";
@@ -48,6 +50,11 @@
 										}else{
 											$epgadminchecked="";
 										}
+										if($mealsadmin==1){
+											$mealsadminchecked=" checked='true'";
+										}else{
+											$mealsadminchecked="";
+										}
 										if($channeladmin==1){
 											$channeladminchecked=" checked='true'";
 										}else{
@@ -57,11 +64,12 @@
 											echo "<tr>
 												<td><label><i class=\"mdi mdi-block-helper\"></i></label></td>
 												<td>admin</td>
-												<td><input value='$adminname' name='author[]' type='checkbox' checked='true' disabled='true'></td>
-												<td><input value='$adminname' name='useradmin[]' type='checkbox' checked='true' disabled='true'></td>
-												<td><input value='$adminname' name='ipcheck[]' type='checkbox' checked='true' disabled='true'></td>
-												<td><input value='$adminname' name='epgadmin[]' type='checkbox' checked='true' disabled='true'></td>
-												<td><input value='$adminname' name='channeladmin[]' type='checkbox' checked='true' disabled='true'></td>
+												<td><input type='checkbox' checked='true' disabled='true'></td>
+												<td><input type='checkbox' checked='true' disabled='true'></td>
+												<td><input type='checkbox' checked='true' disabled='true'></td>
+												<td><input type='checkbox' checked='true' disabled='true'></td>
+												<td><input type='checkbox' checked='true' disabled='true'></td>
+												<td><input type='checkbox' checked='true' disabled='true'></td>
 											</tr>";
 										}else{
 											echo "<tr>
@@ -71,6 +79,7 @@
 												<td><input value='$adminname' name='useradmin[]' type='checkbox' $useradminchecked ></td>
 												<td><input value='$adminname' name='ipcheck[]' type='checkbox' $ipcheckchecked ></td>
 												<td><input value='$adminname' name='epgadmin[]' type='checkbox' $epgadminchecked ></td>
+												<td><input value='$adminname' name='mealsadmin[]' type='checkbox' $mealsadminchecked ></td>
 												<td><input value='$adminname' name='channeladmin[]' type='checkbox' $channeladminchecked ></td>
 											</tr>";
 										}

@@ -50,9 +50,20 @@ if (isset($_GET['vid'])) {
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Mobile Safari/537.36');
 		$curlobj = curl_exec($curl);
+		curl_close($curl);
 		preg_match('/<option value="(.*?)"/i',$curlobj,$sn);
 		$playurl=$sn[1];
-	        $playurl = preg_replace('#http://m.iptv.com/player.m3u8#', 'http://play.ggiptv.com:13164/play.m3u8', $playurl);
+	    $playurl = preg_replace('#http://m.iptv.com/player.m3u8#', 'http://play.ggiptv.com:13164/play.m3u8', $playurl);
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $playurl);
+		curl_setopt($curl, CURLOPT_NOBODY, 1);
+		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+		curl_exec($curl);
+		$playurl = curl_getinfo($curl,CURLINFO_EFFECTIVE_URL);
+		if (isset($_GET['flv'])) {
+	    	$playurl = preg_replace('#/playlist.m3u8#', '.flv', $playurl);
+	    	$playurl = preg_replace('#.m3u8#', '.flv', $playurl);
+		}
 		//echo $playurl;
 		header('location:'.$playurl);
 		exit;

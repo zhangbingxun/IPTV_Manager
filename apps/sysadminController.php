@@ -77,8 +77,8 @@ if (isset($_POST['deleteadmin'])) {
     } else {
         foreach ($_POST['adminname'] as $name) {
             if ($name <> 'admin') {
-                $db->mDel("luo2888_admin", "name='$name'");
-                echo"<script>showindex=5;');lightyear.notify('管理员[$name]已删除！', 'success', 3000);</script>";
+                $db->mDel("luo2888_admin", "where name='$name'");
+                echo"<script>showindex=5;lightyear.notify('管理员[$name]已删除！', 'success', 3000);</script>";
             } else {
                 echo"<script>showindex=5;lightyear.notify('管理员[$name]删除失败！', 'danger', 3000);</script>";
             } 
@@ -88,7 +88,7 @@ if (isset($_POST['deleteadmin'])) {
 // 设置管理员权限
 if (isset($_POST['saveauthorinfo'])) {
     if (!empty($_POST['adminname'])) {
-        $db->mSet("luo2888_admin", "author=0,useradmin=0,ipcheck=0,epgadmin=0,channeladmin=0", "where name<>'admin'");
+        $db->mSet("luo2888_admin", "author=0,useradmin=0,ipcheck=0,epgadmin=0,mealsadmin=0,channeladmin=0", "where name<>'admin'");
         if (!empty($_POST['author'])) {
             foreach ($_POST['author'] as $adminname) {
                 $db->mSet("luo2888_admin", "author=1", "where name='$adminname'");
@@ -107,6 +107,11 @@ if (isset($_POST['saveauthorinfo'])) {
         if (!empty($_POST['epgadmin'])) {
             foreach ($_POST['epgadmin'] as $adminname) {
                 $db->mSet("luo2888_admin", "epgadmin=1", "where name='$adminname'");
+            } 
+        } 
+        if (!empty($_POST['mealsadmin'])) {
+            foreach ($_POST['mealsadmin'] as $adminname) {
+                $db->mSet("luo2888_admin", "mealsadmin=1", "where name='$adminname'");
             } 
         } 
         if (!empty($_POST['channeladmin'])) {

@@ -2,9 +2,9 @@
 //套餐修改区域
 if ($_GET["act"]=="edits") {
 	$id=!empty($_POST["id"])?$_POST["id"]:exit("<script>$.alert({title: '错误',content: '参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
-	$amount=!empty($_POST["amount"])?$_POST["amount"]:exit("<script>$.alert({title: '错误',content: '金额参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
-	$days=!empty($_POST["days"])?$_POST["days"]:exit("<script>$.alert({title: '错误',content: '期限参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
 	$meal_name=!empty($_POST["name"])?$_POST["name"]:exit("<script>$.alert({title: '错误',content: '请填写套餐名称！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
+	$amount=$_POST["amount"];
+	$days=$_POST["days"];
 	$ids="";
 	if (!empty($_POST["ids"])) {
 		foreach ($_POST["ids"] as $num=>$content ) {

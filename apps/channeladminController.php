@@ -16,15 +16,15 @@ function sort_id() {
     global $categorytype, $db;
     if ($categorytype == 'default') {
         $numCount = 1;
-    } else if ($categorytype == 'province') {
+    } else if ($categorytype == 'vip') {
         $numCount = 50;
-    } else if ($categorytype == 'chinanet') {
+    } else if ($categorytype == 'cmcc') {
         $numCount = 100;
     } else if ($categorytype == 'unicom') {
         $numCount = 150;
-    } else if ($categorytype == 'cmcc') {
+    } else if ($categorytype == 'chinanet') {
         $numCount = 200;
-    } else if ($categorytype == 'vip') {
+    } else if ($categorytype == 'province') {
         $numCount = 250;
     } 
     $result = $db->mQuery("SELECT * from luo2888_category where type='$categorytype' order by id");

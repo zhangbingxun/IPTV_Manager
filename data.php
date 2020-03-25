@@ -114,7 +114,7 @@ if (isset($_POST['data'])) {
             while ($row = mysqli_fetch_array($result)) {
                 $pdname = $row['name'];
                 $psw = $row['psw'];
-                $contents[] = echoJSON($pdname, '省内频道', $psw);
+                $contents[] = echoJSON($pdname, '省内', $psw);
             } 
             unset($row);
             mysqli_free_result($result);

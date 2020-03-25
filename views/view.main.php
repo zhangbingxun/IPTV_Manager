@@ -4,9 +4,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>欢迎访问IPTV管理系统</title>
 <link rel="icon" href="views/images/favicon.ico" type="image/ico">
-<meta name="keywords" content="小肥米,后台管理系统">
-<meta name="description" content="小肥米IPTV后台管理系统">
-<meta name="author" content="luo2888">
+<meta name="keywords" content="小肥米,后台管理系统" />
+<meta name="description" content="小肥米IPTV后台管理系统" />
+<meta name="author" content="luo2888" />
 <meta name="renderer" content="webkit" />
 <link href="views/css/bootstrap.min.css" rel="stylesheet">
 <link href="views/css/materialdesignicons.min.css" rel="stylesheet">

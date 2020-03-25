@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=0.92, maximum-scale=1, user-scalable=no" />
-<meta name="keywords" content="IPTV,后台管理系统">
-<meta name="description" content="IPTV后台管理系统">
-<meta name="author" content="luo2888">
+<meta name="keywords" content="IPTV,后台管理系统" />
+<meta name="description" content="IPTV后台管理系统" />
+<meta name="author" content="luo2888" />
 <meta name="renderer" content="webkit" />
 <title>小肥米TV管理系统</title>
 <link rel="icon" href="images/favicon.ico" type="image/ico">

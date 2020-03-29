@@ -322,12 +322,6 @@ $alipay_appid = $db->mGet("luo2888_config", "value", "where name='alipay_appid'"
 $alipay_publickey = $db->mGet("luo2888_config", "value", "where name='alipay_publickey'");
 $alipay_privatekey = $db->mGet("luo2888_config", "value", "where name='alipay_privatekey'");
 $ipchk = $db->mGet("luo2888_config", "value", "where name='ipchk'");
-
-$showwea_value = $db->mGet("luo2888_config", "value", "where name='showwea'");
-if ($showwea_value == 1) {
-    $showwea = 'checked="checked"';
-} else {
-    $showwea = "";
-} 
+$showwea = $db->mGet("luo2888_config", "value", "where name='showwea'");
 
 ?>

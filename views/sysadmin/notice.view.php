@@ -22,7 +22,17 @@ function weaForm(){
 						<div class="form-group">
 							<label>显示天气</label>
 							<label class="lyear-switch switch-primary">
-								<input type="checkbox" name="showwea" onchange="weaForm()" <?php echo $showwea;?>>
+								<?php
+								switch ($showwea) {
+									case '0':
+	    								$showweachecked = '';
+										break;
+									case '1':
+	    								$showweachecked = 'checked="checked"';
+										break;
+								}
+								?>
+								<input type="checkbox" name="showwea" onchange="weaForm()" <?php echo $showweachecked;?>>
 								<span></span>
 							</label>
 						</div>

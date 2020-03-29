@@ -260,7 +260,7 @@ if (isset($_POST['submitdelbg'])) {
     echo"<script>showindex=1;lightyear.notify('删除成功！', 'success', 3000);</script>";
 } 
 
-if (isset($_POST['submitcloseauthor'])) {
+if (isset($_POST['submitauthor'])) {
     $needauthor = $_POST['needauthor'];
     if ($needauthor == 1) {
         $needauthor = 0;
@@ -321,12 +321,7 @@ $app_packagename = $db->mGet("luo2888_config", "value", "where name='app_package
 $alipay_appid = $db->mGet("luo2888_config", "value", "where name='alipay_appid'");
 $alipay_publickey = $db->mGet("luo2888_config", "value", "where name='alipay_publickey'");
 $alipay_privatekey = $db->mGet("luo2888_config", "value", "where name='alipay_privatekey'");
-
-if ($needauthor == 1) {
-    $closeauthor = "关闭授权";
-} else {
-    $closeauthor = "开启授权";
-} 
+$ipchk = $db->mGet("luo2888_config", "value", "where name='ipchk'");
 
 $showwea_value = $db->mGet("luo2888_config", "value", "where name='showwea'");
 if ($showwea_value == 1) {
@@ -335,10 +330,4 @@ if ($showwea_value == 1) {
     $showwea = "";
 } 
 
-$ipchk = $db->mGet("luo2888_config", "value", "where name='ipchk'");
-if ($ipchk == 1) {
-    $ipchkselected1 = "selected";
-} else {
-    $ipchkselected2 = "selected";
-} 
 ?>

@@ -4,7 +4,7 @@
  * 
  * @qqzeng -ip   2015-08-08
  */
-class IpSearch {
+class IpLocation {
     private $firstStartIpOffset; //索引区第一条流位置
     private $lastStartIpOffset; //索引区最后一条流位置
     private $prefixStartOffset; //前缀区第一条的流位置
@@ -116,12 +116,14 @@ class IpSearch {
         return $iplong;
     } 
 } 
-header("Content-type: text/json; charset=utf-8");
 
+header("Content-type: text/json; charset=utf-8");
+header("Cache-Control:no-cache,must-revalidate");
+header("Pragma: no-cache");
 $ip = $_GET['ip'];
-$reader = new IpSearch('qqzeng.dat');
-$r = $reader->get($ip);
-list($area, $country, $province, $city, $district, $isp, $areacode, $en, $cc, $lng, $lat) = explode("|", $r);
+$reader = new IpLocation('qqzeng.dat');
+$ipobj = $reader->get($ip);
+list($area, $country, $province, $city, $district, $isp, $areacode, $en, $cc, $lng, $lat) = explode("|", $ipobj);
 
 $obj = (Object)null;
 $region = $province;

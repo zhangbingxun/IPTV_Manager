@@ -54,7 +54,7 @@ if (isset($_GET['vid'])) {
 		preg_match('/<option value="(.*?)"/i',$curlobj,$sn);
 		$linkurl=$sn[1] . $part;
 		$linkurl = preg_replace('#http://m.iptv.com/player.m3u8#', 'http://play.ggiptv.com:13164/play.m3u8', $linkurl);
-		if (strstr($linkurl, "ggiptv") != false)){
+		if (strstr($linkurl, "ggiptv") != false){
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_URL, $linkurl);
 			curl_setopt($curl, CURLOPT_NOBODY, 1);

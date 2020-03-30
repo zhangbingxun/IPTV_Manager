@@ -41,9 +41,9 @@ if (isset($_GET['vid'])) {
 
 	if ($vid=='iptv805') {
 		$id=$_GET['id'];
-		$part=$_GET['p'];
 		$tid=$_GET['tid'];
-		$url="http://m.iptv805.com/iptv.php?act=play&tid=$tid&id=$id". $part;
+		if (!empty($_GET['p'])){$part='&p=' . $_GET['p'];}
+		$url="http://m.iptv805.com/iptv.php?act=play&tid=$tid&id=$id";
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_TIMEOUT, 5);
@@ -52,8 +52,8 @@ if (isset($_GET['vid'])) {
 		$curlobj = curl_exec($curl);
 		curl_close($curl);
 		preg_match('/<option value="(.*?)"/i',$curlobj,$sn);
-		$linkurl=$sn[1];
-	  $linkurl = preg_replace('#http://m.iptv.com/player.m3u8#', 'http://play.ggiptv.com:13164/play.m3u8', $linkurl);
+		$linkurl=$sn[1] . $part;
+		$linkurl = preg_replace('#http://m.iptv.com/player.m3u8#', 'http://play.ggiptv.com:13164/play.m3u8', $linkurl);
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $linkurl);
 		curl_setopt($curl, CURLOPT_NOBODY, 1);

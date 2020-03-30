@@ -17,7 +17,7 @@ if($ipchk=='1'){
 }else if($ipchk=='3'){
 	echo file_get_contents("$myurl/apps/iploc/taobao.php?ip=$ip");
 }else if($ipchk=='4'){
-	echo file_get_contents("$myurl/apps/iploc/qqwrt.php?ip=$ip");
+	echo file_get_contents("$myurl/apps/iploc/qqwry.php?ip=$ip");
 }else if($ipchk=='5'){
 	echo file_get_contents("$myurl/apps/iploc/pconline.php?ip=$ip");
 }else if($ipchk=='6'){

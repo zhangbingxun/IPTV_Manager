@@ -54,17 +54,21 @@ if (isset($_GET['vid'])) {
 		preg_match('/<option value="(.*?)"/i',$curlobj,$sn);
 		$linkurl=$sn[1] . $part;
 		$linkurl = preg_replace('#http://m.iptv.com/player.m3u8#', 'http://play.ggiptv.com:13164/play.m3u8', $linkurl);
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $linkurl);
-		curl_setopt($curl, CURLOPT_NOBODY, 1);
-		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-		curl_exec($curl);
-		$playurl = curl_getinfo($curl,CURLINFO_EFFECTIVE_URL);
-		if (isset($_GET['flv'])) {
-	    	$playurl = preg_replace('#/playlist.m3u8#', '.flv', $playurl);
-	    	$playurl = preg_replace('#.m3u8#', '.flv', $playurl);
+		if ($tid != 'bfiptv'){
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_URL, $linkurl);
+			curl_setopt($curl, CURLOPT_NOBODY, 1);
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+			curl_exec($curl);
+			$playurl = curl_getinfo($curl,CURLINFO_EFFECTIVE_URL);
+			if (isset($_GET['flv'])) {
+		    	$playurl = preg_replace('#/playlist.m3u8#', '.flv', $playurl);
+		    	$playurl = preg_replace('#.m3u8#', '.flv', $playurl);
+			}
+			header('location:'.$playurl);
+		} else {
+			header('location:'.$linkurl);
 		}
-		header('location:'.$playurl);
 		exit;
 	}
 

@@ -154,7 +154,8 @@ $ip = $_GET['ip'];
 $iplocation = new IpLocation();
 $location = $iplocation->getlocation($ip);
 $region = iconv("gbk", "utf-8",$location['country']);
-$isp = iconv("gbk", "utf-8",$location['area']);
+$area = iconv("gbk", "utf-8",$location['area']);
+$isp = str_replace("数据上网公共出口", "", $area);
 $obj = (Object)null;
 $obj->region = $region;
 if (!empty($region)) {

@@ -58,6 +58,8 @@ if (isset($_GET['vid'])) {
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_URL, $linkurl);
 			curl_setopt($curl, CURLOPT_NOBODY, 1);
+		    curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
+	        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 			curl_exec($curl);
 			$playurl = curl_getinfo($curl,CURLINFO_EFFECTIVE_URL);
@@ -71,6 +73,38 @@ if (isset($_GET['vid'])) {
 		}
 		exit;
 	}
+	
+	if ($vid=='iptv234') {
+		$id=$_GET['id'];
+		$tid=$_GET['tid'];
+		if (!empty($_GET['p'])){$part='&p=' . $_GET['p'];}
+		$url="http://app.iptv234.com/iptv.php?act=play&tid=$tid&id=$id";
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_TIMEOUT, 5);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 10; ELE-AL00 Build/HUAWEIELE-AL00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/045130 Mobile Safari/537.36 MicroMessengeriptv VideoPlayer god/3.0.0 Html5Plus/1.0 (Immersed/29.411766)');
+		$curlobj = curl_exec($curl);
+		curl_close($curl);
+		if (strstr($curlobj, "src1") != false){
+		    preg_match('/var src1 = "(.*?)"/i',$curlobj,$sn);
+		} else {
+		    preg_match('/<option value="(.*?)"/i',$curlobj,$sn);
+		}
+		$linkurl=$sn[1] . $part;
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $linkurl);
+		curl_setopt($curl, CURLOPT_NOBODY, 1);
+		curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($curl, CURLOPT_USERAGENT, 'Lavf/57.83.100');
+		curl_exec($curl);
+		$playurl = curl_getinfo($curl,CURLINFO_EFFECTIVE_URL);
+		header('location:'.$playurl);
+		exit;
+	}
+
 
 } else {
 	header('HTTP/1.1 403 Forbidden');

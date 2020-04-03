@@ -14,7 +14,8 @@ if (empty($jsonobj)) {
 $jsonobj = trim($jsonobj,chr(239).chr(187).chr(191));
 $ipobj = json_decode($jsonobj);
 $region = $ipobj->data->country;
-$isp = $ipobj->data->local;
+$local = $ipobj->data->local;
+$isp = str_replace("数据上网公共出口", "", $local);
 $obj = (Object)null;
 $obj->region = $region;
 if (!empty($region)) {

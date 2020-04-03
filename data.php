@@ -64,7 +64,7 @@ if (isset($_POST['data'])) {
         $nettype = "";
     } 
     // 查找当前用户对应的套餐
-    $result = $db->mQuery("SELECT meal from luo2888_users where deviceid='$androidid'");
+    $result = $db->mQuery("SELECT meal from luo2888_users where mac='$mac'");
     if (mysqli_num_rows($result)) {
         $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
         if (empty($row["meal"])) {

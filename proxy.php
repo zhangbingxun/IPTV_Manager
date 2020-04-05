@@ -1,8 +1,23 @@
 <?php
 error_reporting(0);
 header('Content-Type: text/json;charset=UTF-8');
-if (isset($_GET['vid'])) {
+require_once "config.php";
+$db = Config::getIntance();
+
+if (isset($_GET['vid'])&&isset($_GET['time'])&&isset($_GET['token'])) {
+	$nowtime=time();
 	$vid=$_GET['vid'];
+	$time=$_GET['time'];
+	$token=$_GET['token'];
+	$key=$db->mGet("luo2888_config", "value", "where name='keyproxy'");
+	$app_sign=$db->mGet("luo2888_config", "value", "where name='app_sign'");
+	if(abs($nowtime-$time)>600){
+		header('HTTP/1.1 403 Forbidden');
+		exit();
+	} else if ($token!=md5($key.$time."303543214".$app_sign)) {
+		header('HTTP/1.1 403 Forbidden');
+		exit();
+	}
 
 	if ($vid=='tvb') {
 		$id=$_GET['id'];
@@ -70,6 +85,15 @@ if (isset($_GET['vid'])) {
 		exit;
 	}
 
+	if ($vid=='sop2') {
+		$sig=12315;
+		$key=12315;
+		$time=time();
+		$sign = md5($key.$time."303543214".$sig);
+		header('location:'.'http://zhu2.crtv.zstv.top/zszb/api/atv_119.php?id=44ca88e2d2844038cdb169e25ac5fbbf' . '&t=' . $time . '&sign=' . $sign);
+		exit;
+	}
+	
 } else {
 	header('HTTP/1.1 403 Forbidden');
 	exit();

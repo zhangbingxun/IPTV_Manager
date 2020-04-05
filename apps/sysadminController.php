@@ -218,9 +218,11 @@ if (isset($_POST['submit']) && isset($_POST['adtext'])) {
 } 
 
 if (isset($_POST['submitappinfo'])) {
+    $keyproxy = $_POST['keyproxy'];
     $app_sign = $_POST['app_sign'];
     $app_appname = $_POST['app_appname'];
     $app_packagename = $_POST['app_packagename'];
+    $db->mSet("luo2888_config", "value='$keyproxy'", "where name='keyproxy'");
     $db->mSet("luo2888_config", "value='$app_sign'", "where name='app_sign'");
     $db->mSet("luo2888_config", "value='$app_appname'", "where name='app_appname'");
     $db->mSet("luo2888_config", "value='$app_packagename'", "where name='app_packagename'");
@@ -323,5 +325,5 @@ $alipay_publickey = $db->mGet("luo2888_config", "value", "where name='alipay_pub
 $alipay_privatekey = $db->mGet("luo2888_config", "value", "where name='alipay_privatekey'");
 $ipchk = $db->mGet("luo2888_config", "value", "where name='ipchk'");
 $showwea = $db->mGet("luo2888_config", "value", "where name='showwea'");
-
+$keyproxy = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
 ?>

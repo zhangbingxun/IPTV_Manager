@@ -21,8 +21,12 @@ $("#ipchkform").submit();
 						<input class="form-control" type="text" name="app_packagename" value="<?php echo $app_packagename; ?>" placeholder="应用包名" >
 					</div>
 					<div class="form-group" style="margin-right: 15px;">
-						<label>应用签名</label>
-						<input class="form-control" type="text" name="app_sign" value="<?php echo $app_sign; ?>" placeholder="应用签名" >
+						<label>签名密码</label>
+						<input class="form-control" type="text" name="app_sign" value="<?php echo $app_sign; ?>" placeholder="签名密码" >
+					</div>
+					<div class="form-group" style="margin-right: 15px;">
+						<label>代理密码</label>
+						<input class="form-control" type="text" name="keyproxy" value="<?php echo $keyproxy; ?>" placeholder="代理密码" >
 					</div>
 					<div class="form-group">
 						<button class="btn btn-label btn-primary" type="submit" name="submitappinfo"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>确认提交</button>

@@ -193,7 +193,8 @@ INSERT INTO `luo2888_config` (`id`, `name`, `value`) VALUES
 (41, 'weaapi_key', NULL),
 (42, 'alipay_appid', NULL),
 (43, 'alipay_privatekey', NULL),
-(44, 'alipay_publickey', NULL);
+(44, 'alipay_publickey', NULL),
+(45, 'keyproxy', 'proxy_key');
 
 -- --------------------------------------------------------
 

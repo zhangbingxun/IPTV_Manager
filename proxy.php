@@ -4,6 +4,10 @@ header('Content-Type: text/json;charset=UTF-8');
 require_once "config.php";
 $db = Config::getIntance();
 
+if (isset($_GET['now'])) {
+	echo (time());
+}
+
 if (isset($_GET['vid'])&&isset($_GET['time'])&&isset($_GET['token'])) {
 	$nowtime=time();
 	$vid=$_GET['vid'];
@@ -24,7 +28,6 @@ if (isset($_GET['vid'])&&isset($_GET['time'])&&isset($_GET['token'])) {
 		$url="http://news.tvb.com/live/$id?is_hd";
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_TIMEOUT, 5);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
 		$curlobj = curl_exec($curl);
@@ -61,7 +64,6 @@ if (isset($_GET['vid'])&&isset($_GET['time'])&&isset($_GET['token'])) {
 		$url="http://app.iptv234.com/iptv.php?act=play&tid=$tid&id=$id";
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_TIMEOUT, 5);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 10; ELE-AL00 Build/HUAWEIELE-AL00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/045130 Mobile Safari/537.36 MicroMessengeriptv VideoPlayer god/3.0.0 Html5Plus/1.0 (Immersed/29.411766)');
 		$curlobj = curl_exec($curl);

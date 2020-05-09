@@ -42,6 +42,20 @@ function echoJSON($category, $alisname, $psw) {
     } 
 } 
 
+if (isset($_GET['verify'])) {
+    $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
+    $token = $_GET['token'];
+    $time = $_GET['time'];
+    $nowtime = time();
+    if (abs($nowtime - $time) > 60) {
+        exit;
+    } else if ($token != md5($app_sign . $time)) {
+        exit;
+    }
+} else {
+    exit;
+}
+
 if (isset($_POST['data'])) {
     $obj = json_decode($_POST['data']);
     $region = $obj->region;
@@ -75,9 +89,8 @@ if (isset($_POST['data'])) {
             mysqli_free_result($result);
         } 
     } else {
-        $mid = 1000;
-        mysqli_free_result($result);
-    } 
+        exit;
+    }
     // 检测套餐是否存在，收视内容是否为空
     $result = $db->mQuery("select content from luo2888_meals where status=1 and id=$mid");
     if (mysqli_num_rows($result)) {
@@ -149,6 +162,7 @@ if (isset($_POST['data'])) {
         mysqli_free_result($result);
     } 
     $str = json_encode($contents, JSON_UNESCAPED_UNICODE);
+    //echo $str;
     $str = preg_replace('#null,#', '', $str);
     $str = stripslashes($str);
     $str = base64_encode(gzcompress($str));
@@ -167,7 +181,7 @@ if (isset($_POST['data'])) {
     $str = $coded . $encrypted;
     echo $str;
 } else {
-    exit();
+    exit;
 } 
 
 ?>

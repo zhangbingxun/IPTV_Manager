@@ -57,10 +57,10 @@ if (isset($_POST['login'])) {
         // status=999为永不到期
         $nowtime = time(); 
         // 没有mac禁止登陆
-	    if(strstr($mac,"获取地址失败") != false) {
-	        header('HTTP/1.1 403 Forbidden');
-	        exit();
-	    }
+        if(strstr($mac,"获取地址失败") != false) {
+            header('HTTP/1.1 403 Forbidden');
+            exit();
+        }
         // mac是否匹配
         if ($row = $db->mCheckRow("luo2888_users", "name,status,exp,deviceid,mac,model,meal", "where mac='$mac'")) {
             // 匹配成功
@@ -83,6 +83,10 @@ if (isset($_POST['login'])) {
             $db->mSet("luo2888_users", "region='$region',ip='$ip',lasttime=$nowtime", "where mac='$mac'"); 
         } else {
             // 用户验证失败，识别用户信息存入后台
+            /* if (strpos($region, '电信') !== false || strpos($region, '联通') !== false || strpos($region, '移动') !== false) {
+                $newuser= true;
+                goto cond;
+            } */
             $name = genName();
             $days = $db->mGet("luo2888_config", "value", "where name='trialdays'");
             if (empty($days)) {
@@ -109,9 +113,11 @@ if (isset($_POST['login'])) {
                 $status = 1;
             } 
         } 
+        cond:
         unset($row);
 
         $app_appname = $db->mGet("luo2888_config", "value", "where name='app_appname'");
+        $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
         $dataver = $db->mGet("luo2888_config", "value", "where name='dataver'");
         $appUrl = $db->mGet("luo2888_config", "value", "where name='appurl'");
         $appver = $db->mGet("luo2888_config", "value", "where name='appver'");
@@ -133,7 +139,7 @@ if (isset($_POST['login'])) {
         $tipuserexpired = '当前账号' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserexpired'");
         $tipuserforbidden = '当前账号' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserforbidden'");
         $url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
-        $dataurl = dirname($url) . "/data.php";
+        $dataurl = dirname($url) . "/data.php?" . "verify" . "&time=" . $nowtime . "&token=" . md5($app_sign . $nowtime);
 
         if ($needauthor == 0 || ($status2 == -999)) {
             $status = 999;
@@ -158,7 +164,12 @@ if (isset($_POST['login'])) {
             $dataurl = '';
             $appUrl = '';
         } 
-
+        
+        if ($newuser == true){
+            $status = -1;
+            $tipusernoreg= '禁止国内IP访问';
+        }
+        
         $result = $db->mQuery("SELECT name from luo2888_category where enable=1 and type='province' order by id");
         while ($row = mysqli_fetch_array($result)) {
             $arrprov[] = $row[0];
@@ -175,7 +186,7 @@ if (isset($_POST['login'])) {
         echo $encrypted;
     } 
 } else {
-    exit();
+    exit;
 } 
 
 ?>

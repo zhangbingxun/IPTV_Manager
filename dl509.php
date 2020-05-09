@@ -11,8 +11,6 @@
 // | 作者: KwanKaHo <kwankaho@luo2888.cn>                                 |
 // +----------------------------------------------------------------------+
 //
-require_once "config.php";
-$db = Config::getIntance();
 
 // 数据变量
 $dataurl = 'http://127.0.0.1:8118/dl.php';
@@ -43,38 +41,22 @@ function send_post($url, $post_data) {
     
 }
 
-if (isset($_GET['now'])) {
-    echo (time());
-    exit;
-}
-
 if (isset($_GET['act'])) {
 
     if ($_GET['act'] == 'play') {
-        $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
-        $key = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
+        
         $token = $_GET['token'];
-        $time = $_GET['time'];
         $line = $_GET['line'];
         $vid = $_GET['vid'];
         $tid = $_GET['tid'];
         $id = $_GET['id'];
-        $nowtime = time();
-        
-        if (abs($nowtime - $time) > 600) {
-            header('location:' . $failurl);
-            exit();
-        } else if ($token != md5($key . $time . "303543214" . $app_sign)) {
-            header('location:' . $failurl);
-            exit();
-        }
-        
         $data = json_encode(
             array(
                 'video' => $vid,
                 'tid' => $tid,
                 'id' => $id,
-                'line' => $line
+                'line' => $line,
+                'token' => $token
             )
         );
         
@@ -110,7 +92,6 @@ if (isset($_GET['act'])) {
             foreach($listobj as $channellist) {
                 if (is_array($channellist)) {
                     foreach($channellist as $channel) {
-                        $channel = preg_replace('#http://你的域名/文件名#', 'fmitv://tv', $channel);
                         echo $channel . "\n";
                     }
                 }

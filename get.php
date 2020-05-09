@@ -67,45 +67,94 @@ class Aes {
  * @param array $post_data post数据
  */
 function send_post($url, $post_data) {
-    $options = array('http' => array('method' => 'POST',
-            'header' => 'Content-type:application/x-www-form-urlencoded',
-            'content' => $postdata,
-            'timeout' => 15 * 60 // 超时时间（单位:s）
-            )
-        );
-    $context = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
-    return $result;
+   //初使化init方法
+   $curl = curl_init();
+   //指定URL
+   curl_setopt($curl, CURLOPT_URL, $url);
+   //设定请求后返回结果
+   curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+   //忽略证书
+   curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+   curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+   //HTTP头
+   curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded;charset=utf-8'));
+   //UA
+   curl_setopt($curl, CURLOPT_USERAGENT, 'MSIE');
+   //声明使用POST方式来进行发送
+   curl_setopt($curl, CURLOPT_POST, 1);
+   //POST数据
+   curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+   //发送请求
+   $output = curl_exec($curl);
+   //关闭curl
+   curl_close($curl);
+   //返回数据
+   return $output;
 } 
 
+/**
+ * 随机字符串
+ * @param int $len
+ * @return string
+ */
+function randomStr($len = 16)
+{
+    $chars = "1234567890abcdefghijklmnopqrstuvwxyz";
+    $shuffle = str_shuffle($chars);
+    $result = '';
+    for ($i=0;$i<$len;$i++){
+        $index = mt_rand(0,strlen($chars));
+        $result .= substr($shuffle,$index,1);
+    }
+    return $result;
+}
+
 // 配置
-$sig = 12315; //签名密码
-$appname = '潮汕人直播'; //软件名
-$packagename = 'com.vv.iptv'; //软件包名
-$url = 'http://itv.hsincs.site/yd'; // 后台地址
+if (isset($_GET['yjds'])) {
+    $sig = 12315; //签名密码
+    $appname = '有家电视'; //软件名
+    $packagename = 'com.lmtv.yjds'; //软件包名
+    $url = 'http://www.xinban.top'; // 后台地址
+}
+if (isset($_GET['zszb'])) {
+    $sig = 12315; //签名密码
+    $appname = '郑氏直播'; //软件名
+    $packagename = 'www.zszb.top'; //软件包名
+    $url = 'http://zhu2.crtv.zstv.top/zszb'; // 后台地址
+}
+if (isset($_GET['hqds'])) {
+    $sig = 16427; //签名密码
+    $appname = '环球电视'; //软件名
+    $packagename = 'com.vv.zfzb3'; //软件包名
+    $url = 'http://ab.chaoniu2020.cn/zf3'; // 后台地址
+}
 $key = md5($sig . $appname . $packagename . "AD80F93B542B");
 $key = md5($key . $appname . $packagename);
-$postdata = '"region":"境外","mac":"11:22:33:44:55:66","androidid":"1234567890abcdef","model":"Android x86","nettype":"保留地址","appname":"' . $appname . '"';
+$postdata = '"region":"","mac":"11:22:33:44:55:66","androidid":"'. randomStr() . '","model":"Android x86","nettype":"","appname":"' . $appname . '"';
 
 // 头部
-header("Content-Type:application/octet-stream;chartset=uft-8");
-header("Content-Disposition: attachment; filename=$appname.txt");
+header("Content-Type:text/plain;chartset=utf-8");
 
 // 登录
-$loginkey = substr($key, 5, 16);
-$login_post = 'login={' . $postdata . '}';
-$loginstr = send_post($url . '/login3.php', $login_post);
-$login = new Aes($loginkey);
-$loginjson = $login->decrypt($loginstr);
-$logindata = json_decode($loginjson, true);
-$randkey = $logindata['randkey'];
-$dataurl = $logindata['dataurl'];
+if (isset($_GET['login'])) {
+    $loginkey = substr($key, 5, 16);
+    $login_post = 'login={' . $postdata . '}';
+    $login = new Aes($loginkey);
+    $loginstr = send_post($url . '/login3.php', $login_post);
+    $loginjson = $login->decrypt($loginstr);
+    $logindata = json_decode($loginjson, true);
+    $randkey = $logindata['randkey'];
+    $dataurl = $logindata['dataurl'];
+} else {
+    $rand = rand(1, 9999999);
+    $randkey = md5($rand);
+}
 
 // 获取频道
+$data_post = 'data={' . $postdata . ',' . '"rand":"' . $randkey . '"' . '}';
 $datakey = md5($key . $randkey);
 $datakey = substr($datakey, 7, 16);
-$data_post = 'data={' . $postdata . ',' . '"rand":"' . $randkey . '"' . '}';
-$datastr = send_post($dataurl, $data_post);
+$datastr = send_post($url . '/data3.php', $data_post);
 $encrypted = substr($datastr, 128, strlen($datastr)-128);
 $encrypted = str_replace("y", "#", $encrypted);
 $encrypted = str_replace("t", "y", $encrypted);
@@ -123,7 +172,7 @@ foreach($channeldata as $catelist) {
     foreach($catelist as $channellist) {
         if (is_array($channellist)) {
             foreach($channellist as $channel) {
-                if (is_array($channel)) {
+                if (is_array($channel) && strstr($channel['source'][0],"sop://") == false) {
                     print_r($channel['name'] . ',' . $channel['source'][0] . "\n");
                     if (!empty($channel['source'][1])) {
                         print_r($channel['name'] . ',' . $channel['source'][1] . "\n");

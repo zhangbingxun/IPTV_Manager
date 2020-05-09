@@ -4,7 +4,7 @@ $dir=dirname(__FILE__);
 $dir=$dir.'/images';
 $files = glob("images/*.png");
 $pngs = array();
-$url='http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+$url='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 $url= dirname($url).'/';
 
 foreach ($files as $file) {

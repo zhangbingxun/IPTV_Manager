@@ -39,6 +39,7 @@ $ips = array(
     '103.145.39.149', // http_id=4 3m 2020-04
     '123.56.149.168', // http_id=5
     '114.67.203.190', // http_id=6
+    '198.44.188.193', // http_id=7
     '39.101.217.17', // proxy_id=1
     '47.114.56.181', // proxy_id=2
 );
@@ -94,7 +95,7 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     }
     
     if ($vid == 'utvhk') {
-        $obj = file_get_contents("http://miguapi.utvhk.com:18083/clt/publish/resource/UTV_NEW/playData.jsp?contentId=$id&nodeId=$id&rate=5&playerType=4&objType=LIVE");
+        $obj = file_get_contents("http://miguapi.utvhk.com:18083/clt/publish/resource/UTV_NEW/playData.jsp?contentId=$id&nodeId=$id&rate=5&playerType=4&objType=LIVE&nt=4");
         preg_match('/"url": "(.*?)"/i', $obj, $linkobj);
         $playurl = $linkobj[1];
     }
@@ -135,7 +136,7 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
         $curlobj = curl_exec($curl);
-        preg_match('/<source src="(.*?)"/i', $curlobj, $linkobj);
+        preg_match('/vdo_url = "(.*?)"/i', $curlobj, $linkobj);
         $playurl = $linkobj[1];
     }
     
@@ -150,6 +151,40 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         preg_match('/video-url="(.*?)"/i', $obj, $linkobj);
         if (empty($linkobj)){preg_match('/url: "(.*?)"/i', $obj, $linkobj);}
         $playurl = $linkobj[1];
+    }
+    
+    if ($vid == 'null') {
+        if (empty($line)) {
+            $linkurl = "http://hd.zhibo123.top/$id/playlist.m3u8";
+        } else if ($line == 1) {
+            $linkurl = "http://198.16.106.58:8278/$id/playlist.m3u8";
+        } 
+        $playurl = "playurl=" . $linkurl;
+    }
+    
+    if ($vid == 'iptv345') {
+        if (!empty($line)) {
+            $part = '&p=' . $line;
+        }
+        $url = "http://m.iptv345.com/";
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url . "?act=play&tid=$tid&id=$id");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
+        $curlobj = curl_exec($curl);
+        preg_match('/<option value="(.*?)"/i', $curlobj, $linkobj);
+        $linkurl = $linkobj[1] . $part;
+        $linkurl = preg_replace('#http://m.iptv789.com/player.m3u8#', 'http://play.ggiptv.com:13164/play.m3u8', $linkurl);
+        $linkurl = preg_replace('#http://m.iptv.com/player.m3u8#', 'http://play.ggiptv.com:13164/play.m3u8', $linkurl);
+        curl_setopt($curl, CURLOPT_URL, $linkurl);
+        curl_setopt($curl, CURLOPT_TIMEOUT,2); 
+        curl_setopt($curl, CURLOPT_NOBODY, 1);
+        curl_setopt($curl, CURLOPT_MAXREDIRS, 2);
+        curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_exec($curl);
+        $playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
+        curl_close($curl);
     }
     
     if ($vid == 'iptv2020') {
@@ -184,23 +219,43 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
             preg_match('/<option value="(.*?)"/i', $curlobj, $linkobj);
             $linkurl = $linkobj[1] . $part;
         }
-        if ($tid == 'bfiptv') {
-            $playurl = $linkurl;
+        curl_setopt($curl, CURLOPT_URL, $linkurl);
+        curl_setopt($curl, CURLOPT_TIMEOUT,2); 
+        curl_setopt($curl, CURLOPT_NOBODY, 1);
+        if (strstr($tid, "wintv") != false) {
+            curl_setopt($curl, CURLOPT_MAXREDIRS, 2);
         } else {
-            curl_setopt($curl, CURLOPT_URL, $linkurl);
-            curl_setopt($curl, CURLOPT_NOBODY, 1);
-            if (strstr($tid, "wintv") != false) {
-                curl_setopt($curl, CURLOPT_MAXREDIRS, 1);
-            } else {
-                curl_setopt($curl, CURLOPT_MAXREDIRS, 2);
-            }
-            curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
-            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-            curl_setopt($curl, CURLOPT_USERAGENT, 'Lavf/57.83.100');
-            curl_exec($curl);
-            $playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
-            curl_close($curl);
+            curl_setopt($curl, CURLOPT_MAXREDIRS, 2);
         }
+        curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Lavf/57.83.100');
+        curl_exec($curl);
+        $playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
+        curl_close($curl);
+    }
+    
+    if (strstr($vid, "lttv") != false) {
+        if ($vid == 'lttv'){
+            $url = "http://bbdd.228888888.xyz:8081/hls/$id.m3u8";
+        }
+        else if ($vid == 'lttv2'){
+            $url = "http://ddbb.228888888.xyz:8081/live/$id.m3u8";
+        }
+        else if ($vid == 'lttv3'){
+            $url = "http://bddb.228888888.xyz:8081/live/$id.m3u8";
+        }
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_NOBODY, 1);
+        curl_setopt($curl, CURLOPT_MAXREDIRS, 1);
+        curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Lavf/57.83.100');
+        curl_exec($curl);
+        $playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
+        curl_close($curl);
     }
     
 	if (strstr($playurl, "lctv") != false) {

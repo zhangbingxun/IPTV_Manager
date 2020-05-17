@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ERROR);
+
 require_once"aes.php";
 require_once "config.php";
 $db = Config::GetIntance();
@@ -57,7 +61,9 @@ if (isset($_GET['verify'])) {
 }
 
 if (isset($_POST['data'])) {
-    $obj = json_decode($_POST['data']);
+    $json  = $_POST['data'];
+    //$json = base64_decode($json);
+    $obj = json_decode($json);
     $region = $obj->region;
     $mac = $obj->mac;
     $androidid = $obj->androidid;
@@ -162,7 +168,7 @@ if (isset($_POST['data'])) {
         mysqli_free_result($result);
     } 
     $str = json_encode($contents, JSON_UNESCAPED_UNICODE);
-    //echo $str;
+    //echo $obj . "\n" . $str;
     $str = preg_replace('#null,#', '', $str);
     $str = stripslashes($str);
     $str = base64_encode(gzcompress($str));

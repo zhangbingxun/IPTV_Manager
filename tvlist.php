@@ -1,25 +1,70 @@
 <?php
 
-    if ($vid == 'iptv2020') {
-        $url = "https://player.ggiptv.com/iptv.php?tid=$tid";
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/x-www-form-urlencoded'
-        ));
-        curl_setopt($curl, CURLOPT_USERAGENT, 'MQQBrowser/6.2 TBS/045130 MicroMessengeriptv VideoPlayer god/3.0.0 Html5Plus/1.0 (Immersed/29.411766)');
-        $curlobj = curl_exec($curl);
-        preg_match_all('/token=(.*?)&tid=(.*?)&id=(.*?)" data-ajax="false">(.*?)</i', $curlobj, $channel);
-        $i = 0;
-        foreach ($channel[4] as &$channelname) {
-            $channelname = preg_replace('#凤凰卫视#', '凤凰', $channelname);
-            $channelname = preg_replace('#\(HD\)#', '', $channelname);
-            $channelname = preg_replace('# #', '', $channelname);
-            $channellist[] = $channelname . ",http://你的域名/文件名?act=play&vid=iptv2020&tid=$tid&id=" . $channel[3][$i];
-            $i++;
+    if (empty($vid)){
+        $channellist = array("
+            肥米TV节目源动态代理,KwanKaHo@luo2888.cn
+            QQ:625336209
+            
+            VID列表：
+                CIBN：cibn
+                荔枝网：grtn
+                天途云：tty
+                咪咕视频：migu
+                香港无线：tvb
+                香港有线：utvhk
+                龙腾TV：lttv
+                SmartTV(支持2线切换)：暂时下架
+                牛牛直播(支持多线切换)：nnzb
+                IPTV345(支持多线切换)：iptv345
+                IPTV2020(支持多线切换)：iptv2020
+        ");
+    }
+    
+    if ($vid == 'iptv345' || $vid == 'iptv2020') {
+        if (empty($tid)) {
+            $channellist = array('
+                肥米TV节目源动态代理,KwanKaHo@luo2888.cn
+                
+                TID列表：
+                    综合：itv
+                    体育：ty
+                    央视：ys
+                    卫视：ws
+                    北邮：bupt
+                    港澳台：gt
+                    港澳台新源：wintv123
+                    其他（国外）：other
+                    电影轮播：movie
+                    咪咕视频：migu
+                    北方云：bfiptv
+                    广西联通：ltiptv
+                    福建移动：fjitv
+                    湖北广电：hrtn
+                    黑龙江移动：hlitv
+                    天途云：tt
+                    珠江宽频：zjkp');
+            if ($vid == 'iptv345') { $channellist = preg_replace('#wintv123#', '不支持', $channellist); }
+        } else {
+            $url = "https://player.ggiptv.com/iptv.php?tid=$tid";
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/x-www-form-urlencoded'
+            ));
+            curl_setopt($curl, CURLOPT_USERAGENT, 'MQQBrowser/6.2 TBS/045130 MicroMessengeriptv VideoPlayer god/3.0.0 Html5Plus/1.0 (Immersed/29.411766)');
+            $curlobj = curl_exec($curl);
+            preg_match_all('/token=(.*?)&tid=(.*?)&id=(.*?)" data-ajax="false">(.*?)</i', $curlobj, $channel);
+            $i = 0;
+            foreach ($channel[4] as &$channelname) {
+                $channelname = preg_replace('#凤凰卫视#', '凤凰', $channelname);
+                $channelname = preg_replace('#\(HD\)#', '', $channelname);
+                $channelname = preg_replace('# #', '', $channelname);
+                $channellist[] = $channelname . ",http://你的域名/文件名?act=play&vid=$vid&tid=$tid&id=" . $channel[3][$i];
+                $i++;
+            }
         }
     }
     
@@ -142,6 +187,98 @@
         $channellist = array('
             晋中一台,http://你的域名/文件名?act=play&vid=pygd&id=006
             晋中二台,http://你的域名/文件名?act=play&vid=pygd&id=178
+        ');
+    }
+    
+    if ($vid == 'lttv') {
+        $channellist = array('
+            TVB翡翠,http://你的域名/文件名?act=play&vid=lttv&id=ch101
+            J2,http://你的域名/文件名?act=play&vid=lttv&id=ch102
+            无线财经,http://你的域名/文件名?act=play&vid=lttv&id=ch103
+            TVB明珠,http://你的域名/文件名?act=play&vid=lttv&id=ch104
+            无线新闻,http://你的域名/文件名?act=play&vid=lttv&id=ch201
+            TVB星河,http://你的域名/文件名?act=play&vid=lttv&id=ch105
+            星河国语,http://你的域名/文件名?act=play&vid=lttv&id=ch108
+            有线新闻,http://你的域名/文件名?act=play&vid=lttv&id=ch109
+            凤凰电影,http://你的域名/文件名?act=play&vid=lttv&id=ch110
+            thrill,http://你的域名/文件名?act=play&vid=lttv&id=ch112
+            TVB经典,http://你的域名/文件名?act=play&vid=lttv&id=ch113
+            卫视国际电影,http://你的域名/文件名?act=play&vid=lttv&id=ch111
+            NOW新闻,http://你的域名/文件名?act=play&vid=lttv&id=ch114
+            ViuTV,http://你的域名/文件名?act=play&vid=lttv&id=ch115
+            ViuTV6,http://你的域名/文件名?act=play&vid=lttv&id=ch116
+            有线财经,http://你的域名/文件名?act=play&vid=lttv&id=ch117
+            有线娱乐,http://你的域名/文件名?act=play&vid=lttv&id=ch118
+            有线18台,http://你的域名/文件名?act=play&vid=lttv&id=ch119
+            龙翔电影,http://你的域名/文件名?act=play&vid=lttv&id=ch301
+            纬来电影,http://你的域名/文件名?act=play&vid=lttv&id=ch302
+            东森洋片,http://你的域名/文件名?act=play&vid=lttv&id=ch303
+            卫视电影,http://你的域名/文件名?act=play&vid=lttv&id=ch304
+            星卫电影,http://你的域名/文件名?act=play&vid=lttv&id=ch305
+            美亚电影,http://你的域名/文件名?act=play&vid=lttv&id=ch306
+            卫视洋片,http://你的域名/文件名?act=play&vid=lttv&id=ch307
+            东森电影,http://你的域名/文件名?act=play&vid=lttv&id=ch308
+            龙华洋片,http://你的域名/文件名?act=play&vid=lttv&id=ch309
+            HBOHD,http://你的域名/文件名?act=play&vid=lttv&id=ch310
+            HBOHITS,http://你的域名/文件名?act=play&vid=lttv&id=ch311
+            HBOignature,http://你的域名/文件名?act=play&vid=lttv&id=ch312
+            HBOfamlly,http://你的域名/文件名?act=play&vid=lttv&id=ch313
+            中视,http://你的域名/文件名?act=play&vid=lttv&id=ch202
+            华视,http://你的域名/文件名?act=play&vid=lttv&id=ch203
+            民视,http://你的域名/文件名?act=play&vid=lttv&id=ch204
+            台视,http://你的域名/文件名?act=play&vid=lttv&id=ch205
+            CNN,http://你的域名/文件名?act=play&vid=lttv&id=ch315
+            寰宇新聞,http://你的域名/文件名?act=play&vid=lttv&id=ch211
+            TVBS新聞,http://你的域名/文件名?act=play&vid=lttv&id=ch215
+            东森新闻,http://你的域名/文件名?act=play&vid=lttv&id=ch217
+            中天新闻,http://你的域名/文件名?act=play&vid=lttv&id=zhongtianxw
+            国家地理,http://你的域名/文件名?act=play&vid=lttv&id=ch316
+            中天新闻,http://你的域名/文件名?act=play&vid=lttv2&id=tw101
+            台視新聞,http://你的域名/文件名?act=play&vid=lttv2&id=tw102
+            華視新聞,http://你的域名/文件名?act=play&vid=lttv2&id=tw103
+            TVBS新聞,http://你的域名/文件名?act=play&vid=lttv2&id=tw104
+            民視新聞,http://你的域名/文件名?act=play&vid=lttv2&id=tw105
+            东森新闻,http://你的域名/文件名?act=play&vid=lttv2&id=tw106
+            中視新聞,http://你的域名/文件名?act=play&vid=lttv2&id=tw107
+            TVBS,http://你的域名/文件名?act=play&vid=lttv2&id=tw108
+            三立財經,http://你的域名/文件名?act=play&vid=lttv2&id=tw109
+            非凡新聞,http://你的域名/文件名?act=play&vid=lttv2&id=tw110
+            东森财经,http://你的域名/文件名?act=play&vid=lttv2&id=tw111
+            东森亚洲新闻,http://你的域名/文件名?act=play&vid=lttv2&id=tw112
+            寰宇新聞2,http://你的域名/文件名?act=play&vid=lttv2&id=tw113
+            寰宇新聞,http://你的域名/文件名?act=play&vid=lttv2&id=tw114
+            壹新闻,http://你的域名/文件名?act=play&vid=lttv2&id=tw115
+            年代新闻,http://你的域名/文件名?act=play&vid=lttv2&id=tw116
+            三立新闻,http://你的域名/文件名?act=play&vid=lttv2&id=tw117
+            卫视电影台,http://你的域名/文件名?act=play&vid=lttv3&id=ws101
+            RHK31,http://你的域名/文件名?act=play&vid=lttv3&id=ws102
+            FOXHD,http://你的域名/文件名?act=play&vid=lttv3&id=ws104
+            FoxActionMovies,http://你的域名/文件名?act=play&vid=lttv3&id=ws105
+            FoxFamily,http://你的域名/文件名?act=play&vid=lttv3&id=ws106
+            FoxCrime,http://你的域名/文件名?act=play&vid=lttv3&id=ws107
+            FXHD,http://你的域名/文件名?act=play&vid=lttv3&id=ws108
+            天映频道,http://你的域名/文件名?act=play&vid=lttv3&id=ws109
+            天映经典,http://你的域名/文件名?act=play&vid=lttv3&id=ws110
+            八大综合,http://你的域名/文件名?act=play&vid=lttv3&id=ws121
+            八大第一,http://你的域名/文件名?act=play&vid=lttv3&id=ws122
+            八大戏剧,http://你的域名/文件名?act=play&vid=lttv3&id=ws123
+            三立综合,http://你的域名/文件名?act=play&vid=lttv3&id=ws124
+            三立都会,http://你的域名/文件名?act=play&vid=lttv3&id=ws125
+            三立戏剧,http://你的域名/文件名?act=play&vid=lttv3&id=ws126
+            三立台湾,http://你的域名/文件名?act=play&vid=lttv3&id=ws127
+            东森戏剧,http://你的域名/文件名?act=play&vid=lttv3&id=ws128
+            东森综合,http://你的域名/文件名?act=play&vid=lttv3&id=ws131
+            纬来戏剧,http://你的域名/文件名?act=play&vid=lttv3&id=ws132
+            纬来综合,http://你的域名/文件名?act=play&vid=lttv3&id=ws133
+            纬来育乐,http://你的域名/文件名?act=play&vid=lttv3&id=ws135
+            纬来日本,http://你的域名/文件名?act=play&vid=lttv3&id=ws136
+            緯來體育,http://你的域名/文件名?act=play&vid=lttv3&id=ws138
+            EYETV戏剧,http://你的域名/文件名?act=play&vid=lttv3&id=ws139
+            爱尔达影剧,http://你的域名/文件名?act=play&vid=lttv3&id=ws140
+            美食星球,http://你的域名/文件名?act=play&vid=lttv3&id=ws141
+            国家地理悠人,http://你的域名/文件名?act=play&vid=lttv3&id=ws143
+            国家地理野生,http://你的域名/文件名?act=play&vid=lttv3&id=ws145
+            动物星球,http://你的域名/文件名?act=play&vid=lttv3&id=ws151
         ');
     }
     
@@ -384,10 +521,10 @@
             北海公共,http://你的域名/文件名?act=play&vid=migu&id=653712657
             甘肃文化影视,http://你的域名/文件名?act=play&vid=migu&id=630641855
             CETV1,http://你的域名/文件名?act=play&vid=migu&id=649531772
+            CETV1,http://你的域名/文件名?act=play&vid=migu&id=649531734
             CETV2,http://你的域名/文件名?act=play&vid=migu&id=649532169
             CETV3,http://你的域名/文件名?act=play&vid=migu&id=649531756
             CETV4,http://你的域名/文件名?act=play&vid=migu&id=649531725
-            CETV1,http://你的域名/文件名?act=play&vid=migu&id=649531734
             欢笑剧场,http://你的域名/文件名?act=play&vid=migu&id=623674859
             黄金剧场,http://你的域名/文件名?act=play&vid=migu&id=625155140
             军旅剧场,http://你的域名/文件名?act=play&vid=migu&id=625643517
@@ -551,11 +688,11 @@
             长沙新闻综合频道,http://你的域名/文件名?act=play&vid=nnzb&tid=4&id=348
             东方电影频道,http://你的域名/文件名?act=play&vid=nnzb&tid=4&id=228
             # 港台 #
-            凤凰卫视中文台,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=100
-            凤凰卫视资讯台,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=99
-            凤凰卫视香港台,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=98
-            凤凰卫视电影台,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=97
-            凤凰卫视美洲台,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=96
+            凤凰中文,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=100
+            凤凰资讯,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=99
+            凤凰香港,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=98
+            凤凰电影,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=97
+            凤凰美洲,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=96
             Channel V,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=95
             香港卫视,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=93
             星空卫视,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=92
@@ -613,6 +750,274 @@
             卫视中文台,http://你的域名/文件名?act=play&vid=nnzb&tid=3&id=4
             # 国外 #
             俄罗斯红星台,http://你的域名/文件名?act=play&vid=nnzb&tid=5&id=118
+        ');
+    }
+    
+    if ($vid == 'null') {
+        $channellist = array('
+            # 港台 #
+            CCTV-1,http://你的域名/文件名?act=play&vid=smart&id=cctv1
+            CCTV-2,http://你的域名/文件名?act=play&vid=smart&id=cctv2
+            CCTV-4,http://你的域名/文件名?act=play&vid=smart&id=cctv4_twn
+            CCTV-4,http://你的域名/文件名?act=play&vid=smart&id=Cctv4
+            CCTV-5,http://你的域名/文件名?act=play&vid=smart&id=cctv5
+            CCTV-5Plus,http://你的域名/文件名?act=play&vid=smart&id=cctv5plus
+            CCTV-6,http://你的域名/文件名?act=play&vid=smart&id=cctv6
+            CCTV-7,http://你的域名/文件名?act=play&vid=smart&id=cctv7
+            CCTV-8,http://你的域名/文件名?act=play&vid=smart&id=cctv8hd
+            CCTV-9,http://你的域名/文件名?act=play&vid=smart&id=cctv9hd
+            CCTV-10,http://你的域名/文件名?act=play&vid=smart&id=cctv10hd
+            CCTV-11,http://你的域名/文件名?act=play&vid=smart&id=cctv11
+            CCTV-12,http://你的域名/文件名?act=play&vid=smart&id=cctv12
+            CCTV-13,http://你的域名/文件名?act=play&vid=smart&id=Ctv13
+            CCTV-14,http://你的域名/文件名?act=play&vid=smart&id=cctv14
+            CCTV-15,http://你的域名/文件名?act=play&vid=smart&id=cctv15
+            CGTN-1,http://你的域名/文件名?act=play&vid=smart&id=CGTN
+            CHC动作电影,http://你的域名/文件名?act=play&vid=smart&id=chcaction
+            CHC家庭影院,http://你的域名/文件名?act=play&vid=smart&id=chcfamily
+            CHC高清电影,http://你的域名/文件名?act=play&vid=smart&id=chchdmovie
+            中国电影,http://你的域名/文件名?act=play&vid=smart&id=chinamovie_twn
+            都市剧场,http://你的域名/文件名?act=play&vid=smart&id=moviehd_twn
+            新视觉HD,http://你的域名/文件名?act=play&vid=smart&id=xinshijue
+            怀旧剧场,http://你的域名/文件名?act=play&vid=smart&id=cctvclassic
+            高尔夫.网球,http://你的域名/文件名?act=play&vid=smart&id=gaoerfuwangqiu
+            足球风云,http://你的域名/文件名?act=play&vid=smart&id=fengyunzuqiu
+            中华美食,http://你的域名/文件名?act=play&vid=smart&id=foodnetwork_twn
+            北京卫视,http://你的域名/文件名?act=play&vid=smart&id=beijing
+            东方卫视,http://你的域名/文件名?act=play&vid=smart&id=dongfangweishi
+            湖南卫视,http://你的域名/文件名?act=play&vid=smart&id=Hunan
+            湖南卫视,http://你的域名/文件名?act=play&vid=smart&id=hunan_twn
+            江苏卫视,http://你的域名/文件名?act=play&vid=smart&id=Jiangsu
+            江苏卫视,http://你的域名/文件名?act=play&vid=smart&id=jiangsu_twn
+            浙江卫视,http://你的域名/文件名?act=play&vid=smart&id=Zhejiang
+            浙江卫视,http://你的域名/文件名?act=play&vid=smart&id=zhejiang_twn
+            重庆影视,http://你的域名/文件名?act=play&vid=smart&id=axn_twn
+            重庆卫视,http://你的域名/文件名?act=play&vid=smart&id=chongqingweishi
+            东南卫视,http://你的域名/文件名?act=play&vid=smart&id=fujian
+            南方卫视,http://你的域名/文件名?act=play&vid=smart&id=gdnanfang2
+            广东体育,http://你的域名/文件名?act=play&vid=smart&id=gdsports
+            广东体育,http://你的域名/文件名?act=play&vid=smart&id=guangdongsport
+            广东卫视,http://你的域名/文件名?act=play&vid=smart&id=guangdongmovie
+            广西卫视,http://你的域名/文件名?act=play&vid=smart&id=guangxi
+            天津卫视,http://你的域名/文件名?act=play&vid=smart&id=tianjinweishi
+            深圳卫视,http://你的域名/文件名?act=play&vid=smart&id=shenzhen
+            广东珠江,http://你的域名/文件名?act=play&vid=smart&id=zhujiang
+            珠江电影,http://你的域名/文件名?act=play&vid=smart&id=zhujiangmovie
+            湖北卫视,http://你的域名/文件名?act=play&vid=smart&id=hubei
+            江西卫视,http://你的域名/文件名?act=play&vid=smart&id=jiangxiweishi
+            凤凰资讯,http://你的域名/文件名?act=play&vid=smart&id=phoenixinfo_hd
+            凤凰中文,http://你的域名/文件名?act=play&vid=smart&id=phoenixtv_hd
+            凤凰香港,http://你的域名/文件名?act=play&vid=smart&id=hkphoenix_twn
+            翡翠台,http://你的域名/文件名?act=play&vid=smart&id=jade_twn
+            明珠台,http://你的域名/文件名?act=play&vid=smart&id=pearl_twn
+            无线新闻,http://你的域名/文件名?act=play&vid=smart&id=inews_twn
+            无线资讯,http://你的域名/文件名?act=play&vid=smart&id=j5_twn
+            有线新闻,http://你的域名/文件名?act=play&vid=smart&id=hkcnews_twn
+            星河频道,http://你的域名/文件名?act=play&vid=smart&id=tvbxinghe_twn
+            J2,http://你的域名/文件名?act=play&vid=smart&id=j2_twn
+            ViuTV,http://你的域名/文件名?act=play&vid=smart&id=viu_twn
+            ViuTV,http://你的域名/文件名?act=play&vid=smart&id=viu1_twn
+            ViuTV6,http://你的域名/文件名?act=play&vid=smart&id=viu6_twn
+            港台电视31,http://你的域名/文件名?act=play&vid=smart&id=rhk31_twn
+            港台电视32,http://你的域名/文件名?act=play&vid=smart&id=rhk32_twn
+            卫视电影,http://你的域名/文件名?act=play&vid=smart&id=xingwei_movie
+            卫视电影,http://你的域名/文件名?act=play&vid=smart&id=warnatv_twn
+            星空卫视,http://你的域名/文件名?act=play&vid=smart&id=xingkong
+            澳门莲花,http://你的域名/文件名?act=play&vid=smart&id=macaulotus
+            中视经典,http://你的域名/文件名?act=play&vid=smart&id=zhongshi_twn
+            中视新闻,http://你的域名/文件名?act=play&vid=smart&id=zhongshinews_twn
+            民视,http://你的域名/文件名?act=play&vid=smart&id=ftvhd_taiwan
+            民视新闻,http://你的域名/文件名?act=play&vid=smart&id=ftvnew_taiwan
+            民视台湾,http://你的域名/文件名?act=play&vid=smart&id=ftvtaiwan_twn
+            台视,http://你的域名/文件名?act=play&vid=smart&id=ttv_taiwan
+            台视新闻,http://你的域名/文件名?act=play&vid=smart&id=ttvnews_twn
+            华视,http://你的域名/文件名?act=play&vid=smart&id=ctshd_twn
+            华视HD,http://你的域名/文件名?act=play&vid=smart&id=zhongshihd_twn
+            公视,http://你的域名/文件名?act=play&vid=smart&id=ctv_taiwan
+            大爱,http://你的域名/文件名?act=play&vid=smart&id=daai_twn
+            采昌,http://你的域名/文件名?act=play&vid=smart&id=bosiunlimited_twn
+            采昌,http://你的域名/文件名?act=play&vid=smart&id=caichangmovie
+            年代新闻HD,http://你的域名/文件名?act=play&vid=smart&id=niandainews_twn
+            TVBSHD,http://你的域名/文件名?act=play&vid=smart&id=tvbs
+            TVBS欢乐HD,http://你的域名/文件名?act=play&vid=smart&id=tvbs_g
+            TVBS欢乐HD,http://你的域名/文件名?act=play&vid=smart&id=tvbshuanle_twn
+            TVBS新闻HD,http://你的域名/文件名?act=play&vid=smart&id=tvbs_n
+            八大戏剧,http://你的域名/文件名?act=play&vid=smart&id=badadrama
+            八大娱乐,http://你的域名/文件名?act=play&vid=smart&id=badaentertain
+            八大一台,http://你的域名/文件名?act=play&vid=smart&id=badafirst
+            八大综合,http://你的域名/文件名?act=play&vid=smart&id=badazhonghe
+            中天亚洲,http://你的域名/文件名?act=play&vid=smart&id=ctiasia_twn
+            中天亚洲,http://你的域名/文件名?act=play&vid=smart&id=ettvasia_twn
+            中天娱乐,http://你的域名/文件名?act=play&vid=smart&id=ctient
+            中天新闻,http://你的域名/文件名?act=play&vid=smart&id=ctinews
+            中天综合,http://你的域名/文件名?act=play&vid=smart&id=ctizhonghe
+            东森综合HD,http://你的域名/文件名?act=play&vid=smart&id=ettvzhonghe
+            东森财经,http://你的域名/文件名?act=play&vid=smart&id=ettvcaijing_twn
+            东森戏剧,http://你的域名/文件名?act=play&vid=smart&id=ettvdrama
+            东森电影,http://你的域名/文件名?act=play&vid=smart&id=ettvmovie
+            东森新闻,http://你的域名/文件名?act=play&vid=smart&id=ettvnews
+            东森新闻HD,http://你的域名/文件名?act=play&vid=smart&id=ettvnews1
+            东森戏剧HD,http://你的域名/文件名?act=play&vid=smart&id=ettvwestern
+            东森呦呦,http://你的域名/文件名?act=play&vid=smart&id=yoyo_twn
+            ELTA综合,http://你的域名/文件名?act=play&vid=smart&id=eltazhonghe_twn
+            ELTA影剧,http://你的域名/文件名?act=play&vid=smart&id=eltadrama_twn
+            ELTA体育1,http://你的域名/文件名?act=play&vid=smart&id=eltasport_twn
+            ELTA体育3,http://你的域名/文件名?act=play&vid=smart&id=eltasports3_twn
+            ELTA体育2,http://你的域名/文件名?act=play&vid=smart&id=eltayule_twn
+            晴天卡通,http://你的域名/文件名?act=play&vid=smart&id=jingtiancartoon_twn
+            晴天国际,http://你的域名/文件名?act=play&vid=smart&id=jingtianintl
+            晴天日本,http://你的域名/文件名?act=play&vid=smart&id=jingtianjapan
+            晴天电影,http://你的域名/文件名?act=play&vid=smart&id=jingtianmovie_twn
+            晴天影剧,http://你的域名/文件名?act=play&vid=smart&id=jingtianxiju
+            晴天映画,http://你的域名/文件名?act=play&vid=smart&id=jingtianyinghua_twn
+            晴天育乐,http://你的域名/文件名?act=play&vid=smart&id=jingtianyule
+            晴天戏剧,http://你的域名/文件名?act=play&vid=smart&id=jingyangxiju_twn
+            龙华动画,http://你的域名/文件名?act=play&vid=smart&id=lunghuaanimation_twn
+            龙华经典,http://你的域名/文件名?act=play&vid=smart&id=lunghuaclassic
+            龙华偶像,http://你的域名/文件名?act=play&vid=smart&id=lunghuaidol_twn
+            龙华影剧,http://你的域名/文件名?act=play&vid=smart&id=lunghuamovie_twn
+            龙华洋片,http://你的域名/文件名?act=play&vid=smart&id=lunghuawestern_twn
+            龙华戏剧,http://你的域名/文件名?act=play&vid=smart&id=lunghuaxiju_twn
+            龙祥电影,http://你的域名/文件名?act=play&vid=smart&id=lungxiangtime_twn
+            三立都会HD,http://你的域名/文件名?act=play&vid=smart&id=sanlidouhui
+            三立新闻HD,http://你的域名/文件名?act=play&vid=smart&id=sanlinews
+            三立台湾HD,http://你的域名/文件名?act=play&vid=smart&id=sanlitaiwan
+            三立戏剧,http://你的域名/文件名?act=play&vid=smart&id=sanlixiju
+            三立综合,http://你的域名/文件名?act=play&vid=smart&id=sanlizhonghe
+            壹综合,http://你的域名/文件名?act=play&vid=smart&id=onetvzonghe
+            壹新闻,http://你的域名/文件名?act=play&vid=smart&id=Nexttvnews
+            壹新闻HD,http://你的域名/文件名?act=play&vid=smart&id=onetvnews
+            环宇综合,http://你的域名/文件名?act=play&vid=smart&id=kuanyuhdzhonghe_twn
+            环宇财经,http://你的域名/文件名?act=play&vid=smart&id=kuanyubiz_twn
+            环宇新闻,http://你的域名/文件名?act=play&vid=smart&id=kuanyunews1
+            环宇新闻2,http://你的域名/文件名?act=play&vid=smart&id=videolandjapan_twn
+            纬来电影HD,http://你的域名/文件名?act=play&vid=smart&id=videolandmovie
+            纬来精彩HD,http://你的域名/文件名?act=play&vid=smart&id=videolandspecial_twn
+            纬来体育HD,http://你的域名/文件名?act=play&vid=smart&id=videolandsport_twn
+            纬来戏剧HD,http://你的域名/文件名?act=play&vid=smart&id=videolandxiju_twn
+            纬来育乐HD,http://你的域名/文件名?act=play&vid=smart&id=videolandyule
+            纬来综合HD,http://你的域名/文件名?act=play&vid=smart&id=videolandzhe_twn
+            华艺影剧,http://你的域名/文件名?act=play&vid=smart&id=hongjimovie_twn
+            美食星球,http://你的域名/文件名?act=play&vid=smart&id=chinesefoodnetwork
+            动物星球,http://你的域名/文件名?act=play&vid=smart&id=animalplanet_twn
+            亚洲旅游,http://你的域名/文件名?act=play&vid=smart&id=asiatravel_twn
+            国兴卫视,http://你的域名/文件名?act=play&vid=smart&id=guoxingweishi_twn
+            迪蔓日本,http://你的域名/文件名?act=play&vid=smart&id=mandijapan_twn
+            星卫娱乐,http://你的域名/文件名?act=play&vid=smart&id=starentertainment_twn
+            美亚电影,http://你的域名/文件名?act=play&vid=smart&id=meiyamovie_twn
+            好莱坞电影,http://你的域名/文件名?act=play&vid=smart&id=hollywoodmovies_twn
+            华纳电影,http://你的域名/文件名?act=play&vid=smart&id=weishimovie_twn
+            博斯高球1,http://你的域名/文件名?act=play&vid=smart&id=boomerang_twn
+            博斯高球2,http://你的域名/文件名?act=play&vid=smart&id=bosigolf1_twn
+            博斯高球2,http://你的域名/文件名?act=play&vid=smart&id=golf_twn
+            博斯运动2,http://你的域名/文件名?act=play&vid=smart&id=bosigolf2_twn
+            博斯运动1,http://你的域名/文件名?act=play&vid=smart&id=bosisport2_twn
+            博斯运动1,http://你的域名/文件名?act=play&vid=smart&id=skynews_twn
+            博斯网球,http://你的域名/文件名?act=play&vid=smart&id=bosisport_twn
+            博斯无限,http://你的域名/文件名?act=play&vid=smart&id=bositennis_twn
+            马来西亚体育1,http://你的域名/文件名?act=play&vid=smart&id=s_1365a3ea_1880
+            马来西亚体育1,http://你的域名/文件名?act=play&vid=smart&id=supersports1
+            马来西亚体育2,http://你的域名/文件名?act=play&vid=smart&id=s_a1133d50_1928
+            马来西亚体育2,http://你的域名/文件名?act=play&vid=smart&id=supersports2
+            马来西亚体育3,http://你的域名/文件名?act=play&vid=smart&id=s_f0a98bfa_1881
+            马来西亚体育3,http://你的域名/文件名?act=play&vid=smart&id=supersports3
+            马来西亚体育4,http://你的域名/文件名?act=play&vid=smart&id=s_6c4db083_1918
+            马来西亚体育4,http://你的域名/文件名?act=play&vid=smart&id=supersports4
+            天映频道,http://你的域名/文件名?act=play&vid=smart&id=Celestial1511
+            天映经典,http://你的域名/文件名?act=play&vid=smart&id=Celestial2
+            最爱电影,http://你的域名/文件名?act=play&vid=smart&id=sundance_twn
+            皇家足球,http://你的域名/文件名?act=play&vid=smart&id=truepre1_pat
+            皇家足球2,http://你的域名/文件名?act=play&vid=smart&id=truepre2_pat
+            新加坡5,http://你的域名/文件名?act=play&vid=smart&id=Channel5
+            新加坡8,http://你的域名/文件名?act=play&vid=smart&id=Channel8
+            CN卡通,http://你的域名/文件名?act=play&vid=smart&id=momo1_twn
+            E体育1,http://你的域名/文件名?act=play&vid=smart&id=golfchannel_twn
+            E体育2,http://你的域名/文件名?act=play&vid=smart&id=luxetv_twn
+            EVE旅游,http://你的域名/文件名?act=play&vid=smart&id=eyetvtravel_twn
+            EVE戏剧,http://你的域名/文件名?act=play&vid=smart&id=eyetvxiju_twn
+            History1,http://你的域名/文件名?act=play&vid=smart&id=history1hd_twn
+            History2,http://你的域名/文件名?act=play&vid=smart&id=history2hd_twn
+            ci,http://你的域名/文件名?act=play&vid=smart&id=ci_twn
+            cinemaworld,http://你的域名/文件名?act=play&vid=smart&id=cinemaworld_twn
+            cinemax,http://你的域名/文件名?act=play&vid=smart&id=cinemax_twn
+            cnbc,http://你的域名/文件名?act=play&vid=smart&id=cnbc_twn
+            cnn,http://你的域名/文件名?act=play&vid=smart&id=cnn_twn
+            DW,http://你的域名/文件名?act=play&vid=smart&id=dw_twn
+            BBC earth,http://你的域名/文件名?act=play&vid=smart&id=bbcearth
+            BBC earth,http://你的域名/文件名?act=play&vid=smart&id=bbcearthhd
+            BBC lifestyle,http://你的域名/文件名?act=play&vid=smart&id=bbcearthlifestyle
+            BBC news,http://你的域名/文件名?act=play&vid=smart&id=bbcnews_twn
+            HBOHD,http://你的域名/文件名?act=play&vid=smart&id=hbohd_twn
+            HBOhits,http://你的域名/文件名?act=play&vid=smart&id=hbohits_twn
+            HBOsignature,http://你的域名/文件名?act=play&vid=smart&id=hbosignature_twn
+            FOXHD,http://你的域名/文件名?act=play&vid=smart&id=foxfamily_twn
+            FOXaction,http://你的域名/文件名?act=play&vid=smart&id=foxaction_twn
+            discoverych,http://你的域名/文件名?act=play&vid=smart&id=discoverych_twn
+            eve,http://你的域名/文件名?act=play&vid=smart&id=discoveryeve_twn
+            discovery,http://你的域名/文件名?act=play&vid=smart&id=discoveryhd_twn
+            discoverysc,http://你的域名/文件名?act=play&vid=smart&id=discoverysc_twn
+            DMAX,http://你的域名/文件名?act=play&vid=smart&id=discoveryturbo_twn
+            discoverytwn,http://你的域名/文件名?act=play&vid=smart&id=discoverytwn_twn
+            junior,http://你的域名/文件名?act=play&vid=smart&id=disneyjunior_glo
+            disneytwn,http://你的域名/文件名?act=play&vid=smart&id=disneytwn_twn
+            disneyxd,http://你的域名/文件名?act=play&vid=smart&id=disneyxd_glo
+            CBeedies,http://你的域名/文件名?act=play&vid=smart&id=diva_twn
+            Ohk,http://你的域名/文件名?act=play&vid=smart&id=Ohk
+            Ria,http://你的域名/文件名?act=play&vid=smart&id=Ria
+            SetOne,http://你的域名/文件名?act=play&vid=smart&id=SetOne
+            TVN,http://你的域名/文件名?act=play&vid=smart&id=TVN
+            TVN,http://你的域名/文件名?act=play&vid=smart&id=tvn_twn
+            Warna,http://你的域名/文件名?act=play&vid=smart&id=Warna
+            Warna,http://你的域名/文件名?act=play&vid=smart&id=Warner_backup
+            abcnews,http://你的域名/文件名?act=play&vid=smart&id=abcnews_glo
+            aljazeera,http://你的域名/文件名?act=play&vid=smart&id=aljazeera_twn
+            aod,http://你的域名/文件名?act=play&vid=smart&id=aod361_twn
+            afn,http://你的域名/文件名?act=play&vid=smart&id=asiafood_twn
+            ass4,http://你的域名/文件名?act=play&vid=smart&id=ass4_gloyk1511
+            babyfirst,http://你的域名/文件名?act=play&vid=smart&id=babyfirst_twn
+            babytv,http://你的域名/文件名?act=play&vid=smart&id=babytv_twn
+            bloomberg,http://你的域名/文件名?act=play&vid=smart&id=bloomberg_twn
+            ANIMAX,http://你的域名/文件名?act=play&vid=smart&id=cartoonnetwork_twn
+            e,http://你的域名/文件名?act=play&vid=smart&id=e_twn
+            fashiontv,http://你的域名/文件名?act=play&vid=smart&id=fashiontv_twn
+            FOX3,http://你的域名/文件名?act=play&vid=smart&id=foxhd_twn
+            foxsport,http://你的域名/文件名?act=play&vid=smart&id=foxsport_twn
+            france24,http://你的域名/文件名?act=play&vid=smart&id=france24_twn
+            FXHD,http://你的域名/文件名?act=play&vid=smart&id=fxhd_twn
+            NOW,http://你的域名/文件名?act=play&vid=smart&id=fyi_twn
+            lifetime,http://你的域名/文件名?act=play&vid=smart&id=lifetime_glo
+            mezzo,http://你的域名/文件名?act=play&vid=smart&id=mezzolive_twn
+            MSNBC,http://你的域名/文件名?act=play&vid=smart&id=msnbc_glo
+            MTV,http://你的域名/文件名?act=play&vid=smart&id=mtvlive_twn
+            MTVTW,http://你的域名/文件名?act=play&vid=smart&id=mtvtaiwan_twn
+            MTVMG,http://你的域名/文件名?act=play&vid=smart&id=mtvusa_glo
+            KIDS,http://你的域名/文件名?act=play&vid=smart&id=mykids_twn
+            natgeohd,http://你的域名/文件名?act=play&vid=smart&id=natgeohd_twn
+            natgeopeople,http://你的域名/文件名?act=play&vid=smart&id=natgeopeople_twn
+            natgeowild,http://你的域名/文件名?act=play&vid=smart&id=natgeowild_twn
+            NBN,http://你的域名/文件名?act=play&vid=smart&id=nbausa_glo
+            nbc_glo,http://你的域名/文件名?act=play&vid=smart&id=nbc_glo
+            nbcgolf,http://你的域名/文件名?act=play&vid=smart&id=nbcgolf_glo
+            nbcsn,http://你的域名/文件名?act=play&vid=smart&id=nbcsn_glo
+            nickjr,http://你的域名/文件名?act=play&vid=smart&id=nickelodeon_twn
+            nickjr,http://你的域名/文件名?act=play&vid=smart&id=nickjr_twn
+            OHK,http://你的域名/文件名?act=play&vid=smart&id=ohk_twn
+            outdoorsports,http://你的域名/文件名?act=play&vid=smart&id=outdoorsports_twn
+            russiantime,http://你的域名/文件名?act=play&vid=smart&id=russiantime_twn
+            SMART,http://你的域名/文件名?act=play&vid=smart&id=smartknowledge
+            OEN,http://你的域名/文件名?act=play&vid=smart&id=sonyhd_twn
+            syfy,http://你的域名/文件名?act=play&vid=smart&id=syfy_glo
+            253,http://你的域名/文件名?act=play&vid=smart&id=thethao_viet
+            TLC,http://你的域名/文件名?act=play&vid=smart&id=tlcasia_twn
+            TLC,http://你的域名/文件名?act=play&vid=smart&id=travelchannel_twn
+            PGTV,http://你的域名/文件名?act=play&vid=smart&id=travelch_glo
+            261,http://你的域名/文件名?act=play&vid=smart&id=truepre3_pat
+            262,http://你的域名/文件名?act=play&vid=smart&id=truepre4_pat
+            263,http://你的域名/文件名?act=play&vid=smart&id=truepre5_pat
+            TNT,http://你的域名/文件名?act=play&vid=smart&id=trutv_glo
+            267,http://你的域名/文件名?act=play&vid=smart&id=tvbcaijing_twn
+            WWE,http://你的域名/文件名?act=play&vid=smart&id=weishiwestern_twn
+            288,http://你的域名/文件名?act=play&vid=smart&id=wwe_twn
         ');
     }
 ?>

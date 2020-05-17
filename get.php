@@ -110,11 +110,11 @@ function randomStr($len = 16)
 }
 
 // 配置
-if (isset($_GET['yjds'])) {
-    $sig = 12315; //签名密码
-    $appname = '有家电视'; //软件名
-    $packagename = 'com.lmtv.yjds'; //软件包名
-    $url = 'http://www.xinban.top'; // 后台地址
+if (isset($_GET['dzzb'])) {
+    $sig = 14463; //签名密码
+    $appname = '大众直播'; //软件名
+    $packagename = 'com.iptv.dzzb'; //软件包名
+    $url = 'http://zhibo123.top/'; // 后台地址
 }
 if (isset($_GET['zszb'])) {
     $sig = 12315; //签名密码
@@ -122,11 +122,11 @@ if (isset($_GET['zszb'])) {
     $packagename = 'www.zszb.top'; //软件包名
     $url = 'http://zhu2.crtv.zstv.top/zszb'; // 后台地址
 }
-if (isset($_GET['hqds'])) {
-    $sig = 16427; //签名密码
-    $appname = '环球电视'; //软件名
-    $packagename = 'com.vv.zfzb3'; //软件包名
-    $url = 'http://ab.chaoniu2020.cn/zf3'; // 后台地址
+if (isset($_GET['qqds'])) {
+    $sig = 12315; //签名密码
+    $appname = '全球电视'; //软件名
+    $packagename = 'com.quanqiu'; //软件包名
+    $url = 'http://47.56.251.109/iptv'; // 后台地址
 }
 $key = md5($sig . $appname . $packagename . "AD80F93B542B");
 $key = md5($key . $appname . $packagename);
@@ -154,7 +154,12 @@ if (isset($_GET['login'])) {
 $data_post = 'data={' . $postdata . ',' . '"rand":"' . $randkey . '"' . '}';
 $datakey = md5($key . $randkey);
 $datakey = substr($datakey, 7, 16);
+if (isset($_GET['login'])) {
+$datastr = send_post($dataurl, $data_post);
+$datastr = str_replace("A9SZzkKb5bJKldYrCBa3", "", $datastr);
+} else {
 $datastr = send_post($url . '/data3.php', $data_post);
+}
 $encrypted = substr($datastr, 128, strlen($datastr)-128);
 $encrypted = str_replace("y", "#", $encrypted);
 $encrypted = str_replace("t", "y", $encrypted);

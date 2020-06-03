@@ -46,20 +46,6 @@ function echoJSON($category, $alisname, $psw) {
     } 
 } 
 
-if (isset($_GET['verify'])) {
-    $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
-    $token = $_GET['token'];
-    $time = $_GET['time'];
-    $nowtime = time();
-    if (abs($nowtime - $time) > 60) {
-        exit;
-    } else if ($token != md5($app_sign . $time)) {
-        exit;
-    }
-} else {
-    exit;
-}
-
 if (isset($_POST['data'])) {
     $json  = $_POST['data'];
     //$json = base64_decode($json);
@@ -71,6 +57,17 @@ if (isset($_POST['data'])) {
     $nettype = $obj->nettype;
     $appname = $obj->appname;
     $randkey = $obj->rand;
+
+    if (isset($_GET['token'])) {
+        $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
+        $token = $_GET['token'];
+        if ($token != md5($app_sign . $randkey)) {
+            exit;
+        }
+    } else {
+        exit;
+    }
+
     if (strpos($region, '中国') !== false) {
         $region = "北京";
     } 

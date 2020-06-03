@@ -31,23 +31,25 @@ function GetIP() {
 $remote = GetIP();
 $ips = array(
     '127.0.0.1',
-    '132.232.115.61', // Me
+    '149.129.98.202', // Me
     '140.143.146.222', // http_id=2
-    '103.145.38.239', // http_id=2
     '103.133.179.97', // http_id=2
+    '23.83.239.54', // http_id=2
     '149.129.75.149', // http_id=3 3m 2020-04
     '103.145.39.149', // http_id=4 3m 2020-04
     '123.56.149.168', // http_id=5
     '114.67.203.190', // http_id=6
     '198.44.188.193', // http_id=7
+    '111.230.178.212', // http_id=8 3m 2020-06
+    '113.87.129.140', // http_id=8 3m 2020-06
     '39.101.217.17', // proxy_id=1
     '47.114.56.181', // proxy_id=2
 );
 
 $banips = array(
     '140.143.146.222', // http_id=2
-    '103.145.38.239', // http_id=2
     '103.133.179.97', // http_id=2
+    '23.83.239.54', // http_id=2
 );
 
 if (in_array($remote,$ips) == false) {
@@ -81,17 +83,32 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $id = $_GET['id'];
     }
 
+    if ($vid == 'bili') {
+        $obj = file_get_contents("http://hk.luo2888.cn:8118/bilibili.php?id=$id");
+        $playurl = 'https://cn-hbxy-cmcc-live-01.live-play.acgvideo.com/live-bvc/live_' . $obj . '.m3u8';
+    }
+
     if ($vid == 'cibn') {
         $url = "http://api.epg2.cibn.cc/v1/loopChannelList?epgId=1000";
         $obj = file_get_contents($url);
         $channeldata = json_decode($obj, true);
         $playurl = $channeldata['data']['channelList'][$id]['m3u8'];
     }
+
+    if ($vid == 'douyu') {
+        $json =  file_get_contents("https://web.sinsyth.com/lxapi/douyujx.x?roomid=$id");
+        preg_match('/\/live\\\\\/(.*?)_2000/i', $json, $link);
+        $playurl = 'http://tx2play1.douyucdn.cn/live/' . $link[1] . '.m3u8';
+    }
     
     if ($vid == 'migu') {
-        $obj = file_get_contents("http://webapi.miguvideo.com/gateway/playurl/v3/play/playurl?contId=$id&rateType=4");
-        preg_match('/"url":"(.*?)"/i', $obj, $linkobj);
-        $playurl = $linkobj[1];
+        $playurl = file_get_contents("http://www.luo2888.cn/migu.php?id=$id");
+        $playurl = preg_replace('#hlsmgsplive.miguvideo.com:8080#', 'mgsp.live.miguvideo.com:8088', $playurl);
+    }
+    
+    if ($vid == 'luo2888') {
+        $playurl = file_get_contents("http://hk.luo2888.cn:8118/channels/$id");
+        //$playurl = preg_replace('#m3u8#', 'flv', $playurl);
     }
     
     if ($vid == 'utvhk') {
@@ -100,6 +117,26 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $playurl = $linkobj[1];
     }
     
+    if ($vid == 'nowtv') {
+        $obj = file_get_contents("https://news.now.com/mobile/live");
+        preg_match('/url: "(.*?)"/i', $obj, $linkobj);
+        $json = file_get_contents($linkobj[1] . "?mode=prod&audioCode=&format=HLS&channelno=$id");
+        $urlobj = json_decode($json,true);
+        $playurl = $urlobj['asset']['hls']['adaptive']['0'];
+    }
+
+    if ($vid == 'fhds') {
+        $ids = array(
+                    "fhzx"=>"/live/pin_720p",
+                    "fhzh"=>"/live/pcc_720p",
+                    "fhhk"=>"/live/phk_720p",
+        );
+        $hexString = dechex(time()+1800);
+        $substring = $ids[$id];
+        $str2 = "obb9Lxyv5C".$substring.$hexString;
+        $playurl = 'http://qlive.fengshows.cn'.$ids[$id].'.flv?txSecret='.md5($str2).'&txTime='.$hexString;
+    }
+
     if ($vid == 'tty') {
         $token_access_url = "http://access.ttcatv.tv/account/login?accounttype=2&deviceno=12&isforce=1&pwd=96e79218965eb72c92a549dd5a330112&devicetype=3&account=TF0P0623XL9ACAN5";
         $res = file_get_contents($token_access_url);
@@ -116,6 +153,19 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $playurl = "http://httpdvb.slave.pygdzhcs.com:13164/playurl?playtype=live&protocol=http&accesstoken=" . $access_token . "&programid=4200000" . $id . "&playtoken=ABCDEFGHI";
     }
     
+    if ($vid == 'huya') {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "https://www.huya.com/$id");
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
+        $curlobj = curl_exec($curl);
+        preg_match('/hasvedio: \'\/\/(.*?)\?/i', $curlobj, $linkobj);
+        $playurl = 'http://' . $linkobj[1];
+    }
+
     if ($vid == 'grtn') {
         $url = "http://www.gdtv.cn/m2o/player/channel_xml.php?id=$id";
         $curl = curl_init();
@@ -141,9 +191,6 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     }
     
     if ($vid == 'nnzb') {
-        if (in_array($remote,$banips) != false) {
-            exit;
-        }
         if (empty($line)) {
             $line = 0;
         }
@@ -152,14 +199,74 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         if (empty($linkobj)){preg_match('/url: "(.*?)"/i', $obj, $linkobj);}
         $playurl = $linkobj[1];
     }
-    
-    if ($vid == 'null') {
-        if (empty($line)) {
-            $linkurl = "http://hd.zhibo123.top/$id/playlist.m3u8";
-        } else if ($line == 1) {
-            $linkurl = "http://198.16.106.58:8278/$id/playlist.m3u8";
-        } 
-        $playurl = "playurl=" . $linkurl;
+
+    if ($vid=='mltv') {
+        $sig=12315;
+        $key=12315;
+        $time=time();
+        $ids = array(
+                    "1"=>"hkyx",
+        );
+        $sign = md5($key.$time."303543214".$sig);
+        $url = '47.56.251.109/iptv/api/' . $ids[$tid] . '.php?id=' . $id . '&t=' . $time . '&sign=' . $sign;
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_NOBODY, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 1); 
+        curl_setopt($curl, CURLOPT_MAXREDIRS, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'MITV');
+        curl_exec($curl);
+        $playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
+    }
+
+    if ($vid == 'youtube') {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, 'https://www.youtube.com/watch?v=' . $id);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36");
+        curl_setopt($curl, CURLOPT_REFERER, "https://www.youtube.com/");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $string = curl_exec($curl);
+        
+        $hlsManifestUrl = '/,\\\\"hlsManifestUrl\\\\":\\\\"(.*?)\\\\"/m';
+        preg_match_all($hlsManifestUrl, $string, $matches, PREG_PATTERN_ORDER, 0);
+        
+        $var1=$matches[1][0];
+        $var1=str_replace("\/", "/", $var1);
+        
+        curl_setopt($curl, CURLOPT_URL, $var1);
+        $man = curl_exec($curl);
+        /*
+         96 = 1920x1080 
+         95 = 1280x720
+         94 = 854x480
+         93 = 640x360
+        */
+        preg_match_all('/(https:\/.*\/95\/.*index.m3u8)/U',$man,$matches, PREG_PATTERN_ORDER);
+        $playurl=$matches[1][0];
+    }
+
+    if ($vid == 'longtv') {
+        $curl = curl_init();
+        logined:
+        curl_setopt($curl, CURLOPT_URL, 'http://sh.woaizhuguo.cn/news/view/id/' . $id);
+        curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_COOKIE , 'PHPSESSID=abcdefghijklmnopqrstuvwxyz');
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Mobile Safari/537.36');
+        $listobj = curl_exec($curl);
+        preg_match('/<video  src="(.*?)"/i', $listobj, $linkobj);
+        if (empty($linkobj)){
+            curl_setopt($curl, CURLOPT_URL, 'http://sh.woaizhuguo.cn/login/mlogin');
+            curl_setopt($curl, CURLOPT_POST, 1);  //声明使用POST方式来进行发送
+            curl_setopt($curl, CURLOPT_POSTFIELDS, 'uname=13651761912&upass=112233');  //POST数据
+            curl_exec($curl);
+            goto logined;
+        }
+        $playurl = $linkobj[1];
+        curl_close($curl);
     }
     
     if ($vid == 'iptv345') {
@@ -212,27 +319,31 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         }
         curl_setopt($curl, CURLOPT_URL, $url . "?act=play&token=$token&tid=$tid&id=$id");
         $curlobj = curl_exec($curl);
-        if (strstr($curlobj, "src1589") != false) {
+        if (strstr($curlobj, "src1591") != false) {
             preg_match('/var src(.*)="(.*)"/i', $curlobj, $linkobj);
             $linkurl = $linkobj[2] . $part;
         } else {
             preg_match('/<option value="(.*?)"/i', $curlobj, $linkobj);
             $linkurl = $linkobj[1] . $part;
         }
-        curl_setopt($curl, CURLOPT_URL, $linkurl);
-        curl_setopt($curl, CURLOPT_TIMEOUT,2); 
-        curl_setopt($curl, CURLOPT_NOBODY, 1);
-        if (strstr($tid, "wintv") != false) {
-            curl_setopt($curl, CURLOPT_MAXREDIRS, 2);
+        if ($tid == 'bfiptv') {
+            $playurl = $linkurl;
         } else {
-            curl_setopt($curl, CURLOPT_MAXREDIRS, 2);
+            curl_setopt($curl, CURLOPT_URL, $linkurl);
+            curl_setopt($curl, CURLOPT_TIMEOUT,2); 
+            curl_setopt($curl, CURLOPT_NOBODY, 1);
+            if (strstr($tid, "wintv") != false) {
+                curl_setopt($curl, CURLOPT_MAXREDIRS, 1);
+            } else {
+                curl_setopt($curl, CURLOPT_MAXREDIRS, 2);
+            }
+            curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
+            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($curl, CURLOPT_USERAGENT, 'Lavf/57.83.100');
+            curl_exec($curl);
+            $playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
+            curl_close($curl);
         }
-        curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Lavf/57.83.100');
-        curl_exec($curl);
-        $playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
-        curl_close($curl);
     }
     
     if (strstr($vid, "lttv") != false) {
@@ -249,16 +360,15 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_NOBODY, 1);
-        curl_setopt($curl, CURLOPT_MAXREDIRS, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 15); 
         curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($curl, CURLOPT_USERAGENT, 'Lavf/57.83.100');
         curl_exec($curl);
         $playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
-        curl_close($curl);
     }
     
-	if (strstr($playurl, "lctv") != false) {
+	if (strstr($playurl, "lctv") != false || strstr($playurl, "starray") != false) {
 	    $playurl = null;
 	}
 	

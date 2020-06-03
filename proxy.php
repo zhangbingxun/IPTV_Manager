@@ -15,8 +15,8 @@ require_once "config.php";
 $db = Config::getIntance();
 
 // 数据变量
-$dataurl = 'http://127.0.0.1:8118/dl.php';
-$failurl = 'http://tv.luo2888.cn/fmitv.mp4';
+$dataurl = 'http://localhost:8118/dl.php';  //代理API地址
+$failurl = 'http://tv.luo2888.cn/fmitv.mp4'; //链接失效视频
 
 /**
  * 发送post请求
@@ -48,13 +48,14 @@ if (isset($_GET['now'])) {
     exit;
 }
 
-if (isset($_GET['act'])) {
+if (isset($_GET['play']) || isset($_GET['list'])) {
 
-    if ($_GET['act'] == 'play') {
+    if (isset($_GET['play'])) {
         $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
         $key = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
         $token = $_GET['token'];
         $time = $_GET['time'];
+        $vkey = $_GET['key'];
         $line = $_GET['line'];
         $vid = $_GET['vid'];
         $tid = $_GET['tid'];
@@ -74,7 +75,8 @@ if (isset($_GET['act'])) {
                 'video' => $vid,
                 'tid' => $tid,
                 'id' => $id,
-                'line' => $line
+                'line' => $line,
+                'token' => $vkey
             )
         );
         
@@ -91,7 +93,7 @@ if (isset($_GET['act'])) {
         
     }
 
-    else if ($_GET['act'] == 'list') {
+    else if (isset($_GET['list'])) {
         
         $vid = $_GET['vid'];
         $tid = $_GET['tid'];
@@ -111,6 +113,7 @@ if (isset($_GET['act'])) {
                 if (is_array($channellist)) {
                     foreach($channellist as $channel) {
                         $channel = preg_replace('#http://你的域名/文件名#', 'fmitv://tv', $channel);
+                        $channel = preg_replace('#token=#', 'key=', $channel);
                         echo $channel . "\n";
                     }
                 }

@@ -69,26 +69,18 @@ class Aes {
 function send_post($url, $post_data) {
    //初使化init方法
    $curl = curl_init();
-   //指定URL
    curl_setopt($curl, CURLOPT_URL, $url);
-   //设定请求后返回结果
    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-   //忽略证书
    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-   //HTTP头
-   curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded;charset=utf-8'));
-   //UA
+   //curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded;charset=utf-8'));
    curl_setopt($curl, CURLOPT_USERAGENT, 'MSIE');
-   //声明使用POST方式来进行发送
+   curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
+   curl_setopt($curl, CURLOPT_TIMEOUT, 10);
    curl_setopt($curl, CURLOPT_POST, 1);
-   //POST数据
    curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
-   //发送请求
    $output = curl_exec($curl);
-   //关闭curl
    curl_close($curl);
-   //返回数据
    return $output;
 } 
 
@@ -116,17 +108,23 @@ if (isset($_GET['dzzb'])) {
     $packagename = 'com.iptv.dzzb'; //软件包名
     $url = 'http://zhibo123.top/'; // 后台地址
 }
-if (isset($_GET['zszb'])) {
-    $sig = 12315; //签名密码
-    $appname = '郑氏直播'; //软件名
-    $packagename = 'www.zszb.top'; //软件包名
-    $url = 'http://zhu2.crtv.zstv.top/zszb'; // 后台地址
+if (isset($_GET['hk168'])) {
+    $sig = 16123; //签名密码
+    $appname = '华凯超视觉TV'; //软件名
+    $packagename = 'com.lt.hk168'; //软件包名
+    $url = 'http://tv668.club/hk666'; // 后台地址
 }
 if (isset($_GET['qqds'])) {
     $sig = 12315; //签名密码
     $appname = '全球电视'; //软件名
     $packagename = 'com.quanqiu'; //软件包名
     $url = 'http://47.56.251.109/iptv'; // 后台地址
+}
+if (isset($_GET['pszb'])) {
+    $sig = 13838; //签名密码
+    $appname = '普視直播'; //软件名
+    $packagename = 'world.live.com'; //软件包名
+    $url = 'http://pv.lztv.live/live'; // 后台地址
 }
 $key = md5($sig . $appname . $packagename . "AD80F93B542B");
 $key = md5($key . $appname . $packagename);
@@ -177,7 +175,7 @@ foreach($channeldata as $catelist) {
     foreach($catelist as $channellist) {
         if (is_array($channellist)) {
             foreach($channellist as $channel) {
-                if (is_array($channel) && strstr($channel['source'][0],"sop://") == false) {
+                if (is_array($channel) && strstr($channel['source'][0],"#sop://") == false) {
                     print_r($channel['name'] . ',' . $channel['source'][0] . "\n");
                     if (!empty($channel['source'][1])) {
                         print_r($channel['name'] . ',' . $channel['source'][1] . "\n");

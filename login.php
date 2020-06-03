@@ -139,7 +139,7 @@ if (isset($_POST['login'])) {
         $tipuserexpired = '当前账号' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserexpired'");
         $tipuserforbidden = '当前账号' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserforbidden'");
         $url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
-        $dataurl = dirname($url) . "/data.php?" . "verify" . "&time=" . $nowtime . "&token=" . md5($app_sign . $nowtime);
+        $dataurl = dirname($url) . "/data.php?token=" . md5($app_sign . $randkey);
 
         if ($needauthor == 0 || ($status2 == -999)) {
             $status = 999;

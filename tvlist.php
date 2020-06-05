@@ -1,1138 +1,150 @@
 <?php
 
-    if (empty($vid)){
-        $channellist = array("
+if (empty($vid)){
+    $channellist = array("
+        肥米TV节目源动态代理,KwanKaHo@luo2888.cn
+        QQ:625336209
+        
+        VID列表：
+            CIBN：cibn
+            荔枝网：grtn
+            天途云：tty
+            央视频：ysp
+            咪咕视频：migu
+            香港无线：tvb
+            香港有线：utvhk
+            B站直播：bili
+            斗鱼直播：douyu
+            虎牙直播：huya
+            龙腾TV：lttv
+            平遥广电：pygd
+            凤凰电视：fhds
+            肥米TV(香港网络)：fmitv
+            香港NowTV(限制IP)：nowtv
+            YouTube(仅限境外)：youtube
+            牛牛直播(支持多线切换)：nnzb
+            IPTV345(支持多线切换)：iptv345
+            IPTV2020(支持多线切换)：iptv2020
+    ");
+}
+
+else if ($vid == 'iptv345' || $vid == 'iptv2020') {
+    if (empty($tid)) {
+        $channellist = array('
             肥米TV节目源动态代理,KwanKaHo@luo2888.cn
-            QQ:625336209
             
-            VID列表：
-                CIBN：cibn
-                荔枝网：grtn
-                天途云：tty
+            TID列表：
+                综合：itv
+                体育：ty
+                央视：ys
+                卫视：ws
+                北邮：bupt
+                港澳台：gt
+                港澳台新源：wintv123
+                其他（国外）：other
+                电影轮播：movie
                 咪咕视频：migu
-                香港无线：tvb
-                香港有线：utvhk
-                B站直播：bili
-                斗鱼直播：douyu
-                虎牙直播：huya
-                龙腾TV：lttv
-                平遥广电：pygd
-                马拉电视：mltv
-                凤凰电视：fhds
-                肥米TV(香港网络)：luo2888
-                香港NowTV(限制IP)：nowtv
-                YouTube(仅限境外)：youtube
-                牛牛直播(支持多线切换)：nnzb
-                IPTV345(支持多线切换)：iptv345
-                IPTV2020(支持多线切换)：iptv2020
-        ");
-    }
-    
-    if ($vid == 'iptv345' || $vid == 'iptv2020') {
-        if (empty($tid)) {
-            $channellist = array('
-                肥米TV节目源动态代理,KwanKaHo@luo2888.cn
-                
-                TID列表：
-                    综合：itv
-                    体育：ty
-                    央视：ys
-                    卫视：ws
-                    北邮：bupt
-                    港澳台：gt
-                    港澳台新源：wintv123
-                    其他（国外）：other
-                    电影轮播：movie
-                    咪咕视频：migu
-                    北方云：bfiptv
-                    广西联通：ltiptv
-                    福建移动：fjitv
-                    湖北广电：hrtn
-                    黑龙江移动：hlitv
-                    天途云：tt
-                    珠江宽频：zjkp');
-            if ($vid == 'iptv345') { $channellist = preg_replace('#wintv123#', '不支持', $channellist); }
-        } else {
-            $url = "https://player.ggiptv.com/iptv.php?tid=$tid";
-            $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/x-www-form-urlencoded'
-            ));
-            curl_setopt($curl, CURLOPT_USERAGENT, 'MQQBrowser/6.2 TBS/045130 MicroMessengeriptv VideoPlayer god/3.0.0 Html5Plus/1.0 (Immersed/29.411766)');
-            $curlobj = curl_exec($curl);
-            preg_match_all('/token=(.*?)&tid=(.*?)&id=(.*?)" data-ajax="false">(.*?)</i', $curlobj, $channel);
-            $i = 0;
-            foreach ($channel[4] as &$channelname) {
-                $channelname = preg_replace('#凤凰卫视#', '凤凰', $channelname);
-                $channelname = preg_replace('#\(HD\)#', '', $channelname);
-                $channelname = preg_replace('# #', '', $channelname);
-                $channellist[] = $channelname . ",http://你的域名/文件名?play&vid=$vid&tid=$tid&id=" . $channel[3][$i];
-                $i++;
-            }
-        }
-    }
-    
-    if ($vid == 'longtv') {
+                北方云：bfiptv
+                广西联通：ltiptv
+                福建移动：fjitv
+                湖北广电：hrtn
+                黑龙江移动：hlitv
+                天途云：tt
+                珠江宽频：zjkp');
+        if ($vid == 'iptv345') { $channellist = preg_replace('#wintv123#', '不支持', $channellist); }
+    } else {
+        $url = "https://player.ggiptv.com/iptv.php?tid=$tid";
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, 'http://sh.woaizhuguo.cn/');
+        curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Mobile Safari/537.36');
-        $list = curl_exec($curl);
-        preg_match_all('/(?s)<a href="\/news\/view\/id\/(.*?)">(.*?)<dt>(.*?)<\/dt>/i', $list, $channel);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/x-www-form-urlencoded'
+        ));
+        curl_setopt($curl, CURLOPT_USERAGENT, 'MQQBrowser/6.2 TBS/045130 MicroMessengeriptv VideoPlayer god/3.0.0 Html5Plus/1.0 (Immersed/29.411766)');
+        $curlobj = curl_exec($curl);
+        preg_match_all('/token=(.*?)&tid=(.*?)&id=(.*?)" data-ajax="false">(.*?)</i', $curlobj, $channel);
         $i = 0;
-        foreach ($channel[3] as &$channelname) {
-            $channelname = preg_replace('#（(.*?)）#', '', $channelname);
-            $channelname = preg_replace('#\((.*?)\)#', '', $channelname);
-            $channelname = preg_replace('#\((.*?)）#', '', $channelname);
-            $channelname = preg_replace('#\[17A\]#', '', $channelname);
-            $channelname = preg_replace('#\[TN\]#', '', $channelname);
-            $channelname = preg_replace('#\[#', '', $channelname);
-            $channelname = preg_replace('#\]#', '', $channelname);
-            $channelname = preg_replace('#\t#', '', $channelname);
+        foreach ($channel[4] as &$channelname) {
+            $channelname = preg_replace('#凤凰卫视#', '凤凰', $channelname);
+            $channelname = preg_replace('#\(HD\)#', '', $channelname);
             $channelname = preg_replace('# #', '', $channelname);
-            $channellist[] =  $channelname . ",http://你的域名/文件名?play&vid=longtv&id=" . $channel[1][$i];
+            $channellist[] = $channelname . ",http://你的域名/文件名?play&vid=$vid&tid=$tid&id=" . $channel[3][$i];
             $i++;
         }
     }
-    
-    if ($vid == 'cibn') {
-        $channellist = array('
-            CIBN精品影院,http://你的域名/文件名?play&vid=cibn&id=0
-            CIBN生活,http://你的域名/文件名?play&vid=cibn&id=1
-            CIBN军事,http://你的域名/文件名?play&vid=cibn&id=2
-            CIBN真人秀,http://你的域名/文件名?play&vid=cibn&id=3
-            CIBN怡家,http://你的域名/文件名?play&vid=cibn&id=4
-            CIBN文旅中国,http://你的域名/文件名?play&vid=cibn&id=5
-            CIBN今日推荐,http://你的域名/文件名?play&vid=cibn&id=6
-            CIBN嗨播,http://你的域名/文件名?play&vid=cibn&id=7
-            CIBN时尚生活,http://你的域名/文件名?play&vid=cibn&id=8
-            CIBN童学世界,http://你的域名/文件名?play&vid=cibn&id=9
-            CIBN经典剧场,http://你的域名/文件名?play&vid=cibn&id=10
-            CIBN风尚运动,http://你的域名/文件名?play&vid=cibn&id=11
-            CIBN汽车,http://你的域名/文件名?play&vid=cibn&id=12
-            CIBN快乐购物,http://你的域名/文件名?play&vid=cibn&id=13
-            CIBN映画,http://你的域名/文件名?play&vid=cibn&id=14
-            CIBN MV,http://你的域名/文件名?play&vid=cibn&id=15
-            CIBN情感影院,http://你的域名/文件名?play&vid=cibn&id=16
-            CIBN骄阳剧场,http://你的域名/文件名?play&vid=cibn&id=17
-            CIBN健康,http://你的域名/文件名?play&vid=cibn&id=18
-            CIBN流行榜单,http://你的域名/文件名?play&vid=cibn&id=19
-            CIBN底价秒杀,http://你的域名/文件名?play&vid=cibn&id=20
-            CIBN全电竞,http://你的域名/文件名?play&vid=cibn&id=21
-            CIBN喜剧影院,http://你的域名/文件名?play&vid=cibn&id=22
-            CIBN炫佳动漫,http://你的域名/文件名?play&vid=cibn&id=23
-            CIBN微电影,http://你的域名/文件名?play&vid=cibn&id=24
-            CIBN巨星演唱会,http://你的域名/文件名?play&vid=cibn&id=25
-            CIBN家装精选,http://你的域名/文件名?play&vid=cibn&id=26
-            CIBN美食厨房,http://你的域名/文件名?play&vid=cibn&id=27
-            CIBN热卖推荐,http://你的域名/文件名?play&vid=cibn&id=28
-            CIBN院线大片,http://你的域名/文件名?play&vid=cibn&id=29
-            CIBN品质生活,http://你的域名/文件名?play&vid=cibn&id=30
-            CIBN古装剧场,http://你的域名/文件名?play&vid=cibn&id=31
-            CIBN经典音乐,http://你的域名/文件名?play&vid=cibn&id=32
-            CIBN动漫剧场,http://你的域名/文件名?play&vid=cibn&id=33
-            CIBN好莱坞,http://你的域名/文件名?play&vid=cibn&id=34
-            CIBN家居用品,http://你的域名/文件名?play&vid=cibn&id=35
-            CIBN朵丫乐园,http://你的域名/文件名?play&vid=cibn&id=36
-            CIBN女团专场,http://你的域名/文件名?play&vid=cibn&id=37
-            CIBN斗牛财经,http://你的域名/文件名?play&vid=cibn&id=38
-            CIBN流金岁月,http://你的域名/文件名?play&vid=cibn&id=39
-            CIBN老陈坐弹会,http://你的域名/文件名?play&vid=cibn&id=40
-            CIBN好物,http://你的域名/文件名?play&vid=cibn&id=41
-            CIBN艺术院线,http://你的域名/文件名?play&vid=cibn&id=42
-            CIBN音乐综艺,http://你的域名/文件名?play&vid=cibn&id=43
-            CIBN精选古典乐,http://你的域名/文件名?play&vid=cibn&id=44
-            CIBN经典音乐会,http://你的域名/文件名?play&vid=cibn&id=45
-            CIBN新知,http://你的域名/文件名?play&vid=cibn&id=46
-            CIBN电影综合,http://你的域名/文件名?play&vid=cibn&id=47
-            CIBN中国交通,http://你的域名/文件名?play&vid=cibn&id=48
-            CIBN纪录片,http://你的域名/文件名?play&vid=cibn&id=49
-            CIBN环球奇观,http://你的域名/文件名?play&vid=cibn&id=50
-            CIBN收藏,http://你的域名/文件名?play&vid=cibn&id=51
-            CIBN莎翁戏剧,http://你的域名/文件名?play&vid=cibn&id=52
-            CIBN综合,http://你的域名/文件名?play&vid=cibn&id=53
-            CIBN动作影院,http://你的域名/文件名?play&vid=cibn&id=54
-        ');
-    }
-    
-    if ($vid == 'grtn') {
-        $channellist = array('
-            广东南方,http://你的域名/文件名?play&vid=grtn&id=7
-            广东珠江,http://你的域名/文件名?play&vid=grtn&id=26
-            广东卫视,http://你的域名/文件名?play&vid=grtn&id=25
-            广东体育,http://你的域名/文件名?play&vid=grtn&id=27
-            嘉佳卡通,http://你的域名/文件名?play&vid=grtn&id=29
-            广东新闻,http://你的域名/文件名?play&vid=grtn&id=28
-            广东公共,http://你的域名/文件名?play&vid=grtn&id=31
-            广东国际,http://你的域名/文件名?play&vid=grtn&id=30
-            广东影视,http://你的域名/文件名?play&vid=grtn&id=37
-            广东房产,http://你的域名/文件名?play&vid=grtn&id=33
-            广东少儿,http://你的域名/文件名?play&vid=grtn&id=38
-            广东移动,http://你的域名/文件名?play&vid=grtn&id=101
-            广东综艺,http://你的域名/文件名?play&vid=grtn&id=166
-            广东珠江,http://你的域名/文件名?play&vid=grtn&id=172
-            广东高尔夫,http://你的域名/文件名?play&vid=grtn&id=32
-            广东经济科教,http://你的域名/文件名?play&vid=grtn&id=93
-            广东南方购物,http://你的域名/文件名?play&vid=grtn&id=95
-            广东岭南戏曲,http://你的域名/文件名?play&vid=grtn&id=167
-            广东现代教育,http://你的域名/文件名?play&vid=grtn&id=169
-            汕头综合,http://你的域名/文件名?play&vid=grtn&id=61
-            佛山综合,http://你的域名/文件名?play&vid=grtn&id=62
-            茂名综合,http://你的域名/文件名?play&vid=grtn&id=63
-            肇庆综合,http://你的域名/文件名?play&vid=grtn&id=65
-            韶关综合,http://你的域名/文件名?play&vid=grtn&id=64
-            河源综合,http://你的域名/文件名?play&vid=grtn&id=67
-            潮州综合,http://你的域名/文件名?play&vid=grtn&id=68
-            惠州综合,http://你的域名/文件名?play&vid=grtn&id=78
-            江门综合,http://你的域名/文件名?play&vid=grtn&id=79
-            揭阳综合,http://你的域名/文件名?play&vid=grtn&id=83
-            清远综合,http://你的域名/文件名?play&vid=grtn&id=82
-            云浮综合,http://你的域名/文件名?play&vid=grtn&id=85
-            东莞-1,http://你的域名/文件名?play&vid=grtn&id=76
-            珠海-1,http://你的域名/文件名?play&vid=grtn&id=75
-            汕尾-1,http://你的域名/文件名?play&vid=grtn&id=81
-            阳江-1,http://你的域名/文件名?play&vid=grtn&id=84
-        ');
-    }
-    
-    if ($vid == 'bili' || $vid == 'douyu' || $vid == 'huya') {
-        $channellist = array("
-            参考链接：http://你的域名/文件名?play&vid=$vid&id=主播房间号
-        ");
-    }
+}
 
-    if ($vid == 'tvb') {
-        $channellist = array('
-            无线新闻,http://你的域名/文件名?play&vid=tvb&id=inews
-            无线财经资讯,http://你的域名/文件名?play&vid=tvb&id=j5_ch85
-        ');
+else if ($vid == 'longtv') {
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, 'http://sh.woaizhuguo.cn/');
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Mobile Safari/537.36');
+    $list = curl_exec($curl);
+    preg_match_all('/(?s)<a href="\/news\/view\/id\/(.*?)">(.*?)<dt>(.*?)<\/dt>/i', $list, $channel);
+    $i = 0;
+    foreach ($channel[3] as &$channelname) {
+        $channelname = preg_replace('#（(.*?)）#', '', $channelname);
+        $channelname = preg_replace('#\((.*?)\)#', '', $channelname);
+        $channelname = preg_replace('#\((.*?)）#', '', $channelname);
+        $channelname = preg_replace('#\[17A\]#', '', $channelname);
+        $channelname = preg_replace('#\[TN\]#', '', $channelname);
+        $channelname = preg_replace('#\[#', '', $channelname);
+        $channelname = preg_replace('#\]#', '', $channelname);
+        $channelname = preg_replace('#\t#', '', $channelname);
+        $channelname = preg_replace('# #', '', $channelname);
+        $channellist[] =  $channelname . ",http://你的域名/文件名?play&vid=longtv&id=" . $channel[1][$i];
+        $i++;
     }
+}
 
-    if ($vid == 'fhds') {
-        $channellist = array('
-            凤凰资讯,http://你的域名/文件名?play&vid=fhds&id=fhzx
-            凤凰中文,http://你的域名/文件名?play&vid=fhds&id=fhzh
-            凤凰香港,http://你的域名/文件名?play&vid=fhds&id=fhhk
-        ');
-    }
+else if ($vid == 'bili' || $vid == 'douyu' || $vid == 'huya') {
+    $channellist = array("
+        参考链接：http://你的域名/文件名?play&vid=$vid&id=主播房间号
+    ");
+}
 
-    if ($vid == 'mltv') {
-        $channellist = array('
-            TVB J2,http://你的域名/文件名?play&vid=mltv&tid=1&id=1
-            TVB翡翠,http://你的域名/文件名?play&vid=mltv&tid=1&id=2
-            TVB明珠,http://你的域名/文件名?play&vid=mltv&tid=1&id=3
-            有线新闻,http://你的域名/文件名?play&vid=mltv&tid=1&id=4
-        ');
-    }
-    
-    if ($vid == 'utvhk') {
-        $channellist = array('
-            有线新闻,http://你的域名/文件名?play&vid=utvhk&id=657254667
-            有线综合娱乐,http://你的域名/文件名?play&vid=utvhk&id=662547571
-            有线财经资讯,http://你的域名/文件名?play&vid=utvhk&id=657254837
-        ');
-    }
-    
-    if ($vid == 'nowtv') {
-        $channellist = array('
-            NOW直播,http://你的域名/文件名?play&vid=nowtv&id=331
-            NOW新闻,http://你的域名/文件名?play&vid=nowtv&id=332
-            NOW体育,http://你的域名/文件名?play&vid=nowtv&id=630
-        ');
-    }
+else if ($vid == 'tvb') {
+    $channellist = array('
+        无线新闻,http://你的域名/文件名?play&vid=tvb&id=news
+        无线财经资讯,http://你的域名/文件名?play&vid=tvb&id=finance
+    ');
+}
 
-    
-    if ($vid == 'luo2888') {
-        $channellist = array('
-            無線新聞,http://你的域名/文件名?play&vid=luo2888&id=tvbnews
-            無線財經,http://你的域名/文件名?play&vid=luo2888&id=tvbj5
-            有線新聞,http://你的域名/文件名?play&vid=luo2888&id=icable
-            開電視,http://你的域名/文件名?play&vid=luo2888&id=fantv
-            NOW直播,http://你的域名/文件名?play&vid=luo2888&id=now331
-            NOW新聞,http://你的域名/文件名?play&vid=luo2888&id=now332
-            港台電視31,http://你的域名/文件名?play&vid=luo2888&id=rthk31
-            港台電視32,http://你的域名/文件名?play&vid=luo2888&id=rthk32
-        ');
-    }
+else if ($vid == 'fhds') {
+    $channellist = array('
+        凤凰资讯,http://你的域名/文件名?play&vid=fhds&id=fhzx
+        凤凰中文,http://你的域名/文件名?play&vid=fhds&id=fhzh
+        凤凰香港,http://你的域名/文件名?play&vid=fhds&id=fhhk
+    ');
+}
 
-    if ($vid == 'youtube') {
-        $channellist = array('
-            # YouTube链接,仅限直播
-            # https://m.youtube.com/watch?v=
-            # 等于号后面的就是id
-            ABC News,http://你的域名/文件名?play&vid=youtube&id=w_Ma8oQLmSM
-            ANN News,http://你的域名/文件名?play&vid=youtube&id=coYw-eVU0Ks
-            CCTV中文国际,http://你的域名/文件名?play&vid=youtube&id=vCDDYb_M2B4
-            中视新闻,http://你的域名/文件名?play&vid=youtube&id=3OPNkiqD48g
-            台视新闻,http://你的域名/文件名?play&vid=youtube&id=NbjI0cARzjQ
-            民视新闻,http://你的域名/文件名?play&vid=youtube&id=XxJKnDLYZz4
-            华视新闻,http://你的域名/文件名?play&vid=youtube&id=TL8mmew3jb8
-            中天新闻,http://你的域名/文件名?play&vid=youtube&id=wUPPkSANpyo
-            三立iNEWS,http://你的域名/文件名?play&vid=youtube&id=ag9nrgExHyg
-            三立新闻,http://你的域名/文件名?play&vid=youtube&id=4ZVUmEUFwaY
-            东森新闻,http://你的域名/文件名?play&vid=youtube&id=RaIJ767Bj_M
-            东森财经,http://你的域名/文件名?play&vid=youtube&id=dphWo0r27Z4
-            TVBS新闻,http://你的域名/文件名?play&vid=youtube&id=Hu1FkdAOws0
-            信大电视,http://你的域名/文件名?play&vid=youtube&id=djGSxqB8N4k
-            富立电视,http://你的域名/文件名?play&vid=youtube&id=6JPiGsyffO0
-            华视综艺,http://你的域名/文件名?play&vid=youtube&id=GvVWkRhxHYE
-            全球财经,http://你的域名/文件名?play&vid=youtube&id=-NNha8Ioobk
-            运通财经,http://你的域名/文件名?play&vid=youtube&id=z-bbsDpAyok
-            大爱一台,http://你的域名/文件名?play&vid=youtube&id=oV_i3Hsl_zg
-            大爱二台,http://你的域名/文件名?play&vid=youtube&id=DTNkEm6jaqQ
-            东森YOYO,http://你的域名/文件名?play&vid=youtube&id=3gKlm323de0
-            新唐人亚太,http://你的域名/文件名?play&vid=youtube&id=wSKE3A40SIk
-        ');
-    }
+else if ($vid == 'utvhk') {
+    $channellist = array('
+        有线新闻,http://你的域名/文件名?play&vid=utvhk&id=657254667
+        有线综合娱乐,http://你的域名/文件名?play&vid=utvhk&id=662547571
+        有线财经资讯,http://你的域名/文件名?play&vid=utvhk&id=657254837
+    ');
+}
 
-    if ($vid == 'pygd') {
-        $channellist = array('
-            晋中一台,http://你的域名/文件名?play&vid=pygd&id=006
-            晋中二台,http://你的域名/文件名?play&vid=pygd&id=178
-        ');
-    }
+else if ($vid == 'nowtv') {
+    $channellist = array('
+        NOW直播,http://你的域名/文件名?play&vid=nowtv&id=331
+        NOW新闻,http://你的域名/文件名?play&vid=nowtv&id=332
+        NOW体育,http://你的域名/文件名?play&vid=nowtv&id=630
+    ');
+}
 
-    if ($vid == 'lttv') {
-        $channellist = array('
-              TVB翡翠,http://你的域名/文件名?play&vid=lttv&id=ch101
-            J2,http://你的域名/文件名?play&vid=lttv&id=ch102
-            无线财经,http://你的域名/文件名?play&vid=lttv&id=ch103
-            TVB明珠,http://你的域名/文件名?play&vid=lttv&id=ch104
-            无线新闻,http://你的域名/文件名?play&vid=lttv&id=ch201
-            TVB星河,http://你的域名/文件名?play&vid=lttv&id=ch105
-            星河国语,http://你的域名/文件名?play&vid=lttv&id=ch108
-            有线新闻,http://你的域名/文件名?play&vid=lttv&id=ch109
-            凤凰电影,http://你的域名/文件名?play&vid=lttv&id=ch110
-            thrill,http://你的域名/文件名?play&vid=lttv&id=ch112
-            TVB经典,http://你的域名/文件名?play&vid=lttv&id=ch113
-            卫视国际电影,http://你的域名/文件名?play&vid=lttv&id=ch111
-            NOW新闻,http://你的域名/文件名?play&vid=lttv&id=ch114
-            VIUTV,http://你的域名/文件名?play&vid=lttv&id=ch115
-            VIUTV6,http://你的域名/文件名?play&vid=lttv&id=ch116
-            有线财经,http://你的域名/文件名?play&vid=lttv&id=ch117
-            有线娱乐,http://你的域名/文件名?play&vid=lttv&id=ch118
-            有线18,http://你的域名/文件名?play&vid=lttv&id=ch119
-            龙翔电影,http://你的域名/文件名?play&vid=lttv&id=ch301
-            纬来电影,http://你的域名/文件名?play&vid=lttv&id=ch302
-            东森洋片,http://你的域名/文件名?play&vid=lttv&id=ch303
-            卫视电影,http://你的域名/文件名?play&vid=lttv&id=ch304
-            星卫电影,http://你的域名/文件名?play&vid=lttv&id=ch305
-            美亚电影,http://你的域名/文件名?play&vid=lttv&id=ch306
-            卫视洋片,http://你的域名/文件名?play&vid=lttv&id=ch307
-            东森电影,http://你的域名/文件名?play&vid=lttv&id=ch308
-            龙华洋片,http://你的域名/文件名?play&vid=lttv&id=ch309
-            HBOHD,http://你的域名/文件名?play&vid=lttv&id=ch310
-            HBOHITS,http://你的域名/文件名?play&vid=lttv&id=ch311
-            HBOignature,http://你的域名/文件名?play&vid=lttv&id=ch312
-            HBOfamlly,http://你的域名/文件名?play&vid=lttv&id=ch313
-            中视,http://你的域名/文件名?play&vid=lttv&id=ch202
-            华视,http://你的域名/文件名?play&vid=lttv&id=ch203
-            民视,http://你的域名/文件名?play&vid=lttv&id=ch204
-            台视,http://你的域名/文件名?play&vid=lttv&id=ch205
-            寰宇新聞,http://你的域名/文件名?play&vid=lttv&id=ch211
-            东森新闻,http://你的域名/文件名?play&vid=lttv&id=ch217
-            中天新闻,http://你的域名/文件名?play&vid=lttv&id=zhongtianxw
-            国家地理,http://你的域名/文件名?play&vid=lttv&id=ch316
-            中天新闻,http://你的域名/文件名?play&vid=lttv2&id=tw101
-            台視新聞,http://你的域名/文件名?play&vid=lttv2&id=tw102
-            華視新聞,http://你的域名/文件名?play&vid=lttv2&id=tw103
-            TVBS新聞,http://你的域名/文件名?play&vid=lttv2&id=tw104
-            民視新聞,http://你的域名/文件名?play&vid=lttv2&id=tw105
-            东森新闻,http://你的域名/文件名?play&vid=lttv2&id=tw106
-            中視新聞,http://你的域名/文件名?play&vid=lttv2&id=tw107
-            TVBS,http://你的域名/文件名?play&vid=lttv2&id=tw108
-            三立財經,http://你的域名/文件名?play&vid=lttv2&id=tw109
-            非凡新聞,http://你的域名/文件名?play&vid=lttv2&id=tw110
-            东森财经,http://你的域名/文件名?play&vid=lttv2&id=tw111
-            东森亚洲新闻,http://你的域名/文件名?play&vid=lttv2&id=tw112
-            寰宇新聞2,http://你的域名/文件名?play&vid=lttv2&id=tw113
-            寰宇新聞,http://你的域名/文件名?play&vid=lttv2&id=tw114
-            壹新闻,http://你的域名/文件名?play&vid=lttv2&id=tw115
-            年代新闻,http://你的域名/文件名?play&vid=lttv2&id=tw116
-            三立新闻,http://你的域名/文件名?play&vid=lttv2&id=tw117
-            卫视电影台,http://你的域名/文件名?play&vid=lttv3&id=ws101
-            RHK31,http://你的域名/文件名?play&vid=lttv3&id=ws102
-            FOXHD,http://你的域名/文件名?play&vid=lttv3&id=ws104
-            FoxActionMovies,http://你的域名/文件名?play&vid=lttv3&id=ws105
-            FoxFamily,http://你的域名/文件名?play&vid=lttv3&id=ws106
-            FoxCrime,http://你的域名/文件名?play&vid=lttv3&id=ws107
-            FXHD,http://你的域名/文件名?play&vid=lttv3&id=ws108
-            天映频道,http://你的域名/文件名?play&vid=lttv3&id=ws109
-            天映经典,http://你的域名/文件名?play&vid=lttv3&id=ws110
-            八大综合,http://你的域名/文件名?play&vid=lttv3&id=ws121
-            八大第一,http://你的域名/文件名?play&vid=lttv3&id=ws122
-            八大戏剧,http://你的域名/文件名?play&vid=lttv3&id=ws123
-            三立综合,http://你的域名/文件名?play&vid=lttv3&id=ws124
-            三立都会,http://你的域名/文件名?play&vid=lttv3&id=ws125
-            三立戏剧,http://你的域名/文件名?play&vid=lttv3&id=ws126
-            三立台湾,http://你的域名/文件名?play&vid=lttv3&id=ws127
-            东森戏剧,http://你的域名/文件名?play&vid=lttv3&id=ws128
-            东森综合,http://你的域名/文件名?play&vid=lttv3&id=ws131
-            纬来戏剧,http://你的域名/文件名?play&vid=lttv3&id=ws132
-            纬来综合,http://你的域名/文件名?play&vid=lttv3&id=ws133
-            纬来育乐,http://你的域名/文件名?play&vid=lttv3&id=ws135
-            纬来日本,http://你的域名/文件名?play&vid=lttv3&id=ws136
-            緯來體育,http://你的域名/文件名?play&vid=lttv3&id=ws138
-            EYETV戏剧,http://你的域名/文件名?play&vid=lttv3&id=ws139
-            爱尔达影剧,http://你的域名/文件名?play&vid=lttv3&id=ws140
-            美食星球,http://你的域名/文件名?play&vid=lttv3&id=ws141
-            国家地理悠人,http://你的域名/文件名?play&vid=lttv3&id=ws143
-            国家地理野生,http://你的域名/文件名?play&vid=lttv3&id=ws145
-            动物星球,http://你的域名/文件名?play&vid=lttv3&id=ws151
-        ');
-    }
-    
-    if ($vid == 'tty') {
-        $channellist = array('
-            CCTV-1,http://你的域名/文件名?play&vid=tty&id=133
-            CCTV-2,http://你的域名/文件名?play&vid=tty&id=217
-            CCTV-3,http://你的域名/文件名?play&vid=tty&id=134
-            CCTV-4,http://你的域名/文件名?play&vid=tty&id=315
-            CCTV-5,http://你的域名/文件名?play&vid=tty&id=135
-            CCTV-5Plus,http://你的域名/文件名?play&vid=tty&id=138
-            CCTV-6,http://你的域名/文件名?play&vid=tty&id=136
-            CCTV-7,http://你的域名/文件名?play&vid=tty&id=241
-            CCTV-8,http://你的域名/文件名?play&vid=tty&id=137
-            CCTV-9,http://你的域名/文件名?play&vid=tty&id=249
-            CCTV-10,http://你的域名/文件名?play&vid=tty&id=218
-            CCTV-11,http://你的域名/文件名?play&vid=tty&id=324
-            CCTV-12,http://你的域名/文件名?play&vid=tty&id=219
+else if ($vid == 'pygd') {
+    $channellist = array('
+        晋中一台,http://你的域名/文件名?play&vid=pygd&id=006
+        晋中二台,http://你的域名/文件名?play&vid=pygd&id=178
+    ');
+}
 
-            CCTV-13,http://你的域名/文件名?play&vid=tty&id=022
-            CCTV-14,http://你的域名/文件名?play&vid=tty&id=248
-            CCTV-15,http://你的域名/文件名?play&vid=tty&id=325
-            CCTV-15,http://你的域名/文件名?play&vid=tty&id=024
-            CCTV-17,http://你的域名/文件名?play&vid=tty&id=241
-            CETV-1,http://你的域名/文件名?play&vid=tty&id=256
-            CGTN纪录,http://你的域名/文件名?play&vid=tty&id=234
-            CGTN,http://你的域名/文件名?play&vid=tty&id=260
-            CGTN法语,http://你的域名/文件名?play&vid=tty&id=230
-            CGTN阿语,http://你的域名/文件名?play&vid=tty&id=231
-            CGTN葡语,http://你的域名/文件名?play&vid=tty&id=233
-            CGTN西语,http://你的域名/文件名?play&vid=tty&id=233
-            辽宁卫视,http://你的域名/文件名?play&vid=tty&id=139
-            湖南卫视,http://你的域名/文件名?play&vid=tty&id=140
-            东方卫视,http://你的域名/文件名?play&vid=tty&id=141
-            江苏卫视,http://你的域名/文件名?play&vid=tty&id=142
-            浙江卫视,http://你的域名/文件名?play&vid=tty&id=143
-            黑龙江卫视,http://你的域名/文件名?play&vid=tty&id=144
-            广东卫视,http://你的域名/文件名?play&vid=tty&id=145
-            深圳卫视,http://你的域名/文件名?play&vid=tty&id=146
-            北京卫视,http://你的域名/文件名?play&vid=tty&id=147
-            安徽卫视,http://你的域名/文件名?play&vid=tty&id=148
-            天津卫视,http://你的域名/文件名?play&vid=tty&id=149
-            山东卫视,http://你的域名/文件名?play&vid=tty&id=221
-            重庆卫视,http://你的域名/文件名?play&vid=tty&id=222
-            湖北卫视,http://你的域名/文件名?play&vid=tty&id=250
-            贵州卫视,http://你的域名/文件名?play&vid=tty&id=251
-            东南卫视,http://你的域名/文件名?play&vid=tty&id=252
-            河北卫视,http://你的域名/文件名?play&vid=tty&id=253
-            四川卫视,http://你的域名/文件名?play&vid=tty&id=254
-            江西卫视,http://你的域名/文件名?play&vid=tty&id=255
-            河南卫视,http://你的域名/文件名?play&vid=tty&id=312
-            吉林卫视,http://你的域名/文件名?play&vid=tty&id=313
-            广西卫视,http://你的域名/文件名?play&vid=tty&id=034
-            陕西卫视,http://你的域名/文件名?play&vid=tty&id=036
-            内蒙古卫视,http://你的域名/文件名?play&vid=tty&id=040
-            云南卫视,http://你的域名/文件名?play&vid=tty&id=052
-            山西卫视,http://你的域名/文件名?play&vid=tty&id=054
-            江西卫视,http://你的域名/文件名?play&vid=tty&id=055
-            宁夏卫视,http://你的域名/文件名?play&vid=tty&id=056
-            甘肃卫视,http://你的域名/文件名?play&vid=tty&id=058
-            西藏卫视,http://你的域名/文件名?play&vid=tty&id=063
-            兵团卫视,http://你的域名/文件名?play&vid=tty&id=189
-            新疆卫视,http://你的域名/文件名?play&vid=tty&id=259
-            辽宁都市,http://你的域名/文件名?play&vid=tty&id=026
-            辽宁影视剧,http://你的域名/文件名?play&vid=tty&id=027
-            辽宁体育,http://你的域名/文件名?play&vid=tty&id=028
-            辽宁北方,http://你的域名/文件名?play&vid=tty&id=030
-            辽宁公共,http://你的域名/文件名?play&vid=tty&id=064
-            辽宁经济,http://你的域名/文件名?play&vid=tty&id=188
-            辽宁生活,http://你的域名/文件名?play&vid=tty&id=190
-            辽宁教育青少,http://你的域名/文件名?play&vid=tty&id=191
-            辽宁家政,http://你的域名/文件名?play&vid=tty&id=215
-            大连1,http://你的域名/文件名?play&vid=tty&id=132
-            大连2,http://你的域名/文件名?play&vid=tty&id=002
-            大连3,http://你的域名/文件名?play&vid=tty&id=003
-            大连4,http://你的域名/文件名?play&vid=tty&id=004
-            大连5,http://你的域名/文件名?play&vid=tty&id=005
-            大连6,http://你的域名/文件名?play&vid=tty&id=006
-            大连7,http://你的域名/文件名?play&vid=tty&id=007
-            大连8,http://你的域名/文件名?play&vid=tty&id=235
-            大连导视,http://你的域名/文件名?play&vid=tty&id=009
-            北京纪实,http://你的域名/文件名?play&vid=tty&id=314
-            未知1,http://你的域名/文件名?play&vid=tty&id=131
-            东方财经,http://你的域名/文件名?play&vid=tty&id=066
-            梨园频道,http://你的域名/文件名?play&vid=tty&id=067
-            留学世界,http://你的域名/文件名?play&vid=tty&id=068
-            女性时尚,http://你的域名/文件名?play&vid=tty&id=069
-            央视文化精品,http://你的域名/文件名?play&vid=tty&id=071
-            汽摩,http://你的域名/文件名?play&vid=tty&id=072
-            靓妆,http://你的域名/文件名?play&vid=tty&id=073
-            现代女性,http://你的域名/文件名?play&vid=tty&id=074
-            中国气象频道,http://你的域名/文件名?play&vid=tty&id=076
-            教育就业,http://你的域名/文件名?play&vid=tty&id=077
-            休闲,http://你的域名/文件名?play&vid=tty&id=078
-            茶频道,http://你的域名/文件名?play&vid=tty&id=079
-            中学生,http://你的域名/文件名?play&vid=tty&id=082
-            法制天地,http://你的域名/文件名?play&vid=tty&id=192
-            央视台球,http://你的域名/文件名?play&vid=tty&id=198
-            快乐垂钓,http://你的域名/文件名?play&vid=tty&id=199
-            彩民在线,http://你的域名/文件名?play&vid=tty&id=200
-            武术世界,http://你的域名/文件名?play&vid=tty&id=202
-            新科动漫,http://你的域名/文件名?play&vid=tty&id=203
-            文物宝库,http://你的域名/文件名?play&vid=tty&id=204
-            天元围棋,http://你的域名/文件名?play&vid=tty&id=205
-            深圳DV生活,http://你的域名/文件名?play&vid=tty&id=206
-            央视电视指南,http://你的域名/文件名?play&vid=tty&id=207
-            七彩戏剧,http://你的域名/文件名?play&vid=tty&id=209
-            老年福,http://你的域名/文件名?play&vid=tty&id=210
-            金色频道,http://你的域名/文件名?play&vid=tty&id=212
-            美食天府,http://你的域名/文件名?play&vid=tty&id=213
-            老故事,http://你的域名/文件名?play&vid=tty&id=262
-            人物频道,http://你的域名/文件名?play&vid=tty&id=264
-            北京纪实,http://你的域名/文件名?play&vid=tty&id=311
-            卫生健康,http://你的域名/文件名?play&vid=tty&id=316
-            金鹰卡通,http://你的域名/文件名?play&vid=tty&id=257
-            卡酷少儿,http://你的域名/文件名?play&vid=tty&id=258
-        ');
-    }
-    
-    if ($vid == 'migu') {
-        $channellist = array('
-            CCTV-1高清,http://你的域名/文件名?play&vid=migu&id=608807420
-            CCTV-2高清,http://你的域名/文件名?play&vid=migu&id=672926537
-            CCTV-3高清,http://你的域名/文件名?play&vid=migu&id=624878270
-            CCTV-4高清,http://你的域名/文件名?play&vid=migu&id=672924435
-            CCTV-5高清,http://你的域名/文件名?play&vid=migu&id=641886681
-            CCTV-5Plus高清,http://你的域名/文件名?play&vid=migu&id=641886771
-            CCTV-6高清,http://你的域名/文件名?play&vid=migu&id=624878393
-            CCTV-7高清,http://你的域名/文件名?play&vid=migu&id=673168121
-            CCTV-8高清,http://你的域名/文件名?play&vid=migu&id=624878355
-            CCTV-9高清,http://你的域名/文件名?play&vid=migu&id=673168140
-            CCTV-10高清,http://你的域名/文件名?play&vid=migu&id=624878405
-            CCTV-11高清,http://你的域名/文件名?play&vid=migu&id=672923822
-            CCTV-12高清,http://你的域名/文件名?play&vid=migu&id=673168185
-            CCTV-13,http://你的域名/文件名?play&vid=migu&id=672922360
-            CCTV-14高清,http://你的域名/文件名?play&vid=migu&id=624878440
-            CCTV-15高清,http://你的域名/文件名?play&vid=migu&id=673168223
-            CCTV-17高清,http://你的域名/文件名?play&vid=migu&id=673168256
-            中国教育1台高清,http://你的域名/文件名?play&vid=migu&id=649531734
-            中国教育2台,http://你的域名/文件名?play&vid=migu&id=649532169
-            中国教育3台,http://你的域名/文件名?play&vid=migu&id=649531756
-            中国教育4台,http://你的域名/文件名?play&vid=migu&id=649531725
-            北京卫视高清,http://你的域名/文件名?play&vid=migu&id=630287636
-            辽宁卫视高清,http://你的域名/文件名?play&vid=migu&id=630291707
-            安徽卫视高清,http://你的域名/文件名?play&vid=migu&id=644933992
-            湖北卫视高清,http://你的域名/文件名?play&vid=migu&id=630292423
-            湖南卫视高清,http://你的域名/文件名?play&vid=migu&id=619858170
-            广东卫视高清,http://你的域名/文件名?play&vid=migu&id=608831231
-            东方卫视,http://你的域名/文件名?play&vid=migu&id=651625930
-            重庆卫视,http://你的域名/文件名?play&vid=migu&id=630288006
-            吉林卫视,http://你的域名/文件名?play&vid=migu&id=630288397
-            内蒙古卫视,http://你的域名/文件名?play&vid=migu&id=630287015
-            宁夏卫视,http://你的域名/文件名?play&vid=migu&id=630287436
-            甘肃卫视,http://你的域名/文件名?play&vid=migu&id=630287549
-            青海卫视,http://你的域名/文件名?play&vid=migu&id=630287272
-            陕西卫视,http://你的域名/文件名?play&vid=migu&id=630287233
-            河北卫视,http://你的域名/文件名?play&vid=migu&id=630292528
-            山西卫视,http://你的域名/文件名?play&vid=migu&id=630289043
-            河南卫视,http://你的域名/文件名?play&vid=migu&id=635489820
-            江西卫视,http://你的域名/文件名?play&vid=migu&id=630290852
-            江苏卫视,http://你的域名/文件名?play&vid=migu&id=623899540
-            东南卫视,http://你的域名/文件名?play&vid=migu&id=651642156
-            南方卫视,http://你的域名/文件名?play&vid=migu&id=608917627
-            广西卫视,http://你的域名/文件名?play&vid=migu&id=634055160
-            云南卫视,http://你的域名/文件名?play&vid=migu&id=630291417
-            贵州卫视,http://你的域名/文件名?play&vid=migu&id=631094827
-            四川卫视,http://你的域名/文件名?play&vid=migu&id=630288361
-            新疆卫视,http://你的域名/文件名?play&vid=migu&id=635385783
-            兵团卫视,http://你的域名/文件名?play&vid=migu&id=630288004
-            西藏卫视,http://你的域名/文件名?play&vid=migu&id=630291593
-            旅游卫视,http://你的域名/文件名?play&vid=migu&id=633215355
-            CIBN电影综合,http://你的域名/文件名?play&vid=migu&id=624303430 
-            CIBN院线大片,http://你的域名/文件名?play&vid=migu&id=661432899 
-            CIBN综合,http://你的域名/文件名?play&vid=migu&id=661430547 
-            CIBN文旅中国,http://你的域名/文件名?play&vid=migu&id=661509016 
-            CIBN真人秀,http://你的域名/文件名?play&vid=migu&id=661433786 
-            CIBN真人秀,http://你的域名/文件名?play&vid=migu&id=621780947 
-            CIBN艺术院线,http://你的域名/文件名?play&vid=migu&id=661491745 
-            CIBN纪录片,http://你的域名/文件名?play&vid=migu&id=661509046 
-            CIBN纪录片,http://你的域名/文件名?play&vid=migu&id=661509046 
-            CIBN炫佳动漫,http://你的域名/文件名?play&vid=migu&id=661491728 
-            CIBN童学世界,http://你的域名/文件名?play&vid=migu&id=661491692 
-            CIBN流金岁月,http://你的域名/文件名?play&vid=migu&id=668156255 
-            CIBN风尚运动,http://你的域名/文件名?play&vid=migu&id=664376528 
-            CIBN经典剧场,http://你的域名/文件名?play&vid=migu&id=668156438 
-            CIBN斗牛财经,http://你的域名/文件名?play&vid=migu&id=664376522 
-            CIBN微电影,http://你的域名/文件名?play&vid=migu&id=661434182 
-            CIBN骄阳剧场,http://你的域名/文件名?play&vid=migu&id=630520189
-        ');
-    }
-    
-    if ($vid == 'nnzb') {
-        $channellist = array('
-            # 央视 #
-            CCTV-1,http://你的域名/文件名?play&vid=nnzb&tid=1&id=169
-            CCTV-2,http://你的域名/文件名?play&vid=nnzb&tid=1&id=168
-            CCTV-3,http://你的域名/文件名?play&vid=nnzb&tid=1&id=167
-            CCTV-4,http://你的域名/文件名?play&vid=nnzb&tid=1&id=166
-            CCTV-5,http://你的域名/文件名?play&vid=nnzb&tid=1&id=165
-            CCTV-6,http://你的域名/文件名?play&vid=nnzb&tid=1&id=164
-            CCTV-7,http://你的域名/文件名?play&vid=nnzb&tid=1&id=163
-            CCTV-8,http://你的域名/文件名?play&vid=nnzb&tid=1&id=162
-            CCTV-9,http://你的域名/文件名?play&vid=nnzb&tid=1&id=161
-            CCTV-10,http://你的域名/文件名?play&vid=nnzb&tid=1&id=160
-            CCTV-11,http://你的域名/文件名?play&vid=nnzb&tid=1&id=159
-            CCTV-12,http://你的域名/文件名?play&vid=nnzb&tid=1&id=158
-            CCTV-13,http://你的域名/文件名?play&vid=nnzb&tid=1&id=157
-            CCTV-14,http://你的域名/文件名?play&vid=nnzb&tid=1&id=156
-            CCTV-15,http://你的域名/文件名?play&vid=nnzb&tid=1&id=155
-            CCTV-5Plus,http://你的域名/文件名?play&vid=nnzb&tid=1&id=154
-            # 卫视 #
-            深圳卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=620
-            北京卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=200
-            东方卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=199
-            天津卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=198
-            重庆卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=197
-            安徽卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=196
-            浙江卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=195
-            江苏卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=194
-            湖南卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=193
-            湖北卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=192
-            河南卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=191
-            河北卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=190
-            广东卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=189
-            广西卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=188
-            山东卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=187
-            山西卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=186
-            四川卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=185
-            江西卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=184
-            东南卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=183
-            吉林卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=182
-            辽宁卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=181
-            云南卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=180
-            海南卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=179
-            陕西卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=178
-            甘肃卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=177
-            宁夏卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=176
-            青海卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=175
-            贵州卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=174
-            新疆卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=173
-            西藏卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=172
-            内蒙古卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=171
-            黑龙江卫视,http://你的域名/文件名?play&vid=nnzb&tid=2&id=170
-            # 地方 #
-            湖南都市频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=720
-            安徽经济生活,http://你的域名/文件名?play&vid=nnzb&tid=4&id=682
-            安徽影视,http://你的域名/文件名?play&vid=nnzb&tid=4&id=681
-            西安新闻综合频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=529
-            西安白鹤都市频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=528
-            西安文化影视频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=527
-            西安音乐综艺频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=526
-            西安商务资讯频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=525
-            西安健康快乐频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=524
-            河北卫视,http://你的域名/文件名?play&vid=nnzb&tid=4&id=429&line=2
-            河北经济频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=428
-            河北都市频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=427
-            河北影视频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=426
-            河北少儿科教频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=425
-            河北公共频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=424
-            河北农民频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=423
-            石家庄新闻综合频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=422
-            石家庄娱乐频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=421
-            石家庄生活频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=420
-            石家庄都市频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=419
-            河南卫视,http://你的域名/文件名?play&vid=nnzb&tid=4&id=356
-            湖南经视频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=355
-            湖南娱乐频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=354
-            湖南电视剧频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=353
-            湖南公共频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=352
-            湖南国际频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=351
-            金鹰纪实频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=350
-            金鹰卡通卫视,http://你的域名/文件名?play&vid=nnzb&tid=4&id=349
-            长沙新闻综合频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=348
-            东方电影频道,http://你的域名/文件名?play&vid=nnzb&tid=4&id=228
-            # 港台 #
-            凤凰中文,http://你的域名/文件名?play&vid=nnzb&tid=3&id=100
-            凤凰资讯,http://你的域名/文件名?play&vid=nnzb&tid=3&id=99
-            凤凰香港,http://你的域名/文件名?play&vid=nnzb&tid=3&id=98
-            凤凰电影,http://你的域名/文件名?play&vid=nnzb&tid=3&id=97
-            凤凰美洲,http://你的域名/文件名?play&vid=nnzb&tid=3&id=96
-            Channel V,http://你的域名/文件名?play&vid=nnzb&tid=3&id=95
-            香港卫视,http://你的域名/文件名?play&vid=nnzb&tid=3&id=93
-            星空卫视,http://你的域名/文件名?play&vid=nnzb&tid=3&id=92
-            阳光卫视,http://你的域名/文件名?play&vid=nnzb&tid=3&id=90
-            澳亚卫视,http://你的域名/文件名?play&vid=nnzb&tid=3&id=89
-            莲花卫视,http://你的域名/文件名?play&vid=nnzb&tid=3&id=88
-            寰宇新闻台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=85
-            寰宇新闻2台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=84
-            无线财经台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=79
-            TVB翡翠台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=78
-            TVB明珠台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=77&line=2
-            TVB星河台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=76
-            TVBJ2,http://你的域名/文件名?play&vid=nnzb&tid=3&id=74
-            无线新闻台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=73
-            TVB功夫台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=72
-            有线新闻台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=62
-            有线电影台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=61
-            有线18台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=59
-            有线好莱坞电影,http://你的域名/文件名?play&vid=nnzb&tid=3&id=54
-            澳视体育台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=50
-            澳视卫星台MACAU,http://你的域名/文件名?play&vid=nnzb&tid=3&id=48
-            台湾中视,http://你的域名/文件名?play&vid=nnzb&tid=3&id=47
-            台湾华视,http://你的域名/文件名?play&vid=nnzb&tid=3&id=46
-            台湾台视,http://你的域名/文件名?play&vid=nnzb&tid=3&id=45
-            台湾民视,http://你的域名/文件名?play&vid=nnzb&tid=3&id=44
-            台湾公视,http://你的域名/文件名?play&vid=nnzb&tid=3&id=43
-            中天新闻台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=42
-            中天综合台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=41
-            中天娱乐台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=40
-            中天亚洲台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=39
-            TVBS新闻台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=38
-            TVBS综合台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=37
-            TVBS欢乐台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=36
-            壹电视综合台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=35
-            壹电视新闻台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=34
-            东森综合台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=32
-            东森幼幼台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=31
-            东森电影台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=29
-            东森洋片台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=28
-            三立新闻台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=26
-            三立都会台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=25
-            三立台湾台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=24
-            八大综合台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=22
-            八大第一台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=21
-            八大娱乐K台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=20
-            卫视电影台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=16
-            天映电影台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=15
-            龙祥电影台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=14
-            龙祥时代电影台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=13
-            纬来综合台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=12
-            纬来体育台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=11
-            纬来日本台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=10
-            纬来电影台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=9
-            非凡新闻台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=6
-            卫视中文台,http://你的域名/文件名?play&vid=nnzb&tid=3&id=4
-            # 国外 #
-            俄罗斯红星台,http://你的域名/文件名?play&vid=nnzb&tid=5&id=118
-        ');
-    }
-    
-    if ($vid == 'gdtv') {
-        $channellist = array('
-            G导视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=GHDdaoshi_1500
-            G导视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=GHDdaoshi_3000
-            G导视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=GHDdaoshi_7500
-            CCTV-1综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV1_800
-            CCTV-1综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV1_1500
-            CCTV-2财经,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV2_800
-            CCTV-2财经,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV2_1500
-            博罗综合频道,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=boluozonghe_800
-            博罗综合频道,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=boluozonghe_1500
-            博罗经典频道,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=boluojingdian_800
-            博罗经典频道,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=boluojingdian_1500
-            CCTV-3综艺,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV3_800
-            CCTV-3综艺,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV3_1500
-            CCTV-4国际,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV4_800
-            CCTV-4国际,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV4_1500
-            CCTV-5体育,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV5_800
-            CCTV-5体育,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV5_1500
-            CCTV-6电影,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV6_800
-            CCTV-6电影,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV6_1500
-            CCTV-7军农,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV7_800
-            CCTV-7军农,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV7_1500
-            CCTV-8电视剧,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV8_800
-            CCTV-8电视剧,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV8_1500
-            CCTV9-纪录,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV9_800
-            CCTV9-纪录,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV9_1500
-            CCTV-10科教,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV10_800
-            CCTV-10科教,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV10_1500
-            CCTV-11戏曲,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV11_800
-            CCTV-11戏曲,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV11_1500
-            CCTV-12社会,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV12_800
-            CCTV-12社会,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV12_1500
-            CCTV-13新闻,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV13_800
-            CCTV-13新闻,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV13_1500
-            CCTV-14少儿,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV14_800
-            CCTV-14少儿,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV14_1500
-            CCTV-15音乐,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV15music_800
-            CCTV-15音乐,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV15music_1500
-            CCTV-NEWS,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV15news_800
-            CCTV-NEWS,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV15news_1500
-            广东卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=guangdong_800
-            广东卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=guangdong_1500
-            东方卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dongfang_800
-            东方卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dongfang_1500
-            北京卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=beijing_800
-            北京卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=beijing_1500
-            湖南卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hunan_800
-            湖南卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hunan_1500
-            浙江卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhejiang_800
-            浙江卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhejiang_1500
-            江苏卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jiangsu_800
-            江苏卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jiangsu_1500
-            安徽卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=anhui_800
-            安徽卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=anhui_1500
-            天津卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=tianjin_800
-            天津卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=tianjin_1500
-            山东卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shandong_800
-            山东卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shandong_1500
-            四川卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=sichuan_800
-            四川卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=sichuan_1500
-            江西卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jiangxi_800
-            江西卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jiangxi_1500
-            广东珠江,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdzhujiang_800
-            广东珠江,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdzhujiang_1500
-            广东公共,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdpublic_800
-            广东公共,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdpublic_1500
-            广东新闻,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdnews_800
-            广东新闻,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdnews_1500
-            广东体育,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdsports_800
-            广东体育,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdsports_1500
-            南方卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdnanfang_800
-            南方卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdnanfang_1500
-            广东经视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=GDjingjikejiaoHD_1500
-            广东经视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=GDjingjikejiaoHD_3000
-            广东经视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=GDjingjikejiaoHD_7000
-            南方影视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdyingshi_800
-            南方影视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdyingshi_1500
-            南方少儿,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdshaoer_800
-            南方少儿,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdshaoer_1500
-            珠江电影,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zjfilms_800
-            珠江电影,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zjfilms_1500
-            中国气象频道,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zgqixiang_800
-            中国气象频道,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zgqixiang_1500
-            CETV-1,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CETV-1_800
-            CETV-1,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CETV-1_1500
-            CETV-4,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CETV-4_800
-            CETV-4,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CETV-4_1500
-            黑龙江卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=heilongjiang_800
-            黑龙江卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=heilongjiang_1500
-            重庆卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=chongqing_800
-            重庆卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=chongqing_1500
-            内蒙古卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=neimenggu_800
-            内蒙古卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=neimenggu_1500
-            云南卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=yunnan_800
-            云南卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=yunnan_1500
-            贵州卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=guizhou_800
-            贵州卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=guizhou_1500
-            新疆卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=xinjiang_800
-            新疆卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=xinjiang_1500
-            河南卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=henan_800
-            河南卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=henan_1500
-            东南卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dongnan_800
-            东南卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dongnan_1500
-            辽宁卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=liaoning_800
-            辽宁卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=liaoning_1500
-            山西卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shanxi_800
-            山西卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shanxi_1500
-            河北卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hebei_1500
-            河北卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hebei_1500
-            陕西卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shanxi2_800
-            陕西卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shanxi2_1500
-            兵团卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=bingtuan_800
-            兵团卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=bingtuan_1500
-            湖北卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hubei_800
-            湖北卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hubei_1500
-            优漫卡通,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=youmankatong_800
-            优漫卡通,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=youmankatong_1500
-            现代教育,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=xiandaijiaoyu_800
-            现代教育,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=xiandaijiaoyu_1500
-            金鹰卡通,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jinyingkatong_800
-            金鹰卡通,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jinyingkatong_1500
-            炫动卡通,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=xuandongkatong_800
-            炫动卡通,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=xuandongkatong_1500
-            房产频道,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=fangchan_800
-            房产频道,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=fangchan_1500
-            深圳卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shenzhen_800
-            深圳卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shenzhen_1500
-            CCTV1高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV1HD_1500
-            CCTV1高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV1HD_3000
-            CCTV1高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV1HD_7000
-            CCTV2高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV2HD_1500
-            CCTV2高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV2HD_3000
-            CCTV2高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV2HD_7000
-            CCTV3高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV3HD_1500
-            CCTV3高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV3HD_3000
-            CCTV3高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV3HD_7000
-            CCTV5高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV5HD_1500
-            CCTV5高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV5HD_3000
-            CCTV5高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV5HD_7000
-            CCTV5+高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV5plusHD_1500
-            CCTV5+高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV5plusHD_3000
-            CCTV5+高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV5plusHD_7000
-            CCTV6高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV6HD_1500
-            CCTV6高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV6HD_3000
-            CCTV6高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV6HD_7000
-            CCTV7高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV7HD_1500
-            CCTV7高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV7HD_3000
-            CCTV7高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV7HD_7000
-            CCTV8高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV8HD_1500
-            CCTV8高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV8HD_3000
-            CCTV8高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV8HD_7000
-            CCTV9高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV9HD_1500
-            CCTV9高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV9HD_3000
-            CCTV9高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV9HD_7000
-            CCTV10高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV10HD_1500
-            CCTV10高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV10HD_3000
-            CCTV10高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV10HD_7000
-            CCTV12高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV12HD_1500
-            CCTV12高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV12HD_3000
-            CCTV12高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV12HD_7000
-            CCTV14高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV14HD_1500
-            CCTV14高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV14HD_3000
-            CCTV14高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CCTV14HD_7000
-            广东卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=guangdongHD_1500
-            广东卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=guangdongHD_3000
-            广东卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=guangdongHD_7000
-            深圳卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shenzhenHD_1500
-            深圳卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shenzhenHD_3000
-            深圳卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shenzhenHD_7000
-            东方卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dongfangHD_1500
-            东方卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dongfangHD_3000
-            东方卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dongfangHD_7000
-            北京卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=beijingHD_1500
-            北京卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=beijingHD_3000
-            北京卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=beijingHD_7000
-            湖南卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hunanHD_1500
-            湖南卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hunanHD_3000
-            湖南卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hunanHD_7000
-            浙江卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhejiangHD_1500
-            浙江卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhejiangHD_3000
-            浙江卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhejiangHD_7000
-            四川卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=sichuanHD_1500
-            四川卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=sichuanHD_3000
-            四川卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=sichuanHD_7000
-            江苏卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jiangsuHD_1500
-            江苏卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jiangsuHD_3000
-            江苏卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jiangsuHD_7000
-            黑龙江卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=heilongjiangHD_1500
-            黑龙江卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=heilongjiangHD_3000
-            黑龙江卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=heilongjiangHD_7000
-            河北卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hebeiHD_1500
-            河北卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hebeiHD_3000
-            河北卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hebeiHD_7000
-            辽宁卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=liaoningHD_1500
-            辽宁卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=liaoningHD_3000
-            辽宁卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=liaoningHD_7000
-            天津卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=tianjinHD_1500
-            天津卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=tianjinHD_3000
-            天津卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=tianjinHD_7000
-            湖北卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hubeiHD_1500
-            湖北卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hubeiHD_3000
-            湖北卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=hubeiHD_7000
-            安徽卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=anhuiHD_1500
-            安徽卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=anhuiHD_3000
-            安徽卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=anhuiHD_7000
-            CHC高清电影,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CHCHD_1500
-            CHC高清电影,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CHCHD_3000
-            CHC高清电影,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CHCHD_7000
-            高清演示,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=HDChanneldemo_1500
-            高清演示,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=HDChanneldemo_3000
-            高清演示,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=HDChanneldemo_7000
-            重庆卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=chongqingHD_1500
-            重庆卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=chongqingHD_3000
-            重庆卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=chongqingHD_7000
-            贵州卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=guizhouHD_1500
-            贵州卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=guizhouHD_3000
-            贵州卫视高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=guizhouHD_7000
-            DOX院线高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXyuanxianHD_1500
-            DOX院线高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXyuanxianHD_3000
-            DOX院线高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXyuanxianHD_7000
-            DOX雅趣高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXhanliuHD_1500
-            DOX雅趣高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXhanliuHD_3000
-            DOX雅趣高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXhanliuHD_7000
-            DOX怡家高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXyijiaHD_1500
-            DOX怡家高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXyijiaHD_3000
-            DOX怡家高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXyijiaHD_7000
-            DOX英伦高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXyinglunHD_1500
-            DOX英伦高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXyinglunHD_3000
-            DOX英伦高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXyinglunHD_7000
-            劲爆体育HD,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jinbaotiyuHD_1500
-            劲爆体育HD,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jinbaotiyuHD_3000
-            劲爆体育HD,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jinbaotiyuHD_7000
-            欢笑剧场HD,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huanxiaojuchangHD_1500
-            欢笑剧场HD,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huanxiaojuchangHD_3000
-            欢笑剧场HD,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huanxiaojuchangHD_7000
-            全纪实HD,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=quanjishiHD_1500
-            全纪实HD,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=quanjishiHD_3000
-            全纪实HD,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=quanjishiHD_7000
-            魅力音乐HD,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=meiliyinyueHD_1500
-            魅力音乐HD,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=meiliyinyueHD_3000
-            魅力音乐HD,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=meiliyinyueHD_7000
-            DOX新艺,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXxinyiHD_1500
-            DOX新艺,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXxinyiHD_300
-            DOX新艺,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=DOXxinyiHD_7000
-            广东体育高清测试,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdsportsHD_1500
-            广东体育高清测试,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdsportsHD_3000
-            广东体育高清测试,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gdsportsHD_7000
-            风云剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=fengyunjuchang_800
-            风云剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=fengyunjuchang_1500
-            怀旧剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huaijiujuchang_800
-            怀旧剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huaijiujuchang_1500
-            央视精品,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=yangshijingpin_800
-            央视精品,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=yangshijingpin_1500
-            风云足球,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=fengyunzuqiu_800
-            风云足球,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=fengyunzuqiu_1500
-            世界地理,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shijiedili_800
-            世界地理,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shijiedili_1500
-            第一剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=yidijuchang_800
-            第一剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=diyijuchang_1500
-            风云音乐,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=fengyunyinyue_800
-            风云音乐,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=fengyunyinyue_1500
-            东方财经,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dongfangcaijing_800
-            东方财经,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dongfangcaijing_1500
-            劲爆体育,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jinbaotiyu_800
-            劲爆体育,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jinbaotiyu_1500
-            劲爆体育,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jinbaotiyu_1500
-            卫生健康,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=weishengjiankang_800
-            卫生健康,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=weishengjiankang_1500
-            CHC家庭影院,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CHChometheatre_800
-            CHC家庭影院,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CHChometheatre_1500
-            CHC动作电影,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CHCactionmovie_800
-            CHC动作电影,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=CHCactionmovie_1500
-            环球奇观,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huanqiuqiguan_800
-            环球奇观,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huanqiuqiguan_1500
-            老故事,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=laogushi_800
-            老故事,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=laogushi_1500
-            书画,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shuhua_800
-            书画,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shuhua_1500
-            女性时尚,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=nvxingshishang_800
-            女性时尚,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=nvxingshishang_1500
-            发现之旅,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=faxianzhilv_800
-            发现之旅,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=faxianzhilv_800
-            发现之旅,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=faxianzhilv_1500
-            法治天地,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=fazhitiandi_800
-            法治天地,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=fazhitiandi_1500
-            欢笑剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huanxiaojuchang_800
-            欢笑剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huanxiaojuchang_1500
-            欢笑剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huanxiaojuchang_1500
-            都市剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dushijuchang_800
-            都市剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dushijuchang_1500
-            极速汽车,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jisuqiche_800
-            极速汽车,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jisuqiche_1500
-            魅力音乐,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=meiliyinyue_800
-            魅力音乐,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=meiliyinyue_1500
-            金色频道,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jinsepindao_800
-            金色频道,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jinsepindao_1500
-            生活时尚,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shenghuoshishang_800
-            生活时尚,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shenghuoshishang_1500
-            全纪实,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=quanjishi_800
-            全纪实,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=quanjishi_1500
-            全纪实,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=quanjishi_1500
-            广州台,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=guangzhou_800
-            广州台,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=guangzhou_1500
-            广州新闻,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gznews_800
-            广州新闻,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gznews_1500
-            广州经济,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gzeconomic_800
-            广州经济,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gzeconomic_1500
-            广州生活,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gzlife_800
-            广州生活,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gzlife_1500
-            广州竞赛,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gzcompetition_800
-            广州竞赛,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gzcompetition_1500
-            广州影视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gzfilms_800
-            广州影视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gzfilms_1500
-            广州少儿,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gzchild_800
-            广州少儿,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=gzchild_1500
-            求索生活高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=QSSHHD_1500
-            求索生活高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=QSSHHD_3000
-            求索生活高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=QSSHHD_7000
-            香港明珠,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=xgmingzhu_800
-            香港明珠,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=xgmingzhu_1500
-            香港翡翠,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=xgfeicui_800
-            香港翡翠,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=xgfeicui_1500
-            高清影院,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=FilmsHD_1500
-            高清影院,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=FilmsHD_3000
-            高清影院,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=FilmsHD_7000
-            高清剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=TheaterHD_1500
-            高清剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=TheaterHD_3000
-            高清剧场,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=TheaterHD_7000
-            高清综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zongheHD_1500
-            高清综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zongheHD_3000
-            高清综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zongheHD_7000
-            高清探索,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=searchHD_1500
-            高清探索,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=searchHD_3000
-            高清探索,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=searchHD_7000
-            粤语高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=yueyuHD_1500
-            粤语高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=yueyuHD_3000
-            粤语高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=yueyuHD_7000
-            佛山新闻综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=foshannews_800
-            佛山新闻综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=foshannews_1500
-            佛山公共,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=foshanyingshi_800
-            佛山公共,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=foshanyingshi_1500
-            云浮一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=yunfuyitao_800
-            云浮一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=yunfuyitao_1500
-            云浮二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=yunfuertao_800
-            云浮二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=yunfuertao_1500
-            揭阳一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jieyangyitao_800
-            揭阳一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jieyangyitao_1500
-            珠海一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhuhaiyitao_800
-            珠海一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhuhaiyitao_1500
-            珠海二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhuhaiertao_800
-            珠海二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhuhaiertao_1500
-            汕头一套高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shantouyitaogaoqing_800
-            汕头一套高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shantouyitaogaoqing_1500
-            汕头一套高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shantouyitaogaoqing_4500
-            汕头三套高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shantousantaogaoqing_800
-            汕头三套高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shantousantaogaoqing_1500
-            汕头三套高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shantousantaogaoqing_4500
-            汕头二套高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shantouertaogaoqing_800
-            汕头二套高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shantouertaogaoqing_1500
-            汕头二套高清,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shantouertaogaoqing_4500
-            湛江综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhanjiangzonghe_800
-            湛江综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhanjiangzonghe_1500
-            湛江公共,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhanjianggonggong_800
-            湛江公共,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhanjianggongong_1500
-            潮州综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=chaozhouyitao_800
-            潮州综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=chaozhouyitao_1500
-            潮州公共,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=chaozhouertao_800
-            潮州公共,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=chaozhouertao_1500
-            东莞一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dongguanyitao_800
-            东莞一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dongguanyitao_1500
-            东莞二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dongguanertao_800
-            东莞二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=dongguanertao_1500
-            梅州一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=meizhouyitao_800
-            梅州一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=meizhouyitao_1500
-            梅州二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=meizhouertao_800
-            梅州二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=meizhouertao_1500
-            江门公共,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jiangmenyitao_800
-            江门公共,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jiangmenyitao_1500
-            江门综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jiangmenertao_800
-            江门综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=jiangmenertao_1500
-            中山一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhongshanyitao_800
-            中山一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhongshanyitao_1500
-            中山二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhongshanertao_800
-            中山二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhongshanertao_1500
-            南海台,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=nanhaitai_800
-            南海台,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=nanhaitai_2000
-            顺德台,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shundetai_800
-            顺德台,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shundetai_2000
-            河源一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=heyuanyitao_800
-            河源一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=heyuanyitao_1500
-            肇庆一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhaoqingyitao_800
-            肇庆一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhaoqingyitao_1500
-            肇庆二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhaoqingertao_800
-            肇庆二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=zhaoqingertao_1500
-            新会综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=xinhui_800
-            新会综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=xinhui_1500
-            韶关综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shaoguanzonghe_800
-            韶关综合,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shaoguanzonghe_1500
-            韶关公共,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shaoguangonggong_800
-            韶关公共,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=shaoguangonggong_1500
-            惠州一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huizhouyitao_800
-            惠州一套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huizhouyitao_1500
-            惠州二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huizhouertao_800
-            惠州二套,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=huizhouertao_1500
-            凤凰中文台,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=fhzw_800
-            凤凰中文台,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=fhzw_1500
-            澳亚卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=aoya_800
-            澳亚卫视,http://你的域名/文件名?play&vid=gudou&tid=gdtv&id=aoya_1500
-        ');
-    }
+else {
+    $channellist = array(file_get_contents("channels/$vid.txt"));
+}
 
 ?>

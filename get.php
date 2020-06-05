@@ -101,12 +101,38 @@ function randomStr($len = 16)
     return $result;
 }
 
+// 头部
+header("Content-Type:text/plain;chartset=utf-8");
+
 // 配置
-if (isset($_GET['dzzb'])) {
-    $sig = 14463; //签名密码
-    $appname = '大众直播'; //软件名
-    $packagename = 'com.iptv.dzzb'; //软件包名
-    $url = 'http://zhibo123.top/'; // 后台地址
+if (isset($_GET['cietv'])) {
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, 'http://vip.cietv.com/mlive.asp?id=2&see=1');
+    curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_COOKIE , 'HX%5FUSER=User%5FName=gysguan&userhidden=2&uid=28089&User%5FPwd=fa95ba7e62717d39a015b7d562717d39a015b7d5;');
+    curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Mobile Safari/537.36');
+    $listobj = curl_exec($curl);
+    $listobj=mb_convert_encoding($listobj, 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
+
+    preg_match_all('/id="(.*?)" title="(.*?)"/i', $listobj, $channel);
+    $i = 0;
+    foreach ($channel[2] as &$channelname) {
+        $playurl = $channel[1][$i];
+        $channelname = preg_replace('# #', '', $channelname);
+        if (strstr($playurl,"http") == false) {
+            $playurl = 'http://vip.cietv.com' . $playurl;
+        }
+        echo $channelname . ',' . $playurl . "\n";
+        $i++;
+    }
+    exit;
+}
+if (isset($_GET['fyds'])) {
+    $sig = 20202; //签名密码
+    $appname = '风韵电视'; //软件名
+    $packagename = 'com.vvv.test'; //软件包名
+    $url = 'http://121.89.198.224/aatv/'; // 后台地址
 }
 if (isset($_GET['hk168'])) {
     $sig = 16123; //签名密码
@@ -120,18 +146,29 @@ if (isset($_GET['qqds'])) {
     $packagename = 'com.quanqiu'; //软件包名
     $url = 'http://47.56.251.109/iptv'; // 后台地址
 }
-if (isset($_GET['pszb'])) {
-    $sig = 13838; //签名密码
-    $appname = '普視直播'; //软件名
-    $packagename = 'world.live.com'; //软件包名
-    $url = 'http://pv.lztv.live/live'; // 后台地址
+if (isset($_GET['dzzb'])) {
+    $sig = 14463; //签名密码
+    $appname = '大众直播'; //软件名
+    $packagename = 'com.iptv.dzzb'; //软件包名
+    $url = 'http://zhibo123.top/'; // 后台地址
 }
+if (isset($_GET['dzzb'])) {
+    $sig = 14463; //签名密码
+    $appname = '大众直播'; //软件名
+    $packagename = 'com.iptv.dzzb'; //软件包名
+    $url = 'http://zhibo123.top/'; // 后台地址
+}
+if (isset($_GET['mhds'])) {
+    $sig = 19869; //签名密码
+    $appname = '美好电视'; //软件名
+    $packagename = 'com.meilixuexi.tv'; //软件包名
+    $url = 'http://139.224.232.220/mhtv'; // 后台地址
+}
+$aid = "319fdd0b8a87bb06";
+$mac = "11:22:33:44:55:66";
 $key = md5($sig . $appname . $packagename . "AD80F93B542B");
 $key = md5($key . $appname . $packagename);
-$postdata = '"region":"","mac":"11:22:33:44:55:66","androidid":"'. randomStr() . '","model":"Android x86","nettype":"","appname":"' . $appname . '"';
-
-// 头部
-header("Content-Type:text/plain;chartset=utf-8");
+$postdata = '"region":"","mac":"' . $mac . '","androidid":"'. $aid . '","model":"Android x86","nettype":"","appname":"' . $appname . '"';
 
 // 登录
 if (isset($_GET['login'])) {

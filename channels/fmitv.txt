@@ -1,0 +1,10 @@
+TVB翡翠,http://你的域名/文件名?play&vid=luo2888&id=tvbjade
+TVB J2,http://你的域名/文件名?play&vid=luo2888&id=tvbj2
+無線新聞,http://你的域名/文件名?play&vid=luo2888&id=tvbnews
+無線財經,http://你的域名/文件名?play&vid=luo2888&id=tvbj5
+有線新聞,http://你的域名/文件名?play&vid=luo2888&id=icable
+開電視,http://你的域名/文件名?play&vid=luo2888&id=fantv
+NOW直播,http://你的域名/文件名?play&vid=luo2888&id=now331
+NOW新聞,http://你的域名/文件名?play&vid=luo2888&id=now332
+港台電視31,http://你的域名/文件名?play&vid=luo2888&id=rthk31
+港台電視32,http://你的域名/文件名?play&vid=luo2888&id=rthk32

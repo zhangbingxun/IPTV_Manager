@@ -32,18 +32,20 @@ $remote = GetIP();
 $ips = array(
     '127.0.0.1',
     '149.129.98.202', // Me
-    '140.143.146.222', // http_id=2
-    '103.133.179.97', // http_id=2
-    '23.83.239.54', // http_id=2
-    '149.129.75.149', // http_id=3 3m 2020-04
-    '103.145.39.149', // http_id=4 3m 2020-04
-    '123.56.149.168', // http_id=5
+    '140.143.146.222', // http_id=2 2020-04
+    '103.133.179.97', // http_id=2 2020-04
+    '23.83.239.54', // http_id=2 2020-04
+    '149.129.75.149', // http_id=3 2020-04
+    '103.145.39.149', // http_id=4 2020-04
+    '123.56.149.168', // http_id=5 2020-04
     '114.67.203.190', // http_id=6
-    '198.44.188.193', // http_id=7
-    '111.230.178.212', // http_id=8 3m 2020-06
-    '113.87.129.140', // http_id=8 3m 2020-06
-    '39.101.217.17', // proxy_id=1
-    '47.114.56.181', // proxy_id=2
+    '198.44.188.193', // http_id=7 2020-04
+    '111.230.178.212', // http_id=8 2020-06
+    '113.87.129.140', // http_id=8 2020-06
+    '39.99.174.216', // http_id=9 2020-06
+    '47.56.247.8', // http_id=10 2020-06
+    '39.101.217.17', // proxy_id=1 2020-04
+    '47.114.56.181', // proxy_id=2 2020-04
 );
 
 $banips = array(
@@ -52,20 +54,6 @@ $banips = array(
     '23.83.239.54', // http_id=2
 );
 
-if (in_array($remote,$ips) == false) {
-    if (isset($_GET['url'])){
-        goto url;
-    }
-    $data = json_encode(
-        array(
-            'playurl' => 'http://tv.luo2888.cn/fmitv.mp4'
-        )
-    );
-    echo $data;
-    exit;
-}
-
-url:
 if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     
     $json = $_POST['fmitv_proxy'];
@@ -81,7 +69,20 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $vid = $_GET['vid'];
         $tid = $_GET['tid'];
         $id = $_GET['id'];
+        goto url;
     }
+
+    if (in_array($remote,$ips) == false) {
+        $data = json_encode(
+            array(
+                'playurl' => 'http://tv.luo2888.cn/fmitv.mp4'
+            )
+        );
+        echo $data;
+        exit;
+    }
+
+    url:
 
     if ($vid == 'bili') {
         $obj = file_get_contents("http://hk.luo2888.cn:8118/bilibili.php?id=$id");
@@ -106,9 +107,16 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $playurl = preg_replace('#hlsmgsplive.miguvideo.com:8080#', 'mgsp.live.miguvideo.com:8088', $playurl);
     }
     
-    if ($vid == 'luo2888') {
-        $playurl = file_get_contents("http://hk.luo2888.cn:8118/channels/$id");
-        //$playurl = preg_replace('#m3u8#', 'flv', $playurl);
+    if ($vid == 'fmitv') {
+        if ($id == 'tvbjade') {
+            $playurl = 'http://vip.cietv.com/gtpd/fct.asp';
+        }
+        else if ($id == 'tvbj2') {
+            $playurl = 'http://vip.cietv.com/gtpd/j2.asp';
+        }
+        else {
+            $playurl = file_get_contents("http://hk.luo2888.cn:8118/channels/$id");
+        }
     }
     
     if ($vid == 'utvhk') {
@@ -155,15 +163,16 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     
     if ($vid == 'huya') {
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, "https://www.huya.com/$id");
+        curl_setopt($curl, CURLOPT_URL, "https://m.huya.com/$id");
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
         $curlobj = curl_exec($curl);
-        preg_match('/hasvedio: \'\/\/(.*?)\?/i', $curlobj, $linkobj);
+        preg_match('/liveLineUrl = "\/\/(.*?)\&fm/i', $curlobj, $linkobj);
         $playurl = 'http://' . $linkobj[1];
+        $playurl = preg_replace('#m3u8#', 'flv', $playurl);
     }
 
     if ($vid == 'grtn') {
@@ -180,14 +189,9 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     }
     
     if ($vid == 'tvb') {
-        $url = "http://news.tvb.com/live/$id?is_hd";
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
-        $curlobj = curl_exec($curl);
-        preg_match('/vdo_url = "(.*?)"/i', $curlobj, $linkobj);
-        $playurl = $linkobj[1];
+        $urlobj = file_get_contents("http://news.tvb.com/ajax_call/getVideo.php?token=http%3A%2F%2Ftoken.tvb.com%2Fstream%2Flive%2Fhls%2Fmobile_" . $id . ".smil%3Fapp%3Dnews%26feed");
+        $obj = json_decode($urlobj, true);
+        $playurl = $obj['url'];
     }
     
     if ($vid == 'nnzb') {
@@ -196,8 +200,23 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         }
         $obj = file_get_contents("http://www.nnzhibo.com/e/DownSys/play/?classid=$tid&id=$id&pathid=$line");
         preg_match('/video-url="(.*?)"/i', $obj, $linkobj);
-        if (empty($linkobj)){preg_match('/url: "(.*?)"/i', $obj, $linkobj);}
+        if (empty($linkobj)){
+            preg_match('/url: "(.*?)"/i', $obj, $linkobj);
+        }
         $playurl = $linkobj[1];
+    }
+
+    if ($vid=='ysp') {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "http://www.itvi.vip/cctv.php?id=" . $id);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_NOBODY, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 1); 
+        curl_setopt($curl, CURLOPT_MAXREDIRS, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'MITV');
+        curl_exec($curl);
+        $playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
     }
 
     if ($vid=='mltv') {
@@ -208,7 +227,7 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
                     "1"=>"hkyx",
         );
         $sign = md5($key.$time."303543214".$sig);
-        $url = '47.56.251.109/iptv/api/' . $ids[$tid] . '.php?id=' . $id . '&t=' . $time . '&sign=' . $sign;
+        $url = 'http://47.56.251.109/iptv/api/' . $ids[$tid] . '.php?id=' . $id . '&t=' . $time . '&sign=' . $sign;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -387,6 +406,16 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     $vid = $obj->video;
     $tid = $obj->tid;
     
+    if (in_array($remote,$ips) == false) {
+        $data = json_encode(
+            array(
+                'tvlist' => array("查询授权失败,请联系客服kwankaho@luo2888.cn，你的连接IP是：" . $remote)
+            )
+        );
+        echo $data;
+        exit;
+    }
+
     require_once('tvlist.php');
     $channellist = preg_replace('# #', '', $channellist);
     

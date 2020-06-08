@@ -13,7 +13,7 @@
 //
 
 // 数据变量
-$dataurl = 'http://localhost:8118/dl.php';  //代理API地址
+$dataurl = 'http://tv.luo2888.cn/dl.php';  //代理API地址
 $failurl = 'http://tv.luo2888.cn/fmitv.mp4'; //链接失效视频
 
 /**
@@ -39,6 +39,18 @@ function send_post($url, $post_data) {
     curl_close($curl);  //关闭curl
     return $output;  //返回数据
     
+}
+
+// 获取代理地址
+function GetUrl() {
+
+    $Url = 'http://';
+    if($_SERVER['HTTPS'] == 'on') {
+        $Url = 'https://';
+    }
+    $Url .= $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+    return $Url;
+
 }
 
 if (isset($_GET['play']) || isset($_GET['list'])) {
@@ -92,6 +104,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
             foreach($listobj as $channellist) {
                 if (is_array($channellist)) {
                     foreach($channellist as $channel) {
+                        $channel = preg_replace('#http://域名/文件名#', GetUrl(), $channel);
                         echo $channel . "\n";
                     }
                 }

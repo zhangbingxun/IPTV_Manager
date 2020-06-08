@@ -1,0 +1,8 @@
+有线18台,http://域名/文件名?play&vid=tstv&id=3
+翡翠台,http://域名/文件名?play&vid=tstv&id=4
+开电视,http://域名/文件名?play&vid=tstv&id=5
+明珠台,http://域名/文件名?play&vid=tstv&id=6
+港台32,http://域名/文件名?play&vid=tstv&id=7
+VivTV,http://域名/文件名?play&vid=tstv&id=8
+VivTV6,http://域名/文件名?play&vid=tstv&id=9
+无线财经,http://域名/文件名?play&vid=tstv&id=10

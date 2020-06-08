@@ -1,0 +1,3 @@
+NOW直播,http://域名/文件名?play&vid=nowtv&id=331
+NOW新闻,http://域名/文件名?play&vid=nowtv&id=332
+NOW体育,http://域名/文件名?play&vid=nowtv&id=630

@@ -129,42 +129,40 @@ if (isset($_GET['cietv'])) {
     exit;
 }
 if (isset($_GET['fyds'])) {
+    $aid = randomStr();
     $sig = 20202; //签名密码
     $appname = '风韵电视'; //软件名
     $packagename = 'com.vvv.test'; //软件包名
     $url = 'http://121.89.198.224/aatv/'; // 后台地址
 }
 if (isset($_GET['hk168'])) {
+    $aid = randomStr();
     $sig = 16123; //签名密码
     $appname = '华凯超视觉TV'; //软件名
     $packagename = 'com.lt.hk168'; //软件包名
     $url = 'http://tv668.club/hk666'; // 后台地址
 }
 if (isset($_GET['qqds'])) {
+    $aid = randomStr();
     $sig = 12315; //签名密码
     $appname = '全球电视'; //软件名
     $packagename = 'com.quanqiu'; //软件包名
     $url = 'http://47.56.251.109/iptv'; // 后台地址
 }
 if (isset($_GET['dzzb'])) {
-    $sig = 14463; //签名密码
-    $appname = '大众直播'; //软件名
-    $packagename = 'com.iptv.dzzb'; //软件包名
-    $url = 'http://zhibo123.top/'; // 后台地址
-}
-if (isset($_GET['dzzb'])) {
+    $aid = randomStr();
     $sig = 14463; //签名密码
     $appname = '大众直播'; //软件名
     $packagename = 'com.iptv.dzzb'; //软件包名
     $url = 'http://zhibo123.top/'; // 后台地址
 }
 if (isset($_GET['mhds'])) {
+    $aid = "319fdd0b8a87bb06";
     $sig = 19869; //签名密码
     $appname = '美好电视'; //软件名
     $packagename = 'com.meilixuexi.tv'; //软件包名
     $url = 'http://139.224.232.220/mhtv'; // 后台地址
 }
-$aid = "319fdd0b8a87bb06";
 $mac = "11:22:33:44:55:66";
 $key = md5($sig . $appname . $packagename . "AD80F93B542B");
 $key = md5($key . $appname . $packagename);

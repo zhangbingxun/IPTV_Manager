@@ -1,0 +1,34 @@
+tvbjade#翡翠台,http://pull-flv-l1.ixigua.com/game/tvb20206002t.flv
+tvbnews2#無線新聞,http://pull-flv-l1.ixigua.com/game/inews20200602.flv
+icable2#有線新聞,http://mott.cdn.cmi.chinamobile.com/livehls/MOB-SCC/index.m3u8
+tvbjade2#翡翠台,http://hbsdiiv.cxtv202006.cxtv.xyz/lbtv/live/t6u5b1q4/765e01bf/index.m3u8
+tvbnews3#無線新聞,http://hbsdiiv.cxtv202006.cxtv.xyz/lbtv/live/kwzq1rse/g9wq1prh/index.m3u8
+tvbj2a#TVB J2,http://hbsdiiv.cxtv202006.cxtv.xyz/lbtv/live/t6u5b1q4/0087ab5b/index.m3u8
+tvbjade3#翡翠台,http://sytv.applinzi.com/fct.php
+fhzx#鳳凰資訊,http://vip.cietv.com/gtbo/fhzx.asp
+fhzw#鳳凰中文,http://vip.cietv.com/gtbo/fhzw.asp
+tvbjade4#翡翠台,http://vip.cietv.com/gtbo/fct.asp
+tvbj2b#TVB J2,http://vip.cietv.com/gtbo/j2.asp
+tvbsxw#TVBS新聞,http://vip.cietv.com/gtbo/tvbs.asp
+ztxw#中天新聞,http://vip.cietv.com/gtbo/ztxw.asp
+dsxw#東森新聞,http://vip.cietv.com/gtbo/dsxw.asp
+zjpd#珠江頻道,http://xiaoyu.speedws.com/sat/hk031.flv
+yx18#有線18台,http://xiaoyu.speedws.com/sat/hk041.flv
+twzs#中視,http://xiaoyu.speedws.com/sat/tv091.flv
+twhs#華視,http://xiaoyu.speedws.com/sat/tv111.flv
+twts#台視,http://xiaoyu.speedws.com/sat/tv071.flv
+twms#民視,http://xiaoyu.speedws.com/sat/tv051.flv
+bsjp#BS日本,http://xiaoyu.speedws.com/sat/jp071.flv
+mmzh#MOMO综合台,http://xiaoyu.speedws.com/sat//tv761.flv
+dscj#東森財經,http://xiaoyu.speedws.com/sat/tv571.flv
+ztxw#中天新聞,http://xiaoyu.speedws.com/sat/tv521.flv
+tvbshl#TVBS歡樂,http://xiaoyu.speedws.com/sat/tv421.flv
+tvbsxw2#TVBS新聞,http://xiaoyu.speedws.com/sat/tv551.flv
+wlyl#緯來育樂,http://xiaoyu.speedws.com/sat/tv701.flv
+wlty#緯來體育,http://xiaoyu.speedws.com/sat/tv721.flv
+wljp#緯來日本,http://xiaoyu.speedws.com/sat/tv771.flv
+fox1#Fox體育1,http://xiaoyu.speedws.com/sat/tv731.flv
+fox2#Fox體育2,http://xiaoyu.speedws.com/sat/tv741.flv
+fox3#Fox體育3,http://xiaoyu.speedws.com/sat/md031.flv
+elta1#ELTA體育1,http://xiaoyu.speedws.com/sat/md041.flv
+elta2#ELTA體育2,http://xiaoyu.speedws.com/sat/md051.flv

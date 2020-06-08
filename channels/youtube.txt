@@ -1,25 +1,25 @@
 # YouTube链接,仅限直播
 # https://m.youtube.com/watch?v=
 # 等于号后面的就是id
-ABC News,http://你的域名/文件名?play&vid=youtube&id=w_Ma8oQLmSM
-ANN News,http://你的域名/文件名?play&vid=youtube&id=coYw-eVU0Ks
-CCTV中文国际,http://你的域名/文件名?play&vid=youtube&id=vCDDYb_M2B4
-中视新闻,http://你的域名/文件名?play&vid=youtube&id=3OPNkiqD48g
-台视新闻,http://你的域名/文件名?play&vid=youtube&id=NbjI0cARzjQ
-民视新闻,http://你的域名/文件名?play&vid=youtube&id=XxJKnDLYZz4
-华视新闻,http://你的域名/文件名?play&vid=youtube&id=TL8mmew3jb8
-中天新闻,http://你的域名/文件名?play&vid=youtube&id=wUPPkSANpyo
-三立iNEWS,http://你的域名/文件名?play&vid=youtube&id=ag9nrgExHyg
-三立新闻,http://你的域名/文件名?play&vid=youtube&id=4ZVUmEUFwaY
-东森新闻,http://你的域名/文件名?play&vid=youtube&id=RaIJ767Bj_M
-东森财经,http://你的域名/文件名?play&vid=youtube&id=dphWo0r27Z4
-TVBS新闻,http://你的域名/文件名?play&vid=youtube&id=Hu1FkdAOws0
-信大电视,http://你的域名/文件名?play&vid=youtube&id=djGSxqB8N4k
-富立电视,http://你的域名/文件名?play&vid=youtube&id=6JPiGsyffO0
-华视综艺,http://你的域名/文件名?play&vid=youtube&id=GvVWkRhxHYE
-全球财经,http://你的域名/文件名?play&vid=youtube&id=-NNha8Ioobk
-运通财经,http://你的域名/文件名?play&vid=youtube&id=z-bbsDpAyok
-大爱一台,http://你的域名/文件名?play&vid=youtube&id=oV_i3Hsl_zg
-大爱二台,http://你的域名/文件名?play&vid=youtube&id=DTNkEm6jaqQ
-东森YOYO,http://你的域名/文件名?play&vid=youtube&id=3gKlm323de0
-新唐人亚太,http://你的域名/文件名?play&vid=youtube&id=wSKE3A40SIk
+ABC News,http://域名/文件名?play&vid=youtube&id=w_Ma8oQLmSM
+ANN News,http://域名/文件名?play&vid=youtube&id=coYw-eVU0Ks
+CCTV中文国际,http://域名/文件名?play&vid=youtube&id=vCDDYb_M2B4
+中视新闻,http://域名/文件名?play&vid=youtube&id=3OPNkiqD48g
+台视新闻,http://域名/文件名?play&vid=youtube&id=NbjI0cARzjQ
+民视新闻,http://域名/文件名?play&vid=youtube&id=XxJKnDLYZz4
+华视新闻,http://域名/文件名?play&vid=youtube&id=TL8mmew3jb8
+中天新闻,http://域名/文件名?play&vid=youtube&id=wUPPkSANpyo
+三立iNEWS,http://域名/文件名?play&vid=youtube&id=ag9nrgExHyg
+三立新闻,http://域名/文件名?play&vid=youtube&id=4ZVUmEUFwaY
+东森新闻,http://域名/文件名?play&vid=youtube&id=RaIJ767Bj_M
+东森财经,http://域名/文件名?play&vid=youtube&id=dphWo0r27Z4
+TVBS新闻,http://域名/文件名?play&vid=youtube&id=Hu1FkdAOws0
+信大电视,http://域名/文件名?play&vid=youtube&id=djGSxqB8N4k
+富立电视,http://域名/文件名?play&vid=youtube&id=6JPiGsyffO0
+华视综艺,http://域名/文件名?play&vid=youtube&id=GvVWkRhxHYE
+全球财经,http://域名/文件名?play&vid=youtube&id=-NNha8Ioobk
+运通财经,http://域名/文件名?play&vid=youtube&id=z-bbsDpAyok
+大爱一台,http://域名/文件名?play&vid=youtube&id=oV_i3Hsl_zg
+大爱二台,http://域名/文件名?play&vid=youtube&id=DTNkEm6jaqQ
+东森YOYO,http://域名/文件名?play&vid=youtube&id=3gKlm323de0
+新唐人亚太,http://域名/文件名?play&vid=youtube&id=wSKE3A40SIk

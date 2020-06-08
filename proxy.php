@@ -112,7 +112,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
             foreach($listobj as $channellist) {
                 if (is_array($channellist)) {
                     foreach($channellist as $channel) {
-                        $channel = preg_replace('#http://你的域名/文件名#', 'fmitv://tv', $channel);
+                        $channel = preg_replace('#http://域名/文件名#', 'fmitv://tv', $channel);
                         $channel = preg_replace('#token=#', 'key=', $channel);
                         echo $channel . "\n";
                     }

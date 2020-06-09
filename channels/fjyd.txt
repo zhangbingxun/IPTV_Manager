@@ -119,6 +119,8 @@ NewTV-精品体育,http://域名/文件名?play&vid=fjyd&id=3221225886
 NewTV-精品记录,http://域名/文件名?play&vid=fjyd&id=3221225888
 NewTV-精品大剧,http://域名/文件名?play&vid=fjyd&id=3221225889
 NewTV-军事评论,http://域名/文件名?play&vid=fjyd&id=3221225890
+NewTV-明星大片,http://域名/文件名?play&vid=fjyd&id=3221225893
+NewTV-中国功夫,http://域名/文件名?play&vid=fjyd&id=3221225896
 NewTV-超级综艺,http://域名/文件名?play&vid=fjyd&id=3221225801
 NewTV-超级综艺,http://域名/文件名?play&vid=fjyd&id=3221225924
 NewTV-超级体育,http://域名/文件名?play&vid=fjyd&id=3221225925
@@ -127,5 +129,3 @@ NewTV-超级电影,http://域名/文件名?play&vid=fjyd&id=3221225804
 NewTV-超级电影,http://域名/文件名?play&vid=fjyd&id=3221225926
 NewTV-超级电视剧,http://域名/文件名?play&vid=fjyd&id=3221225806
 NewTV-超级电视剧,http://域名/文件名?play&vid=fjyd&id=3221225928
-NewTV-明星大片,http://域名/文件名?play&vid=fjyd&id=3221225893
-NewTV-中国功夫,http://域名/文件名?play&vid=fjyd&id=3221225896

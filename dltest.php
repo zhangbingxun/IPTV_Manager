@@ -15,6 +15,7 @@
 // 数据变量
 $dataurl = 'http://tv.luo2888.cn/dl.php';  //代理API地址
 $failurl = 'http://tv.luo2888.cn/fmitv.mp4'; //链接失效视频
+$checkcode = "608"; //链接验证码
 
 /**
  * 发送post请求
@@ -32,7 +33,7 @@ function send_post($url, $post_data) {
     curl_setopt($curl, CURLOPT_HTTPHEADER, array(
         'Content-Type: application/x-www-form-urlencoded;'
     ));  //HTTP头
-    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.0 (Proxy/1.0.0)');  // USERAGENT
+    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.0 (HTTP Proxy/1.0.2)');  // USERAGENT
     curl_setopt($curl, CURLOPT_POST, 1);  //声明使用POST方式来进行发送
     curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);  //POST数据
     $output = curl_exec($curl);  //发送请求
@@ -77,7 +78,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $obj = json_decode($datastr);
         $playurl = $obj->playurl;
         
-        if (!empty($playurl)){
+        if (!empty($playurl)  && isset($_GET[$checkcode])){
             header('location:' . $playurl);
         } else {
             header('location:' . $failurl);
@@ -85,7 +86,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         
     }
 
-    else if (isset($_GET['list'])) {
+    else if (isset($_GET['list']) && isset($_GET[$checkcode])) {
         
         $vid = $_GET['vid'];
         $tid = $_GET['tid'];
@@ -104,7 +105,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
             foreach($listobj as $channellist) {
                 if (is_array($channellist)) {
                     foreach($channellist as $channel) {
-                        $channel = preg_replace('#http://域名/文件名#', GetUrl(), $channel);
+                        $channel = preg_replace('#http://域名/文件名\?#', GetUrl() . '?' . $checkcode . '&', $channel);
                         echo $channel . "\n";
                     }
                 }
@@ -121,4 +122,3 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
 
 }
 ?>
-

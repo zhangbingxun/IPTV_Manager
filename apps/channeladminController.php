@@ -57,9 +57,6 @@ function add_channel_list($cname, $srclist) {
         $rows = preg_replace('# ,#', ',', $rows);
         $rows = preg_replace('#\r#', '', $rows);
         $rows = preg_replace('/高清/', '', $rows);
-        $rows = preg_replace('/FHD/', '', $rows);
-        $rows = preg_replace('/HD/', '', $rows);
-        $rows = preg_replace('/SD/', '', $rows);
         $rows = preg_replace('/\[.*?\]/', '', $rows);
         $rows = preg_replace('/\#genre\#/', '', $rows);
         $rows = preg_replace('/ver\..*?\.m3u8/', '', $rows);

@@ -34,7 +34,7 @@ function send_post($url, $post_data) {
     curl_setopt($curl, CURLOPT_HTTPHEADER, array(
         'Content-Type: application/x-www-form-urlencoded;'
     ));  //HTTP头
-    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.0 (Proxy/1.0.0)');  // USERAGENT
+    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.0 (Native Proxy/1.0.0)');  // USERAGENT
     curl_setopt($curl, CURLOPT_POST, 1);  //声明使用POST方式来进行发送
     curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);  //POST数据
     $output = curl_exec($curl);  //发送请求

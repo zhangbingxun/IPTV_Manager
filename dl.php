@@ -44,7 +44,9 @@ $ips = array(
     '113.87.129.140', // http_id=8 2020-06
     '39.99.174.216', // http_id=9 2020-06
     '47.56.247.8', // http_id=10 2020-06
-    '122.114.123.45', // http_id=11 qq846376108 2020-06
+    '122.114.123.45', // http_id=11 2020-06
+    '191.101.44.238', // http_id=12 2020-06
+    '14.116.198.35', // http_id=13 2020-06
     '39.101.217.17', // proxy_id=1 2020-04
     '47.114.56.181', // proxy_id=2 2020-04
 );
@@ -143,6 +145,12 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
             $playurl = file_get_contents("http://hk.luo2888.cn:8118/channels/$id");
         }
     }
+   
+    if ($vid == 'ublive') {
+        $obj = file_get_contents("channels/ublive.txt");
+        preg_match('/http:\/\/(.*?)\/live\/' . $id . '\/(.*?)\/index\.m3u8/i', $obj, $linkobj);
+        $playurl = $linkobj[0];
+    }
     
     if ($vid == 'utvhk') {
         $obj = file_get_contents("http://miguapi.utvhk.com:18083/clt/publish/resource/UTV_NEW/playData.jsp?contentId=$id&nodeId=$id&rate=5&playerType=4&objType=LIVE&nt=4");
@@ -160,9 +168,9 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
 
     if ($vid == 'fhds') {
         $ids = array(
-            "fhzx"=>"/live/8222pin7",
-            "fhzh"=>"/live/8222pcc7",
-            "fhhk"=>"/live/8222phk7",
+            "fhzx"=>"/live/8222pin72",
+            "fhzh"=>"/live/8222pcc72",
+            "fhhk"=>"/live/8222phk72",
         );
         $hexString = dechex(time()+1800);
         $substring = $ids[$id];
@@ -214,6 +222,18 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $result = json_decode($curlobj, true);
         $access_token = $result['access_token'];
         $playurl = "http://httpdvb.slave.ztgdwl.tv:13164/playurl?playtype=live&protocol=http&accesstoken=" . $access_token . "&programid=42000000" . $id . "&playtoken=ABCDEFGHI";
+    }
+
+    if ($vid == 'nxgd') {
+        $url = "http://access.nx96200.cn:12690/account/login?accounttype=2&deviceno=A92E1686F0DEECFDDC346BBF7CB8C1BE4&isforce=1&pwd=f91879321d16703dc86a12a68ad9d6cd&devicetype=3&account=13066258954";
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727;)');
+        $curlobj = curl_exec($curl);
+        $result = json_decode($curlobj, true);
+        $access_token = $result['access_token'];
+        $playurl = "http://httpdvb.slave.nx96200.cn:13164/playurl?playtype=live&protocol=http&accesstoken=" . $access_token . "&programid=4200900" . $id . "&playtoken=ABCDEFGHI";
     }
     
     if ($vid == 'bjy') {
@@ -391,25 +411,18 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         curl_close($curl);
     }
 
-    if ($vid == 'longtv') {
-        $curl = curl_init();
-        logined:
-        curl_setopt($curl, CURLOPT_URL, 'http://sh.woaizhuguo.cn/news/view/id/' . $id);
-        curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_COOKIE , 'PHPSESSID=abcdefghijklmnopqrstuvwxyz');
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Mobile Safari/537.36');
-        $listobj = curl_exec($curl);
-        preg_match('/<video  src="(.*?)"/i', $listobj, $linkobj);
-        if (empty($linkobj)){
-            curl_setopt($curl, CURLOPT_URL, 'http://sh.woaizhuguo.cn/login/mlogin');
-            curl_setopt($curl, CURLOPT_POST, 1);  //声明使用POST方式来进行发送
-            curl_setopt($curl, CURLOPT_POSTFIELDS, 'uname=13651761912&upass=112233');  //POST数据
-            curl_exec($curl);
-            goto logined;
+    if ($vid == '91kds') {
+        if (empty($line)) {
+            $line = 0;
         }
-        $playurl = $linkobj[1];
-        curl_close($curl);
+        $url = "http://m.91kds.org/jiemu_$id.html";
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
+        $curlobj = curl_exec($curl);
+        preg_match_all('/<option value="(http)(.*?)"/i', $curlobj, $linkobj);
+        $playurl = $linkobj[1][$line] . $linkobj[2][$line];
     }
     
     if ($vid == 'iptv345') {

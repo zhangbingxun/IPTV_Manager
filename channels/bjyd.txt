@@ -110,6 +110,7 @@ NewTV-搏击,http://域名/文件名?play&vid=bjyd&id=3221226297
 NewTV-中国功夫,http://域名/文件名?play&vid=bjyd&id=3221226321
 NewTV-中国功夫,http://域名/文件名?play&vid=bjyd&id=3221225951
 NewTV-中国功夫,http://域名/文件名?play&vid=bjyd&id=3221226298
+NewTV-古装剧场,http://域名/文件名?play&vid=bjyd&id=3221225916
 NewTV-古装剧场,http://域名/文件名?play&vid=bjyd&id=3221226323
 NewTV-古装剧场,http://域名/文件名?play&vid=bjyd&id=3221226300
 NewTV-动作电影,http://域名/文件名?play&vid=bjyd&id=3221225915
@@ -127,7 +128,6 @@ NewTV-明星大片,http://域名/文件名?play&vid=bjyd&id=3221225929
 NewTV-明星大片,http://域名/文件名?play&vid=bjyd&id=3221226295
 NewTV-金牌综艺,http://域名/文件名?play&vid=bjyd&id=3221225920
 NewTV-金牌综艺,http://域名/文件名?play&vid=bjyd&id=3221226296
-NewTV-故障剧场,http://域名/文件名?play&vid=bjyd&id=3221225916
 NewTV-炫舞未来,http://域名/文件名?play&vid=bjyd&id=3221226248
 NewTV-健康有约,http://域名/文件名?play&vid=bjyd&id=3221225919
 NewTV-健康有约,http://域名/文件名?play&vid=bjyd&id=3221226306

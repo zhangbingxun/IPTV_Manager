@@ -16,27 +16,60 @@ if (empty($vid)){
             央视频：ysp
             北京移动：bjyd
             福建移动：fjyd
-            咪咕视频：migu
-            香港无线：tvb
-            香港有线：utvhk
+            宁夏广电：nxgd
             平遥广电：pygd
             昭通广电：ztgd
             凤凰电视：fhds
             时光电视：tstv
+            咪咕视频：migu
+            香港无线：tvb
+            香港有线：utvhk
             B站直播：bilibili
             YY直播：yylive
             斗鱼直播：douyu
             虎牙直播：huya
             优酷直播：youku
             企鹅电竞：egame
-            影视解析(id是网站地址)：6ska
+            视频网站解析：6ska
+            安博TV(测试)：ublive
             肥米TV(香港网络)：fmitv
             香港NowTV(限制IP)：nowtv
             YouTube(仅限境外)：youtube
             牛牛直播(支持多线切换)：nnzb
+            91看电视(支持多线切换)：91kds
             IPTV345(支持多线切换)：iptv345
             IPTV2020(支持多线切换)：iptv2020
     ";
+    $channellist = preg_replace('# #', '', $channellist);
+}
+
+else if ($vid == '91kds') {
+    $url = "http://m.91kds.org";
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($curl, CURLOPT_USERAGENT, 'MQQBrowser/6.2 TBS/045130 MicroMessengeriptv VideoPlayer god/3.0.0 Html5Plus/1.0 (Immersed/29.411766)');
+    if (empty($tid)) {
+        $channellist[] = "节目TID列表：";
+        $i = 0;
+        curl_setopt($curl, CURLOPT_URL, $url);
+        $curlobj = curl_exec($curl);
+        preg_match_all('/href="(.*?)\.html" data-ajax="false">(.*?)</i', $curlobj, $channel);
+        foreach ($channel[2] as &$channelname) {
+            $channellist[] = $channelname . '：' . $channel[1][$i];
+            $i++;
+        }
+    } else {
+        curl_setopt($curl, CURLOPT_URL, $url . "/$tid.html");
+        $curlobj = curl_exec($curl);
+        preg_match_all('/href="jiemu_(.*?)\.html" data-ajax="false">(.*?)</i', $curlobj, $channel);
+        $i = 0;
+        foreach ($channel[2] as &$channelname) {
+            $channellist[] = $channelname . ",http://域名/文件名?play&vid=91kds&id=" . $channel[1][$i];
+            $i++;
+        }
+    }
 }
 
 else if ($vid == 'iptv345' || $vid == 'iptv2020') {
@@ -50,6 +83,7 @@ else if ($vid == 'iptv345' || $vid == 'iptv2020') {
     ));
     curl_setopt($curl, CURLOPT_USERAGENT, 'MQQBrowser/6.2 TBS/045130 MicroMessengeriptv VideoPlayer god/3.0.0 Html5Plus/1.0 (Immersed/29.411766)');
     if (empty($tid)) {
+        $channellist[] = "节目TID列表：";
         $i = 0;
         curl_setopt($curl, CURLOPT_URL, $url);
         $curlobj = curl_exec($curl);
@@ -74,29 +108,6 @@ else if ($vid == 'iptv345' || $vid == 'iptv2020') {
     }
 }
 
-else if ($vid == 'longtv') {
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, 'http://sh.woaizhuguo.cn/');
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Mobile Safari/537.36');
-    $list = curl_exec($curl);
-    preg_match_all('/(?s)<a href="\/news\/view\/id\/(.*?)">(.*?)<dt>(.*?)<\/dt>/i', $list, $channel);
-    $i = 0;
-    foreach ($channel[3] as &$channelname) {
-        $channelname = preg_replace('#（(.*?)）#', '', $channelname);
-        $channelname = preg_replace('#\((.*?)\)#', '', $channelname);
-        $channelname = preg_replace('#\((.*?)）#', '', $channelname);
-        $channelname = preg_replace('#\[17A\]#', '', $channelname);
-        $channelname = preg_replace('#\[TN\]#', '', $channelname);
-        $channelname = preg_replace('#\[#', '', $channelname);
-        $channelname = preg_replace('#\]#', '', $channelname);
-        $channelname = preg_replace('#\t#', '', $channelname);
-        $channelname = preg_replace('# #', '', $channelname);
-        $channellist[] =  $channelname . ",http://你的域名/文件名?play&vid=longtv&id=" . $channel[1][$i];
-        $i++;
-    }
-}
-
 else if ($vid == 'bilibili' || $vid == 'douyu' || $vid == 'huya' || $vid == 'youku' || $vid == 'egame' || $vid == 'yylive') {
     $channellist[] = "参考链接：http://域名/文件名?play&vid=$vid&id=主播房间号";
 }
@@ -108,6 +119,16 @@ else if ($vid == 'fmitv') {
     preg_match_all('/(.*?)#(.*?),(.*?)/i', $obj, $channel);
     foreach ($channel[2] as &$channelname) {
             $channellist[] = $channelname . ",http://域名/文件名?play&vid=fmitv&id=" . $channel[1][$i];
+        $i++;
+    }
+}
+
+else if ($vid == 'ublive') {
+    $i = 0;
+    $obj = file_get_contents("channels/ublive.txt");
+    preg_match_all('/(.*?),(.*?)\/live\/(.*?)\//i', $obj, $channel);
+    foreach ($channel[1] as &$channelname) {
+            $channellist[] = $channelname . ",http://域名/文件名?play&vid=ublive&id=" . $channel[3][$i];
         $i++;
     }
 }

@@ -1,17 +1,35 @@
-tvbjade#翡翠台,http://pull-flv-l1.ixigua.com/game/tvb20206002t.flv
+tvbj2#TVB J2,http://video.0058.com/RoomVideoChat/420e44701bf3c40/playlist.m3u8
 tvbnews2#無線新聞,http://pull-flv-l1.ixigua.com/game/inews20200602.flv
-icable2#有線新聞,http://mott.cdn.cmi.chinamobile.com/livehls/MOB-SCC/index.m3u8
-tvbjade2#翡翠台,http://hbsdiiv.cxtv202006.cxtv.xyz/lbtv/live/t6u5b1q4/765e01bf/index.m3u8
-tvbnews3#無線新聞,http://hbsdiiv.cxtv202006.cxtv.xyz/lbtv/live/kwzq1rse/g9wq1prh/index.m3u8
-tvbj2a#TVB J2,http://hbsdiiv.cxtv202006.cxtv.xyz/lbtv/live/t6u5b1q4/0087ab5b/index.m3u8
-tvbjade3#翡翠台,http://sytv.applinzi.com/fct.php
+tvbjade#翡翠台,http://xhhbfbhdbhv.cxtv202006.cxtv.xyz/lbtv/live/t6u5b1q4/765e01bf/index.m3u8
+tvbnews3#無線新聞,http://xhhbfbhdbhv.cxtv202006.cxtv.xyz/lbtv/live/kwzq1rse/g9wq1prh/index.m3u8
+tvbj2a#TVB J2,http://xhhbfbhdbhv.cxtv202006.cxtv.xyz/lbtv/live/t6u5b1q4/0087ab5b/index.m3u8
+tvbyl#TVB娱乐新闻,http://xhhbfbhdbhv.cxtv202006.cxtv.xyz/lbtv/live/t6u5b1q4/qz897rqx/index.m3u8
+tvbxh#TVB 星河,http://xhhbfbhdbhv.cxtv202006.cxtv.xyz/lbtv/live/t6u5b1q4/amlxy034/index.m3u8 
+viutv#ViuTV,http://xhhbfbhdbhv.cxtv202006.cxtv.xyz/lbtv/live/t6u5b1q4/12e5a374/index.m3u8 
+viutv6#ViuTV6,http://xhhbfbhdbhv.cxtv202006.cxtv.xyz/lbtv/live/t6u5b1q4/1adccc67/index.m3u8 
+tvbjade2#翡翠台,http://sytv.applinzi.com/fct.php
 fhzx#鳳凰資訊,http://vip.cietv.com/gtbo/fhzx.asp
 fhzw#鳳凰中文,http://vip.cietv.com/gtbo/fhzw.asp
-tvbjade4#翡翠台,http://vip.cietv.com/gtbo/fct.asp
+tvbjade3#翡翠台,http://vip.cietv.com/gtbo/fct.asp
 tvbj2b#TVB J2,http://vip.cietv.com/gtbo/j2.asp
+tvbnews4#無線新聞,http://vip.cietv.com/gtbo/wxxw.asp
 tvbsxw#TVBS新聞,http://vip.cietv.com/gtbo/tvbs.asp
 ztxw#中天新聞,http://vip.cietv.com/gtbo/ztxw.asp
 dsxw#東森新聞,http://vip.cietv.com/gtbo/dsxw.asp
+now331a#NOW新聞,http://23.244.32.127/iptv/msxtdl.php?id=NowXWTHD
+now332a#NOW直播,http://23.244.32.127/iptv/msxtdl.php?id=NowZBT
+now630#NOW體育,http://23.244.32.127/iptv/msxtdl.php?id=NowSportsPrime630 
+icable2#有線新聞,http://mott.cdn.cmi.chinamobile.com/livehls/MOB-SCC/index.m3u8
+amyx1#澳门有线一台,http://202.175.127.77/live/show/ch1/index.m3u8
+amxw#澳门互动新闻,http://202.175.127.77/live/show/ch2/index.m3u8
+amyx3#澳门有线三台,http://202.175.127.77/live/show/ch3/index.m3u8
+asam#澳視澳門,http://61.244.22.4/ch1/ch1.live/playelist.m3u8
+ampw#澳門葡文,http://61.244.22.4/ch2/ch2.live/playelist.m3u8
+amdy#澳門衛星,http://61.244.22.4/ch3/ch3.live/playelist.m3u8
+asty#澳視體育,http://61.244.22.5/ch4/sport_ch4.live/playlist.m3u8
+amzx#澳門资讯,http://61.244.22.5/ch5/info_ch5.live/playlist.m3u8
+aszy#澳視綜藝,http://61.244.22.5/ch6/hd_ch6.live/playlist.m3u8
+zhws#中华卫视台湾台,http://pull.leshantangjt.com/live/playlist.m3u8 
 zjpd#珠江頻道,http://xiaoyu.speedws.com/sat/hk031.flv
 yx18#有線18台,http://xiaoyu.speedws.com/sat/hk041.flv
 twzs#中視,http://xiaoyu.speedws.com/sat/tv091.flv
@@ -32,3 +50,9 @@ fox2#Fox體育2,http://xiaoyu.speedws.com/sat/tv741.flv
 fox3#Fox體育3,http://xiaoyu.speedws.com/sat/md031.flv
 elta1#ELTA體育1,http://xiaoyu.speedws.com/sat/md041.flv
 elta2#ELTA體育2,http://xiaoyu.speedws.com/sat/md051.flv
+sg5#新加坡5,https://dlau142f16b92.cloudfront.net/hls/ch5ctv/master02.m3u8
+sg8#新加坡8,https://d34e90s3s13i7n.cloudfront.net/hls/ch8ctv/master02.m3u8
+sgvn#新加坡VASANTHAM,https://d39v9xz8f7n8tk.cloudfront.net/hls/vsnthmctv/master02.m3u8
+sgria#新加坡SURIA,https://d11h6a6nhl9kj9.cloudfront.net/hls/suriactv/master02.m3u8
+sgxw#新加坡亚洲新闻,https://d2ko4czujk9652.cloudfront.net/hls/cnasctv/master02.m3u8
+sgokto#新加坡okto,https://ddftztnzt6o79.cloudfront.net/hls/oktoctv/master02.m3u8

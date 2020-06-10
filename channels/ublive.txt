@@ -41,6 +41,38 @@ Outdoor Channel,http://ff.twtvcdn.com:8880/live/94/5b1bf5256029272ba9cd768300a93
 达文西频道,http://ff.twtvcdn.com:8880/live/46/9109adb093548e2317370c8c02b3348b/index.m3u8
 民视综艺,http://ff.twtvcdn.com:8880/live/98/bee526ac75f2eb16e31709208a54d43a/index.m3u8
 好消息,http://ff.twtvcdn.com:8880/live/38/4d1283612d21cf37c365e690973d4a84/index.m3u8
+TRACE Sport Stars,http://ff.twtvcdn.com:8880/live/51/4b1e284e9568b0ea9818a9a890f8dc45/index.m3u8
+Stingray iConcerts,http://ff.twtvcdn.com:8880/live/312/e3b512f1edd7c462200385395d222bd5/index.m3u8
+Travel Channel,http://ff.twtvcdn.com:8880/live/74/1573f5163e747d5f487d3e1bb40cfc34/index.m3u8
+AXN,http://ff.twtvcdn.com:8080/live/103/823d8fdcbd549acc5bc7dfb0d6055dde/index.m3u8
+时尚运动X,http://ff.twtvcdn.com:8880/live/35/5fbd900ea4a3db60a1a4e21e0243aa3c/index.m3u8
+中天亚洲,http://ff.twtvcdn.com:8080/live/322/4c0c799b688641a55cf81243fab6ca0b/index.m3u8
+鸿基电视,http://ff.twtvcdn.com:8080/live/315/658c6ce13e3cf566f2cc3e4965e4e95d/index.m3u8
+TVB翡翠,http://f8.twtvcdn.com:8080/live/390/eabc404f7d8125fb483d9ac3b3a3eb4a/index.m3u8
+TVB翡翠备,http://f7.twtvcdn.com:8080/live/30/f2dd568467c02627eae149b09f82ca72/index.m3u8
+TVB明珠,http://f8.twtvcdn.com:8080/live/391/8b2e6e6e1d3441e0981d64d822c92a44/index.m3u8
+无线新闻,http://f8.twtvcdn.com:8080/live/394/c8a9c9297013e64dbc9db5c171cc5a94/index.m3u8
+无线新闻备,http://f7.twtvcdn.com:8080/live/401/eb86146424af1676d0b546d02ba8c522/index.m3u8
+有线新闻,http://f8.twtvcdn.com:8080/live/395/4e73c6f97669d4e26281935f78d874b0/index.m3u8
+有线新闻备,http://f8.twtvcdn.com:8080/live/19/04c14662c868c8ef1a3516641ecefccd/index.m3u8
+TVB J5,http://f8.twtvcdn.com:8080/live/71/6820171e96d924644c081320d0062962/index.m3u8
+TVBJ5,http://f7.twtvcdn.com:8080/live/393/515ea744279e94c4ad732abec080bc73/index.m3u8
+TVB J2,http://f8.twtvcdn.com:8080/live/72/cdf3ab8b4eac307b08776b73104365ae/index.m3u8
+TVBJ2,http://f7.twtvcdn.com:8080/live/392/6b4c4e315cf8cd85e6aea44178f7e1dd/index.m3u8
+香港开电视,http://f8.twtvcdn.com:8080/live/17/d062313142a1db6cd95a928e3ec95b87/index.m3u8
+NOW新闻,http://f8.twtvcdn.com:8080/live/396/50c97712d181059f3fdb4113479fc7e4/index.m3u8
+NOW直播,http://f8.twtvcdn.com:8080/live/400/b281e7b813882f0b074a7897e7fd7120/index.m3u8
+凤凰卫视,http://f8.twtvcdn.com:8080/live/357/23b2c8e6736c1683de0236fdb1920438/index.m3u8
+凤凰资讯,http://f8.twtvcdn.com:8080/live/359/1f869e26d5f02e65744cce88372eb310/index.m3u8
+港台32,http://f8.twtvcdn.com:8080/live/397/8252c607feae15b3c3c4f61092fb634a/index.m3u8
+港台31,http://f8.twtvcdn.com:8080/live/353/9548367b00ee0a796fd9ea157ec5564c/index.m3u8
+Channel V,http://f8.twtvcdn.com:8080/live/21/86a7de69fb223f958af5a775e568ebd4/index.m3u8
+HKC娱乐,http://f8.twtvcdn.com:8080/live/360/f4e78bc5571d41ecb922f5b882d25771/index.m3u8
+HKS,http://f8.twtvcdn.com:8080/live/360/f4e78bc5571d41ecb922f5b882d25771/index.m3u8
+澳视澳门,http://f8.twtvcdn.com:8080/live/23/f39afe7794c1a12578eb98e7ef2e0e79/index.m3u8
+澳视葡语,http://f8.twtvcdn.com:8080/live/24/d569113e689c8d1b87b98d4c3a979e55/index.m3u8
+澳门卫星,http://f8.twtvcdn.com:8080/live/29/298b98b337509b89c3b22f6b02828606/index.m3u8
+TVB经典,http://f8.twtvcdn.com:8080/live/398/6c3c06f9da953117e983037e24d4310f/index.m3u8
 寰宇新闻,http://ff.twtvcdn.com:8880/live/299/27b85716e4ab295dd9f8de93f1bfa42f/index.m3u8
 寰宇新闻二台,http://ff.twtvcdn.com:8880/live/362/6c5a2464fa4be902b5d42826c50e9776/index.m3u8
 非凡新闻,http://ff.twtvcdn.com:8880/live/314/6a88cb54c844e8d66de60078f3f33466/index.m3u8
@@ -48,6 +80,10 @@ Outdoor Channel,http://ff.twtvcdn.com:8880/live/94/5b1bf5256029272ba9cd768300a93
 壹电视新闻,http://ff.twtvcdn.com:8080/live/303/5af17582c5e39ae6e7c12f5d639e3454/index.m3u8
 台视财经,http://ff.twtvcdn.com:8880/live/69/43ddc2f2e3ee8e580f3e98f3c2e63993/index.m3u8
 非凡商业,http://ff.twtvcdn.com:8880/live/49/716a612b677fb0d5cc99f79a3a7c13b1/index.m3u8
+新唐人亚太台,http://ff.twtvcdn.com:8080/live/10/6888ad7e507dc2ffdc77b91fe7be9378/index.m3u8
+美国唐人街台,http://ff.twtvcdn.com:8080/live/43/761aff5cedaa1dcaec2a3ad8131ee5e1/index.m3u8
+VOA美国之音,http://ff.twtvcdn.com:8880/live/305/0d10f29a5860e71e7acf2fee7da7ef98/index.m3u8
+半岛国际新闻,http://ff.twtvcdn.com:8880/live/307/f45a435431d4d3a41eef38b435125a18/index.m3u8
 台视新闻,http://ff.twtvcdn.com:8080/live/1/49176b339ae96ba32d39ac50817d873a/index.m3u8
 TVBS新闻,http://ff.twtvcdn.com:8080/live/2/5cd5a23dce984563f38db3a6ca18b252/index.m3u8
 中天新闻,http://ff.twtvcdn.com:8080/live/3/693a23881c380726c0d9bb32d5fbcc54/index.m3u8
@@ -102,7 +138,6 @@ TLC旅游生活,http://f3.twtvcdn.com:8080/live/102/f12d0e22b2812f6c2a7fa4c2db17
 动物星球,http://f3.twtvcdn.com:8080/live/368/ae2ff10284fe314eb08b633dd5d7c1ec/index.m3u8
 EYE旅游,http://f3.twtvcdn.com:8080/live/111/24cfce455ab054057ff7bd2875b9083c/index.m3u8
 东森幼幼,http://ff.twtvcdn.com:8880/live/97/20066c1a520e096585eab45a460a8ef8/index.m3u8
-东森幼幼,http://f7.twtvcdn.com:8080/live/371/51a3299dc332116f05165689ca62856b/index.m3u8
 MOMO亲子,http://ff.twtvcdn.com:8880/live/31/6a8398cf07e74c3fe5fe84864ad88ce0/index.m3u8
 爱放2,http://ff.twtvcdn.com:8880/live/5/55fb398a3bb2bab7600a901a25613bce/index.m3u8
 Baby First,http://ff.twtvcdn.com:8880/live/47/f3117c651c151d7a558b4b6fe06f85ea/index.m3u8
@@ -110,5 +145,237 @@ Baby First,http://ff.twtvcdn.com:8880/live/47/f3117c651c151d7a558b4b6fe06f85ea/i
 靖洋卡通,http://ff.twtvcdn.com:8880/live/57/060b9d18c889b444a91ec24e7363b1bd/index.m3u8
 i-Fun动漫台,http://ff.twtvcdn.com:8880/live/58/96c973c2ee522c92f313a346f0f00104/index.m3u8
 靖天卡通台,http://ff.twtvcdn.com:8880/live/65/4d2dbdb04e1e2a5fde8b302379e8f801/index.m3u8
-靖天卡通台,http://f7.twtvcdn.com:8080/live/348/814e5ec162365fe518e3f5122848d842/index.m3u8
 ELTV英语学习台,http://ff.twtvcdn.com:8880/live/48/989e19d43cc3212d4f7a96da856fb233/index.m3u8
+东森幼幼,http://f7.twtvcdn.com:8080/live/371/51a3299dc332116f05165689ca62856b/index.m3u8
+靖天卡通台,http://f7.twtvcdn.com:8080/live/348/814e5ec162365fe518e3f5122848d842/index.m3u8
+CCTV1,http://f4.twtvcdn.com:8080/live/200/98a22ccc9a31e5bc6942d41eac4bb543/index.m3u8
+CCTV2,http://f4.twtvcdn.com:8080/live/201/9402907bf897e7ac681b70c4aa1a44e8/index.m3u8
+CCTV3,http://f4.twtvcdn.com:8080/live/202/2158fc9b372cd571a1ee8f2cc93b6813/index.m3u8
+CCTV4,http://f4.twtvcdn.com:8080/live/203/c76641f791beaadad26d8807c63f12b1/index.m3u8
+CCTV5,http://f4.twtvcdn.com:8080/live/204/508b8e36f50fb583008d792085eef53c/index.m3u8
+CCTV5plus,http://f4.twtvcdn.com:8080/live/205/f936fc7c82219787a8a523cb2c94cc9e/index.m3u8
+CCTV7,http://f4.twtvcdn.com:8080/live/207/53c87d4a24016709a6ba5316796c855b/index.m3u8
+CCTV8,http://f4.twtvcdn.com:8080/live/208/cfb02aa5ed84e01f1ff559243262868c/index.m3u8
+CCTV9,http://f4.twtvcdn.com:8080/live/209/655aac12880b2cba2bab644678b0eaaf/index.m3u8
+CCTV10,http://f4.twtvcdn.com:8080/live/210/81d4f30cf8bf200d01d86292d64cc5f8/index.m3u8
+CCTV11,http://f4.twtvcdn.com:8080/live/211/af34a86dd2d64c81d0c36b7f8a8f00d8/index.m3u8
+CCTV12,http://f4.twtvcdn.com:8080/live/212/e9b718b11d31a8bfdeeda79be1172469/index.m3u8
+CCTV13,http://f4.twtvcdn.com:8080/live/213/7899d83e5f3d4657ac7012d7ece32edf/index.m3u8
+CCTV14,http://f4.twtvcdn.com:8080/live/214/955db9259728860928d86c84c74ce015/index.m3u8
+CCTV15,http://f4.twtvcdn.com:8080/live/215/af6b01e0475110f716bb03086c5ee86f/index.m3u8
+厦门卫视,http://f4.twtvcdn.com:8080/live/216/a8826ca340f12d4e48deb6314a9c06ab/index.m3u8
+浙江卫视,http://f4.twtvcdn.com:8080/live/217/5e92d626ceff9c1e8230bf105ba42aba/index.m3u8
+江苏卫视,http://f4.twtvcdn.com:8080/live/218/f959a3e5e187fe0c562e18d4fe450b04/index.m3u8
+南方粤语,http://f4.twtvcdn.com:8080/live/219/a7d9200622c62ebaa1d6f1e3ceadc1df/index.m3u8
+北京卫视,http://f4.twtvcdn.com:8080/live/220/fab66127bf5a8a6241d4483c00fe8cca/index.m3u8
+CCTVNEWS,http://f4.twtvcdn.com:8080/live/221/9db618ecef2a8765d0bc3fd161f37f07/index.m3u8
+CCTV娱乐,http://f4.twtvcdn.com:8080/live/222/24a0d39edb8a8443fa0558e3518cf62e/index.m3u8
+海峡卫视,http://f4.twtvcdn.com:8080/live/223/b4d23d2a3f1c873ae3e4d3e85706ab1a/index.m3u8
+东方卫视,http://f4.twtvcdn.com:8080/live/224/74fe9e9974a1c4a4b812d174f780f86c/index.m3u8
+河北卫视,http://f4.twtvcdn.com:8080/live/225/f921a9c8cf0a915ed477e92bfc50ba97/index.m3u8
+湖南卫视,http://f4.twtvcdn.com:8080/live/226/3fcb0a45baa0f608c2fe6ca005a61292/index.m3u8
+湖北卫视,http://f4.twtvcdn.com:8080/live/227/f0f5f74d46029d1b56067d4309a0fc2a/index.m3u8
+东南卫视,http://f4.twtvcdn.com:8080/live/228/f4fa3e4e799e335cfa111ab0dc16777b/index.m3u8
+辽宁卫视,http://f4.twtvcdn.com:8080/live/229/eb4678831b6e10c3dfe6cb785424ed86/index.m3u8
+深圳卫视,http://f4.twtvcdn.com:8080/live/230/72140b9c319d524107d2a0df56ee5c82/index.m3u8
+广东卫视,http://f4.twtvcdn.com:8080/live/231/a77783b0c2b96b8bda67c2be8be61c1f/index.m3u8
+安徽卫视,http://f4.twtvcdn.com:8080/live/232/bef264578ce019ce7bd986b2f78fa48a/index.m3u8
+四川卫视,http://f4.twtvcdn.com:8080/live/233/13802c2b82aeb932d8f35c6de85f01e0/index.m3u8
+山东卫视,http://f4.twtvcdn.com:8080/live/234/7a3e98799cdbe3104ef9a9136aa4bdb6/index.m3u8
+BS-JAPAN,http://f6.twtvcdn.com:8080/live/243/13556ba0105365d0b801bb6ae3c11bb7/index.m3u8
+日本映画専门,http://f6.twtvcdn.com:8080/live/246/a628142ce04bc0c895380f86a2be4726/index.m3u8
+日テレG,http://f6.twtvcdn.com:8080/live/246/a628142ce04bc0c895380f86a2be4726/index.m3u8
+时代剧の専门家,http://f6.twtvcdn.com:8080/live/287/9fb1a7ce53911287aa2820561b3e48d7/index.m3u8
+KIDS,http://f6.twtvcdn.com:8080/live/289/134fa3a32e09ce9572270e2f3d3b6bbf/index.m3u8
+朝日放送,http://f6.twtvcdn.com:8080/live/237/59ccc37966e588da6e12cd57c033100f/index.m3u8
+SKY A,http://f6.twtvcdn.com:8080/live/247/29d67fa759141b9c54e0ced119294f21/index.m3u8
+読売テレビ,http://f6.twtvcdn.com:8080/live/198/60aaf19de4a51dfe900a4c37dce80ecc/index.m3u8
+毎日放送,http://f6.twtvcdn.com:8080/live/199/368915071bee8123c5cff81b81038c4a/index.m3u8
+サンテレビ,http://f6.twtvcdn.com:8080/live/238/12b5718e9b2faa0e5011ddc06a0a4142/index.m3u8
+BSプレミアム,http://f6.twtvcdn.com:8080/live/239/423b858271fe1e76cafbd1b6aad56592/index.m3u8
+BS日テレ,http://f6.twtvcdn.com:8080/live/240/d2e2b419846ae486e8e6437324ffdd77/index.m3u8
+BS朝日,http://f6.twtvcdn.com:8080/live/241/873c1caa5d8273ad10a8abc72350fcc4/index.m3u8
+GREEN,http://f6.twtvcdn.com:8080/live/245/f9526d2146431c39612fe467c8bc97ea/index.m3u8
+BS-TBS,http://f6.twtvcdn.com:8080/live/245/f9526d2146431c39612fe467c8bc97ea/index.m3u8
+Golf Network,http://f6.twtvcdn.com:8080/live/249/f93e7660c225af2dd1623ccb9a8384f8/index.m3u8
+BS-FUJI,http://f6.twtvcdn.com:8080/live/244/5d1ee143ce02d61ca6f6f3cf47fe6821/index.m3u8
+ム一ビ一プラス,http://f6.twtvcdn.com:8080/live/295/d092f46995402cb5579495fb9d02d657/index.m3u8
+GaoRa,http://f6.twtvcdn.com:8080/live/296/e0625086454e23a7caa2a62852ad5ad1/index.m3u8
+NTV,http://f6.twtvcdn.com:8080/live/119/f916b8dd7c32d3f80d9bd39ba52ea56b/index.m3u8
+NTV News24,http://f6.twtvcdn.com:8080/live/42/3307602cf51cf92b0bd7f7450fb8b5e5/index.m3u8
+jsport1,http://f6.twtvcdn.com:8080/live/129/3b9b15670ad9c882f5394354f0c10a99/index.m3u8
+jsport2,http://f6.twtvcdn.com:8080/live/130/011a39a5bdb167513bef4d8a5614c8cc/index.m3u8
+jsport3,http://f6.twtvcdn.com:8080/live/131/a3e6b4e5f39a78a19a17d8cec49c3dee/index.m3u8
+jsport4,http://f6.twtvcdn.com:8080/live/132/97158b0b5efa51ee44821601f6f26bd3/index.m3u8
+wowo1,http://f6.twtvcdn.com:8080/live/133/746ab63c8b1f52f93cc27e1f4d2e937f/index.m3u8
+wowo2,http://f6.twtvcdn.com:8080/live/134/0ecece94e4e241baecb906ce5fb5ea9d/index.m3u8
+wowo3,http://f6.twtvcdn.com:8080/live/135/fffc5253356932bbabecb2456c1854b1/index.m3u8
+STAR1,http://f6.twtvcdn.com:8080/live/136/6c3d7dffb5a14e569c74fb4696f1554d/index.m3u8
+STAR2,http://f6.twtvcdn.com:8080/live/137/6907475e823da4786f2a3e011db7ca91/index.m3u8
+STAR3,http://f6.twtvcdn.com:8080/live/138/ebe1c8629209ee88c1aece018a7fe122/index.m3u8
+animax,http://f6.twtvcdn.com:8080/live/139/a99c1c13bfc3ba1286a5c6c143e585cc/index.m3u8
+Green,http://f6.twtvcdn.com:8080/live/140/b754dceadc1995d0df003bbe4a4a96f4/index.m3u8
+Japan Channel DX,http://f6.twtvcdn.com:8080/live/39/b79365eaaa43865f84023c81a5defed8/index.m3u8
+旅TABI,http://f6.twtvcdn.com:8080/live/294/0dad63d648071f02b6bb73d9a82bb10c/index.m3u8
+KBS1,http://f2.twtvcdn.com:8080/live/250/f1c9ef4281eead466c009a0089e2b5e8/index.m3u8
+KBS2,http://f2.twtvcdn.com:8080/live/251/fef98e4f3b06a80eb1ac81857bec4274/index.m3u8
+MBC,http://f2.twtvcdn.com:8080/live/252/753cd3e96313b0c6767edfe6a0aa9485/index.m3u8
+CGV,http://f2.twtvcdn.com:8080/live/253/220a40662d958282165dae0186c2fd85/index.m3u8
+TVN,http://f2.twtvcdn.com:8080/live/254/a1f3e25bdf2fa61d411f6f0b997dc3dc/index.m3u8
+JTBC,http://f2.twtvcdn.com:8080/live/255/7b1a34044c3f6862132599843c2df555/index.m3u8
+OCN,http://f2.twtvcdn.com:8080/live/256/73630e6f2e66bb9351d17ecdd54e698c/index.m3u8
+SBSplus,http://f2.twtvcdn.com:8080/live/257/b96547549058f4ed1530fcbf308e15c9/index.m3u8
+Spotv2,http://f2.twtvcdn.com:8080/live/258/990e5026b55f5ba9df411e39284e7a69/index.m3u8
+Channel A,http://f2.twtvcdn.com:8080/live/259/632912078d651a591d36f1b5e8e692cd/index.m3u8
+CBS,http://f2.twtvcdn.com:8080/live/260/7798cdfb486c8d490d3eb079a1370f0c/index.m3u8
+SBSA,http://f2.twtvcdn.com:8080/live/261/c438089acc991baa916a5141572c63b9/index.m3u8
+KBS Drama,http://f2.twtvcdn.com:8080/live/262/7029f394568a964ac2f146854084b30e/index.m3u8
+MBC Drama,http://f2.twtvcdn.com:8080/live/263/6ff4d62bd210145d7330d70a90b0a778/index.m3u8
+Mnet,http://f2.twtvcdn.com:8080/live/264/6889e4d1a83ff8436d07ff457a966010/index.m3u8
+KBS体育,http://f2.twtvcdn.com:8080/live/265/60cfec3561fdcc756e84b702d87f29f6/index.m3u8
+SBS体育,http://f2.twtvcdn.com:8080/live/266/22ed059fbaf8ae4c83d2fb420d5a7880/index.m3u8
+XTM,http://f2.twtvcdn.com:8080/live/268/18334a490fe351726ba142b1f5073e92/index.m3u8
+MBN,http://f2.twtvcdn.com:8080/live/492/fc4c272ee41cf701c6e4f99854a91bae/index.m3u8
+????新闻,http://f2.twtvcdn.com:8080/live/488/cd168848cb06ab78018cea5811c255cb/index.m3u8
+YTN,http://f2.twtvcdn.com:8080/live/490/59744ecd2f96652b4d00455df821fab2/index.m3u8
+INETV,http://f2.twtvcdn.com:8080/live/267/4586e7bc8729ca7c9daabed9a0786466/index.m3u8
+WGN9,http://f2.twtvcdn.com:8080/live/33/7c7e6c9a7b8ba0c833178c8a96f7f6fa/index.m3u8
+CNBC,http://f2.twtvcdn.com:8080/live/145/d44693fcda0c653866d0df2cedd4e00e/index.m3u8
+CNN HD,http://f2.twtvcdn.com:8080/live/146/2e66de3e4ace78ef3a1611446fdd4e47/index.m3u8
+ESPN-News,http://f2.twtvcdn.com:8080/live/148/8178d257fcd7158bd428274ba0601613/index.m3u8
+FOX-HD,http://f2.twtvcdn.com:8080/live/149/575c299f584b3022e9ab40b9c9ed6e39/index.m3u8
+FOX-Sports1,http://f2.twtvcdn.com:8080/live/151/b797a58cbbebc3178b9302bcbe4f88ef/index.m3u8
+FOX-Sports2,http://f2.twtvcdn.com:8080/live/152/3c4c3ca2b516c1192e236d42ff7e9508/index.m3u8
+NBC-HD,http://f2.twtvcdn.com:8080/live/154/ef3c86f53072ef21e09bac23056fff03/index.m3u8
+NBC-Golf,http://f2.twtvcdn.com:8080/live/155/686d65c4351b77ff4c5a0b9b6839a910/index.m3u8
+TBS HD,http://f2.twtvcdn.com:8080/live/156/a58c5aad929133983983ae8393a3cd08/index.m3u8
+FOX-News,http://f2.twtvcdn.com:8080/live/150/b00206267a2c26b38fdbff4c2d5ae6c6/index.m3u8
+NBA-TV,http://f2.twtvcdn.com:8080/live/153/8852ce0163c01b793809abd2c27ab742/index.m3u8
+ABC HD,http://f2.twtvcdn.com:8080/live/143/4349991308975555cb7eed37637a3ba4/index.m3u8
+ESPN-HD,http://f2.twtvcdn.com:8080/live/147/178f11f4716889d23fedee565b183447/index.m3u8
+CBS HD,http://f2.twtvcdn.com:8080/live/144/a6e48230a7f1b970b233977491c74af6/index.m3u8
+新时代多伦多2,http://f2.twtvcdn.com:8080/live/141/e3acce620e87b550a399fd91c6290681/index.m3u8
+新时代温哥华1,http://f2.twtvcdn.com:8080/live/142/5277d4b33f20fafa7d4d34e0b7082ce1/index.m3u8
+BET,http://f2.twtvcdn.com:8080/live/270/8572afb8b4cec9b0203727700d83d308/index.m3u8
+CBC-EAST,http://f2.twtvcdn.com:8080/live/272/f163bd145109fd9bc23d33b8fb8afdf5/index.m3u8
+OWN,http://f2.twtvcdn.com:8080/live/284/b3b1d7325b677b1585d91dc4566a4273/index.m3u8
+CHCH,http://f2.twtvcdn.com:8080/live/274/6764fd6fc6ebcdc62e541e1f1b06477a/index.m3u8
+CITY-TV,http://f2.twtvcdn.com:8080/live/275/35a635a80ce3113e5d7bacfa3fd39bbe/index.m3u8
+CP24,http://f2.twtvcdn.com:8080/live/276/d17bba00beeee45de1eca563345e63c3/index.m3u8
+CTV,http://f2.twtvcdn.com:8080/live/278/c9d1189c6ef4c4ef46645fa17ce93250/index.m3u8
+TVA FR,http://f2.twtvcdn.com:8080/live/281/de107919a50a19337625d3fbd2ed399a/index.m3u8
+CTV-NEWS,http://f2.twtvcdn.com:8080/live/280/0b24ea158cb06c2039d2d43772d36bb4/index.m3u8
+CBC-NEWS-NETWORK,http://f2.twtvcdn.com:8080/live/273/f2a866f7516dd1d435e2434b71234fd8/index.m3u8
+BNN,http://f2.twtvcdn.com:8080/live/271/f228039cd85e7cb290b54b9b7c4fc5f4/index.m3u8
+ABC-SPARK,http://f2.twtvcdn.com:8080/live/269/07133e57336205f2bf8614c8f8ce91d0/index.m3u8
+CPAC,http://f2.twtvcdn.com:8080/live/277/9bdc20ae27087c565800a675fb9c21f4/index.m3u8
+TVO,http://f2.twtvcdn.com:8080/live/283/93625513d9b3c9743a3f508f414fed9a/index.m3u8
+W-NETWORK,http://f2.twtvcdn.com:8080/live/286/9f7de053d8eb38849b627bd3840c04d9/index.m3u8
+OLN,http://f2.twtvcdn.com:8080/live/285/77321530c6bf82a99515cc89534448b6/index.m3u8
+CTV Atlantic,http://f2.twtvcdn.com:8080/live/279/e708ec6ff78d2bb5448e24aef7eb6367/index.m3u8
+YTV,http://f2.twtvcdn.com:8080/live/282/9754f7a2583a8ddead758cfe43dea843/index.m3u8
+BBC News,http://f2.twtvcdn.com:8080/live/164/8ced1e472c1ead6546dbb433b49c00b7/index.m3u8
+BT Sport 2,http://f2.twtvcdn.com:8080/live/166/7107c856c6514ac0c18a1cb3d4682222/index.m3u8
+BT Sport 3,http://f2.twtvcdn.com:8080/live/167/0039cf185c98d110c340eeaa2c124016/index.m3u8
+BT Sport ESPN,http://f2.twtvcdn.com:8080/live/168/86059a1c881a978c3966f548b8b7580b/index.m3u8
+Channel 4,http://f2.twtvcdn.com:8080/live/169/6ffb18cf9564c999db9199ad141471f9/index.m3u8
+BBC 1,http://f2.twtvcdn.com:8080/live/161/8cd2fa0aaa8b480e2e8bd6e07b551ae4/index.m3u8
+BBC 2,http://f2.twtvcdn.com:8080/live/162/2417ff7d81eee8fc593595c4ec49e6af/index.m3u8
+BBC 4,http://f2.twtvcdn.com:8080/live/163/834be2adcb5880ab46727dc597f81af3/index.m3u8
+ITV 4,http://f2.twtvcdn.com:8080/live/160/280e009ee3dc0f7a896b07a81d3cc59d/index.m3u8
+BT Sport 1,http://f2.twtvcdn.com:8080/live/165/7b4e931f61f75e7e7d427a82a5bebfaa/index.m3u8
+Euro Sport 1,http://f2.twtvcdn.com:8080/live/170/c73da6502369eaa5838d1b44fb316c08/index.m3u8
+Euro Sport 2,http://f2.twtvcdn.com:8080/live/171/b55294b9d98612a818830f2efe664fa6/index.m3u8
+Sky Sports Mix,http://f2.twtvcdn.com:8080/live/172/bfb0852c803cf9266a58855ee51d8987/index.m3u8
+Sky Sports MainEvent,http://f2.twtvcdn.com:8080/live/177/f835f0a04df597e2e58ede17a16bceb9/index.m3u8
+Sky Sports Action,http://f2.twtvcdn.com:8080/live/178/f4c5b27e5e85ddcb2020f22b155d21b0/index.m3u8
+Sky Sports Cricket,http://f2.twtvcdn.com:8080/live/179/97c18bbf2f3f848eb293fc9695ccdc0f/index.m3u8
+Sky Sports Golf,http://f2.twtvcdn.com:8080/live/180/49061be3811b475d8e1f2f4c3ae62780/index.m3u8
+Sky Sports PremierLeague,http://f2.twtvcdn.com:8080/live/181/1987f2ca60ad72caa40ea95804246dfd/index.m3u8
+Sky Sports F1,http://f2.twtvcdn.com:8080/live/182/313f3889a0f3ec3a9483b5449417ce75/index.m3u8
+Sky Sports News,http://f2.twtvcdn.com:8080/live/183/8813ef692877037a57b5d300c072dda4/index.m3u8
+ITV 3,http://f2.twtvcdn.com:8080/live/159/7d82ea1c49ada484b0f193e578e48249/index.m3u8
+ITV 1,http://f2.twtvcdn.com:8080/live/157/b034805c2792310da5f6ba1c5bb1760b/index.m3u8
+ITV 2,http://f2.twtvcdn.com:8080/live/158/ea377191d5d72b3ce0ad33f5458605c2/index.m3u8
+Astro Awani,http://f2.twtvcdn.com:8080/live/440/5929a1d8faa7bfc38362718034d0c2b3/index.m3u8
+Channel 8,http://f2.twtvcdn.com:8080/live/450/d853826d3d274b63a6d589cb86741cac/index.m3u8
+天映频道HD,http://f2.twtvcdn.com:8080/live/441/4fc16cb1ced3abd97a8717c93b0b5d5d/index.m3u8
+全佳,http://f2.twtvcdn.com:8080/live/427/17ea679f992b58c699333aef3ad69266/index.m3u8
+kix,http://f2.twtvcdn.com:8080/live/430/4f78d2f517180ddb0d3b5e6348c3e912/index.m3u8
+欢喜,http://f2.twtvcdn.com:8080/live/432/289695284abdee930143fa81c4b0052c/index.m3u8
+suria,http://f2.twtvcdn.com:8080/live/434/b6ac81ec33a02c4417e33f172d7a5130/index.m3u8
+双星,http://f2.twtvcdn.com:8080/live/431/e0e0462a3e4f50425ffe21ec73f5492b/index.m3u8
+AEC,http://f2.twtvcdn.com:8080/live/433/d7636fcec1e40d713ddc72b10306af8c/index.m3u8
+华丽,http://f2.twtvcdn.com:8080/live/429/46b50efbe8b6c72bcf101c0266148537/index.m3u8
+Channel 5,http://f2.twtvcdn.com:8080/live/449/87c4a9a8f2529369c50ba64be3e0c62b/index.m3u8
+TV1,http://f2.twtvcdn.com:8080/live/435/8e171d215aad98e29827bb47113338f5/index.m3u8
+TV2,http://f2.twtvcdn.com:8080/live/436/4e2a810d4524672b61e0c248ec060e96/index.m3u8
+TV3,http://f2.twtvcdn.com:8080/live/437/b65df14e84d9c948acdf47d9e1da315e/index.m3u8
+TV9,http://f2.twtvcdn.com:8080/live/438/510472f49de9f10114598f433f925173/index.m3u8
+NTV7,http://f2.twtvcdn.com:8080/live/439/141fb7f5035c25aa8d0472a15914b2a9/index.m3u8
+TV8,http://f2.twtvcdn.com:8080/live/442/b7f0604996a872e8e004e56da6bbb346/index.m3u8
+小太阳,http://f2.twtvcdn.com:8080/live/443/67f98a537ce3b0cac9616d29bf4243ec/index.m3u8
+超级体育1,http://f2.twtvcdn.com:8080/live/444/8c281552e7e2d220e4700b2e8cac8ffd/index.m3u8
+超级体育2,http://f2.twtvcdn.com:8080/live/445/1d2a20274d051f2da54e95e25c11c450/index.m3u8
+超级体育3,http://f2.twtvcdn.com:8080/live/446/54d242125ca80c1dbff959f4db4cd5f7/index.m3u8
+超级体育4,http://f2.twtvcdn.com:8080/live/447/39ee270df096aa32d8c53b54115c176f/index.m3u8
+AOD,http://f2.twtvcdn.com:8080/live/428/b28053f95a43503b806935dab57a8a39/index.m3u8
+Channel U,http://f2.twtvcdn.com:8080/live/428/b28053f95a43503b806935dab57a8a39/index.m3u8
+POP-Pataka,http://f2.twtvcdn.com:8080/live/25/48e653e7bf4bff0af788c70b40c1c7ec/index.m3u8
+ZeeNews,http://f2.twtvcdn.com:8080/live/465/4587ccaad5004caa5ae2dda4584cd99d/index.m3u8
+DD News,http://f2.twtvcdn.com:8080/live/463/37279bc6c118edfe6dc1f7471b41b718/index.m3u8
+TEN1,http://f2.twtvcdn.com:8080/live/466/68388ccf734cd7cd20dc1194e5d5b16c/index.m3u8
+TEN2,http://f2.twtvcdn.com:8080/live/467/17741ac16d8259af05064ebe245fe6a8/index.m3u8
+TEN3,http://f2.twtvcdn.com:8080/live/468/dc073714db587f6644236d43b6ed9294/index.m3u8
+And Pictures,http://f2.twtvcdn.com:8080/live/469/5c24c31589df8be1e208f4338d212e19/index.m3u8
+Colors HD,http://f2.twtvcdn.com:8080/live/470/6b00ac16434f30ec343848d7ea17d8a0/index.m3u8
+NDTV,http://f2.twtvcdn.com:8080/live/471/3fe9d9a5d95834fe3272d7ddd31c0bbe/index.m3u8
+Zee Tamil,http://f2.twtvcdn.com:8080/live/472/88439bc199bad50ef1a005870d375f08/index.m3u8
+India TV,http://f2.twtvcdn.com:8080/live/473/39f0727ba7a13554f04f2ee3d08c5ccd/index.m3u8
+Sony Mix,http://f2.twtvcdn.com:8080/live/474/b7edeb292bfd6a198517d63d8e0a52ea/index.m3u8
+ESPN,http://f2.twtvcdn.com:8080/live/476/eb2fa49009bbcc5d628e8126e44d717d/index.m3u8
+Star Movies,http://f2.twtvcdn.com:8080/live/478/98aa0ce49a68691d0b068d1dd1eb6b36/index.m3u8
+Star Plus,http://f2.twtvcdn.com:8080/live/479/375634c8f1aa2dd557a809a9eeaefeb7/index.m3u8
+Zee Marathi,http://f2.twtvcdn.com:8080/live/480/67ea6ad0c8951e1399f343d0e4a3227c/index.m3u8
+Zee Studio,http://f2.twtvcdn.com:8080/live/481/bae56e147de5dcbccbd219f6fbdc773f/index.m3u8
+Zee TV,http://f2.twtvcdn.com:8080/live/482/b04f27c80d6933cd26a59582691adf94/index.m3u8
+Zee Cinema,http://f2.twtvcdn.com:8080/live/484/3e320220cbaac4fb0b5bb42ed1ed8a17/index.m3u8
+Zee Classic,http://f2.twtvcdn.com:8080/live/485/6fe090ccc3b171f5ef6c76c50a326e39/index.m3u8
+Sony Sab,http://f2.twtvcdn.com:8080/live/475/02074f2dbab37a90e9eb6e26c90e12ba/index.m3u8
+Sony,http://f2.twtvcdn.com:8080/live/483/1d5d1896eeafac627be5ad89f0952047/index.m3u8
+HBO,http://f2.twtvcdn.com:8080/live/464/eaa8963a5d522da587a49ff14a7b2387/index.m3u8
+Sony Max,http://f2.twtvcdn.com:8080/live/477/e83c7971acdcbc10b74ebd78e33c5791/index.m3u8
+松视1,http://f3.twtvcdn.com:8080/live/402/6e5f3741b5c115a669b765ccc97aafbe/index.m3u8
+松视2,http://f3.twtvcdn.com:8080/live/403/dbe54b3996354e6f6ddcd3550eaf8709/index.m3u8
+松视3,http://f3.twtvcdn.com:8080/live/404/553cedc63d0521a988afb3e2cca6a52c/index.m3u8
+香蕉台,http://ff.twtvcdn.com:8080/live/408/ed8c980a8cdce8a4ab390bab69c01c66/index.m3u8
+潘朵拉完美,http://ff.twtvcdn.com:8080/live/410/40ef050027c4a4a90c1730a1089a8cf7/index.m3u8
+潘朵拉粉红,http://ff.twtvcdn.com:8080/live/411/a32a4f70acd46e2efecc9ce2e73f9a88/index.m3u8
+彩虹电影,http://ff.twtvcdn.com:8080/live/413/73e4ab70ecb965f167ee8f11b68ab647/index.m3u8
+彩虹K,http://f3.twtvcdn.com:8080/live/406/3625b970bf0527bf5067248726d893e9/index.m3u8
+彩虹E,http://f3.twtvcdn.com:8080/live/405/cb92bddacd46951090562fd1d1a595f8/index.m3u8
+一本道,http://ff.twtvcdn.com:8080/live/414/dc29b3acb9ac6ca71950ad2d83110fbd/index.m3u8
+二本道,http://ff.twtvcdn.com:8080/live/415/ee6bc1c81288816a832f2762b6737bf5/index.m3u8
+东京热,http://ff.twtvcdn.com:8080/live/416/1990112eaab115f291a5a290e00ec435/index.m3u8
+HOT,http://f3.twtvcdn.com:8080/live/407/d0afc3079ed0e859fd26bff0992a14f1/index.m3u8
+happy,http://ff.twtvcdn.com:8080/live/412/5508a5232e1f28a40acc8ef0d9022292/index.m3u8
+惊艳台,http://ff.twtvcdn.com:8080/live/409/f90074346c38b2469ad2aeb87f9370e3/index.m3u8
+Erox HD,http://ff.twtvcdn.com:8080/live/456/5dfaa8f5dbe854ed144a6f606edf8a2d/index.m3u8
+Dorcel HD,http://ff.twtvcdn.com:8080/live/454/ebd3706bfc87bd2c4e082fde2ec7d8bf/index.m3u8
+Babes TV HD,http://ff.twtvcdn.com:8080/live/458/6625e9de0f135bb1b603659e1cb2c67a/index.m3u8.m3u8
+Baby First,http://ff.twtvcdn.com:8880/live/47/f3117c651c151d7a558b4b6fe06f85ea/index.m3u8
+龙华卡通台,http://ff.twtvcdn.com:8880/live/75/1b0f2ec7f98a454f782234e02d18b10b/index.m3u8
+靖洋卡通,http://ff.twtvcdn.com:8880/live/57/060b9d18c889b444a91ec24e7363b1bd/index.m3u8
+i-Fun动漫台,http://ff.twtvcdn.com:8880/live/58/96c973c2ee522c92f313a346f0f00104/index.m3u8
+靖天卡通台,http://ff.twtvcdn.com:8880/live/65/4d2dbdb04e1e2a5fde8b302379e8f801/index.m3u8
+ELTV英语学习台,http://ff.twtvcdn.com:8880/live/48/989e19d43cc3212d4f7a96da856fb233/index.m3u8
+东森幼幼,http://f7.twtvcdn.com:8080/live/371/51a3299dc332116f05165689ca62856b/index.m3u8
+靖天卡通台,http://f7.twtvcdn.com:8080/live/348/814e5ec162365fe518e3f5122848d842/index.m3u8
+松视1,http://f3.twtvcdn.com:8080/live/402/6e5f3741b5c115a669b765ccc97aafbe/index.m3u8
+松视2,http://f3.twtvcdn.com:8080/live/403/dbe54b3996354e6f6ddcd3550eaf8709/index.m3u8
+松视3,http://f3.twtvcdn.com:8080/live/404/553cedc63d0521a988afb3e2cca6a52c/index.m3u8
+潘朵拉完美,http://ff.twtvcdn.com:8080/live/410/40ef050027c4a4a90c1730a1089a8cf7/index.m3u8
+彩虹电影,http://ff.twtvcdn.com:8080/live/413/73e4ab70ecb965f167ee8f11b68ab647/index.m3u8
+一本道,http://ff.twtvcdn.com:8080/live/414/dc29b3acb9ac6ca71950ad2d83110fbd/index.m3u8
+二本道,http://ff.twtvcdn.com:8080/live/415/ee6bc1c81288816a832f2762b6737bf5/index.m3u8
+东京热,http://ff.twtvcdn.com:8080/live/416/1990112eaab115f291a5a290e00ec435/index.m3u8

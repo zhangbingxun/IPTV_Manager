@@ -13,34 +13,10 @@
 //
 
 // 数据变量
-$dataurl = 'http://tv.luo2888.cn/dl.php';  //代理API地址
-$failurl = 'http://tv.luo2888.cn/fmitv.mp4'; //链接失效视频
-$checkcode = "608"; //链接验证码
-
-/**
- * 发送post请求
- *
- * @param string $url 请求地址
- * @param array $post_data post数据
- */
-function send_post($url, $post_data) {
-    
-    $curl = curl_init();  // 初使化init方法
-    curl_setopt($curl, CURLOPT_URL, $url);  // 指定URL
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);  // 设定请求后返回结果
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);  // 忽略证书
-    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);  // 忽略证书验证
-    curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-        'Content-Type: application/x-www-form-urlencoded;'
-    ));  //HTTP头
-    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.0 (HTTP Proxy/1.0.2)');  // USERAGENT
-    curl_setopt($curl, CURLOPT_POST, 1);  //声明使用POST方式来进行发送
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);  //POST数据
-    $output = curl_exec($curl);  //发送请求
-    curl_close($curl);  //关闭curl
-    return $output;  //返回数据
-    
-}
+$dataurl = 'http://tv.luo2888.cn/dl.php';  // 代理API地址
+$failurl = 'http://tv.luo2888.cn/fmitv.mp4'; // 链接失效视频地址
+$playcode = "dl_510_qq625336209"; // 播放验证码
+$listcode = "fmi510"; // 列表安全码
 
 // 获取代理地址
 function GetUrl() {
@@ -54,22 +30,60 @@ function GetUrl() {
 
 }
 
+// 解密URL
+function decode($str){
+    $str = strtr($str, '-!_', '+/=');
+    $str = urldecode(base64_decode($str));
+    $url_array = explode('#', $str);
+    if (is_array($url_array)) {
+        foreach ($url_array as $var) {
+            $var_array = explode("=", $var);
+            $vars[$var_array[0]] = $var_array[1];
+        }
+    }
+    return $vars;
+}
+
+/**
+ * 发送post请求
+ *
+ * @param string $url 请求地址
+ * @param array $post_data post数据
+ */
+function send_post($url, $post_data) {
+    
+    $curl = curl_init();  // 初使化init方法
+    $server = gethostbyname($_SERVER['HTTP_HOST']);
+    curl_setopt($curl, CURLOPT_URL, $url);  // 指定URL
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);  // 设定请求后返回结果
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);  // 忽略证书
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);  // 忽略证书验证
+    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.2 (HTTP/' . $server . ')');
+    curl_setopt($curl, CURLOPT_POST, 1);  //声明使用POST方式来进行发送
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);  //POST数据
+    $output = curl_exec($curl);  //发送请求
+    curl_close($curl);  //关闭curl
+    return $output;  //返回数据
+    
+}
+
 if (isset($_GET['play']) || isset($_GET['list'])) {
 
     if (isset($_GET['play'])) {
         
-        $token = $_GET['token'];
+        $vkeys = $_GET['vkeys'];
+        $vkey = decode($vkeys);
         $line = $_GET['line'];
-        $vid = $_GET['vid'];
-        $tid = $_GET['tid'];
-        $id = $_GET['id'];
+        $vid = $vkey['vid'];
+        $tid = $vkey['tid'];
+        $id = $vkey['id'];
+
         $data = json_encode(
             array(
                 'video' => $vid,
                 'tid' => $tid,
                 'id' => $id,
-                'line' => $line,
-                'token' => $token
+                'line' => $line
             )
         );
         
@@ -78,22 +92,23 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $obj = json_decode($datastr);
         $playurl = $obj->playurl;
         
-        if (!empty($playurl)  && isset($_GET[$checkcode])){
+        if (!empty($playurl)  && isset($_GET[$playcode])){
             header('location:' . $playurl);
         } else {
             header('location:' . $failurl);
         }
-        
     }
 
-    else if (isset($_GET['list']) && isset($_GET[$checkcode])) {
+    else if (isset($_GET['list']) && isset($_GET[$listcode])) {
         
         $vid = $_GET['vid'];
         $tid = $_GET['tid'];
+        $id = $_GET['id'];
         $data = json_encode(
             array(
                 'video' => $vid,
-                'tid' => $tid
+                'tid' => $tid,
+                'id' => $id
             )
         );
         
@@ -105,7 +120,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
             foreach($listobj as $channellist) {
                 if (is_array($channellist)) {
                     foreach($channellist as $channel) {
-                        $channel = preg_replace('#http://域名/文件名\?#', GetUrl() . '?' . $checkcode . '&', $channel);
+                        $channel = preg_replace('#http://域名/文件名\?#', GetUrl() . '?' . $playcode . '&', $channel);
                         echo $channel . "\n";
                     }
                 }

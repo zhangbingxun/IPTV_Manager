@@ -32,8 +32,9 @@ $remote = GetIP();
 $ips = array(
     '127.0.0.1',
     '149.129.98.202', // Me
-    '140.143.146.222', // http_id=2 2020-04
-    '103.133.179.97', // http_id=2 2020-04
+    '39.101.217.17', // id=1 2020-04
+    '140.143.146.222', // id=2 2020-04
+    '103.133.179.97', // id=2 2020-04
     '23.83.239.54', // http_id=2 2020-04
     '149.129.75.149', // http_id=3 2020-04
     '103.145.39.149', // http_id=4 2020-04
@@ -47,8 +48,7 @@ $ips = array(
     '122.114.123.45', // http_id=11 2020-06
     '191.101.44.238', // http_id=12 2020-06
     '14.116.198.35', // http_id=13 2020-06
-    '39.101.217.17', // proxy_id=1 2020-04
-    '47.114.56.181', // proxy_id=2 2020-04
+    '47.114.56.181', // id=14 2020-04
 );
 
 $banips = array(
@@ -116,8 +116,16 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $playurl = preg_replace('#hlsmgsplive.miguvideo.com:8080#', 'mgsp.live.miguvideo.com:8088', $playurl);
     }
     
-    if ($vid == 'tstv') {
-        $playurl = 'http://80.245.105.119/lxzb.php?id=' . $id;
+    if ($vid == 'tvming') {
+        $playurl = "https://live-wxxcx.mtq.tvmmedia.cn/weixin/live_$id.m3u8";
+    }
+    
+    if ($vid == 'ysp') {
+        $playurl = "http://120.241.133.167/outlivecloud-cdn.ysp.cctv.cn/001/$id.m3u8";
+    }
+    
+    if ($vid == 'cqyx') {
+        $playurl = "http://ott.cqccn.com/PLTV/88888888/224/$id/index.m3u8";
     }
     
     if ($vid == 'bjyd') {
@@ -149,6 +157,24 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     if ($vid == 'ublive') {
         $obj = file_get_contents("channels/ublive.txt");
         preg_match('/http:\/\/(.*?)\/live\/' . $id . '\/(.*?)\/index\.m3u8/i', $obj, $linkobj);
+        $playurl = $linkobj[0];
+    }
+   
+    if ($vid == 'hatv') {
+        $url = "http://stb.topmso.com.tw:8080/csr_mobile_client_web/ottLiveStreamGroupAction.do?method=getLiveStreamGroupForPhone_byChannel&ottCustNo=";
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727;)');
+        $curlobj = curl_exec($curl);
+        preg_match('/liveedge2\/(.*?)_999_/i', $curlobj, $linkobj);
+        $playid = $linkobj[1];
+        $playurl = 'http://58.99.33.2:1935/liveedge2/' . $playid . '_' . $id . '_1/chunklist.m3u8?checkCode=37050688asdfsdfsadf&aa=9000234&as=2015&dr=&mmmm=';
+    }
+    
+    if ($vid == 'tstv') {
+        $obj = file_get_contents("channels/tstv.txt");
+        preg_match('/http:\/\/(.*?)\/lbtv\/live\/(.*?)\/' . $id . '\/index\.m3u8/i', $obj, $linkobj);
         $playurl = $linkobj[0];
     }
     
@@ -335,21 +361,24 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
 
     if ($vid == 'grtn') {
         $url = "http://www.gdtv.cn/m2o/player/channel_xml.php?id=$id";
+        $stime = time();
+        $PlayerVersion = '4.12.180327_RC';
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727;)');
         $curlobj = curl_exec($curl);
         $curlobj = json_decode(json_encode(simplexml_load_string($curlobj)) , true);
-        $linkurl = str_replace('stream1', 'nclive', $curlobj['drm'] . '?url=' . $curlobj['video']['@attributes']['baseUrl'] . $curlobj['video']['item'][0]['@attributes']['url'] . 'live.m3u8');
+        $linkurl = str_replace('stream1', 'nclive', $curlobj['drm'] . '?playerVersion=' . $PlayerVersion . '&time=' . $stime . '&url=' . $curlobj['video']['@attributes']['baseUrl'] . $curlobj['video']['item'][0]['@attributes']['url'] . 'live.m3u8');
         curl_setopt($curl, CURLOPT_URL, $linkurl);
         $playurl = curl_exec($curl);
         curl_close($curl);
     }
 
-    if ($vid=='ysp') {
+    if ($vid=='meme') {
+        $url = 'http://182.61.4.27:85/dl/c/tl.php?id=';
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, "http://www.itvi.vip/cctv.php?id=" . $id);
+        curl_setopt($curl, CURLOPT_URL, $url . $id);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_NOBODY, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 1); 
@@ -502,32 +531,9 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         }
     }
     
-    if (strstr($vid, "lttv") != false) {
-        if ($vid == 'lttv'){
-            $url = "http://bbdd.228888888.xyz:8081/hls/$id.m3u8";
-        }
-        else if ($vid == 'lttv2'){
-            $url = "http://ddbb.228888888.xyz:8081/live/$id.m3u8";
-        }
-        else if ($vid == 'lttv3'){
-            $url = "http://bddb.228888888.xyz:8081/live/$id.m3u8";
-        }
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_NOBODY, 1);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 2); 
-        curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Lavf/57.83.100');
-        curl_exec($curl);
-        //$playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
-        curl_close($curl);
+    if (strstr($playurl, "starray") != false) {
+        $playurl = null;
     }
-    
-	if (strstr($playurl, "lctv") != false || strstr($playurl, "starray") != false) {
-	    $playurl = null;
-	}
 	
     $data = json_encode(
         array(
@@ -543,6 +549,7 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     $obj = json_decode($json);
     $vid = $obj->video;
     $tid = $obj->tid;
+    $id = $obj->id;
     
     if (in_array($remote,$ips) == false) {
         $data = json_encode(
@@ -555,10 +562,10 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     }
 
     require_once('tvlist.php');
-    
+
     $data = json_encode(
         array(
-            'tvlist' => $channellist
+            'tvlist' => $result
         )
     );
     

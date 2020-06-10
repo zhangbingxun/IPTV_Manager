@@ -1,2 +1,2 @@
-晋中一台,http://域名/文件名?play&vid=pygd&id=006
-晋中二台,http://域名/文件名?play&vid=pygd&id=178
+晋中一台,vid=pygd#id=006
+晋中二台,vid=pygd#id=178

@@ -15,8 +15,23 @@ require_once "config.php";
 $db = Config::getIntance();
 
 // 数据变量
-$dataurl = 'http://localhost:8118/dl.php';  //代理API地址
-$failurl = 'http://tv.luo2888.cn/fmitv.mp4'; //链接失效视频
+$dataurl = 'http://localhost:8118/dl.php';  // 代理API地址
+$failurl = 'http://tv.luo2888.cn/fmitv.mp4'; // 链接失效视频地址
+$checkcode = "fmi"; // 节目列表安全码
+
+// 解密URL
+function decode($str){
+    $str = strtr($str, '-!_', '+/=');
+    $str = urldecode(base64_decode($str));
+    $url_array = explode('#', $str);
+    if (is_array($url_array)) {
+        foreach ($url_array as $var) {
+            $var_array = explode("=", $var);
+            $vars[$var_array[0]] = $var_array[1];
+        }
+    }
+    return $vars;
+}
 
 /**
  * 发送post请求
@@ -27,14 +42,12 @@ $failurl = 'http://tv.luo2888.cn/fmitv.mp4'; //链接失效视频
 function send_post($url, $post_data) {
     
     $curl = curl_init();  // 初使化init方法
+    $server = gethostbyname($_SERVER['HTTP_HOST']);
     curl_setopt($curl, CURLOPT_URL, $url);  // 指定URL
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);  // 设定请求后返回结果
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);  // 忽略证书
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);  // 忽略证书验证
-    curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-        'Content-Type: application/x-www-form-urlencoded;'
-    ));  //HTTP头
-    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.0 (Native Proxy/1.0.0)');  // USERAGENT
+    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.2 (FMITV/' . $server . ')');
     curl_setopt($curl, CURLOPT_POST, 1);  //声明使用POST方式来进行发送
     curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);  //POST数据
     $output = curl_exec($curl);  //发送请求
@@ -55,11 +68,12 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $key = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
         $token = $_GET['token'];
         $time = $_GET['time'];
-        $vkey = $_GET['key'];
+        $vkeys = $_GET['vkeys'];
+        $vkey = decode($vkeys);
         $line = $_GET['line'];
-        $vid = $_GET['vid'];
-        $tid = $_GET['tid'];
-        $id = $_GET['id'];
+        $vid = $vkey['vid'];
+        $tid = $vkey['tid'];
+        $id = $vkey['id'];
         $nowtime = time();
         
         if (abs($nowtime - $time) > 600) {
@@ -75,8 +89,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
                 'video' => $vid,
                 'tid' => $tid,
                 'id' => $id,
-                'line' => $line,
-                'token' => $vkey
+                'line' => $line
             )
         );
         
@@ -93,14 +106,16 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         
     }
 
-    else if (isset($_GET['list'])) {
+    else if (isset($_GET['list']) && isset($_GET[$checkcode])) {
         
         $vid = $_GET['vid'];
         $tid = $_GET['tid'];
+        $id = $_GET['id'];
         $data = json_encode(
             array(
                 'video' => $vid,
-                'tid' => $tid
+                'tid' => $tid,
+                'id' => $id
             )
         );
         
@@ -113,7 +128,6 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
                 if (is_array($channellist)) {
                     foreach($channellist as $channel) {
                         $channel = preg_replace('#http://域名/文件名#', 'fmitv://tv', $channel);
-                        $channel = preg_replace('#token=#', 'key=', $channel);
                         echo $channel . "\n";
                     }
                 }

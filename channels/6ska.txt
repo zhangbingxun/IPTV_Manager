@@ -1,6 +1,0 @@
-# 使用方法 #
-链接：http://域名/文件名?play&vid=6ska&id=视频地址
-
-比如：
-爱奇艺-加勒比海盗2：
-http://域名/文件名?play&vid=6ska&id=https://www.iqiyi.com/v_19rrjcdxnc.html

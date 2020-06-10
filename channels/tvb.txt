@@ -1,2 +1,2 @@
-无线新闻,http://域名/文件名?play&vid=tvb&id=news
-无线财经资讯,http://域名/文件名?play&vid=tvb&id=finance
+无线新闻,vid=tvb#id=news
+无线财经资讯,vid=tvb#id=finance

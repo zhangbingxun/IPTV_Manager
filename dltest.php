@@ -13,10 +13,10 @@
 //
 
 // 数据变量
-$dataurl = 'http://tv.luo2888.cn/dl.php';  // 代理API地址
+$dataurl = 'http://localhost:8118/dl.php';  // 代理API地址
 $failurl = 'http://tv.luo2888.cn/fmitv.mp4'; // 链接失效视频地址
-$playcode = "dl_510_qq625336209"; // 播放验证码
-$listcode = "fmi510"; // 列表安全码
+$playcode = "dl610_qq625336209"; // 播放验证码
+$listcode = "fmi610"; // 列表安全码
 
 // 获取代理地址
 function GetUrl() {
@@ -53,12 +53,11 @@ function decode($str){
 function send_post($url, $post_data) {
     
     $curl = curl_init();  // 初使化init方法
-    $server = gethostbyname($_SERVER['HTTP_HOST']);
     curl_setopt($curl, CURLOPT_URL, $url);  // 指定URL
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);  // 设定请求后返回结果
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);  // 忽略证书
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);  // 忽略证书验证
-    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.2 (HTTP/' . $server . ')');
+    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.2 (HTTP/' . $_SERVER['SERVER_NAME'] . ')');
     curl_setopt($curl, CURLOPT_POST, 1);  //声明使用POST方式来进行发送
     curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);  //POST数据
     $output = curl_exec($curl);  //发送请求

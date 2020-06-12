@@ -1,5 +1,3 @@
 /images/*
-/apps/epg/cache/*
+/cache/*
 /config.php
-/demo
-/old

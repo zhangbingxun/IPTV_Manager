@@ -1,4 +1,4 @@
-<?php require_once "views/view.main.php";require_once "apps/alipayController.php";?>
+<?php require_once "views/view.main.php";require_once "controler/alipayController.php";?>
 <script type="text/javascript" src="views/js/wxcheck.js"></script>
 <body scroll="no" style="overflow-x:hidden;overflow-y:hidden">
 	<div id="container" class="row lyear-wrapper">

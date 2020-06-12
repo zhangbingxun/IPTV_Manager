@@ -1,4 +1,4 @@
-<?php require_once "../config.php";require_once "../apps/usercheck.php"; ?>
+<?php require_once "../config.php";require_once "../controler/usercheck.php"; ?>
 <!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
@@ -152,7 +152,7 @@
 								<img class="img-avatar img-avatar-32 m-r-5" src="images/users/avatar.png" alt="user" />
 							</a>
 							<ul class="dropdown-menu dropdown-menu-right">
-								<li> <a href="../apps/logout.php"><i class="mdi mdi-logout-variant"></i> 退出登录</a> </li>
+								<li> <a href="../controler/logout.php"><i class="mdi mdi-logout-variant"></i> 退出登录</a> </li>
 							</ul>
 						</li>
 						<!--切换主题配色-->

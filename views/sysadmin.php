@@ -1,4 +1,4 @@
-<?php require_once "view.section.php";require_once "../apps/sysadminController.php" ?>
+<?php require_once "view.section.php";require_once "../controler/sysadminController.php" ?>
 <script type="text/javascript">
 function showli(index){
 	$(".main-content li").hide();

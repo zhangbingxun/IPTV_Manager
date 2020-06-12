@@ -8,8 +8,8 @@ CCTV-11戲曲,vid=utvhk#id=609017121
 CCTV-12社會与法,vid=utvhk#id=609017191
 CCTV-13新聞,vid=utvhk#id=608807423
 CCTV-14少兒,vid=utvhk#id=624878440
-C+頻道,vid=utvhk#id=662544321
+C+頻道,vid=utvhk#id=662563007
 UTV賽馬,vid=utvhk#id=662561767
-有線新聞,vid=utvhk#id=657254667
-有線娛樂,vid=utvhk#id=662547571
-有線財經,vid=utvhk#id=657254837
+有線新聞,vid=utvhk#id=662564221
+有線娛樂,vid=utvhk#id=662564227
+有線財經,vid=utvhk#id=662564225

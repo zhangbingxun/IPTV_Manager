@@ -3,11 +3,10 @@ CCTV-1,vid=fjyd#id=3221225812
 CCTV-1,vid=fjyd#id=3221225829
 CCTV-1,vid=fjyd#id=3221225922
 CCTV-1,vid=fjyd#id=3221226715
-CCTV-1,vid=fjyd#id=3221226795
+CCTV-2,vid=fjyd#id=3221226795
 CCTV-2,vid=fjyd#id=3221225800
 CCTV-2,vid=fjyd#id=3221225923
 CCTV-4,vid=fjyd#id=3221225802
-CCTV-5,vid=fjyd#id=3221226560
 CCTV-5Plus,vid=fjyd#id=3221225821
 CCTV-5Plus,vid=fjyd#id=3221225939
 CCTV-7,vid=fjyd#id=3221225805
@@ -41,6 +40,7 @@ CGTN-新闻,vid=fjyd#id=3221225822
 东方卫视,vid=fjyd#id=3221225828
 东方卫视,vid=fjyd#id=3221226873
 东方卫视,vid=fjyd#id=3221225936
+东方卫视,vid=fjyd#id=3221226560
 天津卫视,vid=fjyd#id=3221225830
 天津卫视,vid=fjyd#id=3221225941
 山东卫视,vid=fjyd#id=3221225843

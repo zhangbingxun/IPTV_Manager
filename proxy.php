@@ -42,12 +42,11 @@ function decode($str){
 function send_post($url, $post_data) {
     
     $curl = curl_init();  // 初使化init方法
-    $server = gethostbyname($_SERVER['HTTP_HOST']);
     curl_setopt($curl, CURLOPT_URL, $url);  // 指定URL
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);  // 设定请求后返回结果
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);  // 忽略证书
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);  // 忽略证书验证
-    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.2 (FMITV/' . $server . ')');
+    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.2 (FMITV/' . $_SERVER['SERVER_NAME'] . ')');
     curl_setopt($curl, CURLOPT_POST, 1);  //声明使用POST方式来进行发送
     curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);  //POST数据
     $output = curl_exec($curl);  //发送请求

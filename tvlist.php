@@ -25,7 +25,7 @@ if (empty($vid)){
             昭通广电：ztgd
             重庆有线：cqyx
             凤凰电视：fhds
-            时光电视：tstv
+            汕头电视：cutv
             咪咕视频：migu
             香港无线：tvb
             香港有线：utvhk
@@ -34,14 +34,15 @@ if (empty($vid)){
             斗鱼直播：douyu
             虎牙直播：huya
             优酷直播：youku
+            电影轮播：movie
             企鹅电竞：egame
             天脉聚源：tvming
             视频网站解析：6ska
+            肥米TV(测试)：fmitv
             安博TV(测试)：ublive
             台湾哈TV(限制IP)：hatv
-            肥米TV(香港网络)：fmitv
             香港NOW(限制IP)：nowtv
-            YouTube(限境外)：youtube
+            YouTube(仅限境外)：youtube
             牛牛直播(支持多线切换)：nnzb
             91看电视(支持多线切换)：91kds
             IPTV345(支持多线切换)：iptv345
@@ -117,9 +118,9 @@ else if ($vid == 'iptv345' || $vid == 'iptv2020') {
 
 else if ($vid == 'bilibili' || $vid == 'douyu' || $vid == 'huya' || $vid == 'youku' || $vid == 'egame' || $vid == 'yylive' || $vid == '6ska') {
     if (empty($id)) {
-        $header[] = "使用方法：链接：http://域名/文件名?list&vid=$vid&id=主播房间号";
+        $header[] = "使用方法：链接：http://你的域名/文件名?列表安全码&list&vid=$vid&id=视频地址、房间号";
     } else {
-        $channellist[] = "链接,vid=$vid#id=" . $id . "\n";
+        $channellist[] = "播放地址,vid=$vid#id=" . $id . "\n";
     }
 }
 

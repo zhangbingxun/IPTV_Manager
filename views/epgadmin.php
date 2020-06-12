@@ -1,4 +1,4 @@
-<?php require_once "view.section.php";require_once "../apps/epgadminController.php"; ?>
+<?php require_once "view.section.php";require_once "../controler/epgadminController.php"; ?>
 
 <script type="text/javascript">
 function submitForm(){

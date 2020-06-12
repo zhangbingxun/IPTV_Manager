@@ -73,8 +73,8 @@ HKS,http://f8.twtvcdn.com:8080/live/360/f4e78bc5571d41ecb922f5b882d25771/index.m
 澳视葡语,http://f8.twtvcdn.com:8080/live/24/d569113e689c8d1b87b98d4c3a979e55/index.m3u8
 澳门卫星,http://f8.twtvcdn.com:8080/live/29/298b98b337509b89c3b22f6b02828606/index.m3u8
 TVB经典,http://f8.twtvcdn.com:8080/live/398/6c3c06f9da953117e983037e24d4310f/index.m3u8
-寰宇新闻,http://ff.twtvcdn.com:8880/live/299/27b85716e4ab295dd9f8de93f1bfa42f/index.m3u8
-寰宇新闻二台,http://ff.twtvcdn.com:8880/live/362/6c5a2464fa4be902b5d42826c50e9776/index.m3u8
+寰宇新闻,http://ff.twtvcdn.com:8880/live/299/833302101ef90473057a56ea99ddd479/index.m3u8
+寰宇新闻二台,http://ff.twtvcdn.com:8880/live/362/c6b61b0495f7e4570c460ecea7c513f3/index.m3u8
 非凡新闻,http://ff.twtvcdn.com:8880/live/314/6a88cb54c844e8d66de60078f3f33466/index.m3u8
 年代新闻,http://ff.twtvcdn.com:8080/live/236/fabd4d49fd900872fc6d22ad1266ecd3/index.m3u8
 壹电视新闻,http://ff.twtvcdn.com:8080/live/303/5af17582c5e39ae6e7c12f5d639e3454/index.m3u8
@@ -348,12 +348,8 @@ Sony Max,http://f2.twtvcdn.com:8080/live/477/e83c7971acdcbc10b74ebd78e33c5791/in
 松视1,http://f3.twtvcdn.com:8080/live/402/6e5f3741b5c115a669b765ccc97aafbe/index.m3u8
 松视2,http://f3.twtvcdn.com:8080/live/403/dbe54b3996354e6f6ddcd3550eaf8709/index.m3u8
 松视3,http://f3.twtvcdn.com:8080/live/404/553cedc63d0521a988afb3e2cca6a52c/index.m3u8
-香蕉台,http://ff.twtvcdn.com:8080/live/408/ed8c980a8cdce8a4ab390bab69c01c66/index.m3u8
 潘朵拉完美,http://ff.twtvcdn.com:8080/live/410/40ef050027c4a4a90c1730a1089a8cf7/index.m3u8
-潘朵拉粉红,http://ff.twtvcdn.com:8080/live/411/a32a4f70acd46e2efecc9ce2e73f9a88/index.m3u8
 彩虹电影,http://ff.twtvcdn.com:8080/live/413/73e4ab70ecb965f167ee8f11b68ab647/index.m3u8
-彩虹K,http://f3.twtvcdn.com:8080/live/406/3625b970bf0527bf5067248726d893e9/index.m3u8
-彩虹E,http://f3.twtvcdn.com:8080/live/405/cb92bddacd46951090562fd1d1a595f8/index.m3u8
 一本道,http://ff.twtvcdn.com:8080/live/414/dc29b3acb9ac6ca71950ad2d83110fbd/index.m3u8
 二本道,http://ff.twtvcdn.com:8080/live/415/ee6bc1c81288816a832f2762b6737bf5/index.m3u8
 东京热,http://ff.twtvcdn.com:8080/live/416/1990112eaab115f291a5a290e00ec435/index.m3u8
@@ -371,11 +367,3 @@ i-Fun动漫台,http://ff.twtvcdn.com:8880/live/58/96c973c2ee522c92f313a346f0f001
 ELTV英语学习台,http://ff.twtvcdn.com:8880/live/48/989e19d43cc3212d4f7a96da856fb233/index.m3u8
 东森幼幼,http://f7.twtvcdn.com:8080/live/371/51a3299dc332116f05165689ca62856b/index.m3u8
 靖天卡通台,http://f7.twtvcdn.com:8080/live/348/814e5ec162365fe518e3f5122848d842/index.m3u8
-松视1,http://f3.twtvcdn.com:8080/live/402/6e5f3741b5c115a669b765ccc97aafbe/index.m3u8
-松视2,http://f3.twtvcdn.com:8080/live/403/dbe54b3996354e6f6ddcd3550eaf8709/index.m3u8
-松视3,http://f3.twtvcdn.com:8080/live/404/553cedc63d0521a988afb3e2cca6a52c/index.m3u8
-潘朵拉完美,http://ff.twtvcdn.com:8080/live/410/40ef050027c4a4a90c1730a1089a8cf7/index.m3u8
-彩虹电影,http://ff.twtvcdn.com:8080/live/413/73e4ab70ecb965f167ee8f11b68ab647/index.m3u8
-一本道,http://ff.twtvcdn.com:8080/live/414/dc29b3acb9ac6ca71950ad2d83110fbd/index.m3u8
-二本道,http://ff.twtvcdn.com:8080/live/415/ee6bc1c81288816a832f2762b6737bf5/index.m3u8
-东京热,http://ff.twtvcdn.com:8080/live/416/1990112eaab115f291a5a290e00ec435/index.m3u8

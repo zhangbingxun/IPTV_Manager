@@ -1,4 +1,4 @@
-<?php require_once "view.section.php";require_once "../apps/indexController.php"; ?>
+<?php require_once "view.section.php";require_once "../controler/indexController.php"; ?>
 
 <!--页面主要内容-->
 <main class="lyear-layout-content">

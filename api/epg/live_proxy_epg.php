@@ -1,10 +1,10 @@
 <?php
 header("Content-Type:application/json;chartset=uft-8");
 include_once "proxy_chk.php";
-include_once "curl.class.php";
-include_once "caches.class.php";
+include_once "../common/curl.class.php";
+include_once "../common/cacher.class.php";
 
-$cachedir = "./cache";
+$cachedir = "../../cache";
 if (! is_dir ($cachedir)) {
     @mkdir ($cachedir, 0755, true) or die ('创建文件夹失败');
 } 
@@ -23,8 +23,8 @@ function out_epg($id) {
 
     $tt = cache("time_out_chk", "cache_time_out"); //获取当前时间（后天）的00:00时间戳
     if (time() >= $tt) {
-        Cache::$cache_path = "./cache/"; 
-        // 删除除当前目录缓存文件
+        Cache::$cache_path = "../../cache/epgs/"; 
+        // 删除当前目录缓存文件
         Cache::dels(); 
         // 重新写入当天时间缓存文件
         cache("time_out_chk", "cache_time_out");
@@ -34,7 +34,7 @@ function out_epg($id) {
 } 
 // 缓存EPG节目数据
 function cache($key, $f_name, $ff = []) {
-    Cache::$cache_path = "./cache/";
+    Cache::$cache_path = "../../cache/epgs/";
     $val = Cache::gets($key);
     if (!$val) {
         $data = call_user_func_array($f_name, $ff);

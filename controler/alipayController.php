@@ -4,12 +4,12 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
 require_once "config.php"; 
-require_once "apps/alipay/alipay.class.php";
+require_once "api/alipay/alipay.class.php";
 
 $db = Config::GetIntance();
 $signType = 'RSA2';  //签名算法类型，支持RSA2和RSA
 $myurl=dirname('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-$notifyUrl = $myurl . '/apps/alipayNotifier.php';  //异步回调地址
+$notifyUrl = $myurl . '/controler/alipayNotifier.php';  //异步回调地址
 $appid = $db->mGet("luo2888_config", "value", "where name='alipay_appid'");  //应用APPID
 $appname = $db->mGet("luo2888_config", "value", "where name='app_appname'");  //应用名称
 $rsaPrivateKey = $db->mGet("luo2888_config", "value", "where name='alipay_privatekey'");  //商户私钥

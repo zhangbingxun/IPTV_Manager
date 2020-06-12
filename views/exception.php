@@ -1,4 +1,4 @@
-<?php require_once "view.section.php";require_once "../apps/exceptionController.php"; ?>
+<?php require_once "view.section.php";require_once "../controler/exceptionController.php"; ?>
 
 <!--页面主要内容-->
 <main class="lyear-layout-content">

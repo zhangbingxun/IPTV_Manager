@@ -1,4 +1,4 @@
-<?php require_once "view.section.php";require_once "../apps/authorController.php"; ?>
+<?php require_once "view.section.php";require_once "../controler/authorController.php"; ?>
 
 <script type="text/javascript">
 	function submitForm(){

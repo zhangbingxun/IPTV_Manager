@@ -1,5 +1,4 @@
 <?php
-error_reporting(E_ERROR);
 //
 // +----------------------------------------------------------------------+
 // | PHP version 7                                                        |
@@ -12,6 +11,27 @@ error_reporting(E_ERROR);
 // | 作者: KwanKaHo <kwankaho@luo2888.cn>                                 |
 // +----------------------------------------------------------------------+
 //
+error_reporting(E_ERROR);
+include_once "api/common/cacher.class.php";
+
+class Aes {
+    protected $method;
+    protected $secret_key;
+    protected $iv;
+    protected $options;
+    public function __construct($key, $method = 'AES-128-CBC', $iv = '', $options = 0) {
+        $this->secret_key = isset($key) ? $key : 'fmitv_key';
+        $this->method = $method;
+        $this->iv = $iv;
+        $this->options = $options;
+    }
+    public function encrypt($data) {
+        return openssl_encrypt($data, $this->method, $this->secret_key, $this->options, $this->iv);
+    }
+    public function decrypt($data) {
+        return openssl_decrypt($data, $this->method, $this->secret_key, $this->options, $this->iv);
+    }
+}
 
 function GetIP() {
     $IP = $_SERVER['REMOTE_ADDR'];
@@ -28,6 +48,24 @@ function GetIP() {
     return $IP;
 } 
 
+// 缓存节目数据
+function cache($key, $data = []) {
+    Cache::$cache_path = "./cache/urls/";
+    $val = Cache::gets($key);
+    if (!$val) {
+        Cache::put($key, $data);
+        return $data;
+    } else {
+        return $val;
+    } 
+} 
+
+function cache_time_out() {
+    date_default_timezone_set("Asia/Shanghai");
+    $timetoken = time() + 10800;
+    return $timetoken;
+} 
+
 $remote = GetIP();
 $ips = array(
     '127.0.0.1',
@@ -35,27 +73,31 @@ $ips = array(
     '39.101.217.17', // id=1 2020-04
     '140.143.146.222', // id=2 2020-04
     '103.133.179.97', // id=2 2020-04
-    '23.83.239.54', // http_id=2 2020-04
-    '149.129.75.149', // http_id=3 2020-04
-    '103.145.39.149', // http_id=4 2020-04
-    '123.57.48.155', // http_id=5 2020-04
-    '114.67.203.190', // http_id=6
-    '198.44.188.193', // http_id=7 2020-04
-    '111.230.178.212', // http_id=8 2020-06
-    '113.87.129.140', // http_id=8 2020-06
-    '39.99.174.216', // http_id=9 2020-06
-    '47.56.247.8', // http_id=10 2020-06
-    '122.114.123.45', // http_id=11 2020-06
-    '191.101.44.238', // http_id=12 2020-06
-    '14.116.198.35', // http_id=13 2020-06
+    '23.83.239.54', // id=2 2020-04
+    '149.129.75.149', // id=3 2020-04
+    '103.145.39.149', // id=4 2020-04
+    '123.57.48.155', // id=5 2020-04
+    '114.67.203.190', // id=6
+    '198.44.188.193', // id=7 2020-04
+    '111.230.178.212', // id=8 2020-06
+    '113.87.129.140', // id=8 2020-06
+    '39.99.174.216', // id=9 2020-06
+    '47.56.247.8', // id=10 2020-06
+    '122.114.123.45', // id=11 2020-06
+    '191.101.44.238', // id=12 2020-06
+    '14.116.198.35', // id=13 2020-06
     '47.114.56.181', // id=14 2020-04
+    '111.229.143.72', // id=15 2020-06
 );
 
 $banips = array(
-    '140.143.146.222', // http_id=2
-    '103.133.179.97', // http_id=2
-    '23.83.239.54', // http_id=2
 );
+
+if (strstr($_SERVER['HTTP_USER_AGENT'], "FMITV/1.0") != false) 
+{
+    header('HTTP/1.1 403 Forbidden');
+    exit;
+}
 
 if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     
@@ -86,35 +128,6 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     }
 
     url:
-
-    if ($vid == 'bilibili') {
-        $obj = file_get_contents("http://hk.luo2888.cn:8118/bilibili.php?id=$id");
-        $playurl = 'https://cn-hbxy-cmcc-live-01.live-play.acgvideo.com/live-bvc/live_' . $obj . '.m3u8';
-    }
-
-    if ($vid == 'cibn') {
-        $url = "http://api.epg2.cibn.cc/v1/loopChannelList?epgId=1000";
-        $obj = file_get_contents($url);
-        $channeldata = json_decode($obj, true);
-        $playurl = $channeldata['data']['channelList'][$id]['m3u8'];
-    }
-
-    if ($vid == '6ska') {
-        $json =  file_get_contents("https://6ska.cn/api-2/vipjx/index.php?url=$id");
-        preg_match('/"playurl":"(.*?)"/i', $json, $link);
-        $playurl = $link[1];
-    }
-
-    if ($vid == 'douyu') {
-        $json =  file_get_contents("https://web.sinsyth.com/lxapi/douyujx.x?roomid=$id");
-        preg_match('/\/live\\\\\/(.*?)_2000/i', $json, $link);
-        $playurl = 'http://tx2play1.douyucdn.cn/live/' . $link[1] . '.m3u8';
-    }
-    
-    if ($vid == 'migu') {
-        $playurl = file_get_contents("http://www.luo2888.cn/migu.php?id=$id");
-        $playurl = preg_replace('#hlsmgsplive.miguvideo.com:8080#', 'mgsp.live.miguvideo.com:8088', $playurl);
-    }
     
     if ($vid == 'tvming') {
         $playurl = "https://live-wxxcx.mtq.tvmmedia.cn/weixin/live_$id.m3u8";
@@ -136,11 +149,46 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $playurl = "http://ott.fj.chinamobile.com/PLTV/88888888/224/$id/1.m3u8";
     }
 
+    if ($vid == 'pyyx') {
+        $access_token = 'R5EE1E555U30959108K776530E4IECB4000EPBM30063B9V1020DZ6B731W16176E9CCB1715EF';
+        $playurl = "http://httpdvb.slave.pyitv.com:13164/playurl?playtype=live&protocol=http&accesstoken=" . $access_token . "&programid=4200851" . $id . "&playtoken=ABCDEFGHI";
+    }
+
+    if ($vid == 'bilibili') {
+        $obj = file_get_contents("http://hk.luo2888.cn:8118/bilibili.php?id=$id");
+        $playurl = 'https://cn-hbxy-cmcc-live-01.live-play.acgvideo.com/live-bvc/live_' . $obj . '.m3u8';
+    }
+
+    if ($vid == 'cibn') {
+        $url = "http://api.epg2.cibn.cc/v1/loopChannelList?epgId=1000";
+        $obj = file_get_contents($url);
+        $channeldata = json_decode($obj, true);
+        $playurl = $channeldata['data']['channelList'][$id]['m3u8'];
+    }
+
+    if ($vid == '6ska') {
+        $json =  file_get_contents("https://6ska.cn/api-2/vipjx/index.php?url=$id");
+        preg_match('/"playurl":"(.*?)"/i', $json, $link);
+        $playurl = $link[1];
+    }
+
+    if ($vid == 'douyu') {
+        $json =  file_get_contents("https://web.sinsyth.com/lxapi/douyujx.x?roomid=$id");
+        preg_match('/\/live\\\\\/(.*?)\?/i', $json, $link);
+        $playurl = 'http://tx2play1.douyucdn.cn/live/' . $link[1];
+        $playurl = preg_replace('#_2000p#', '', $playurl);
+    }
+    
+    if ($vid == 'migu') {
+        $playurl = file_get_contents("http://www.luo2888.cn/migu.php?id=$id");
+        $playurl = preg_replace('#hlsmgsplive.miguvideo.com:8080#', 'mgsp.live.miguvideo.com:8088', $playurl);
+    }
+
     if ($vid=='zjkp') {
         $ips = array(
-                    "1"=>"116.199.5.51:8114",
-                    "2"=>"116.199.5.52:8114",
-                    "3"=>"116.199.5.58:8114",
+            "1"=>"116.199.5.51:8114",
+            "2"=>"116.199.5.52:8114",
+            "3"=>"116.199.5.58:8114",
         );
         $playurl = 'http://' . $ips[$tid] . '/00000000/index.m3u8?Fsv_ctype=LIVES&Fsv_rate_id=1&Fsv_otype=1&FvSeid=5abd1660af1babb4&Pcontent_id=7f88be5fb6fd426494f6aa240f1dc7a9&Provider_id=00000000&Fsv_chan_hls_se_idx=' . $id;
     }
@@ -158,18 +206,6 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $obj = file_get_contents("channels/ublive.txt");
         preg_match('/http:\/\/(.*?)\/live\/' . $id . '\/(.*?)\/index\.m3u8/i', $obj, $linkobj);
         $playurl = $linkobj[0];
-    }
-   
-    if ($vid == 'hatv') {
-        $url = "http://stb.topmso.com.tw:8080/csr_mobile_client_web/ottLiveStreamGroupAction.do?method=getLiveStreamGroupForPhone_byChannel&ottCustNo=";
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727;)');
-        $curlobj = curl_exec($curl);
-        preg_match('/liveedge2\/(.*?)_999_/i', $curlobj, $linkobj);
-        $playid = $linkobj[1];
-        $playurl = 'http://58.99.33.2:1935/liveedge2/' . $playid . '_' . $id . '_1/chunklist.m3u8?checkCode=37050688asdfsdfsadf&aa=9000234&as=2015&dr=&mmmm=';
     }
     
     if ($vid == 'tstv') {
@@ -205,7 +241,7 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     }
 
     if ($vid == 'tvb') {
-        $urlobj = file_get_contents("http://news.tvb.com/ajax_call/getVideo.php?token=http%3A%2F%2Ftoken.tvb.com%2Fstream%2Flive%2Fhls%2Fmobile_" . $id . ".smil%3Fapp%3Dnews%26feed");
+        $urlobj = file_get_contents("http://news.tvb.com/ajax_call/getVideo.php?token=http%3A%2F%2Ftoken.tvb.com%2Fstream%2Flive%2Fhls%2Fmobilehd_" . $id . ".smil%3Fapp%3Dnews%26feed");
         $obj = json_decode($urlobj, true);
         $playurl = $obj['url'];
     }
@@ -214,10 +250,15 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         if (empty($line)) {
             $line = 0;
         }
-        $obj = file_get_contents("http://www.nnzhibo.com/e/DownSys/play/?classid=$tid&id=$id&pathid=$line");
-        preg_match('/video-url="(.*?)"/i', $obj, $linkobj);
+        $url = "http://www.nnzhibo.com/e/DownSys/play/?classid=$tid&id=$id&pathid=$line";
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
+        $curlobj = curl_exec($curl);
+        preg_match('/video-url="(.*?)"/i', $curlobj, $linkobj);
         if (empty($linkobj)){
-            preg_match('/url: "(.*?)"/i', $obj, $linkobj);
+            preg_match('/url: "(.*?)"/i', $curlobj, $linkobj);
         }
         $playurl = $linkobj[1];
     }
@@ -248,6 +289,7 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $result = json_decode($curlobj, true);
         $access_token = $result['access_token'];
         $playurl = "http://httpdvb.slave.ztgdwl.tv:13164/playurl?playtype=live&protocol=http&accesstoken=" . $access_token . "&programid=42000000" . $id . "&playtoken=ABCDEFGHI";
+        curl_close($curl);
     }
 
     if ($vid == 'nxgd') {
@@ -260,6 +302,29 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $result = json_decode($curlobj, true);
         $access_token = $result['access_token'];
         $playurl = "http://httpdvb.slave.nx96200.cn:13164/playurl?playtype=live&protocol=http&accesstoken=" . $access_token . "&programid=4200900" . $id . "&playtoken=ABCDEFGHI";
+        curl_close($curl);
+    }
+   
+    if ($vid == 'hatv') {
+        $cachefile = "./cache/hatv.id";
+        $url = "http://stb.topmso.com.tw:8080/csr_mobile_client_web/ottLiveStreamGroupAction.do?method=getLiveStreamGroupForPhone_byChannel&ottCustNo=";
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727;)');
+        $filemtime = filemtime($cachefile);
+        if (time() - $filemtime >= 14400 || !file_exists($cachefile))
+        {
+            unlink($cachefile);
+            $curlobj = curl_exec($curl);
+            preg_match('/liveedge2\/(.*?)_999_/i', $curlobj, $linkobj);
+            $playid = $linkobj[1];
+            file_put_contents($cachefile, $playid) ;
+        } else {
+            $playid = file_get_contents($cachefile);
+        }
+        $playurl = 'http://58.99.33.2:1935/liveedge2/' . $playid . '_' . $id . '_1/chunklist.m3u8?checkCode=37050688asdfsdfsadf&aa=9000234&as=2015&dr=&mmmm=';
+        curl_close($curl);
     }
     
     if ($vid == 'bjy') {
@@ -276,6 +341,7 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $data = curl_exec($curl);
         $obj = json_decode($data);
         $playurl = $obj->data->programplay->bitPlayUrlList[0]->url;
+        curl_close($curl);
     }
     
     if ($vid == 'egame') {
@@ -354,8 +420,9 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
         $curlobj = curl_exec($curl);
         preg_match('/liveLineUrl = "\/\/(.*?)"/i', $curlobj, $linkobj);
-        $playurl = 'http://' . $linkobj[1];
-        //$playurl = preg_replace('#m3u8#', 'flv', $playurl);
+        if (!empty($linkobj[1])){
+            $playurl = 'http://' . $linkobj[1];
+        }
         curl_close($curl);
     }
 
@@ -372,21 +439,6 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $linkurl = str_replace('stream1', 'nclive', $curlobj['drm'] . '?playerVersion=' . $PlayerVersion . '&time=' . $stime . '&url=' . $curlobj['video']['@attributes']['baseUrl'] . $curlobj['video']['item'][0]['@attributes']['url'] . 'live.m3u8');
         curl_setopt($curl, CURLOPT_URL, $linkurl);
         $playurl = curl_exec($curl);
-        curl_close($curl);
-    }
-
-    if ($vid=='meme') {
-        $url = 'http://182.61.4.27:85/dl/c/tl.php?id=';
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url . $id);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_NOBODY, 1);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 1); 
-        curl_setopt($curl, CURLOPT_MAXREDIRS, 1);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'MITV');
-        curl_exec($curl);
-        $playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
         curl_close($curl);
     }
 
@@ -409,6 +461,33 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         curl_setopt($curl, CURLOPT_USERAGENT, 'MITV');
         curl_exec($curl);
         $playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
+        curl_close($curl);
+    }
+
+    if ($vid=='cutv') {
+        $bstrURL = 'https://sttv2-api.cutv.com/api/getlivelistST.php?v=2&type=hdtv';
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $bstrURL);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
+        $data = curl_exec($curl);
+        $obj = json_decode($data);
+        $nId = intval(str_replace('st', '', $id)) - 1; //st1 = 0
+        $bstrLiveUrl = $obj->data->tv[$nId]->liveurl;
+        $bstrLiveUrl = str_replace('\/\/', '\/500\/', $bstrLiveUrl);
+        $bstrURL = 'https://sttv2-api.cutv.com/api/getIP.php';
+        curl_setopt($curl, CURLOPT_URL, $bstrURL);
+        $data = curl_exec($curl);
+        $obj = json_decode($data);
+        $aes_data = $obj->data[0];
+        $aes = new Aes('reter4446fdfgdfg', 'AES-128-CBC', '0102030405060708');
+        $de_aes = $aes->decrypt($aes_data);
+        $timestamp = dechex(time() + 7200);
+        $subPath = substr($bstrLiveUrl, stripos($bstrLiveUrl, 'hls.cutv.com') + 12);
+        $sign = md5($de_aes . 'j5dt4yng0nux7s8bew1r1gip' . $subPath . $timestamp);
+        $playurl = $bstrLiveUrl . '?sign=' . $sign . '&t=' . $timestamp;
         curl_close($curl);
     }
 
@@ -452,6 +531,7 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $curlobj = curl_exec($curl);
         preg_match_all('/<option value="(http)(.*?)"/i', $curlobj, $linkobj);
         $playurl = $linkobj[1][$line] . $linkobj[2][$line];
+        curl_close($curl);
     }
     
     if ($vid == 'iptv345') {
@@ -531,7 +611,7 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         }
     }
     
-    if (strstr($playurl, "starray") != false) {
+    if (empty($playurl) || strstr($playurl, "starray") != false) {
         $playurl = null;
     }
 	
@@ -540,7 +620,15 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
             'playurl' => $playurl
         )
     );
-    echo $data;
+
+    $timetoken = cache("time_out_chk", cache_time_out());
+    if (time() >= $timetoken) {
+        Cache::$cache_path = "./cache/urls/"; 
+        Cache::dels();  // 删除当前目录缓存文件
+        cache("time_out_chk", cache_time_out());  // 重新写入缓存
+    } 
+    $cached = cache($vid . '#' . $tid . '#' . $id, $data);
+    echo $cached;
     exit;
     
 } else if (isset($_POST['fmitv_list'])) {

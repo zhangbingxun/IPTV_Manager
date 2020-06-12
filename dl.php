@@ -48,24 +48,6 @@ function GetIP() {
     return $IP;
 } 
 
-// 缓存节目数据
-function cache($key, $data = []) {
-    Cache::$cache_path = "./cache/urls/";
-    $val = Cache::gets($key);
-    if (!$val) {
-        Cache::put($key, $data);
-        return $data;
-    } else {
-        return $val;
-    } 
-} 
-
-function cache_time_out() {
-    date_default_timezone_set("Asia/Shanghai");
-    $timetoken = time() + 10800;
-    return $timetoken;
-} 
-
 $remote = GetIP();
 $ips = array(
     '127.0.0.1',
@@ -103,18 +85,18 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     
     $json = $_POST['fmitv_proxy'];
     $obj = json_decode($json);
-    $token = $obj->token;
-    $line = $obj->line;
     $vid = $obj->video;
+    $line = $obj->line;
     $tid = $obj->tid;
     $id = $obj->id;
     if (isset($_GET['url'])) {
-        $token = $_GET['token'];
         $line = $_GET['line'];
         $vid = $_GET['vid'];
         $tid = $_GET['tid'];
         $id = $_GET['id'];
-        goto url;
+        $data = urldata($vid, $tid, $id, $line);
+        echo $data;
+        exit;
     }
 
     if (in_array($remote,$ips) == false) {
@@ -125,10 +107,77 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         );
         echo $data;
         exit;
+    }    
+	
+    $timetoken = cache("time_out_chk", "cache_time_out");
+    if (time() >= $timetoken) {
+        Cache::$cache_path = "./cache/urls/"; 
+        Cache::dels();  // 删除当前目录缓存文件
+        cache("time_out_chk", "cache_time_out");  // 重新写入缓存
+    } 
+    $cached = cache($vid . '#' . $tid . '#' . $id . '#' . $line, "urldata", [$vid, $tid, $id, $line]);
+    echo $cached;
+    exit;
+    
+} else if (isset($_POST['fmitv_list'])) {
+    
+    $json = $_POST['fmitv_list'];
+    $obj = json_decode($json);
+    $vid = $obj->video;
+    $tid = $obj->tid;
+    $id = $obj->id;
+    
+    if (in_array($remote,$ips) == false) {
+        $data = json_encode(
+            array(
+                'tvlist' => array("查询授权失败,请联系客服kwankaho@luo2888.cn，你的连接IP是：" . $remote)
+            )
+        );
+        echo $data;
+        exit;
     }
 
-    url:
+    require_once('tvlist.php');
+
+    $data = json_encode(
+        array(
+            'tvlist' => $result
+        )
+    );
     
+    echo $data;
+    exit;
+
+} else {
+
+    header('HTTP/1.1 403 Forbidden');
+    exit;
+
+}
+
+// 缓存节目数据
+function cache($key, $f_name, $ff = []) {
+    Cache::$cache_path = "./cache/urls/";
+    $val = Cache::gets($key);
+    if (!$val) {
+        $data = call_user_func_array($f_name, $ff);
+        Cache::put($key, $data);
+        return $data;
+    } else {
+        return $val;
+    } 
+} 
+
+// 缓存超时
+function cache_time_out() {
+    date_default_timezone_set("Asia/Shanghai");
+    $timetoken = time() + 10800;
+    return $timetoken;
+} 
+
+// 节目数据
+function urldata($vid,$tid,$id,$line) {
+
     if ($vid == 'tvming') {
         $playurl = "https://live-wxxcx.mtq.tvmmedia.cn/weixin/live_$id.m3u8";
     }
@@ -154,14 +203,34 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $playurl = "http://httpdvb.slave.pyitv.com:13164/playurl?playtype=live&protocol=http&accesstoken=" . $access_token . "&programid=4200851" . $id . "&playtoken=ABCDEFGHI";
     }
 
+    if ($vid=='zjkp') {
+        $ips = array(
+            "1"=>"116.199.5.51:8114",
+            "2"=>"116.199.5.52:8114",
+            "3"=>"116.199.5.58:8114",
+        );
+        $playurl = 'http://' . $ips[$tid] . '/00000000/index.m3u8?Fsv_ctype=LIVES&Fsv_rate_id=1&Fsv_otype=1&FvSeid=5abd1660af1babb4&Pcontent_id=7f88be5fb6fd426494f6aa240f1dc7a9&Provider_id=00000000&Fsv_chan_hls_se_idx=' . $id;
+    }
+
+    if ($vid == 'fhds') {
+        $ids = array(
+            "fhzx"=>"/live/822pin72",
+            "fhzh"=>"/live/822pcc72",
+            "fhhk"=>"/live/822phk72",
+        );
+        $hexString = dechex(time()+1800);
+        $substring = $ids[$id];
+        $str2 = "obb9Lxyv5C".$substring.$hexString;
+        $playurl = 'http://qlive.fengshows.cn'.$ids[$id].'.flv?txSecret='.md5($str2).'&txTime='.$hexString;
+    }
+
     if ($vid == 'bilibili') {
         $obj = file_get_contents("http://hk.luo2888.cn:8118/bilibili.php?id=$id");
         $playurl = 'https://cn-hbxy-cmcc-live-01.live-play.acgvideo.com/live-bvc/live_' . $obj . '.m3u8';
     }
 
     if ($vid == 'cibn') {
-        $url = "http://api.epg2.cibn.cc/v1/loopChannelList?epgId=1000";
-        $obj = file_get_contents($url);
+        $obj = file_get_contents("http://api.epg2.cibn.cc/v1/loopChannelList?epgId=1000");
         $channeldata = json_decode($obj, true);
         $playurl = $channeldata['data']['channelList'][$id]['m3u8'];
     }
@@ -182,15 +251,6 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     if ($vid == 'migu') {
         $playurl = file_get_contents("http://www.luo2888.cn/migu.php?id=$id");
         $playurl = preg_replace('#hlsmgsplive.miguvideo.com:8080#', 'mgsp.live.miguvideo.com:8088', $playurl);
-    }
-
-    if ($vid=='zjkp') {
-        $ips = array(
-            "1"=>"116.199.5.51:8114",
-            "2"=>"116.199.5.52:8114",
-            "3"=>"116.199.5.58:8114",
-        );
-        $playurl = 'http://' . $ips[$tid] . '/00000000/index.m3u8?Fsv_ctype=LIVES&Fsv_rate_id=1&Fsv_otype=1&FvSeid=5abd1660af1babb4&Pcontent_id=7f88be5fb6fd426494f6aa240f1dc7a9&Provider_id=00000000&Fsv_chan_hls_se_idx=' . $id;
     }
     
     if ($vid == 'fmitv') {
@@ -226,18 +286,6 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         $json = file_get_contents($linkobj[1] . "?mode=prod&audioCode=&format=HLS&channelno=$id");
         $urlobj = json_decode($json,true);
         $playurl = $urlobj['asset']['hls']['adaptive']['0'];
-    }
-
-    if ($vid == 'fhds') {
-        $ids = array(
-            "fhzx"=>"/live/8222pin72",
-            "fhzh"=>"/live/8222pcc72",
-            "fhhk"=>"/live/8222phk72",
-        );
-        $hexString = dechex(time()+1800);
-        $substring = $ids[$id];
-        $str2 = "obb9Lxyv5C".$substring.$hexString;
-        $playurl = 'http://qlive.fengshows.cn'.$ids[$id].'.flv?txSecret='.md5($str2).'&txTime='.$hexString;
     }
 
     if ($vid == 'tvb') {
@@ -515,7 +563,7 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
          93 = 640x360
         */
         preg_match_all('/(https:\/.*\/95\/.*index.m3u8)/U',$man,$matches, PREG_PATTERN_ORDER);
-        $playurl=$matches[1][0];
+        $playurl = $matches[1][0];
         curl_close($curl);
     }
 
@@ -614,57 +662,14 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     if (empty($playurl) || strstr($playurl, "starray") != false) {
         $playurl = null;
     }
-	
+    
     $data = json_encode(
         array(
             'playurl' => $playurl
         )
     );
-
-    $timetoken = cache("time_out_chk", cache_time_out());
-    if (time() >= $timetoken) {
-        Cache::$cache_path = "./cache/urls/"; 
-        Cache::dels();  // 删除当前目录缓存文件
-        cache("time_out_chk", cache_time_out());  // 重新写入缓存
-    } 
-    $cached = cache($vid . '#' . $tid . '#' . $id, $data);
-    echo $cached;
-    exit;
     
-} else if (isset($_POST['fmitv_list'])) {
-    
-    $json = $_POST['fmitv_list'];
-    $obj = json_decode($json);
-    $vid = $obj->video;
-    $tid = $obj->tid;
-    $id = $obj->id;
-    
-    if (in_array($remote,$ips) == false) {
-        $data = json_encode(
-            array(
-                'tvlist' => array("查询授权失败,请联系客服kwankaho@luo2888.cn，你的连接IP是：" . $remote)
-            )
-        );
-        echo $data;
-        exit;
-    }
-
-    require_once('tvlist.php');
-
-    $data = json_encode(
-        array(
-            'tvlist' => $result
-        )
-    );
-    
-    echo $data;
-    exit;
-
-} else {
-
-    header('HTTP/1.1 403 Forbidden');
-    exit;
+    return $data;
 
 }
-
 ?>

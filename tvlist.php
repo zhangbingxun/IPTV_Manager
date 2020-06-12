@@ -18,6 +18,7 @@ if (empty($vid)){
             北京云：bjy
             天途云：tty
             央视频：ysp
+            外部列表：third
             北京移动：bjyd
             福建移动：fjyd
             宁夏广电：nxgd
@@ -152,6 +153,28 @@ else if ($vid == 'tstv') {
     foreach ($arrays[1] as &$channelname) {
             $channellist[] = $channelname . ",vid=tstv#id=" . $arrays[4][$i] . "\n";
         $i++;
+    }
+}
+
+else if ($vid == 'third') {
+    $i = 0;
+    if (empty($id)) {
+        $header[] = "
+使用方法：链接：http://你的域名/文件名?列表安全码&list&vid=$vid&id=TXT文件地址
+
+TXT文件格式：
+频道,vid=节目VID#id=节目ID
+如：
+加勒比海盗2,vid=6ska#id=https://www.iqiyi.com/v_19rrjcdxnc.html
+LPL赛事直播,vid=huya#id=lpl
+";
+    } else {
+        $channels = file_get_contents($id);
+        preg_match_all('/(.*?),(.*?)\n/i', $channels, $arrays);
+        foreach ($arrays[1] as &$channelname) {
+            $channellist[] = $channelname . ',' . $arrays[2][$i] . "\n";
+            $i++;
+        }
     }
 }
 

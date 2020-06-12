@@ -1,17 +1,17 @@
-tvbjade1#翡翠台,http://sytv.applinzi.com/fct.php
-tvbjade2#翡翠台,http://vip.cietv.com/gtbo/fct.asp
-tvbj2#TVB J2,http://vip.cietv.com/gtbo/j2.asp
-tvbnews#無線新聞,http://vip.cietv.com/gtbo/wxxw.asp
-icable#有線新聞,http://vip.cietv.com/gtbo/yxxw.asp
-tvbsxw#TVBS新聞,http://vip.cietv.com/gtbo/tvbs.asp
-ztxw#中天新聞,http://vip.cietv.com/gtbo/ztxw.asp
-dsxw#東森新聞,http://vip.cietv.com/gtbo/dsxw.asp
-tvbjade3#翡翠台,http://61.238.6.49:8000/bysid/1
-viu96#ViuTV Six,http://61.238.6.49:8000/bysid/96
-viu99#ViuTV,http://61.238.6.49:8000/bysid/99
-tvbnews2#無綫新聞,http://185.93.2.35:12012/live/359111068247FFA1/Hs5g0TNpX9aohdoghG2Zccp2HcHPShDHWibTNca6_QSML_biuhXpr45XcmRgtPG4/2A32300E446D4B4A/691033.ts
-tvbfinance#無綫財經,http://185.93.2.35:12012/live/359111068247FFA1/mVjpHrV2i4StKswinHRnbDF9b1UVwVC7aPqv56Jtoa7jyXfBk9Ha9DuERScnA9A_/18DE4427EB374AB9/233691.ts
-icable2#有線新聞,http://mott.cdn.cmi.chinamobile.com/livehls/MOB-SCC/index.m3u8
+fhzx#鳳凰資訊,https://81e0996f61b8eabc6b95e3a16c274256.live.prod.hkatv.com/p1_cbr_lo.m3u8
+fhzh#鳳凰中文,https://0c2a4b66b4507225496222b26a9d35f3.live.prod.hkatv.com/p3_cbr_lo.m3u8
+fhhk#鳳凰香港,https://2d9177eadbb3094826e878458d4300c3.live.prod.hkatv.com/p2_cbr_lo.m3u8
+atv#亞視ATV,https://15813114727637862976168173814320.live.prod.hkatv.com/a1_cbr_lo_720p.m3u8
+tvbjade#翡翠台,http://sytv.applinzi.com/fct.php
+tvbjade2#翡翠台,http://vip.cietv.com/aa/fct.asp
+tvbj2#TVB J2,http://vip.cietv.com/aa/j2.asp
+tvbnews#無線新聞,http://vip.cietv.com/aa/wxxw.asp
+icable#有線新聞,http://vip.cietv.com/aa/yxxw.asp
+tvbsxw#TVBS新聞,http://vip.cietv.com/aa/tvbs.asp
+ztxw#中天新聞,http://vip.cietv.com/aa/ztxw.asp
+dsxw#東森新聞,http://vip.cietv.com/aa/dsxw.asp
+tvbnews2#無線新聞,http://185.93.2.35:12012/live/359111068247FFA1/Hs5g0TNpX9aohdoghG2Zccp2HcHPShDHWibTNca6_QSML_biuhXpr45XcmRgtPG4/2A32300E446D4B4A/691033.ts
+tvbfinance#無線財經,http://185.93.2.35:12012/live/359111068247FFA1/mVjpHrV2i4StKswinHRnbDF9b1UVwVC7aPqv56Jtoa7jyXfBk9Ha9DuERScnA9A_/18DE4427EB374AB9/233691.ts
 amyx1#澳门有线一台,http://202.175.127.77/live/show/ch1/index.m3u8
 amxw#澳门互动新闻,http://202.175.127.77/live/show/ch2/index.m3u8
 amyx3#澳门有线三台,http://202.175.127.77/live/show/ch3/index.m3u8

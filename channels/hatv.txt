@@ -1,4 +1,3 @@
-动物星球,vid=hatv#id=12
 民視HD,vid=hatv#id=5
 CNN國際新聞,vid=hatv#id=6
 台視HD,vid=hatv#id=7
@@ -129,5 +128,7 @@ HOT 頻道,vid=hatv#id=403
 松視2台,vid=hatv#id=406
 松視3台,vid=hatv#id=407
 彩虹r台,vid=hatv#id=408
-潘朵拉粉紅台,vid=hatv#id=410
+樂活頻道,vid=hatv#id=410
+潘多拉完美台,vid=hatv#id=411
+潘多拉粉紅台,vid=hatv#id=412
 驚艷台,vid=hatv#id=413

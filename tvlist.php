@@ -17,19 +17,24 @@ if (empty($vid)){
             荔枝网：grtn
             北京云：bjy
             天途云：tty
+            亦非云：yfy
             央视频：ysp
-            外部列表：third
+            芒果TV：mgtv
+            四季线上：4gtv
+            咪咕视频：migu
             北京移动：bjyd
             福建移动：fjyd
+            辽宁移动：lnyd
+            浙江移动：zjyd
             宁夏广电：nxgd
             平遥广电：pygd
             昭通广电：ztgd
             重庆有线：cqyx
+            香港无线：tvb
+            香港UTV：utvhk
             凤凰电视：fhds
             汕头电视：cutv
-            咪咕视频：migu
-            香港无线：tvb
-            香港有线：utvhk
+            外部列表：third
             B站直播：bilibili
             YY直播：yylive
             斗鱼直播：douyu
@@ -38,9 +43,9 @@ if (empty($vid)){
             电影轮播：movie
             企鹅电竞：egame
             天脉聚源：tvming
+            普视PV采集：pvbox
             视频网站解析：6ska
             肥米TV(测试)：fmitv
-            安博TV(测试)：ublive
             台湾哈TV(限制IP)：hatv
             香港NOW(限制IP)：nowtv
             YouTube(仅限境外)：youtube
@@ -53,7 +58,7 @@ if (empty($vid)){
 }
 
 else if ($vid == '91kds') {
-    $url = "http://m.91kds.org";
+    $url = "http://m.91kds.cn";
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
@@ -152,6 +157,38 @@ else if ($vid == 'tstv') {
     preg_match_all('/(.*?),(.*?)\/live\/(.*?)\/(.*?)\//i', $obj, $arrays);
     foreach ($arrays[1] as &$channelname) {
             $channellist[] = $channelname . ",vid=tstv#id=" . $arrays[4][$i] . "\n";
+        $i++;
+    }
+}
+
+else if ($vid == 'pvbox') {
+    $i = 0;
+    $obj = file_get_contents("http://tv.luo2888.cn/get.php?xsd168");
+    preg_match_all('/(.*?),mitv(.*?)ts/i', $obj, $arrays);
+    foreach ($arrays[0] as &$channelname) {
+        $header[] = $channelname;
+        $header = preg_replace('# #', '', $header);
+        $header = preg_replace('#①#', '', $header);
+        $header = preg_replace('#②#', '', $header);
+        $header = preg_replace('#1-#', '', $header);
+        $header = preg_replace('#2-#', '', $header);
+        $header = preg_replace('#臺#', '台', $header);
+        $header = preg_replace('#线路#', '', $header);
+        $header = preg_replace('#1J2#', 'J2', $header);
+        $header = preg_replace('#2J2#', 'J2', $header);
+        $header = preg_replace('#VIU#', 'Viu', $header);
+        $header = preg_replace('#HKC#', '有线', $header);
+        $header = preg_replace('#1翡翠#', '翡翠', $header);
+        $header = preg_replace('#2翡翠#', '翡翠', $header);
+        $header = preg_replace('#1无线#', '无线', $header);
+        $header = preg_replace('#2无线#', '无线', $header);
+        $header = preg_replace('#Viu,#', 'ViuTV,', $header);
+        $header = preg_replace('#J5#', '无线财经', $header);
+        $header = preg_replace('#TVB娱乐#', 'TVBS娱乐', $header);
+        if ($id  == 'p2p') {
+            $header = preg_replace('#mitv#', 'p2p', $header);
+            $header = preg_replace('#\.ts#', '&userid=$user=$mac=b21047001cd9$key=614fe9255aee3b71be9e7c6267f90c34', $header);
+        }
         $i++;
     }
 }

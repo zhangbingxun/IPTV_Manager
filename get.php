@@ -129,20 +129,31 @@ if (isset($_GET['cietv'])) {
     exit;
 }
 if (isset($_GET['fyds'])) {
+    $jnikey = 'AD80F93B542B';
     $aid = randomStr();
     $sig = 20202; //签名密码
     $appname = '风韵电视'; //软件名
     $packagename = 'com.vvv.test'; //软件包名
-    $url = 'http://121.89.198.224/aatv/'; // 后台地址
+    $url = 'http://121.89.198.224/aatv'; // 后台地址
 }
 if (isset($_GET['hk168'])) {
+    $jnikey = 'AD80F93B542B';
     $aid = randomStr();
     $sig = 16123; //签名密码
     $appname = '华凯超视觉TV'; //软件名
     $packagename = 'com.lt.hk168'; //软件包名
     $url = 'http://tv668.club/hk666'; // 后台地址
 }
+if (isset($_GET['xsd168'])) {
+    $jnikey = '37HASY0B67UR';
+    $aid = randomStr();
+    $sig = 16015; //签名密码
+    $appname = '新时代直播'; //软件名
+    $packagename = 'com.lt.xsd168'; //软件包名
+    $url = 'http://tv668.club/xsd168'; // 后台地址
+}
 if (isset($_GET['qqds'])) {
+    $jnikey = 'AD80F93B542B';
     $aid = randomStr();
     $sig = 12315; //签名密码
     $appname = '全球电视'; //软件名
@@ -150,13 +161,39 @@ if (isset($_GET['qqds'])) {
     $url = 'http://47.56.251.109/iptv'; // 后台地址
 }
 if (isset($_GET['dzzb'])) {
+    $jnikey = 'AD80F93B542B';
     $aid = randomStr();
     $sig = 14463; //签名密码
     $appname = '大众直播'; //软件名
     $packagename = 'com.iptv.dzzb'; //软件包名
-    $url = 'http://zhibo123.top/'; // 后台地址
+    $url = 'http://zhibo123.top'; // 后台地址
+}
+if (isset($_GET['yjzb'])) {
+    $jnikey = 'AD80F93B542B';
+    $aid = randomStr();
+    $sig = 12315; //签名密码
+    $appname = '有家直播'; //软件名
+    $packagename = 'com.yj.wazb'; //软件包名
+    $url = 'http://youjiatvzb.com'; // 后台地址
+}
+if (isset($_GET['xszb'])) {
+    $jnikey = 'AD80F93B542B';
+    $aid = randomStr();
+    $sig = 13628; //签名密码
+    $appname = '星闪直播'; //软件名
+    $packagename = 'com.xszb.tv'; //软件包名
+    $url = 'http://xszb.chxjon.cn'; // 后台地址
+}
+if (isset($_GET['hxzb'])) {
+    $jnikey = 'AD80F93B542B';
+    $aid = randomStr();
+    $sig = 9119; //签名密码
+    $appname = '海峡直播'; //软件名
+    $packagename = 'cn.hxtv.player'; //软件包名
+    $url = 'http://hxtv.942wifi.com:8421'; // 后台地址
 }
 if (isset($_GET['mhds'])) {
+    $jnikey = 'AD80F93B542B';
     $aid = "319fdd0b8a87bb06";
     $sig = 19869; //签名密码
     $appname = '美好电视'; //软件名
@@ -164,7 +201,7 @@ if (isset($_GET['mhds'])) {
     $url = 'http://139.224.232.220/mhtv'; // 后台地址
 }
 $mac = "11:22:33:44:55:66";
-$key = md5($sig . $appname . $packagename . "AD80F93B542B");
+$key = md5($sig . $appname . $packagename . $jnikey);
 $key = md5($key . $appname . $packagename);
 $postdata = '"region":"","mac":"' . $mac . '","androidid":"'. $aid . '","model":"Android x86","nettype":"","appname":"' . $appname . '"';
 

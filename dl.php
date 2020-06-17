@@ -35,16 +35,17 @@ class Aes {
 
 function GetIP() {
     $IP = $_SERVER['REMOTE_ADDR'];
-    if (isset($_SERVER['HTTP_CLIENT_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_CLIENT_IP'])) {
-        $IP = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) AND preg_match_all('#\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}#s', $_SERVER['HTTP_X_FORWARDED_FOR'], $matches)) {
-        foreach ($matches[0] AS $XIP) {
-            if (!preg_match('#^(10|172\.16|192\.168)\.#', $XIP)) {
-                $IP = $XIP;
+    if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) AND preg_match_all('#\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}#s', $_SERVER['HTTP_X_FORWARDED_FOR'], $matches)) {
+        foreach ($matches[0] AS $xip) {
+            if (!preg_match('#^(10|172\.16|192\.168)\.#', $xip)) {
+                $IP = $xip;
                 break;
             } 
         } 
-    } 
+    }
+    if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_CF_CONNECTING_IP'])) {
+        $IP = $_SERVER['HTTP_CF_CONNECTING_IP'];
+    }
     return $IP;
 } 
 
@@ -58,18 +59,24 @@ $ips = array(
     '23.83.239.54', // id=2 2020-04
     '149.129.75.149', // id=3 2020-04
     '103.145.39.149', // id=4 2020-04
-    '123.57.48.155', // id=5 2020-04
-    '114.67.203.190', // id=6
-    '198.44.188.193', // id=7 2020-04
-    '111.230.178.212', // id=8 2020-06
-    '113.87.129.140', // id=8 2020-06
-    '39.99.174.216', // id=9 2020-06
+    '123.57.48.155', // id=5 51itv.top 2020-04
+    '114.67.203.190', // id=6 090n.com
+    '198.44.188.193', // id=7 llv99.cn 2020-04
+    '111.230.178.212', // id=8 3322.org 2020-06
+    '118.31.124.107', // id=8 3322.org 2020-06
+    '42.51.16.68', // id=8 3322.org 2020-06
+    '39.99.174.216', // id=9 wangweizhushou.com 2020-06
     '47.56.247.8', // id=10 2020-06
     '122.114.123.45', // id=11 2020-06
     '191.101.44.238', // id=12 2020-06
-    '14.116.198.35', // id=13 2020-06
+    '14.116.198.35', // id=13 qxwifi.com 2020-06
     '47.114.56.181', // id=14 2020-04
     '111.229.143.72', // id=15 2020-06
+    '23.235.147.161', // id=15 2020-06
+    '160.124.156.113', // mytvhd.xyz id=16 2020-06
+    '111.231.220.154', // id=17 2020-06
+    '218.78.59.212', // id=18 2020-06
+    '47.240.56.70', // id=19 2020-06
 );
 
 $banips = array(
@@ -115,8 +122,34 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         Cache::dels();  // 删除当前目录缓存文件
         cache("time_out_chk", "cache_time_out");  // 重新写入缓存
     } 
-    $cached = cache($vid . '#' . $tid . '#' . $id . '#' . $line, "urldata", [$vid, $tid, $id, $line]);
-    echo $cached;
+
+    $cache_vid = array(
+        'cibn',
+        '6ska',
+        'migu',
+        'utvhk',
+        'douyu',
+        '91kds',
+        'iptv345',
+        'iptv2020',
+    );
+
+    if (in_array($vid,$cache_vid) != false) {
+        $cached = cache($vid . '#' . $tid . '#' . $id . '#' . $line, "urldata", [$vid, $tid, $id, $line]);
+        if ($cached == false) {
+            $data = json_encode(
+                array(
+                    'playurl' => null
+                )
+            );
+            echo $data;
+        } else {
+            echo $cached;
+        }
+    } else {
+        $data = urldata($vid, $tid, $id, $line);
+        echo $data;
+    }
     exit;
     
 } else if (isset($_POST['fmitv_list'])) {
@@ -130,7 +163,7 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
     if (in_array($remote,$ips) == false) {
         $data = json_encode(
             array(
-                'tvlist' => array("查询授权失败,请联系客服kwankaho@luo2888.cn，你的连接IP是：" . $remote)
+                'tvlist' => array("您的服务器没有授权或者已到期,请联系客服kwankaho@luo2888.cn,您的服务器IP是：" . $remote)
             )
         );
         echo $data;
@@ -171,7 +204,7 @@ function cache($key, $f_name, $ff = []) {
 // 缓存超时
 function cache_time_out() {
     date_default_timezone_set("Asia/Shanghai");
-    $timetoken = time() + 10800;
+    $timetoken = time() + 14400;
     return $timetoken;
 } 
 
@@ -197,6 +230,29 @@ function urldata($vid,$tid,$id,$line) {
     if ($vid == 'fjyd') {
         $playurl = "http://ott.fj.chinamobile.com/PLTV/88888888/224/$id/1.m3u8";
     }
+    
+    if ($vid == 'hlyd') {
+        $playurl = "http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/$id/index.m3u8";
+    }
+    
+    if ($vid == 'lnyd') {
+        $playurl = "http://hwottcdn.ln.chinamobile.com/PLTV/88888890/224/$id/index.m3u8";
+    }
+    
+    if ($vid == 'gdtv') {
+        $playurl = "http://wx.tt1008.top/gd.php?id=" . $id;
+    }
+    
+    if ($vid == 'yfy') {
+        $playurl = "http://58.216.6.173/sk.live.otvcloud.com/otv/skcc/live/channel$id/$tid.m3u8";
+    }
+    
+    if ($vid == 'zjyd') {
+        if ($tid == 'ts2hls') {
+            $param = '?fmt=ts2hls';
+        }
+        $playurl = "http://hwltc.tv.cdn.zj.chinamobile.com/PLTV/88888888/224/$id/index.m3u8" . $param;
+    }
 
     if ($vid == 'pyyx') {
         $access_token = 'R5EE1E555U30959108K776530E4IECB4000EPBM30063B9V1020DZ6B731W16176E9CCB1715EF';
@@ -221,7 +277,7 @@ function urldata($vid,$tid,$id,$line) {
         $hexString = dechex(time()+1800);
         $substring = $ids[$id];
         $str2 = "obb9Lxyv5C".$substring.$hexString;
-        $playurl = 'http://qlive.fengshows.cn'.$ids[$id].'.flv?txSecret='.md5($str2).'&txTime='.$hexString;
+        $playurl = 'http://hlive.fengshows.cn'.$ids[$id].'.flv?txSecret='.md5($str2).'&txTime='.$hexString;
     }
 
     if ($vid == 'bilibili') {
@@ -239,6 +295,12 @@ function urldata($vid,$tid,$id,$line) {
         $json =  file_get_contents("https://6ska.cn/api-2/vipjx/index.php?url=$id");
         preg_match('/"playurl":"(.*?)"/i', $json, $link);
         $playurl = $link[1];
+    }
+
+    if ($vid == 'mgtv') {
+        $obj = file_get_contents("http://mpp.liveapi.mgtv.com/v1/epg/turnplay/getLivePlayUrlMPP?version=PCweb_1.0&platform=4&buss_id=2000001&channel_id=$id&definition=std");
+        $linkobj = json_decode($obj,true);
+        $playurl = $linkobj['data']['url'];
     }
 
     if ($vid == 'douyu') {
@@ -372,6 +434,9 @@ function urldata($vid,$tid,$id,$line) {
             $playid = file_get_contents($cachefile);
         }
         $playurl = 'http://58.99.33.2:1935/liveedge2/' . $playid . '_' . $id . '_1/chunklist.m3u8?checkCode=37050688asdfsdfsadf&aa=9000234&as=2015&dr=&mmmm=';
+        if ($line == 2) {
+            $playurl = preg_replace('#58.99.33.2:1935#', 'ott.luo2888.cn:8080', $playurl);
+        }
         curl_close($curl);
     }
     
@@ -495,7 +560,7 @@ function urldata($vid,$tid,$id,$line) {
         $key=12315;
         $time=time();
         $ids = array(
-                    "1"=>"hkyx",
+                    "1"=>"cs",
         );
         $sign = md5($key.$time."303543214".$sig);
         $url = 'http://47.56.251.109/iptv/api/' . $ids[$tid] . '.php?id=' . $id . '&t=' . $time . '&sign=' . $sign;
@@ -539,6 +604,19 @@ function urldata($vid,$tid,$id,$line) {
         curl_close($curl);
     }
 
+    if ($vid=='4gtv') {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "http://tv.tvvme.com/plus/4gtv.php?ch=" . $id);
+        curl_setopt($curl, CURLOPT_NOBODY, 1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
+        $obj = curl_exec($curl);
+        $linkurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
+        curl_close($curl);
+        $playurl = preg_replace('#http:\/\/tv\.tvvme\.com\/player\/v\/\?videourl=#', '', $linkurl);
+    }
+
     if ($vid == 'youtube') {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, 'https://www.youtube.com/watch?v=' . $id);
@@ -571,7 +649,7 @@ function urldata($vid,$tid,$id,$line) {
         if (empty($line)) {
             $line = 0;
         }
-        $url = "http://m.91kds.org/jiemu_$id.html";
+        $url = "http://m.91kds.cn/jiemu_$id.html";
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -632,7 +710,7 @@ function urldata($vid,$tid,$id,$line) {
         }
         curl_setopt($curl, CURLOPT_URL, $url . "?act=play&token=$token&tid=$tid&id=$id");
         $curlobj = curl_exec($curl);
-        if (strstr($curlobj, "src1591") != false) {
+        if (strstr($curlobj, "src15") != false) {
             preg_match('/var src(.*)="(.*)"/i', $curlobj, $linkobj);
             $linkurl = $linkobj[2] . $part;
         } else {
@@ -643,13 +721,9 @@ function urldata($vid,$tid,$id,$line) {
             $playurl = $linkurl;
         } else {
             curl_setopt($curl, CURLOPT_URL, $linkurl);
-            curl_setopt($curl, CURLOPT_TIMEOUT,2); 
+            curl_setopt($curl, CURLOPT_TIMEOUT,4); 
             curl_setopt($curl, CURLOPT_NOBODY, 1);
-            if (strstr($tid, "wintv") != false) {
-                curl_setopt($curl, CURLOPT_MAXREDIRS, 1);
-            } else {
-                curl_setopt($curl, CURLOPT_MAXREDIRS, 2);
-            }
+            curl_setopt($curl, CURLOPT_MAXREDIRS, 4);
             curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
             curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
             curl_setopt($curl, CURLOPT_USERAGENT, 'Lavf/57.83.100');
@@ -658,18 +732,21 @@ function urldata($vid,$tid,$id,$line) {
             curl_close($curl);
         }
     }
-    
-    if (empty($playurl) || strstr($playurl, "starray") != false) {
-        $playurl = null;
-    }
-    
+
+    $playurl = preg_replace('#ewcdnsite(.*?)com#', 'ott.luo2888.cn:2052', $playurl);
+    $playurl = preg_replace('#185.93.2.35:12012#', 'ott.luo2888.cn:8880', $playurl);
+
     $data = json_encode(
         array(
             'playurl' => $playurl
         )
     );
     
-    return $data;
+    if (empty($playurl) || strstr($playurl, "starray") == false) {
+        return $data;
+    } else {
+        return false;
+    }
 
 }
 ?>

@@ -133,9 +133,9 @@ if (isset($_POST['login'])) {
         $autoupdate = $db->mGet("luo2888_config", "value", "where name='autoupdate'");
         $randkey = $db->mGet("luo2888_config", "value", "where name='randkey'");
         $updateinterval = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
-        $tiploading = $db->mGet("luo2888_config", "value", "where name='tiploading'");
-        $tipusernoreg = $db->mGet("luo2888_config", "value", "where name='tipusernoreg'");
         $keyproxy = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
+        $tiploading = $db->mGet("luo2888_config", "value", "where name='tiploading'");
+        $tipusernoreg = '您的账号是' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipusernoreg'");
         $tipuserexpired = '当前账号' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserexpired'");
         $tipuserforbidden = '当前账号' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserforbidden'");
         $url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];

@@ -96,8 +96,8 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $datastr = send_post($dataurl, $post_data);
         $obj = json_decode($datastr);
         $playurl = $obj->playurl;
-        
-        if (!empty($playurl)){
+
+        if (!empty($playurl)) {
             header('location:' . $playurl);
         } else {
             header('location:' . $failurl);

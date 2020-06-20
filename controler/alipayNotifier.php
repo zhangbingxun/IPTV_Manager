@@ -12,7 +12,6 @@ $alipayPublicKey = $db->mGet("luo2888_config", "value", "where name='alipay_publ
 $notify = new NotifyService($alipayPublicKey);
 $notifyres = $notify->rsaCheck($_POST,$_POST['sign_type']);  //验证签名
 if($notifyres===true){
-    //处理你的逻辑，例如获取订单号$_POST['out_trade_no']，订单金额$_POST['total_amount']
     $nowtime = time();
     $postid=$_POST['out_trade_no'];
 	if ($row = $db->mGetRow("luo2888_payment", "userid,meal,days", "where order_id='$postid'")) {

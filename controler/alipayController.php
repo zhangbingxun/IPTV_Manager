@@ -6,6 +6,7 @@ error_reporting(E_ERROR);
 require_once "config.php"; 
 require_once "api/alipay/alipay.class.php";
 
+$user=$_GET['id'];
 $db = Config::GetIntance();
 $signType = 'RSA2';  //签名算法类型，支持RSA2和RSA
 $myurl=dirname('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
@@ -15,7 +16,7 @@ $appname = $db->mGet("luo2888_config", "value", "where name='app_appname'");  //
 $rsaPrivateKey = $db->mGet("luo2888_config", "value", "where name='alipay_privatekey'");  //商户私钥
 
 if (isset($_POST['dopay'])) {
-	$userid=$_POST['userid'];
+    $userid=$_POST['userid'];
     $mealid = $_POST['mealid'];
     $mealname = $db->mGet("luo2888_meals", "name", "where id=$mealid");
     $amount = $db->mGet("luo2888_meals", "amount", "where id=$mealid");

@@ -61,10 +61,9 @@
 					<?php 						
 					if (isset($_POST['userid_enter'])) {
 						$userid=$_POST['userid'];
-						if ($row = $db->mCheckRow("luo2888_users", "name,mac,ip,region", "where name='$userid'")) {
+						if ($row = $db->mCheckRow("luo2888_users", "name,mac,region", "where name='$userid'")) {
 						    $userid= $row['name'];
 						    $usermac= $row['mac'];
-						    $userip= $row['ip'];
 						    $userloc= $row['region'];
 						} else {
 							exit ("<script>$.alert({title: '警告',content: '找不到该用户，请确认用户ID是否正确！',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){window.location.href='payment.php';}}}});</script>");
@@ -72,22 +71,30 @@
 						echo "
 							<label>请确认订单信息</label>
 							<tr align='left'><td>用户ID：$userid</td></tr>
-							<tr align='left'><td>用户IP：$userip</td></tr>
 							<tr align='left'><td>用户位置：$userloc</td></tr>
 							<tr align='left'><td>设备MAC地址：$usermac</td></tr>
 						";
+							$result=$db->mQuery("select name,content from luo2888_meals where status=1 and id<>1000 ORDER BY id ASC");
+							while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+							    echo '<tr align="left"><td>' . $row["name"] . ' : ' . $row["content"] . '</td></tr>';
+							} 
+							mysqli_free_result($result);
 						echo '
 						<form class="form-inline" id="order_form" method="post">
-							<tr align="left" class="m-t-15">
+							<tr align="center" class="m-t-15">
 								<td>
 									<div class="input-group">
-										<span>购买套餐：</span>
 										<input type="hidden" name="userid" value="'. $userid .'"/>
 										<select class="btn btn-sm btn-default dropdown-toggle" style="height: 30px;" name="mealid">
-											<option value="">请选择</option>';
-											$result=$db->mQuery("select id,name,amount from luo2888_meals where status=1 and id<>1000 ORDER BY id ASC");
+											<option value="">请选择套餐</option>';
+						       	$result=$db->mQuery("select id,name,amount,days from luo2888_meals where status=1 and id<>1000 ORDER BY id ASC");
 											while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-												echo '<option value="' . $row["id"] . '">' . $row["name"] . ' | ' . $row["amount"] . '元' . '</option>';
+											 if ($row["days"] == 999) {
+									    			$days = "永久授权";
+								    		} else {
+										   			$days = $row["days"] . "天";
+							  				}
+												echo '<option value="' . $row["id"] . '">' . $row["name"] . ' | ' . $days . ' | ' . $row["amount"] . '元' . '</option>';
 											} 
 											mysqli_free_result($result);
 						echo			'</select>
@@ -108,7 +115,7 @@
 				</table>
 				<form class="form-inline" id="userid_form" method="POST">
 					<div class="form-group">
-						<input type="text" name="userid" class="form-control" value="<?php echo $userid ?>" placeholder="请输入用户ID">
+						<input type="text" name="userid" class="form-control" value="<?php echo $user ?>" placeholder="请输入用户ID">
 					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-block btn-primary" name="userid_enter" id="userid_enter">查询</button>

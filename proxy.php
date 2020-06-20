@@ -55,11 +55,6 @@ function send_post($url, $post_data) {
     
 }
 
-if (isset($_GET['now'])) {
-    echo (time());
-    exit;
-}
-
 if (isset($_GET['play']) || isset($_GET['list'])) {
 
     if (isset($_GET['play'])) {
@@ -75,10 +70,16 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $id = $vkey['id'];
         $nowtime = time();
         
+        if (strstr($_SERVER['HTTP_USER_AGENT'], "FMITV") == false) 
+        {
+            header('HTTP/1.1 403 Forbidden');
+            exit;
+        }
+
         if (abs($nowtime - $time) > 600) {
             header('location:' . $failurl);
             exit();
-        } else if ($token != md5($key . $time . "303543214" . $app_sign)) {
+        } else if ($token != md5($key . $time . '^aEM%UIG!' . $app_sign)) {
             header('location:' . $failurl);
             exit();
         }

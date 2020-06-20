@@ -132,3 +132,4 @@ HOT 頻道,vid=hatv#id=403
 潘多拉完美台,vid=hatv#id=411
 潘多拉粉紅台,vid=hatv#id=412
 驚艷台,vid=hatv#id=413
+香蕉台,vid=hatv#id=414

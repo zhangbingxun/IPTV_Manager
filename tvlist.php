@@ -47,6 +47,7 @@ if (empty($vid)){
             视频网站解析：6ska
             肥米TV(测试)：fmitv
             台湾哈TV(限制IP)：hatv
+            安博UBLive(测试)：ublive
             香港NOW(限制IP)：nowtv
             YouTube(仅限境外)：youtube
             牛牛直播(支持多线切换)：nnzb
@@ -132,22 +133,18 @@ else if ($vid == 'bilibili' || $vid == 'douyu' || $vid == 'huya' || $vid == 'you
 
 else if ($vid == 'fmitv') {
     $i = 0;
-    $obj = file_get_contents("channels/fmitv_cust.txt");
-    $channellist[] = file_get_contents("channels/fmitv.txt");
-    preg_match_all('/(.*?)#(.*?),(.*?)/i', $obj, $arrays);
-    foreach ($arrays[2] as &$channelname) {
-            $channellist[] = $channelname . ",vid=fmitv#id=" . $arrays[1][$i] . "\n";
+    $i2 = 0;
+    $clist = file_get_contents("channels/fmitv.txt");
+    preg_match_all('/(.*?),(.*?)\n/i', $clist, $arrays);
+    $clist2 = file_get_contents("channels/fmitv_cust.txt");
+    preg_match_all('/(.*?)#(.*?),(.*?)/i', $clist2, $arrays2);
+    foreach ($arrays[1] as &$channelname) {
+        $channellist[] = $channelname . ',' . $arrays[2][$i] . "\n";
         $i++;
     }
-}
-
-else if ($vid == 'ublive') {
-    $i = 0;
-    $obj = file_get_contents("channels/ublive.txt");
-    preg_match_all('/(.*?),(.*?)\/live\/(.*?)\//i', $obj, $arrays);
-    foreach ($arrays[1] as &$channelname) {
-            $channellist[] = $channelname . ",vid=ublive#id=" . $arrays[3][$i] . "\n";
-        $i++;
+    foreach ($arrays2[2] as &$channelname2) {
+        $channellist[] = $channelname2 . ",vid=fmitv#id=" . $arrays2[1][$i2] . "\n";
+        $i2++;
     }
 }
 

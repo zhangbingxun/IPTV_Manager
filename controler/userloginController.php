@@ -3,31 +3,30 @@ ini_set("error_reporting", "E_ALL & ~E_NOTICE");
 
 session_start();
 require_once "config.php";
-$GetIP = new GetIP();
 $db = Config::GetIntance();
-
-$ip=$GetIP->getuserip();
-if ($ip=='' || $ip=='127.0.0.1') {
-	$ip='127.0.0.1';
-	$region='localhost';
-} else {
-    $myurl = 'http://' . $_SERVER['HTTP_HOST'];
-    $json = file_get_contents("$myurl/getIpInfo.php?ip=$ip");
-    $obj = json_decode($json);
-    $region = $obj->data->region . $obj->data->city . $obj->data->isp;
-} 
+$remote = new GetIP();
 $time = date("Y-m-d H:i:s");
-
+$userip = $remote->getuserip();
+$json = $remote -> getloc($userip);
+$obj = json_decode($json);
+$region = $obj->data->region . $obj->data->city . $obj->data->isp;
 $getkey =  $db->mGet("luo2888_config","value","where name='secret_key'");
-if (empty($getkey)) {
-        $_SESSION['secret_key_status'] = '1';}
         
-if (isset($_COOKIE['remembersecret_key'])) {
-    $secret_key = $db->mEscape_string($_COOKIE['secret_key']);
-    if ($secret_key == $getkey) {
-        $_SESSION['secret_key_status'] = '1';
-    } 
+if (isset($_GET['key']))
+{
+    $secret_key = md5($_GET['key']);
+    $secret_key = $db->mEscape_string($secret_key);
+    setcookie("secret_key", $secret_key, time() + 3600 * 24 * 7, "/");
 } 
+else if (isset($_COOKIE['secret_key']))
+{
+    $secret_key = $_COOKIE['secret_key'];
+} 
+
+if (!empty($getkey) && $secret_key != $getkey) {
+    header('HTTP/1.1 403 Forbidden');
+    exit;
+}
 
 if (isset($_COOKIE['rememberpass'])) {
     $user = $db->mEscape_string($_COOKIE['username']);
@@ -42,28 +41,11 @@ if (isset($_COOKIE['rememberpass'])) {
             $_SESSION['epgadmin'] = $row['epgadmin'];
             $_SESSION['mealsadmin'] = $row['mealsadmin'];
             $_SESSION['channeladmin'] = $row['channeladmin'];
-            $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'$user','$ip','$region','$time','用户登入'");
+            $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'$user','$userip','$region','$time','用户登入'");
             header("location:views/index.php");
         } 
     }
 	unset($row);
-} 
-
-if (isset($_POST['secret_key_enter'])) {
-    $secret_key = $_POST['secret_key'];
-    $secret_key = $db->mEscape_string($_POST['secret_key']);
-    $secret_key = md5($secret_key);
-    if ($secret_key == $getkey) {
-        if (isset($_POST['remembersecret_key'])) {
-            setcookie("secret_key", $getkey, time() + 3600 * 24 * 7, "/");
-            setcookie("remembersecret_key", "1", time() + 3600 * 24 * 7, "/");
-        } else {
-            setcookie("remembersecret_key", "1", time()-3600, "/");
-        } 
-        $_SESSION['secret_key_status'] = '1';
-    } else {
-        echo "<script>alert('安全码错误！');</script>";
-    }
 } 
 
 if (!empty($_POST['username']) && !empty($_POST['password'])) {

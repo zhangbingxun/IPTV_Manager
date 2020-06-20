@@ -43,7 +43,7 @@ function GetIP() {
             } 
         } 
     }
-    if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_CF_CONNECTING_IP'])) {
+    if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
         $IP = $_SERVER['HTTP_CF_CONNECTING_IP'];
     }
     return $IP;
@@ -56,7 +56,7 @@ $ips = array(
     '39.101.217.17', // id=1 2020-04
     '140.143.146.222', // id=2 2020-04
     '103.133.179.97', // id=2 2020-04
-    '23.83.239.54', // id=2 2020-04
+    '120.53.119.81', // id=2 2020-04
     '149.129.75.149', // id=3 2020-04
     '103.145.39.149', // id=4 2020-04
     '123.57.48.155', // id=5 51itv.top 2020-04
@@ -64,7 +64,7 @@ $ips = array(
     '198.44.188.193', // id=7 llv99.cn 2020-04
     '111.230.178.212', // id=8 3322.org 2020-06
     '118.31.124.107', // id=8 3322.org 2020-06
-    '42.51.16.68', // id=8 3322.org 2020-06
+    '42.51.16.68', // id=8 3322.org lingdushuma.net2020-06
     '39.99.174.216', // id=9 wangweizhushou.com 2020-06
     '47.56.247.8', // id=10 2020-06
     '122.114.123.45', // id=11 2020-06
@@ -77,6 +77,8 @@ $ips = array(
     '111.231.220.154', // id=17 2020-06
     '218.78.59.212', // id=18 2020-06
     '47.240.56.70', // id=19 2020-06
+    '47.107.252.192', // id=19 2020-06
+    '39.105.57.132', // id=20 2020-06
 );
 
 $banips = array(
@@ -129,6 +131,7 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
         'migu',
         'utvhk',
         'douyu',
+        'ublive',
         '91kds',
         'iptv345',
         'iptv2020',
@@ -322,12 +325,7 @@ function urldata($vid,$tid,$id,$line) {
         if (empty($playurl)) {
             $playurl = file_get_contents("http://hk.luo2888.cn:8118/channels/$id");
         }
-    }
-   
-    if ($vid == 'ublive') {
-        $obj = file_get_contents("channels/ublive.txt");
-        preg_match('/http:\/\/(.*?)\/live\/' . $id . '\/(.*?)\/index\.m3u8/i', $obj, $linkobj);
-        $playurl = $linkobj[0];
+        $playurl = preg_replace('#185.93.2.35:12012#', 'ott.luo2888.cn:8880', $playurl);
     }
     
     if ($vid == 'tstv') {
@@ -433,13 +431,48 @@ function urldata($vid,$tid,$id,$line) {
         } else {
             $playid = file_get_contents($cachefile);
         }
-        $playurl = 'http://58.99.33.2:1935/liveedge2/' . $playid . '_' . $id . '_1/chunklist.m3u8?checkCode=37050688asdfsdfsadf&aa=9000234&as=2015&dr=&mmmm=';
+        $playurl = 'http://58.99.33.2:1935/liveedge2/' . $playid . '_' . $id . '_1/chunklist.m3u8?checkCode=37050688asdfsdfsadf&aa=9000236&as=2015&dr=&mmmm=';
+        if ($line == 1) {
+            $playurl = preg_replace('#58.99.33.2:1935#', 'hk.luo2888.cn:12382', $playurl);
+        }
         if ($line == 2) {
             $playurl = preg_replace('#58.99.33.2:1935#', 'ott.luo2888.cn:8080', $playurl);
         }
         curl_close($curl);
     }
+   
+    if ($vid == 'ublive') {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "http://www.twtvcdn.com/motion/geturi.php?id=" . $id);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, "okhttp/3.12.0");
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'device_info: {"iv":"km4Lx4XLkE418icx","sign":"UiOPCaOLCMYiwJXZZYA/IdU5AJhul9LXHoWUixVDA1VodM2n0WUfeI9oHsQEx/RFfS7+Zg/5YpWduuqoPvFa0vUf5Ngv6wCoFUzADK7ybmNA+BoLTPpgQ3AwoeLJX/u5kiktHmAzcaGNwYKcJXmQH9P5vKzDH8EKAZFzegNKyar7+6bMmBdF8kZnhpJSu229CzAsQJ2pnsgqlZYuddF3oJlt1HoLn47uP2+mQZb5FCT4kwoX0RibzLVHQ4UGf9u8"}'
+        ));
+        $curlobj = curl_exec($curl);
+        $en_aes = json_decode($curlobj, true);
+        $aes = new Aes('UBLIVE2020041023', 'AES-128-CBC', $en_aes['iv']);
+        $de_aes = $aes->decrypt($en_aes['sign']);
+        $json = json_decode($de_aes, true);
+        $playurl = $json['return_uri'];
+    }
     
+    if ($vid == 'ybe123') {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "http://www.ybe123.com");
+        curl_setopt($curl, CURLOPT_TIMEOUT,2);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36");
+        $curlobj = curl_exec($curl);
+        preg_match('/href="\/flv.php\?(.*?id='.$id.')"/i', $curlobj, $linkobj);
+        curl_setopt($curl, CURLOPT_URL, $linkobj[1]);
+        curl_setopt ($curl, CURLOPT_REFERER, "http://www.ybe123.com/flv.php?" . $linkobj[1]);
+        curl_exec($curl);
+        $playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
+    }
+
     if ($vid == 'bjy') {
         $tt = time()*1000+1234;
         $params = 'app_version=1.0.0&assetID='.$id.'&clientid=1&device_id=1B%3ADD%3A71%3AAC%3A08%3A60&ip=192.168.0.1&modules=programplay%3A1&playType=2&resourceCode='.$id.'&siteid=10001&system_name=android&type=android';
@@ -733,7 +766,6 @@ function urldata($vid,$tid,$id,$line) {
         }
     }
 
-    $playurl = preg_replace('#ewcdnsite(.*?)com#', 'ott.luo2888.cn:2052', $playurl);
     $playurl = preg_replace('#185.93.2.35:12012#', 'ott.luo2888.cn:8880', $playurl);
 
     $data = json_encode(

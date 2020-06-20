@@ -15,8 +15,8 @@
 // 数据变量
 $dataurl = 'http://tv.luo2888.cn/dl.php';  // 代理API地址
 $failurl = 'http://tv.luo2888.cn/fmitv.mp4'; // 链接失效视频地址
-$playcode = "dl616_qq625336209"; // 播放验证码
-$listcode = "fmi616"; // 列表安全码
+$playcode = "dl620_qq625336209"; // 播放验证码
+$listcode = "fmi620"; // 列表安全码
 
 // 获取代理地址
 function GetUrl() {

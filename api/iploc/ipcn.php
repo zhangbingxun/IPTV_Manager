@@ -22,6 +22,7 @@ if (empty($curljson)) {
 } 
 preg_match('/所在地理位置：<code>(.*?)<\/code>/i',$curljson,$ipobj);
 $str = explode(" ", $ipobj[1]);
+$str = preg_replace('#特别行政区#', '', $str);
 $region = $str[0];
 $isp = $str[1];
 $obj = (Object)null;

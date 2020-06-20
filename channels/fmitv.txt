@@ -1,0 +1,9 @@
+無線新聞,vid=fmitv#id=tvbnews
+無線財經,vid=fmitv#id=tvbfinance
+有線新聞,vid=fmitv#id=canews
+有線娛樂,vid=fmitv#id=cableet
+開電視,vid=fmitv#id=fantv
+NOW直播,vid=fmitv#id=now331
+NOW新聞,vid=fmitv#id=now332
+港台電視31,vid=fmitv#id=rthk31
+港台電視32,vid=fmitv#id=rthk32

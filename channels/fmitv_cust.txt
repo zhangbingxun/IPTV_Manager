@@ -20,21 +20,19 @@ yxcj_eb#有線財經,http://cdn.elibei.com/pull?pinyin=yxcjzx
 now331_eb#NOW直播,http://cdn.elibei.com/pull?pinyin=nowlive
 now332_eb#NOW新聞,http://cdn.elibei.com/pull?pinyin=nownews
 now60_eb#NOW體育,http://cdn.elibei.com/pull?pinyin=nowsport
-twzs_eb#中視,http://cdn.elibei.com/pull?pinyin=twzs
-twhs_eb#華視,http://cdn.elibei.com/pull?pinyin=twhs
-twts_eb#台視,http://cdn.elibei.com/pull?pinyin=twts
-twms_eb#民視,http://cdn.elibei.com/pull?pinyin=twms
 twslive_eb#三立LIVE新聞,http://cdn.elibei.com/pull?pinyin=twsllive
-ztxw_eb#中天新聞,http://cdn.elibei.com/pull?pinyin=twztxw
-tvbsxw_eb#TVBS新聞,http://cdn.elibei.com/pull?pinyin=twtvbsxw
 yxw_eb#壹新聞,http://cdn.elibei.com/pull?pinyin=twyxw
-tvbjade_cie#翡翠台,http://vip.cietv.com/aa/fct.asp
-tvbj2_cie#TVB J2,http://vip.cietv.com/aa/j2.asp
-tvbnews_cie#無線新聞,http://vip.cietv.com/aa/wxxw.asp
-icable_cie#有線新聞,http://vip.cietv.com/aa/yxxw.asp
-tvbsxw_cie#TVBS新聞,http://vip.cietv.com/aa/tvbs.asp
-ztxw_cie#中天新聞,http://vip.cietv.com/aa/ztxw.asp
-dsxw_cie#東森新聞,http://vip.cietv.com/aa/dsxw.asp
+tvbjade_cie#翡翠台,http://vip.cietv.com/001/fct.asp
+tvbj2_cie#TVB J2,http://vip.cietv.com/001/j2.asp
+tvbnews_cie#無線新聞,http://vip.cietv.com/001/wxxw.asp
+icable_cie#有線新聞,http://vip.cietv.com/001/yxxw.asp
+tvbsxw_cie#TVBS新聞,http://vip.cietv.com/001/tvbs.asp
+ztxw_cie#中天新聞,http://vip.cietv.com/001/ztxw.asp
+dsxw_cie#東森新聞,http://vip.cietv.com/001/dsxw.asp
+twzs_cie#中視,http://vip.cietv.com/001/zs.asp
+twhs_cie#華視,http://vip.cietv.com/001/hs.asp
+twts_cie#台視,http://vip.cietv.com/001/ts.asp
+twms_cie#民視,http://vip.cietv.com/001/ms.asp 
 tvbjade_mumu#翡翠台,http://61.238.6.49:8000/bysid/1
 tvbpearl_mumu#明珠台,http://61.238.6.49:8001/bysid/2
 tvbj2_mumu#TVB J2,http://61.238.6.49:8001/bysid/82

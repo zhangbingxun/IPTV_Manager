@@ -50,6 +50,11 @@ CCTV-17高清,vid=migu#id=673168256
 兵团卫视,vid=migu#id=630288004
 西藏卫视,vid=migu#id=630291593
 旅游卫视,vid=migu#id=633215355
+# 地方 #
+扬州新闻综合,vid=migu#id=639731888
+江苏综艺,vid=migu#id=626065193
+江苏城市,vid=migu#id=626064714
+江苏影视,vid=migu#id=626064697
 # 数字 #
 CIBN电影综合,vid=migu#id=624303430 
 CIBN院线大片,vid=migu#id=661432899 

@@ -7,8 +7,8 @@ function encode($str){
 }
 
 $header[] = "肥米TV节目源动态代理
-Email：KwanKaHo@luo2888.cn
 QQ：625336209
+Email：KwanKaHo@luo2888.cn
 " . "\n";
 
 if (empty($vid)){
@@ -43,12 +43,13 @@ if (empty($vid)){
             电影轮播：movie
             企鹅电竞：egame
             天脉聚源：tvming
+            奇哈电视：ybe123
             普视PV采集：pvbox
             视频网站解析：6ska
             肥米TV(测试)：fmitv
-            台湾哈TV(限制IP)：hatv
             安博UBLive(测试)：ublive
             香港NOW(限制IP)：nowtv
+            台湾哈TV(三线切换)：hatv
             YouTube(仅限境外)：youtube
             牛牛直播(支持多线切换)：nnzb
             91看电视(支持多线切换)：91kds
@@ -120,6 +121,20 @@ else if ($vid == 'iptv345' || $vid == 'iptv2020') {
             $channellist[] = $channelname . ",vid=$vid#tid=$tid#id=" . $arrays[3][$i] . "\n";
             $i++;
         }
+    }
+}
+
+else if ($vid == 'ybe123') {
+    $i = 0;
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, "http://www.ybe123.com");
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36");
+    $curlobj = curl_exec($curl);
+    preg_match_all('/href="\/flv.php\?(.*?)(id=.*?)">(.*?)</i', $curlobj, $linkobj);
+    foreach ($linkobj[3] as &$channelname) {
+        $channellist[] = $channelname . ",vid=ybe123#" . $linkobj[2][$i] . "\n";
+        $i++;
     }
 }
 

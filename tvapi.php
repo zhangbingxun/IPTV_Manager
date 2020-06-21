@@ -395,7 +395,8 @@ else if (isset($_POST['login'])) {
         $arrprov[] = $row[0];
     } 
     $arrcanseek[] = '';
-    $objres = array('status' => $status, 'mealname' => $mealname, 'datatoken' => $datatoken, 'appurl' => $appurl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'categoryCount' => 0, 'exp' => $days, 'ip' => $userip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'id' => $name, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'adinfo' => $adinfo, 'keyproxy' => $keyproxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => $autoupdate, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp);
+
+    $objres = array('status' => $status, 'mealname' => $mealname, 'datatoken' => $datatoken, 'appurl' => $appurl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'exp' => $days, 'ip' => $userip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'id' => $name, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'adinfo' => $adinfo, 'keyproxy' => $keyproxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => $autoupdate, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp);
 
     $objres = str_replace("\\/", "/", json_encode($objres, JSON_UNESCAPED_UNICODE)); 
     $key = substr($key, 5, 16);
@@ -409,6 +410,7 @@ else if (isset($_POST['login'])) {
 
 else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
 
+    $token = $_GET['token'];
     $datastr  = $_POST['tvdata'];
     $data = base64_decode($datastr);
     $obj = json_decode($data);
@@ -419,10 +421,9 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
     $nettype = $obj->nettype;
     $randkey = $obj->rand;
     $iv = $obj->iv;
-
     $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
     $username = $db->mGet("luo2888_users", "name", "where mac='$mac'");
-    $token = $_GET['token'];
+
     if ($token != md5($username . $app_sign . $randkey)) {
         header('HTTP/1.1 403 Forbidden');
         exit;

@@ -11,13 +11,24 @@
 // | 作者: KwanKaHo <kwankaho@luo2888.cn>                                 |
 // +----------------------------------------------------------------------+
 //
-require_once "config.php";
-$db = Config::getIntance();
 
 // 数据变量
 $dataurl = 'https://tv.luo2888.cn/dl.php';  // 代理API地址
-$failurl = 'https://tv.luo2888.cn/fmitv.mp4'; // 链接失效视频地址
-$checkcode = "fmi"; // 节目列表安全码
+$failurl = 'https://tv.luo2888.cn/fmitv.mp4'; // 链接失效视频
+$playcode = "qq625336209"; // 播放验证码
+$listcode = "fmitv"; // 列表安全码
+
+// 获取代理地址
+function GetUrl() {
+
+    $Url = 'http://';
+    if($_SERVER['HTTPS'] == 'on') {
+        $Url = 'https://';
+    }
+    $Url .= $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+    return $Url;
+
+}
 
 // 解密URL
 function decode($str){
@@ -46,7 +57,7 @@ function send_post($url, $post_data) {
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);  // 设定请求后返回结果
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);  // 忽略证书
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);  // 忽略证书验证
-    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.2 (FMITV/' . $_SERVER['SERVER_NAME'] . ')');
+    curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV/1.2 (HTTP/' . $_SERVER['SERVER_NAME'] . ')');
     curl_setopt($curl, CURLOPT_POST, 1);  //声明使用POST方式来进行发送
     curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);  //POST数据
     $output = curl_exec($curl);  //发送请求
@@ -58,32 +69,14 @@ function send_post($url, $post_data) {
 if (isset($_GET['play']) || isset($_GET['list'])) {
 
     if (isset($_GET['play'])) {
-        $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
-        $key = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
-        $token = $_GET['token'];
-        $time = $_GET['time'];
+        
         $vkeys = $_GET['vkeys'];
         $vkey = decode($vkeys);
         $line = $_GET['line'];
         $vid = $vkey['vid'];
         $tid = $vkey['tid'];
         $id = $vkey['id'];
-        $nowtime = time();
-        
-        if (strstr($_SERVER['HTTP_USER_AGENT'], "FMITV") == false) 
-        {
-            header('HTTP/1.1 403 Forbidden');
-            exit;
-        }
 
-        if (abs($nowtime - $time) > 600) {
-            header('location:' . $failurl);
-            exit();
-        } else if ($token != md5($key . $time . '^aEM%UIG!' . $app_sign)) {
-            header('location:' . $failurl);
-            exit();
-        }
-        
         $data = json_encode(
             array(
                 'video' => $vid,
@@ -97,18 +90,15 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $datastr = send_post($dataurl, $post_data);
         $obj = json_decode($datastr);
         $playurl = $obj->playurl;
-
-        $playurl = preg_replace('#185.93.2.35:12012#', 'ott.luo2888.cn:8880', $playurl);
-
-        if (!empty($playurl)) {
+        
+        if (!empty($playurl)  && isset($_GET[$playcode])){
             header('location:' . $playurl);
         } else {
             header('location:' . $failurl);
         }
-        
     }
 
-    else if (isset($_GET['list']) && isset($_GET[$checkcode])) {
+    else if (isset($_GET['list']) && isset($_GET[$listcode])) {
         
         $vid = $_GET['vid'];
         $tid = $_GET['tid'];
@@ -129,7 +119,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
             foreach($listobj as $channellist) {
                 if (is_array($channellist)) {
                     foreach($channellist as $channel) {
-                        $channel = preg_replace('#http://域名/文件名#', 'fmitv://tv', $channel);
+                        $channel = preg_replace('#http://域名/文件名\?#', GetUrl() . '?' . $playcode . '&', $channel);
                         echo $channel . "\n";
                     }
                 }
@@ -145,5 +135,4 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
     exit;
 
 }
-
 ?>

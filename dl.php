@@ -325,7 +325,6 @@ function urldata($vid,$tid,$id,$line) {
         if (empty($playurl)) {
             $playurl = file_get_contents("http://hk.luo2888.cn:8118/channels/$id");
         }
-        $playurl = preg_replace('#185.93.2.35:12012#', 'ott.luo2888.cn:8880', $playurl);
     }
     
     if ($vid == 'tstv') {
@@ -765,8 +764,6 @@ function urldata($vid,$tid,$id,$line) {
             curl_close($curl);
         }
     }
-
-    $playurl = preg_replace('#185.93.2.35:12012#', 'ott.luo2888.cn:8880', $playurl);
 
     $data = json_encode(
         array(

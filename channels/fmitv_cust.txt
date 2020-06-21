@@ -40,8 +40,6 @@ tvbnews_mumu#無線新聞,http://61.238.6.49:8001/bysid/83
 tvbfinance_mumu#無線財經,http://61.238.6.49:8001/bysid/85
 viu96_mumu#ViuTV six,http://61.238.6.49:8000/bysid/96
 viu99_mumu#ViuTV,http://61.238.6.49:8000/bysid/99
-tvbkf#TVB功夫台,http://dlhdl-cdn.zhanqi.tv/zqlive/291236_97IGR.flv
-tvbjf#TVB警匪台,http://dlhdl-cdn.zhanqi.tv/zqlive/295519_JkFS8.flv
 amws#澳門衛視,http://stream.mastvnet.com/MSTV/SD/live.m3u8
 ayws#澳亞衛視,http://stream.mastvnet.com/MASTV/sd/live.m3u8
 amyx1#澳门有线一台,http://202.175.127.77/live/show/ch1/index.m3u8

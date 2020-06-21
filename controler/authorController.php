@@ -86,7 +86,7 @@ if (isset($_POST['submitdelonedaybefor'])) {
 } 
 // 删除所有未授权用户
 if (isset($_POST['submitdelall'])) {
-    $db->mDel("luo2888_users", "where status=-1 or status=-999");
+    $db->mDel("luo2888_users", "where status=-1 or status=0 or status=-999");
     echo"<script>lightyear.notify('已删除所有未授权用户！', 'success', 3000);</script>";
 } 
 // 搜索关键字

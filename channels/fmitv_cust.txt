@@ -5,23 +5,6 @@ atv#亞視ATV,https://15813114727637862976168173814320.live.prod.hkatv.com/a1_cb
 yx603#有線603,https://live.qztvxwgj.com/live/603fgddgfaaa.flv
 tvbj2#TVB J2,http://www.aclive.live/dvr/2ee368c0/xmj3kp59/index.m3u8
 tvbjade#翡翠台,http://sytv.applinzi.com/fct.php
-tvbjade_eb#翡翠台,http://cdn.elibei.com/pull?pinyin=tvbfc
-tvbpearl_eb#明珠台,http://cdn.elibei.com/pull?pinyin=tvbmz
-tvbj2_eb#TVB J2,http://cdn.elibei.com/pull?pinyin=tvbj2
-tvbnews_eb#無線新聞,http://cdn.elibei.com/pull?pinyin=wxxw
-tvbfinance_eb#無線財經,http://cdn.elibei.com/pull?pinyin=wxcj
-fantv_eb#開電視,http://cdn.elibei.com/pull?pinyin=kds
-rthk31_eb#港台電視31,http://cdn.elibei.com/pull?pinyin=rthk31
-rthk32_eb#港台電視32,http://cdn.elibei.com/pull?pinyin=rthk32
-yx18_eb#有線18台,http://cdn.elibei.com/pull?pinyin=yxds18
-yxxw_eb#有線新聞,http://cdn.elibei.com/pull?pinyin=yxxw
-yxyl_eb#有線娛樂,http://cdn.elibei.com/pull?pinyin=yxzhyl
-yxcj_eb#有線財經,http://cdn.elibei.com/pull?pinyin=yxcjzx
-now331_eb#NOW直播,http://cdn.elibei.com/pull?pinyin=nowlive
-now332_eb#NOW新聞,http://cdn.elibei.com/pull?pinyin=nownews
-now60_eb#NOW體育,http://cdn.elibei.com/pull?pinyin=nowsport
-twslive_eb#三立LIVE新聞,http://cdn.elibei.com/pull?pinyin=twsllive
-yxw_eb#壹新聞,http://cdn.elibei.com/pull?pinyin=twyxw
 tvbjade_cie#翡翠台,http://vip.cietv.com/001/fct.asp
 tvbj2_cie#TVB J2,http://vip.cietv.com/001/j2.asp
 tvbnews_cie#無線新聞,http://vip.cietv.com/001/wxxw.asp

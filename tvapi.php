@@ -67,7 +67,7 @@ function genName() {
 }
 
 // 输出频道数据
-function echoJSON($category, $alisname, $psw) {
+function echoJSON($username, $category, $alisname, $psw) {
 
     global $db, $remote, $channelNumber, $key, $myurl;
     $userip = $remote -> getuserip();
@@ -87,7 +87,9 @@ function echoJSON($category, $alisname, $psw) {
                 $nameArray[] = $row['name'];
             } 
             if (strstr($row['url'], "http") != false) {
-                $sourceArray[$row['name']][] = mUrl() . '?tvplay&id=' . $row['id'] . '&time=' . $nowtime . '&token=' . md5($row['id'] . $userip . $nowtime . $key);
+                $sourceArray[$row['name']][] = mUrl() . '?tvplay&user=' . $username . '&id=' . $row['id'] . '&time=' . $nowtime . '&token=' . md5($row['id'] . $userip . $nowtime . $key);
+            } else if (strstr($row['url'], "fmitv") != false) {
+                $sourceArray[$row['name']][] = preg_replace('#play#', 'play&user=' . $username, $row['url']);
             } else {
                 $sourceArray[$row['name']][] = $row['url'];
             }
@@ -205,26 +207,35 @@ else if (isset($_GET['getmeal'])) {
 
 else if (isset($_GET['tvplay'])) {
 
+    $username = $_GET['user'];
     $channelid = $_GET['id'];
     $token = $_GET['token'];
     $time = $_GET['time'];
     $userip = $remote -> getuserip();
     $uptime = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
+    $vpntimes = $db->mGet("luo2888_config", "value", "where name='vpntimes'");
+    $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$username'");
+    $failurl = 'https://tv.luo2888.cn/fmitv.mp4';
 
     if (strstr($_SERVER['HTTP_USER_AGENT'], "FMITV") == false) 
     {
-        header('HTTP/1.1 403 Forbidden');
-        exit;
+        header('location:' . $failurl);
+        exit('您被系统判定为盗链！');
     }
 
     if (abs($nowtime - $time) > $uptime * 60 + 30) {
-        header('HTTP/1.1 403 Forbidden');
-        exit();
+        header('location:' . $failurl);
+        exit('您被系统判定为盗链！');
     }
     else if ($token != md5($channelid . $userip . $time . $key))
     {
-        header('HTTP/1.1 403 Forbidden');
-        exit();
+        header('location:' . $failurl);
+        exit('您被系统判定为盗链！');
+    }
+    else if ($uservpntimes >= $vpntimes)
+    {
+        header('location:' . $failurl);
+        exit('您被系统判定为抓包！');
     }
 
     $playurl = $db->mGet("luo2888_channels", "url", "where id='$channelid'");
@@ -268,8 +279,8 @@ else if (isset($_POST['login'])) {
 
     // 没有mac禁止登陆
     if(strstr($mac,":") == false) {
-        header('HTTP/1.1 403 Forbidden');
-        exit();
+        $nomacuser = 1;
+        goto banuser;
     }
 
     // mac是否匹配
@@ -283,6 +294,14 @@ else if (isset($_POST['login'])) {
         $mealid = $row['meal'];
         $exp = $row["exp"]; //收视期限，时间戳
         $status2 = $status;
+
+        // 禁止抓包用户登录
+        $vpntimes = $db->mGet("luo2888_config", "value", "where name='vpntimes'");
+        $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$name'");
+        if ($uservpntimes >= $vpntimes) {
+            $vpnuser = 1;
+            goto banuser;
+        }
 
         if ($days > 0 && $status == -1) {
             $status = 1;
@@ -302,8 +321,8 @@ else if (isset($_POST['login'])) {
         // 用户验证失败，识别用户信息存入后台
 
         /* if (strpos($region, '电信') !== false || strpos($region, '联通') !== false || strpos($region, '移动') !== false) {
-            $newuser= true;
-            goto cond;
+            $banuser = 1;
+            goto banuser;
         } */
 
         $name = genName();
@@ -333,7 +352,6 @@ else if (isset($_POST['login'])) {
             $status = 1;
         } 
     } 
-    cond:
     unset($row);
 
     $app_appname = $db->mGet("luo2888_config", "value", "where name='app_appname'");
@@ -384,19 +402,30 @@ else if (isset($_POST['login'])) {
         $datatoken = '';
         $appurl = '';
     } 
-    
-    if ($newuser == true){
-        $status = -1;
-        $tipusernoreg= '禁止国内IP访问';
-    }
-    
+
     $result = $db->mQuery("SELECT name from luo2888_category where enable=1 and type='province' order by id");
     while ($row = mysqli_fetch_array($result)) {
         $arrprov[] = $row[0];
     } 
     $arrcanseek[] = '';
 
-    $objres = array('status' => $status, 'mealname' => $mealname, 'datatoken' => $datatoken, 'appurl' => $appurl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'exp' => $days, 'ip' => $userip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'id' => $name, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'adinfo' => $adinfo, 'keyproxy' => $keyproxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => $autoupdate, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp);
+    banuser:
+    if ($vpnuser == 1) {
+        $status = -1;
+        $tipusernoreg= '您使用了VPN等程序' . $uservpntimes . '次，现已被系统判定为抓包，禁止登录！';
+    }
+    
+    if ($nomacuser == 1) {
+        $status = -1;
+        $tipusernoreg= '检测不到Mac地址，请打开WiFi重新登录！';
+    }
+    
+    if ($banuser == 1) {
+        $status = -1;
+        $tipusernoreg= '对不起，该应用禁止国内IP访问！';
+    }
+
+    $objres = array('id' => $name, 'status' => $status, 'mealname' => $mealname, 'datatoken' => $datatoken, 'appurl' => $appurl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'exp' => $days, 'ip' => $userip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'adinfo' => $adinfo, 'keyproxy' => $keyproxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => $autoupdate, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp);
 
     $objres = str_replace("\\/", "/", json_encode($objres, JSON_UNESCAPED_UNICODE)); 
     $key = substr($key, 5, 16);
@@ -443,6 +472,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
     $result = $db->mQuery("SELECT meal from luo2888_users where mac='$mac'");
     if (mysqli_num_rows($result)) {
         $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
         if (empty($row["meal"])) {
             $mid = 1000;
             mysqli_free_result($result);
@@ -466,7 +496,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
     } 
 
     // 增加我的收藏
-    $contents[] = echoJSON('', "我的收藏", ''); 
+    $contents[] = echoJSON($username, '', "我的收藏", ''); 
 
     // 默认套餐不输出运营商和各省的频道
     if ($mid != 1000) {
@@ -477,7 +507,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
             while ($row = mysqli_fetch_array($result)) {
                 $pdname = $row['name'];
                 $psw = $row['psw'];
-                $contents[] = echoJSON($pdname, $pdname, $psw);
+                $contents[] = echoJSON($username, $pdname, $pdname, $psw);
             } 
             unset($row);
             mysqli_free_result($result);
@@ -490,7 +520,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
             while ($row = mysqli_fetch_array($result)) {
                 $pdname = $row['name'];
                 $psw = $row['psw'];
-                $contents[] = echoJSON($pdname, '省内', $psw);
+                $contents[] = echoJSON($username, $pdname, '省内', $psw);
             } 
             unset($row);
             mysqli_free_result($result);
@@ -509,7 +539,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
                 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
                 $pdname = $row['name'];
                 $psw = $row['psw'];
-                $contents[] = echoJSON($pdname, $pdname, $psw);
+                $contents[] = echoJSON($username, $pdname, $pdname, $psw);
                 unset($row);
                 mysqli_free_result($result);
             } 

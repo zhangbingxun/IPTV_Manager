@@ -32,9 +32,9 @@ if (isset($_POST['startuse'])) {
     $result = $db->mSet("luo2888_users", "status=1", "where name=$name and status=0");
 } 
 
-if (isset($_POST['submitmodifyipcount'])) {
-    $ipcount = $_POST['ipcount'];
-    $db->mSet("luo2888_config", "value='$ipcount'", "where name='ipcount'");
+if (isset($_POST['submitvpntimes'])) {
+    $vpntimes = $_POST['vpntimes'];
+    $db->mSet("luo2888_config", "value='$vpntimes'", "where name='vpntimes'");
     echo"<script>lightyear.notify('保存成功！', 'success', 3000);</script>";
 } 
 
@@ -43,7 +43,9 @@ if (isset($_POST['submitsameip_user'])) {
     $db->mSet("luo2888_config", "value='$sameip_user'", "where name='max_sameip_user'");
     echo"<script>lightyear.notify('保存成功！', 'success', 3000);</script>";
 } 
-// 获取允许注册最大数量和允许登陆IP最大数量
-$ipcount = $db->mGet("luo2888_config", "value", "where name='ipcount'");
+
+// 获取允许抓包最大次数和允许登陆IP最大数量
 $max_sameip_user = $db->mGet("luo2888_config", "value", "where name='max_sameip_user'");
+$vpntimes = $db->mGet("luo2888_config", "value", "where name='vpntimes'");
+
 ?>

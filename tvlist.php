@@ -43,7 +43,6 @@ if (empty($vid)){
             电影轮播：movie
             企鹅电竞：egame
             天脉聚源：tvming
-            奇哈电视：ybe123
             普视PV采集：pvbox
             视频网站解析：6ska
             肥米TV(测试)：fmitv
@@ -121,20 +120,6 @@ else if ($vid == 'iptv345' || $vid == 'iptv2020') {
             $channellist[] = $channelname . ",vid=$vid#tid=$tid#id=" . $arrays[3][$i] . "\n";
             $i++;
         }
-    }
-}
-
-else if ($vid == 'ybe123') {
-    $i = 0;
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, "http://www.ybe123.com");
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36");
-    $curlobj = curl_exec($curl);
-    preg_match_all('/href="\/flv.php\?(.*?)(id=.*?)">(.*?)</i', $curlobj, $linkobj);
-    foreach ($linkobj[3] as &$channelname) {
-        $channellist[] = $channelname . ",vid=ybe123#" . $linkobj[2][$i] . "\n";
-        $i++;
     }
 }
 

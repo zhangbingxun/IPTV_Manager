@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="card">
-			<div class="card-header"><h4>修改安全码</h4></div>
+			<div class="card-header"><h4>安全入口设置</h4></div>
 			<div class="card-body">
 				<form method="post">
 					<div class="form-group">
@@ -45,7 +45,9 @@
 			<div class="card-body">
 				<div class="input-group">
 					<div class="input-group-btn">
-						<a target="_blank" href="../apps/randkey.php" onclick="return confirm('确认更新随机秘钥吗？')"><button type="button" class="btn btn-info m-r-5">更新随机秘钥</button></a>
+				    <form method="post">
+					    	<button type="submit" name="update_rankey" class="btn btn-info m-r-5" onclick="return confirm('确认更新随机密钥吗？')">更新随机密钥</button>
+				    </form>
 					</div>
 				</div>
 			</div>

@@ -16,7 +16,6 @@ $db = Config::getIntance();
 
 // 数据变量
 $dataurl = 'https://tv.luo2888.cn/dl.php';  // 代理API地址
-$failurl = 'https://tv.luo2888.cn/fmitv.mp4'; // 链接失效视频地址
 $checkcode = "fmi"; // 节目列表安全码
 
 // 解密URL
@@ -58,8 +57,7 @@ function send_post($url, $post_data) {
 if (isset($_GET['play']) || isset($_GET['list'])) {
 
     if (isset($_GET['play'])) {
-        $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
-        $key = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
+        $username = $_GET['user'];
         $token = $_GET['token'];
         $time = $_GET['time'];
         $vkeys = $_GET['vkeys'];
@@ -69,19 +67,27 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $tid = $vkey['tid'];
         $id = $vkey['id'];
         $nowtime = time();
+        $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
+        $key = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
+        $failurl = $db->mGet("luo2888_config", "value", "where name='failurl'");
+        $vpntimes = $db->mGet("luo2888_config", "value", "where name='vpntimes'");
+        $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$username'");
         
         if (strstr($_SERVER['HTTP_USER_AGENT'], "FMITV") == false) 
         {
-            header('HTTP/1.1 403 Forbidden');
-            exit;
+            header('location:' . $failurl);
+            exit('您被系统判定为盗链！');
         }
 
         if (abs($nowtime - $time) > 600) {
             header('location:' . $failurl);
-            exit();
+            exit('您被系统判定为盗链！');
         } else if ($token != md5($key . $time . '^aEM%UIG!' . $app_sign)) {
             header('location:' . $failurl);
-            exit();
+            exit('您被系统判定为盗链！');
+        } else if ($uservpntimes >= $vpntimes) {
+            header('location:' . $failurl);
+            exit('您被系统判定为抓包！');
         }
         
         $data = json_encode(

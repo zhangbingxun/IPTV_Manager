@@ -15,6 +15,18 @@
 									<div class="input-group-btn">
 									<input style="width: 85px;height: 30px;" class="form-control" type="text" name="sameip_user" size="2" value="<?php echo $max_sameip_user; ?>">
 									<button type="submit" name="submitsameip_user" class="btn btn-sm btn-primary m-r-5">保存</button>
+									</div>
+								</div>
+								<label>自动封禁最大抓包次数：</label>
+								<div class="input-group">
+									<div class="input-group-btn">
+									<input style="width: 85px;height: 30px;" class="form-control" type="text" name="vpntimes" size="2" value="<?php echo $vpntimes; ?>">
+									<button type="submit" name="submitvpntimes" class="btn btn-sm btn-primary m-r-5">保存</button>
+									</div>
+								</div>
+								<label class="btn-block">清空操作：</label>
+								<div class="input-group">
+									<div class="input-group-btn">
 									<button type="submit" name="clearvpn" class="btn btn-sm btn-danger m-r-5">清空抓包记录</button>
 									<button type="submit" name="clearidchange" class="btn btn-sm btn-danger">清空设备ID更换记录</button>
 									</div>

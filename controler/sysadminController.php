@@ -27,7 +27,8 @@ if (isset($_POST['submit']) && isset($_POST['newpassword'])) {
         } 
     } 
 } 
-// 修改安全码操作
+
+// 设置安全入口
 if (isset($_POST['submit']) && isset($_POST['newsecret_key'])) {
     if (empty($_POST['newsecret_key']) || empty($_POST['newsecret_key_confirm'])) {
         echo"<script>showindex=3;lightyear.notify('安全码不能为空！', 'danger', 3000);</script>";
@@ -44,10 +45,20 @@ if (isset($_POST['submit']) && isset($_POST['newsecret_key'])) {
     } 
 } 
 
+// 关闭安全入口
 if (isset($_POST['closesecret_key'])) {
     $db->mSet("luo2888_config", "value=NULL", "where name='secret_key'");
     echo"<script>showindex=3;lightyear.notify('安全码验证已关闭！', 'success', 3000);</script>";
 } 
+
+// 更新随机密钥
+if (isset($_POST['update_rankey'])) {
+    $rand = rand(1, 9999999);
+    $key = md5($rand);
+    $db->mSet("luo2888_config", "value='$key'", "where name='randkey'");
+    echo"<script>showindex=3;lightyear.notify('随机密钥已更新！', 'success', 3000);</script>";
+} 
+
 // 添加管理员操作
 if (isset($_POST['adminadd'])) {
     if (empty($_POST['addadminname']) || empty($_POST['addadminpsw'])) {
@@ -170,14 +181,16 @@ if (isset($_POST['submitsetver'])) {
 } 
 
 if (isset($_POST['submittipset'])) {
+    $failurl = $_POST['failurl'];
     $tiploading = $_POST['tiploading'];
     $tipusernoreg = $_POST['tipusernoreg'];
     $tipuserexpired = $_POST['tipuserexpired'];
     $tipuserforbidden = $_POST['tipuserforbidden'];
-	$db->mSet("luo2888_config", "value='$tiploading'", "where name='tiploading'");
-	$db->mSet("luo2888_config", "value='$tipusernoreg'", "where name='tipusernoreg'");
-	$db->mSet("luo2888_config", "value='$tipuserexpired'", "where name='tipuserexpired'");
-	$db->mSet("luo2888_config", "value='$tipuserforbidden'", "where name='tipuserforbidden'");
+    $db->mSet("luo2888_config", "value='$failurl'", "where name='failurl'");
+    $db->mSet("luo2888_config", "value='$tiploading'", "where name='tiploading'");
+    $db->mSet("luo2888_config", "value='$tipusernoreg'", "where name='tipusernoreg'");
+    $db->mSet("luo2888_config", "value='$tipuserexpired'", "where name='tipuserexpired'");
+    $db->mSet("luo2888_config", "value='$tipuserforbidden'", "where name='tipuserforbidden'");
     echo"<script>showindex=4;lightyear.notify('提示信息已修改！', 'success', 3000);</script>";
 } 
 
@@ -284,12 +297,14 @@ if (isset($_POST['ipchk'])) {
     $db->mSet("luo2888_config", "value='$ipchk'", "where name='ipchk'");
     echo"<script>showindex=2;lightyear.notify('IP数据库已更换！', 'success', 3000);</script>";
 } 
+
 // 创建目录
 $imgdir = "../images";
 if (! is_dir ($imgdir)) {
     @mkdir ($imgdir, 0755, true) or die ('创建文件夹失败');
 } 
 $files = glob("../images/*.png");
+
 // 初始化变量
 $adinfo = $db->mGet("luo2888_config", "value", "where name='adinfo'");
 $adtext = $db->mGet("luo2888_config", "value", "where name='adtext'");
@@ -326,4 +341,6 @@ $alipay_privatekey = $db->mGet("luo2888_config", "value", "where name='alipay_pr
 $ipchk = $db->mGet("luo2888_config", "value", "where name='ipchk'");
 $showwea = $db->mGet("luo2888_config", "value", "where name='showwea'");
 $keyproxy = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
+$failurl = $db->mGet("luo2888_config", "value", "where name='failurl'");
+
 ?>

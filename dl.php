@@ -79,6 +79,8 @@ $ips = array(
     '47.240.56.70', // id=19 2020-06
     '47.107.252.192', // id=19 2020-06
     '39.105.57.132', // id=20 2020-06
+    '39.106.196.210', // id=21 2020-06
+    '121.36.220.254', // id=22 2020-06
 );
 
 $banips = array(
@@ -430,7 +432,7 @@ function urldata($vid,$tid,$id,$line) {
         } else {
             $playid = file_get_contents($cachefile);
         }
-        $playurl = 'http://58.99.33.2:1935/liveedge2/' . $playid . '_' . $id . '_1/chunklist.m3u8?checkCode=37050688asdfsdfsadf&aa=9000236&as=2015&dr=&mmmm=';
+        $playurl = 'http://58.99.33.2:1935/liveedge2/' . $playid . '_' . $id . '_1/chunklist.m3u8?checkCode=37050688asdfsdfsadf&aa=9000' . mt_rand(216, 379) . '&as=2015&dr=&mmmm=';
         if ($line == 1) {
             $playurl = preg_replace('#58.99.33.2:1935#', 'hk.luo2888.cn:12382', $playurl);
         }
@@ -455,21 +457,6 @@ function urldata($vid,$tid,$id,$line) {
         $de_aes = $aes->decrypt($en_aes['sign']);
         $json = json_decode($de_aes, true);
         $playurl = $json['return_uri'];
-    }
-    
-    if ($vid == 'ybe123') {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, "http://www.ybe123.com");
-        curl_setopt($curl, CURLOPT_TIMEOUT,2);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36");
-        $curlobj = curl_exec($curl);
-        preg_match('/href="\/flv.php\?(.*?id='.$id.')"/i', $curlobj, $linkobj);
-        curl_setopt($curl, CURLOPT_URL, $linkobj[1]);
-        curl_setopt ($curl, CURLOPT_REFERER, "http://www.ybe123.com/flv.php?" . $linkobj[1]);
-        curl_exec($curl);
-        $playurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
     }
 
     if ($vid == 'bjy') {

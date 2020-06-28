@@ -59,8 +59,8 @@
 						}
 					?>
 					<?php 						
-					if (isset($_POST['userid_enter'])) {
-						$userid=$_POST['userid'];
+					if (isset($_GET['id']) || isset($_POST['userid_enter'])) {
+         $userid = !empty($_POST["userid"])?$_POST["userid"]:$userid=$_GET['id'];
 						if ($row = $db->mCheckRow("luo2888_users", "name,mac,region", "where name='$userid'")) {
 						    $userid= $row['name'];
 						    $usermac= $row['mac'];

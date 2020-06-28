@@ -80,7 +80,11 @@ $ips = array(
     '47.107.252.192', // id=19 2020-06
     '39.105.57.132', // id=20 2020-06
     '39.106.196.210', // id=21 2020-06
-    '121.36.220.254', // id=22 2020-06
+    '52.163.205.245', // id=22  2020-06
+    '8.210.28.205', // id=23  2020-06
+    '45.138.70.217', // id=24  2020-06
+    '122.114.76.226', // id=25  2020-06
+    '129.211.163.157', // id=26  2020-06
 );
 
 $banips = array(
@@ -188,7 +192,6 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
 
 } else {
 
-    header('HTTP/1.1 403 Forbidden');
     exit;
 
 }
@@ -221,7 +224,7 @@ function urldata($vid,$tid,$id,$line) {
     }
     
     if ($vid == 'ysp') {
-        $playurl = "http://120.241.133.167/outlivecloud-cdn.ysp.cctv.cn/001/$id.m3u8";
+        $playurl = "http://210.22.242.108/live-cnc-cdn.ysp.cctv.cn/001/$id.m3u8";
     }
     
     if ($vid == 'cqyx') {
@@ -245,11 +248,30 @@ function urldata($vid,$tid,$id,$line) {
     }
     
     if ($vid == 'gdtv') {
-        $playurl = "http://wx.tt1008.top/gd.php?id=" . $id;
+        $playurl = "http://diyp.top/agent/uhd.php?id=" . $id;
     }
     
     if ($vid == 'yfy') {
-        $playurl = "http://58.216.6.173/sk.live.otvcloud.com/otv/skcc/live/channel$id/$tid.m3u8";
+        $playurl = "http://wx.tt1008.top/yfy.php?id=" . $id;
+    }
+
+    if (strstr($vid, "lttv") == true) {
+        $nowtime = time();
+        $signtime = $nowtime + 1908;
+        $sign = $signtime ^ 209002969;
+        $vids = array(
+            "lttv_ab"=>"playlive.118888888.xyz:99",
+            "lttv_ten"=>"playlive.228888888.xyz",
+            "lttv_bd"=>"playlive.558888888.xyz:10013",
+            "lttv_hd"=>"playlive.668888888.xyz:27766",
+        );
+        $tid = preg_replace('#_#', '/', $tid);
+        $playurl = "http://" . $vids[$vid] . "/" . $tid . ".php?id=" . $id . "&t=" . $nowtime . "&sign=" . $sign;
+    }
+
+    if ($vid=='4gtv') {
+        $nowtime = time();
+        $playurl = "https://tv.luo2888.cn/api/4gtv.m3u8?id=" . $id . "&time=" . $nowtime . "&token=" . md5('fmitv_' . $id . $nowtime);
     }
     
     if ($vid == 'zjyd') {
@@ -274,15 +296,20 @@ function urldata($vid,$tid,$id,$line) {
     }
 
     if ($vid == 'fhds') {
+        $domain = array(
+            "fhzx"=>"qlive.fengshows.cn",
+            "fhzh"=>"qlive.fengshows.cn",
+            "fhhk"=>"hlive.fengshows.cn",
+        );
         $ids = array(
             "fhzx"=>"/live/822pin72",
-            "fhzh"=>"/live/822pcc72",
+            "fhzh"=>"/live/82pcc72",
             "fhhk"=>"/live/822phk72",
         );
         $hexString = dechex(time()+1800);
         $substring = $ids[$id];
         $str2 = "obb9Lxyv5C".$substring.$hexString;
-        $playurl = 'http://hlive.fengshows.cn'.$ids[$id].'.flv?txSecret='.md5($str2).'&txTime='.$hexString;
+        $playurl = 'http://' .$domain[$id] . $ids[$id] . '.flv?txSecret='.md5($str2).'&txTime='.$hexString;
     }
 
     if ($vid == 'bilibili') {
@@ -355,23 +382,6 @@ function urldata($vid,$tid,$id,$line) {
         $playurl = $obj['url'];
     }
     
-    if ($vid == 'nnzb') {
-        if (empty($line)) {
-            $line = 0;
-        }
-        $url = "http://www.nnzhibo.com/e/DownSys/play/?classid=$tid&id=$id&pathid=$line";
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
-        $curlobj = curl_exec($curl);
-        preg_match('/video-url="(.*?)"/i', $curlobj, $linkobj);
-        if (empty($linkobj)){
-            preg_match('/url: "(.*?)"/i', $curlobj, $linkobj);
-        }
-        $playurl = $linkobj[1];
-    }
-
     if ($vid == 'tty') {
         $token_access_url = "http://access.ttcatv.tv/account/login?accounttype=2&deviceno=12&isforce=1&pwd=96e79218965eb72c92a549dd5a330112&devicetype=3&account=TF0P0623XL9ACAN5";
         $res = file_get_contents($token_access_url);
@@ -433,9 +443,6 @@ function urldata($vid,$tid,$id,$line) {
             $playid = file_get_contents($cachefile);
         }
         $playurl = 'http://58.99.33.2:1935/liveedge2/' . $playid . '_' . $id . '_1/chunklist.m3u8?checkCode=37050688asdfsdfsadf&aa=9000' . mt_rand(216, 379) . '&as=2015&dr=&mmmm=';
-        if ($line == 1) {
-            $playurl = preg_replace('#58.99.33.2:1935#', 'hk.luo2888.cn:12382', $playurl);
-        }
         if ($line == 2) {
             $playurl = preg_replace('#58.99.33.2:1935#', 'ott.luo2888.cn:8080', $playurl);
         }
@@ -623,19 +630,6 @@ function urldata($vid,$tid,$id,$line) {
         curl_close($curl);
     }
 
-    if ($vid=='4gtv') {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, "http://tv.tvvme.com/plus/4gtv.php?ch=" . $id);
-        curl_setopt($curl, CURLOPT_NOBODY, 1);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36');
-        $obj = curl_exec($curl);
-        $linkurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
-        curl_close($curl);
-        $playurl = preg_replace('#http:\/\/tv\.tvvme\.com\/player\/v\/\?videourl=#', '', $linkurl);
-    }
-
     if ($vid == 'youtube') {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, 'https://www.youtube.com/watch?v=' . $id);
@@ -691,7 +685,6 @@ function urldata($vid,$tid,$id,$line) {
         $curlobj = curl_exec($curl);
         preg_match('/<option value="(.*?)"/i', $curlobj, $linkobj);
         $linkurl = $linkobj[1] . $part;
-        $linkurl = preg_replace('#http://m.iptv789.com/player.m3u8#', 'http://play.ggiptv.com:13164/play.m3u8', $linkurl);
         $linkurl = preg_replace('#http://m.iptv.com/player.m3u8#', 'http://play.ggiptv.com:13164/play.m3u8', $linkurl);
         curl_setopt($curl, CURLOPT_URL, $linkurl);
         curl_setopt($curl, CURLOPT_TIMEOUT,2); 

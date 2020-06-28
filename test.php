@@ -1,15 +1,17 @@
 <?php
-
-require_once "config.php";
-$db = Config::GetIntance();
-
+// 头部
 header("Content-Type:text/plain;chartset=utf-8");
-$id = $_GET['id'];
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, "http://www.ybe123.com");
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36");
-    $curlobj = curl_exec($curl);
-print_r($curlobj);
+
+$jsondata = file_get_contents("channels.txt");
+$channeldata = json_decode($jsondata, true);
+
+foreach($channeldata['return_live'] as $catelist) {
+    print_r("\n" . '# ' . $catelist['name'] . ' #' . "\n\n");
+    foreach($catelist['channel'] as $channellist) {
+        if (is_array($channellist)) {
+            print_r($channellist['title'] . ',vid=ublive#id=' . $channellist['id'] . "\n");
+        } 
+    } 
+} 
 
 ?>

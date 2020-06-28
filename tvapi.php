@@ -13,7 +13,8 @@ $nowtime = time();
 $appsign = $db->mGet("luo2888_config","value","where name='app_sign'");
 $appname = $db->mGet("luo2888_config","value","where name='app_appname'");
 $packagename = $db->mGet("luo2888_config","value","where name='app_packagename'");
-$appkey = md5($appsign . $appname . $packagename . '?^?0F(??!(??');
+$b64str = 'uksevY3s!@lTmTJ1Pm&X$CT!5mCwCTZ&v^eKlozFP%Ysjni!UyBk5udDQofWs8Y6JkA80xxGp#oJqjWvQo9glQx^7eWoe#C4m71QQn!A1ZxhdjTqwoUp9QNZv#3oV@ZC';
+$appkey = md5($appsign . $appname . $packagename . $b64str);
 $key = md5($appkey . $appname . $packagename);
 
 class Aes {
@@ -87,7 +88,7 @@ function echoJSON($username, $category, $alisname, $psw) {
                 $nameArray[] = $row['name'];
             } 
             if (strstr($row['url'], "http") != false) {
-                $sourceArray[$row['name']][] = mUrl() . '?tvplay&user=' . $username . '&id=' . $row['id'] . '&time=' . $nowtime . '&token=' . md5($row['id'] . $userip . $nowtime . $key);
+                $sourceArray[$row['name']][] = mUrl() . '?tvplay&user=' . $username . '&channel=' . $row['id'] . '&time=' . $nowtime . '&token=' . md5($row['id'] . $userip . $nowtime . $key);
             } else if (strstr($row['url'], "fmitv") != false) {
                 $sourceArray[$row['name']][] = preg_replace('#play#', 'play&user=' . $username, $row['url']);
             } else {
@@ -115,6 +116,25 @@ function echoJSON($username, $category, $alisname, $psw) {
         return $objCategory;
     } 
 
+} 
+
+// EPG错误信息
+function failmsg($code, $msg) {
+    date_default_timezone_set("Asia/Shanghai");
+    header('content-type:application/json;charset=utf-8');
+    $arr = [];
+    $datas = [];
+    $datas["name"] = $msg;
+    $datas["starttime"] = date("H:i", time());
+    $arr["code"] = $code;
+    $arr["msg"] = $msg;
+    $arr["name"] = "Access deniend";
+    $arr["tvid"] = "1";
+    $arr["date"] = date("Y-m-d", time());
+    $arr["data"] = [$datas];
+    $str = json_encode($arr, JSON_UNESCAPED_UNICODE);
+    echo $str;
+    exit;
 } 
 
 if (isset($_GET['bgpic'])) {
@@ -205,55 +225,87 @@ else if (isset($_GET['getmeal'])) {
 
 }
 
+else if (isset($_GET['tvinfo'])) {
+
+    $value = $db->mGet("luo2888_config", "value", "where name='epg_api_chk'");
+    $tipepgerror_1000 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1000'");
+    $tipepgerror_1001 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1001'");
+    $tipepgerror_1002 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1002'");
+    $tipepgerror_1003 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1003'");
+    $tipepgerror_1004 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1004'");
+    $tipepgerror_1005 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1005'");
+
+    if ($value != 0) {
+        $utoken = !empty($_SERVER["HTTP_USER_TOKEN"])?$_SERVER["HTTP_USER_TOKEN"]:failmsg(200, $tipepgerror_1000);
+        $uid = !empty($_SERVER["HTTP_USER_ID"])?$_SERVER["HTTP_USER_ID"]:failmsg(200, $tipepgerror_1001);
+        $uip = !empty($_SERVER["HTTP_USER_IP"])?$_SERVER["HTTP_USER_IP"]:failmsg(200, $tipepgerror_1002);
+
+        $randkey = $db->mGet("luo2888_config", "value", "where name='randkey'");
+        if ($utoken != $randkey) {
+            failmsg(200, $tipepgerror_1003);
+        } 
+
+        $ip = $db->mGet("luo2888_users", "ip", "where where name='$uid'");
+        if (!empty($ip)) {
+            if ($uip != $ip) {
+                failmsg(200, $tipepgerror_1004);
+            } 
+        } else {
+            failmsg(200, $tipepgerror_1005);
+        } 
+    }
+
+    $channel_name = $_GET['channel'];
+    $apidir = dirname($myurl) . '/api';
+    $epgdata =  file_get_contents("$apidir/tvguide.php?channel=" . $channel_name);
+    if (empty(json_decode($epgdata, true))) {
+       failmsg(200, "EPG接口错误");
+    }
+    echo $epgdata;
+    exit;
+
+}
+
 else if (isset($_GET['tvplay'])) {
 
+    $channelid = $_GET['channel'];
     $username = $_GET['user'];
-    $channelid = $_GET['id'];
     $token = $_GET['token'];
     $time = $_GET['time'];
     $userip = $remote -> getuserip();
     $uptime = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
     $vpntimes = $db->mGet("luo2888_config", "value", "where name='vpntimes'");
+    $failureurl = $db->mGet("luo2888_config", "value", "where name='failureurl'");
+    $deniedurl = $db->mGet("luo2888_config", "value", "where name='deniedurl'");
     $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$username'");
-    $failurl = 'https://tv.luo2888.cn/fmitv.mp4';
-
-    if (strstr($_SERVER['HTTP_USER_AGENT'], "FMITV") == false) 
-    {
-        header('location:' . $failurl);
-        exit('您被系统判定为盗链！');
-    }
+    $playurl = $db->mGet("luo2888_channels", "url", "where id='$channelid'");
 
     if (abs($nowtime - $time) > $uptime * 60 + 30) {
-        header('location:' . $failurl);
+        header('location:' . $deniedurl);
         exit('您被系统判定为盗链！');
     }
     else if ($token != md5($channelid . $userip . $time . $key))
     {
-        header('location:' . $failurl);
+        header('location:' . $deniedurl);
         exit('您被系统判定为盗链！');
     }
     else if ($uservpntimes >= $vpntimes)
     {
-        header('location:' . $failurl);
+        header('location:' . $deniedurl);
         exit('您被系统判定为抓包！');
     }
 
-    $playurl = $db->mGet("luo2888_channels", "url", "where id='$channelid'");
-    header('location:' . $playurl);
+    if (!empty($playurl)) {
+        header('location:' . $playurl);
+    } else {
+        header('location:' . $failureurl);
+    }
+
     exit;
 
 }
 
 else if (isset($_POST['login'])) {
-
-    $userip = $remote -> getuserip();
-    $ipcount = $db->mGet("luo2888_users", "count(*)", "where ip='$ip'");
-    $ipadmit = $db->mGet("luo2888_config", "value", "where name='max_sameip_user'");
-
-    if ($ipcount >= $ipadmit) {
-        header('HTTP/1.1 403 Forbidden');
-        exit();
-    }
 
     $loginstr = $_POST['login'];
     $jsonstr = base64_decode($loginstr);
@@ -265,7 +317,14 @@ else if (isset($_POST['login'])) {
     $model = $obj->model;
     $nettype = $obj->nettype;
     $appname = $obj->appname;
+    $userip = $remote -> getuserip();
+    $ipcount = $db->mGet("luo2888_users", "count(*)", "where ip='$userip'");
+    $ipadmit = $db->mGet("luo2888_config", "value", "where name='max_sameip_user'");
     
+    if (strstr($mac,"44:55:66")  || $androidid == '871544fa3caeb847'){
+        exit;
+    }
+
     if ($userip == '' || $userip == '127.0.0.1') {
       $userip = '127.0.0.1';
       $region = 'localhost'; 
@@ -319,6 +378,12 @@ else if (isset($_POST['login'])) {
     } else {
 
         // 用户验证失败，识别用户信息存入后台
+
+        // 禁止重复用户注册
+        if ($ipcount > $ipadmit) {
+            $sameuser = 1;
+            goto banuser;
+        }
 
         /* if (strpos($region, '电信') !== false || strpos($region, '联通') !== false || strpos($region, '移动') !== false) {
             $banuser = 1;
@@ -383,7 +448,8 @@ else if (isset($_POST['login'])) {
     } 
 
     $mealname = $db->mGet("luo2888_meals", "name", "where id='$mealid'");
-    $adtext = '尊敬的用户，欢迎使用' . $app_appname . '，当前套餐：' . $mealname . '。' . $adtext;
+    $week = array('日', '一', '二', '三', '四', '五', '六');
+    $adtext = '尊敬的用户，欢迎使用' . $app_appname . '。' . date('今天n月d号') . "，" . '星期' . $week[date('w')] . '，当前套餐：' . $mealname . '。' . $adtext;
 
     if ($showwea == 1) {
         $weaapi_id = $db->mGet("luo2888_config", "value", "where name='weaapi_id'");
@@ -392,9 +458,8 @@ else if (isset($_POST['login'])) {
         $weajson = file_get_contents($url);
         $obj = json_decode($weajson);
         if (!empty($obj->city)) {
-            $weather = date('今天n月d号') . $obj->week . '，' . $obj->city . '，' . $obj->tem . '℃' . $obj->wea . '，' . '气温:' . $obj->tem2 . '℃' . '～' . $obj->tem1 . '℃' . '，' . $obj->win . $obj->win_speed . '，' . '相对湿度:' . $obj->humidity . '，' . '空气质量:' . $obj->air_level . '。';
-
-            $adtext = $adtext . $weather;
+            $weather =  "今天" . $obj->wea . '，' . $obj->tem2 . '℃' . '～' . $obj->tem1 . '℃' . '，' . $obj->win . $obj->win_speed . '，' . '湿度' . $obj->humidity . '，' . '空气' . $obj->air_level . '。';
+            $adinfo = $weather .  "\n" . $adinfo;
         } 
     } 
 
@@ -411,21 +476,26 @@ else if (isset($_POST['login'])) {
 
     banuser:
     if ($vpnuser == 1) {
-        $status = -1;
-        $tipusernoreg= '您使用了VPN等程序' . $uservpntimes . '次，现已被系统判定为抓包，禁止登录！';
+        $status = 0;
+        $tipuserforbidden= '您使用了VPN等程序' . $uservpntimes . '次，系统判定抓包已禁止登录！';
     }
     
     if ($nomacuser == 1) {
-        $status = -1;
-        $tipusernoreg= '检测不到Mac地址，请打开WiFi重新登录！';
-    }
-    
-    if ($banuser == 1) {
-        $status = -1;
-        $tipusernoreg= '对不起，该应用禁止国内IP访问！';
+        $status = 0;
+        $tipuserforbidden= '检测不到Mac地址，请打开WiFi重新登录！';
     }
 
-    $objres = array('id' => $name, 'status' => $status, 'mealname' => $mealname, 'datatoken' => $datatoken, 'appurl' => $appurl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'exp' => $days, 'ip' => $userip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'adinfo' => $adinfo, 'keyproxy' => $keyproxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => $autoupdate, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp);
+    if ($banuser == 1) {
+        $status = 0;
+        $tipuserforbidden= '对不起，该应用禁止国内IP访问！';
+    }
+    
+    if ($sameuser == 1) {
+        $status = 0;
+        $tipuserforbidden= '对不起，同一个IP只允许注册' . $ipadmit . '台设备！';
+    }
+
+    $objres = array('id' => $name, 'status' => $status, 'mealname' => $mealname, 'datatoken' => $datatoken, 'appurl' => $appurl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'exp' => $days, 'userip' => $userip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'adinfo' => $adinfo, 'keyproxy' => $keyproxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => $autoupdate, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp);
 
     $objres = str_replace("\\/", "/", json_encode($objres, JSON_UNESCAPED_UNICODE)); 
     $key = substr($key, 5, 16);
@@ -455,6 +525,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
 
     if ($token != md5($username . $app_sign . $randkey)) {
         header('HTTP/1.1 403 Forbidden');
+
         exit;
     }
 
@@ -469,6 +540,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
     } 
 
     // 查找当前用户对应的套餐
+
     $result = $db->mQuery("SELECT meal from luo2888_users where mac='$mac'");
     if (mysqli_num_rows($result)) {
         $row = mysqli_fetch_array($result, MYSQLI_ASSOC);

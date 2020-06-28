@@ -14,9 +14,9 @@
 
 // 数据变量
 $dataurl = 'https://tv.luo2888.cn/dl.php';  // 代理API地址
-$failurl = 'https://tv.luo2888.cn/fmitv.mp4'; // 链接失效视频地址
-$playcode = "dl621_qq625336209"; // 播放验证码
-$listcode = "fmi621"; // 列表安全码
+$failurl = 'https://tv.luo2888.cn/videos/fmitv_denied.mp4'; // 失效视频地址
+$playcode = "dl627_qq625336209"; // 播放验证码
+$listcode = "fmi627"; // 列表安全码
 
 // 获取代理地址
 function GetUrl() {
@@ -90,6 +90,8 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $datastr = send_post($dataurl, $post_data);
         $obj = json_decode($datastr);
         $playurl = $obj->playurl;
+
+        $playurl = preg_replace('#185.93.2.35:12012#', 'hk.luo2888.cn:12382', $playurl);
         
         if (!empty($playurl)  && isset($_GET[$playcode])){
             header('location:' . $playurl);

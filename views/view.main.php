@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1, user-scalable=no" />
 <title>欢迎访问IPTV管理系统</title>
 <link rel="icon" href="views/images/favicon.ico" type="image/ico">
 <meta name="keywords" content="小肥米,后台管理系统" />

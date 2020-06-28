@@ -1,169 +1,293 @@
-民视,vid=ublive#id=336
-公视,vid=ublive#id=361
-华视,vid=ublive#id=327
-中视,vid=ublive#id=333
-台视,vid=ublive#id=326
-三立都会,vid=ublive#id=310
-三立台湾,vid=ublive#id=309
-纬来日本,vid=ublive#id=337
-卫视中文,vid=ublive#id=342
-八大综合,vid=ublive#id=90
-八大第一,vid=ublive#id=60
-中天娱乐,vid=ublive#id=324
-八大戏剧,vid=ublive#id=100
-东森综合,vid=ublive#id=372
-八大娱乐,vid=ublive#id=80
-纬来综合,vid=ublive#id=340
-纬来育乐,vid=ublive#id=338
-靖天综合,vid=ublive#id=62
-靖天日本,vid=ublive#id=63
-TVBS,vid=ublive#id=88
+
+# 台灣頻道 #
+
+東森新聞,vid=ublive#id=500
+民視,vid=ublive#id=26
+民視,vid=ublive#id=336
+華視,vid=ublive#id=32
+華視,vid=ublive#id=327
+中視,vid=ublive#id=28
+中視,vid=ublive#id=333
+台視,vid=ublive#id=27
+台視,vid=ublive#id=326
+公視,vid=ublive#id=86
+公視,vid=ublive#id=361
+三立都會,vid=ublive#id=310
+三立都會,vid=ublive#id=38
+三立臺灣,vid=ublive#id=309
+三立臺灣,vid=ublive#id=35
+緯來日本,vid=ublive#id=337
+緯來日本,vid=ublive#id=46
+東森綜合,vid=ublive#id=372
+八大第一,vid=ublive#id=318
+JET綜合,vid=ublive#id=104
+JET綜合,vid=ublive#id=41
+八大娛樂,vid=ublive#id=80
+八大娛樂,vid=ublive#id=1028
+緯來綜合,vid=ublive#id=340
+TVBS歡樂臺,vid=ublive#id=40
+靖天日本,vid=ublive#id=108
+八大精彩,vid=ublive#id=1024
+TVBS綜合,vid=ublive#id=16
+民視台灣,vid=ublive#id=36
+國興衛視,vid=ublive#id=105
+中天娛樂,vid=ublive#id=74
+LUXE,vid=ublive#id=112
+緯來育樂,vid=ublive#id=312
+中天亞洲,vid=ublive#id=322
 TVBS精采,vid=ublive#id=66
-民视台湾,vid=ublive#id=36
-民视台湾,vid=ublive#id=68
-民视第一台,vid=ublive#id=34
-中视菁采台,vid=ublive#id=55
-中视经典台,vid=ublive#id=56
-Fashion one,vid=ublive#id=89
-第1商业台,vid=ublive#id=54
-Outdoor Channel,vid=ublive#id=94
-靖天国际台,vid=ublive#id=308
-靖天欢乐台,vid=ublive#id=345
-靖天资讯台,vid=ublive#id=344
-八大综艺,vid=ublive#id=99
-大爱一台,vid=ublive#id=11
-人间卫视,vid=ublive#id=101
-法国时装,vid=ublive#id=113
-爱尔达娱乐,vid=ublive#id=61
-国兴卫视,vid=ublive#id=105
-东森亚洲,vid=ublive#id=73
-客家电视,vid=ublive#id=41
-达文西频道,vid=ublive#id=46
-民视综艺,vid=ublive#id=98
-好消息,vid=ublive#id=38
-TRACE Sport Stars,vid=ublive#id=51
-Stingray iConcerts,vid=ublive#id=312
-Travel Channel,vid=ublive#id=74
-AXN,vid=ublive#id=103
-时尚运动X,vid=ublive#id=35
-中天亚洲,vid=ublive#id=322
-鸿基电视,vid=ublive#id=315
+星衛娛樂,vid=ublive#id=89
+中天綜合,vid=ublive#id=54
+八大綜合,vid=ublive#id=94
+VTV4,vid=ublive#id=341
+龍翔時代,vid=ublive#id=373
+龍翔時代,vid=ublive#id=51
+鴻基電視,vid=ublive#id=315
+星衛娛樂,vid=ublive#id=320
+龍華經典,vid=ublive#id=364
+民視臺灣,vid=ublive#id=1027
+東森綜合,vid=ublive#id=67
+大愛一臺,vid=ublive#id=11
+人間衛視,vid=ublive#id=101
+法國時裝,vid=ublive#id=113
+中天娛樂,vid=ublive#id=324
+緯來育樂,vid=ublive#id=338
+龍華偶像,vid=ublive#id=347
+民視第一台,vid=ublive#id=34
+中天綜合,vid=ublive#id=325
+TVBS,vid=ublive#id=88
+八大綜合,vid=ublive#id=90
+衛視中文,vid=ublive#id=342
+
+# 港澳頻道 #
+
 TVB翡翠,vid=ublive#id=390
 TVB明珠,vid=ublive#id=391
-无线新闻,vid=ublive#id=394
-有线新闻,vid=ublive#id=395
-无线财经,vid=ublive#id=393
-TVB J2,vid=ublive#id=392
-香港开电视,vid=ublive#id=17
-NOW新闻,vid=ublive#id=396
+無線新聞,vid=ublive#id=394
+有線新聞,vid=ublive#id=395
+有線新聞,vid=ublive#id=19
+Viutv,vid=ublive#id=176
+TVBJ5,vid=ublive#id=393
+TVBJ2,vid=ublive#id=392
+香港開電視,vid=ublive#id=17
+NOW新聞,vid=ublive#id=396
 NOW直播,vid=ublive#id=400
-凤凰卫视,vid=ublive#id=357
-凤凰资讯,vid=ublive#id=359
-港台电视31,vid=ublive#id=353
-港台电视32,vid=ublive#id=397
+迪士尼香港,vid=ublive#id=45
+迪士尼少兒,vid=ublive#id=30
+NOW華劇,vid=ublive#id=355
+鳳凰香港,vid=ublive#id=358
+鳳凰衛視,vid=ublive#id=357
+鳳凰資訊,vid=ublive#id=359
+港臺32,vid=ublive#id=397
+港臺31,vid=ublive#id=353
 Channel V,vid=ublive#id=21
-HKC娱乐,vid=ublive#id=360
-HKS,vid=ublive#id=360
-澳视澳门,vid=ublive#id=23
-澳视葡语,vid=ublive#id=24
-澳门卫星,vid=ublive#id=29
-TVB经典,vid=ublive#id=398
-寰宇新闻,vid=ublive#id=299
-寰宇新闻二台,vid=ublive#id=362
-非凡新闻,vid=ublive#id=314
-年代新闻,vid=ublive#id=236
-壹电视新闻,vid=ublive#id=303
-台视财经,vid=ublive#id=69
-非凡商业,vid=ublive#id=49
-新唐人亚太台,vid=ublive#id=10
-美国唐人街台,vid=ublive#id=43
-VOA美国之音,vid=ublive#id=305
-半岛国际新闻,vid=ublive#id=307
-台视新闻,vid=ublive#id=1
-TVBS新闻,vid=ublive#id=2
-中天新闻,vid=ublive#id=3
-三立LIVE新闻,vid=ublive#id=4
-华视新闻,vid=ublive#id=6
-中视新闻,vid=ublive#id=7
+HKC娛樂,vid=ublive#id=360
+HKS,vid=ublive#id=399
+澳視澳門,vid=ublive#id=23
+澳視葡語,vid=ublive#id=24
+澳門衛星,vid=ublive#id=29
+TVB經典,vid=ublive#id=398
+新時代多倫多,vid=ublive#id=1031
+新時代温哥華,vid=ublive#id=1032
+新時代多倫多2,vid=ublive#id=1033
+18台,vid=ublive#id=44
+
+# 新聞頻道 #
+
+中視新聞,vid=ublive#id=1000
+中視新聞,vid=ublive#id=1001
+中天新聞,vid=ublive#id=1002
+中天新聞,vid=ublive#id=1003
+TVBS新聞,vid=ublive#id=1004
+TVBS新聞,vid=ublive#id=1005
+台視新聞,vid=ublive#id=1006
+台視新聞,vid=ublive#id=1007
+三立LIVE新聞,vid=ublive#id=1008
+三立LIVE新聞,vid=ublive#id=1009
+華視新聞,vid=ublive#id=1012
+華視新聞,vid=ublive#id=1013
+iNEWS,vid=ublive#id=1014
+iNEWS,vid=ublive#id=1015
+東森新聞,vid=ublive#id=1016
+東森新聞,vid=ublive#id=1017
+東森財經新聞,vid=ublive#id=1018
+東森財經新聞,vid=ublive#id=1019
+非凡新聞,vid=ublive#id=314
+年代新聞,vid=ublive#id=236
+壹電視新聞,vid=ublive#id=303
+壹電視新聞,vid=ublive#id=49
+CNN News,vid=ublive#id=370
+FRANCE 24,vid=ublive#id=1042
+DW News,vid=ublive#id=14
+CBN News,vid=ublive#id=499
+美國唐人街台,vid=ublive#id=43
+新唐人亞太台,vid=ublive#id=10
+台視新聞,vid=ublive#id=1
+TVBS新聞,vid=ublive#id=2
+中天新聞,vid=ublive#id=3
+三立LIVE新聞,vid=ublive#id=4
+華視新聞,vid=ublive#id=6
+中視新聞,vid=ublive#id=7
 iNEWS,vid=ublive#id=8
-民视新闻,vid=ublive#id=13
-东森新闻,vid=ublive#id=9
-东森财经新闻,vid=ublive#id=12
+民視新聞,vid=ublive#id=13
+東森新聞,vid=ublive#id=9
+東森財經新聞,vid=ublive#id=12
+
+# 影視频道 #
+
+東森電影,vid=ublive#id=350
+好萊塢電影,vid=ublive#id=37
 FOX Family,vid=ublive#id=383
 FOX ACTION,vid=ublive#id=385
 HBO HD,vid=ublive#id=332
+東森戲劇,vid=ublive#id=321
+采昌影劇,vid=ublive#id=62
+緯來電影,vid=ublive#id=328
+東森洋片,vid=ublive#id=1128
+衛視電影,vid=ublive#id=93
+星衛電影,vid=ublive#id=84
+HBO Hits,vid=ublive#id=330
 FOX MOVIES,vid=ublive#id=387
 HBO Family,vid=ublive#id=331
-靖天映画台,vid=ublive#id=349
-纬来电影,vid=ublive#id=328
-采昌影剧,vid=ublive#id=81
-公视戏剧,vid=ublive#id=37
-龙华戏剧,vid=ublive#id=64
-龙华偶像,vid=ublive#id=82
-龙华日韩,vid=ublive#id=83
-AMC,vid=ublive#id=92
-影迷数位电影,vid=ublive#id=93
-龙华电影,vid=ublive#id=95
-猪哥亮歌厅秀,vid=ublive#id=84
-纬来戏剧,vid=ublive#id=339
-HBO Hits,vid=ublive#id=330
+靖天映畫台,vid=ublive#id=349
+星衛電影,vid=ublive#id=496
+影迷數位電影,vid=ublive#id=497
+AXN,vid=ublive#id=103
+鳳凰衛視電影,vid=ublive#id=18
 HBOSignature,vid=ublive#id=329
-凤凰卫视电影,vid=ublive#id=18
-靖天电影,vid=ublive#id=110
-纬来体育,vid=ublive#id=301
-智林体育台,vid=ublive#id=52
-FOX体育3,vid=ublive#id=389
-皇马足球,vid=ublive#id=20
-博斯运动1,vid=ublive#id=379
-FOX体育2,vid=ublive#id=388
-博斯高球2,vid=ublive#id=378
-博斯无线,vid=ublive#id=381
-博斯运动2,vid=ublive#id=380
+緯來戲劇,vid=ublive#id=339
+三立戲劇,vid=ublive#id=311
+八大戲劇,vid=ublive#id=100
+八大戲劇,vid=ublive#id=81
+緯來電影,vid=ublive#id=96
+靖洋戲劇,vid=ublive#id=319
+三立戲劇,vid=ublive#id=64
+龍華偶像,vid=ublive#id=82
+華納電影,vid=ublive#id=83
+美亞電影,vid=ublive#id=375
+衛視西片,vid=ublive#id=369
+FOX CRIME,vid=ublive#id=386
+靖天電影,vid=ublive#id=110
+FOX,vid=ublive#id=384
+CineMAX,vid=ublive#id=346
+
+# 體育頻道 #
+
+緯來體育,vid=ublive#id=52
+緯來體育,vid=ublive#id=301
+FOX Sport 1,vid=ublive#id=1131
+FOX Sport 2,vid=ublive#id=1132
+Eleven Sport 1,vid=ublive#id=1133
+Z頻道,vid=ublive#id=1130
+FOX體育2,vid=ublive#id=388
+FOX體育3,vid=ublive#id=389
+皇馬足球,vid=ublive#id=20
+博斯無線,vid=ublive#id=381
 博斯高球1,vid=ublive#id=377
-爱尔达体育,vid=ublive#id=376
+博斯高球2,vid=ublive#id=378
 博斯魅力,vid=ublive#id=175
-国家地理,vid=ublive#id=335
-国家人文,vid=ublive#id=334
-探索科学,vid=ublive#id=343
-亚洲旅游,vid=ublive#id=53
-视纳华仁纪实,vid=ublive#id=91
-民视旅游台,vid=ublive#id=77
-TLC旅游生活,vid=ublive#id=102
-亚洲美食,vid=ublive#id=374
-动物星球,vid=ublive#id=368
-EYE旅游,vid=ublive#id=111
-东森幼幼,vid=ublive#id=97
-MOMO亲子,vid=ublive#id=31
-爱放2,vid=ublive#id=5
-Baby First,vid=ublive#id=47
-龙华卡通台,vid=ublive#id=75
-靖洋卡通,vid=ublive#id=57
-i-Fun动漫台,vid=ublive#id=58
-靖天卡通台,vid=ublive#id=65
-ELTV英语学习台,vid=ublive#id=48
-东森幼幼,vid=ublive#id=371
-靖天卡通台,vid=ublive#id=348
-CCTV1,vid=ublive#id=200
-CCTV2,vid=ublive#id=201
-CCTV3,vid=ublive#id=202
-CCTV4,vid=ublive#id=203
-CCTV5,vid=ublive#id=204
-CCTV5plus,vid=ublive#id=205
-CCTV7,vid=ublive#id=207
-CCTV8,vid=ublive#id=208
-CCTV9,vid=ublive#id=209
-CCTV10,vid=ublive#id=210
-CCTV11,vid=ublive#id=211
-CCTV12,vid=ublive#id=212
-CCTV13,vid=ublive#id=213
-CCTV14,vid=ublive#id=214
-CCTV15,vid=ublive#id=215
+博斯魅力,vid=ublive#id=382
+愛爾達體育,vid=ublive#id=376
+博斯運動1,vid=ublive#id=379
+博斯運動2,vid=ublive#id=380
+BT Sport 2,vid=ublive#id=166
+BT Sport 3,vid=ublive#id=167
+BT Sport ESPN,vid=ublive#id=168
+BT Sport 1,vid=ublive#id=165
+Euro Sport 1,vid=ublive#id=170
+Euro Sport 2,vid=ublive#id=171
+Sky Sports Mix,vid=ublive#id=172
+Sky Sports MainEvent,vid=ublive#id=177
+Sky Sports Action,vid=ublive#id=178
+Sky Sports Cricket,vid=ublive#id=179
+Sky Sports Golf,vid=ublive#id=180
+Sky Sports PremierLeague,vid=ublive#id=181
+Sky Sports F1,vid=ublive#id=182
+Sky Sports News,vid=ublive#id=183
+jsport1,vid=ublive#id=129
+jsport2,vid=ublive#id=130
+jsport3,vid=ublive#id=131
+jsport4,vid=ublive#id=132
+ESPN-News,vid=ublive#id=148
+FOX-Sports1,vid=ublive#id=151
+FOX-Sports2,vid=ublive#id=152
+NBC-HD,vid=ublive#id=154
+NBC-Golf,vid=ublive#id=155
+NBA-TV,vid=ublive#id=153
+ESPN-HD,vid=ublive#id=147
+Astro Sp1,vid=ublive#id=444
+Astro Sp2,vid=ublive#id=445
+Astro Sp3,vid=ublive#id=446
+Astro Sp4,vid=ublive#id=447
+bein體育1,vid=ublive#id=417
+bein體育2,vid=ublive#id=418
+bein體育3,vid=ublive#id=419
+
+# 紀實頻道 #
+
+TLC旅遊生活,vid=ublive#id=1124
+動物星球,vid=ublive#id=1125
+國家野生,vid=ublive#id=1038
+國家地理,vid=ublive#id=1037
+探索EVE,vid=ublive#id=1036
+探索頻道,vid=ublive#id=1035
+TLC旅遊生活,vid=ublive#id=102
+美食星球,vid=ublive#id=367
+國家人文,vid=ublive#id=334
+亞洲美食,vid=ublive#id=374
+動物星球,vid=ublive#id=368
+Discovery,vid=ublive#id=91
+探索科學,vid=ublive#id=343
+國家地理,vid=ublive#id=335
+EVE旅遊,vid=ublive#id=111
+History 2,vid=ublive#id=115
+
+# 少兒頻道 #
+
+Baby TV,vid=ublive#id=1129
+MOMO親子,vid=ublive#id=1126
+東森亞洲幼幼,vid=ublive#id=1127
+Animax,vid=ublive#id=59
+曼迪日本,vid=ublive#id=316
+BabyFirst,vid=ublive#id=173
+Nickelodeon,vid=ublive#id=50
+Treehouse,vid=ublive#id=55
+Nickelodeon europe,vid=ublive#id=56
+Nickj,vid=ublive#id=53
+Disney,vid=ublive#id=5
+Disneyxd,vid=ublive#id=31
+Disneyj,vid=ublive#id=47
+Boomerang,vid=ublive#id=57
+Universalkids,vid=ublive#id=58
+Cartoon,vid=ublive#id=48
+靖洋卡通台,vid=ublive#id=348
+東森幼幼,vid=ublive#id=371
+MOMO親子台,vid=ublive#id=60
+
+# 大陸頻道 #
+
+CCTV-1,vid=ublive#id=200
+CCTV-2,vid=ublive#id=201
+CCTV-3,vid=ublive#id=202
+CCTV-4,vid=ublive#id=203
+CCTV-5,vid=ublive#id=204
+CCTV-5plus,vid=ublive#id=205
+CCTV-6,vid=ublive#id=206
+CCTV-7,vid=ublive#id=207
+CCTV-8,vid=ublive#id=208
+CCTV-9,vid=ublive#id=209
+CCTV-10,vid=ublive#id=210
+CCTV-11,vid=ublive#id=211
+CCTV-12,vid=ublive#id=212
+CCTV-13,vid=ublive#id=213
+CCTV-14,vid=ublive#id=214
+CCTV-15,vid=ublive#id=215
 厦门卫视,vid=ublive#id=216
 浙江卫视,vid=ublive#id=217
 江苏卫视,vid=ublive#id=218
 南方粤语,vid=ublive#id=219
 北京卫视,vid=ublive#id=220
-CCTVNEWS,vid=ublive#id=221
+CGTN-新聞,vid=ublive#id=221
 CCTV娱乐,vid=ublive#id=222
 海峡卫视,vid=ublive#id=223
 东方卫视,vid=ublive#id=224
@@ -177,10 +301,14 @@ CCTV娱乐,vid=ublive#id=222
 安徽卫视,vid=ublive#id=232
 四川卫视,vid=ublive#id=233
 山东卫视,vid=ublive#id=234
+
+# にっぽん #
+
+JapaNews24,vid=ublive#id=1043
 BS-JAPAN,vid=ublive#id=243
-日本映画専门,vid=ublive#id=246
-日テレG,vid=ublive#id=246
-时代剧の専门家,vid=ublive#id=287
+日本映画専門,vid=ublive#id=246
+日テレG,vid=ublive#id=248
+時代劇の専門家,vid=ublive#id=287
 KIDS,vid=ublive#id=289
 朝日放送,vid=ublive#id=237
 SKY A,vid=ublive#id=247
@@ -191,17 +319,25 @@ BSプレミアム,vid=ublive#id=239
 BS日テレ,vid=ublive#id=240
 BS朝日,vid=ublive#id=241
 GREEN,vid=ublive#id=245
-BS-TBS,vid=ublive#id=245
+関西テレビ,vid=ublive#id=235
+BS-TBS,vid=ublive#id=242
 Golf Network,vid=ublive#id=249
 BS-FUJI,vid=ublive#id=244
 ム一ビ一プラス,vid=ublive#id=295
+旅TABI,vid=ublive#id=294
+NTV News24,vid=ublive#id=42
+Japan Channel DX,vid=ublive#id=39
 GaoRa,vid=ublive#id=296
 NTV,vid=ublive#id=119
-NTV News24,vid=ublive#id=42
-jsport1,vid=ublive#id=129
-jsport2,vid=ublive#id=130
-jsport3,vid=ublive#id=131
-jsport4,vid=ublive#id=132
+NHK World,vid=ublive#id=117
+NHKE,vid=ublive#id=120
+NHK-G,vid=ublive#id=121
+tvtokyo,vid=ublive#id=123
+FU JI,vid=ublive#id=122
+TBS,vid=ublive#id=124
+大阪TV,vid=ublive#id=126
+ABC朝日,vid=ublive#id=127
+bs1,vid=ublive#id=128
 wowo1,vid=ublive#id=133
 wowo2,vid=ublive#id=134
 wowo3,vid=ublive#id=135
@@ -210,47 +346,63 @@ STAR2,vid=ublive#id=137
 STAR3,vid=ublive#id=138
 animax,vid=ublive#id=139
 Green,vid=ublive#id=140
-Japan Channel DX,vid=ublive#id=39
-旅TABI,vid=ublive#id=294
-KBS1,vid=ublive#id=250
-KBS2,vid=ublive#id=251
-MBC,vid=ublive#id=252
-CGV,vid=ublive#id=253
+Discovery,vid=ublive#id=290
+HISTORY,vid=ublive#id=291
+TBSニュ-ス,vid=ublive#id=293
+ファミリ一劇場,vid=ublive#id=298
+National Geographic,vid=ublive#id=292
+MUSIC JAPAN,vid=ublive#id=288
+LaLa TV,vid=ublive#id=297
+tv asahi,vid=ublive#id=125
+映畫專門,vid=ublive#id=118
+
+# 한국 #
+
+연합뉴스TV,vid=ublive#id=1039
+KBS WORLD 24,vid=ublive#id=1040
+KBS1,vid=ublive#id=174
+KBS2,vid=ublive#id=250
+MBC,vid=ublive#id=251
+SBS,vid=ublive#id=252
+JTBC,vid=ublive#id=253
 TVN,vid=ublive#id=254
-JTBC,vid=ublive#id=255
-OCN,vid=ublive#id=256
-SBSplus,vid=ublive#id=257
-Spotv2,vid=ublive#id=258
-Channel A,vid=ublive#id=259
-CBS,vid=ublive#id=260
-SBSA,vid=ublive#id=261
-KBS Drama,vid=ublive#id=262
-MBC Drama,vid=ublive#id=263
-Mnet,vid=ublive#id=264
-KBS体育,vid=ublive#id=265
-SBS体育,vid=ublive#id=266
-XTM,vid=ublive#id=268
-MBN,vid=ublive#id=492
-????新闻,vid=ublive#id=488
-YTN,vid=ublive#id=490
-INETV,vid=ublive#id=267
+YTN,vid=ublive#id=255
+TV조선,vid=ublive#id=256
+MBN,vid=ublive#id=257
+채널A,vid=ublive#id=258
+연합뉴스TV,vid=ublive#id=259
+KBS드라마,vid=ublive#id=260
+MBC드라마,vid=ublive#id=261
+SBS PLus,vid=ublive#id=262
+SBS스포츠,vid=ublive#id=263
+KBSN스포츠,vid=ublive#id=264
+MBC스포츠+,vid=ublive#id=265
+Spotv,vid=ublive#id=266
+JTBC골프,vid=ublive#id=268
+CGV,vid=ublive#id=492
+OCN,vid=ublive#id=488
+iNet,vid=ublive#id=490
+CTS,vid=ublive#id=491
+Spotv2,vid=ublive#id=267
+Tooniverse,vid=ublive#id=1020
+Disney,vid=ublive#id=489
+CBS,vid=ublive#id=493
+SBS골프,vid=ublive#id=486
+On Style,vid=ublive#id=487
+FTV,vid=ublive#id=1134
+围棋,vid=ublive#id=1135
+Mnet,vid=ublive#id=1136
+
+# 美國频道 #
+
 WGN9,vid=ublive#id=33
 CNBC,vid=ublive#id=145
 CNN HD,vid=ublive#id=146
-ESPN-News,vid=ublive#id=148
 FOX-HD,vid=ublive#id=149
-FOX-Sports1,vid=ublive#id=151
-FOX-Sports2,vid=ublive#id=152
-NBC-HD,vid=ublive#id=154
-NBC-Golf,vid=ublive#id=155
 TBS HD,vid=ublive#id=156
 FOX-News,vid=ublive#id=150
-NBA-TV,vid=ublive#id=153
 ABC HD,vid=ublive#id=143
-ESPN-HD,vid=ublive#id=147
 CBS HD,vid=ublive#id=144
-新时代多伦多2,vid=ublive#id=141
-新时代温哥华1,vid=ublive#id=142
 BET,vid=ublive#id=270
 CBC-EAST,vid=ublive#id=272
 OWN,vid=ublive#id=284
@@ -269,39 +421,35 @@ W-NETWORK,vid=ublive#id=286
 OLN,vid=ublive#id=285
 CTV Atlantic,vid=ublive#id=279
 YTV,vid=ublive#id=282
+
+# 英國频道 #
+
+Sky News,vid=ublive#id=1041
 BBC News,vid=ublive#id=164
-BT Sport 2,vid=ublive#id=166
-BT Sport 3,vid=ublive#id=167
-BT Sport ESPN,vid=ublive#id=168
 Channel 4,vid=ublive#id=169
 BBC 1,vid=ublive#id=161
 BBC 2,vid=ublive#id=162
 BBC 4,vid=ublive#id=163
 ITV 4,vid=ublive#id=160
-BT Sport 1,vid=ublive#id=165
-Euro Sport 1,vid=ublive#id=170
-Euro Sport 2,vid=ublive#id=171
-Sky Sports Mix,vid=ublive#id=172
-Sky Sports MainEvent,vid=ublive#id=177
-Sky Sports Action,vid=ublive#id=178
-Sky Sports Cricket,vid=ublive#id=179
-Sky Sports Golf,vid=ublive#id=180
-Sky Sports PremierLeague,vid=ublive#id=181
-Sky Sports F1,vid=ublive#id=182
-Sky Sports News,vid=ublive#id=183
 ITV 3,vid=ublive#id=159
 ITV 1,vid=ublive#id=157
 ITV 2,vid=ublive#id=158
+Discovery,vid=ublive#id=1045
+Dave,vid=ublive#id=1044
+
+# 馬來頻道 #
+
+CNA 24,vid=ublive#id=15
 Astro Awani,vid=ublive#id=440
 Channel 8,vid=ublive#id=450
-天映频道HD,vid=ublive#id=441
+天映頻道HD,vid=ublive#id=441
 全佳,vid=ublive#id=427
 kix,vid=ublive#id=430
-欢喜,vid=ublive#id=432
+歡喜,vid=ublive#id=432
 suria,vid=ublive#id=434
-双星,vid=ublive#id=431
+雙星,vid=ublive#id=431
 AEC,vid=ublive#id=433
-华丽,vid=ublive#id=429
+華麗,vid=ublive#id=429
 Channel 5,vid=ublive#id=449
 TV1,vid=ublive#id=435
 TV2,vid=ublive#id=436
@@ -309,13 +457,57 @@ TV3,vid=ublive#id=437
 TV9,vid=ublive#id=438
 NTV7,vid=ublive#id=439
 TV8,vid=ublive#id=442
-小太阳,vid=ublive#id=443
-超级体育1,vid=ublive#id=444
-超级体育2,vid=ublive#id=445
-超级体育3,vid=ublive#id=446
-超级体育4,vid=ublive#id=447
+小太陽,vid=ublive#id=443
 AOD,vid=ublive#id=428
-Channel U,vid=ublive#id=428
+Channel U,vid=ublive#id=448
+
+# 西班牙 #
+
+#0HD,vid=ublive#id=1047
+4 Horas,vid=ublive#id=1048
+A&E ES,vid=ublive#id=1049
+AMC ES,vid=ublive#id=1050
+Antena 3,vid=ublive#id=1051
+Barca TV,vid=ublive#id=1052
+Bein Sport,vid=ublive#id=1053
+Boing,vid=ublive#id=1054
+Calle 13,vid=ublive#id=1055
+M Action,vid=ublive#id=1056
+M Deportes 2,vid=ublive#id=1057
+M Deportes 1,vid=ublive#id=1058
+M Estrenos,vid=ublive#id=1059
+M Futbol,vid=ublive#id=1060
+M Golf,vid=ublive#id=1061
+M Series Xtra,vid=ublive#id=1062
+Toros,vid=ublive#id=1063
+M Xtra,vid=ublive#id=1064
+Cocina,vid=ublive#id=1065
+M Dcine,vid=ublive#id=1066
+DeCasa,vid=ublive#id=1067
+M SERIES HD,vid=ublive#id=1068
+M Formula 1,vid=ublive#id=1069
+Caza Y Pesca,vid=ublive#id=1070
+Clan Tve,vid=ublive#id=1071
+Comedy Central,vid=ublive#id=1072
+Cosmo,vid=ublive#id=1073
+Cuatro,vid=ublive#id=1074
+Discovery ES,vid=ublive#id=1075
+Disney ES,vid=ublive#id=1076
+Energy,vid=ublive#id=1077
+Euro Sport 1,vid=ublive#id=1078
+Euro Sport 2,vid=ublive#id=1079
+FDF,vid=ublive#id=1080
+Fox ES,vid=ublive#id=1081
+GOL TV,vid=ublive#id=1082
+LA 1,vid=ublive#id=1083
+LaLiga TV Bar,vid=ublive#id=1084
+La Sexta,vid=ublive#id=1085
+NOVA,vid=ublive#id=1086
+Odisea,vid=ublive#id=1087
+TNT ES,vid=ublive#id=1088
+
+# भारत #
+
 POP-Pataka,vid=ublive#id=25
 ZeeNews,vid=ublive#id=465
 DD News,vid=ublive#id=463
@@ -340,21 +532,32 @@ Sony Sab,vid=ublive#id=475
 Sony,vid=ublive#id=483
 HBO,vid=ublive#id=464
 Sony Max,vid=ublive#id=477
-松视1台,vid=ublive#id=402
-松视2台,vid=ublive#id=403
-松视3台,vid=ublive#id=404
-彩虹e台,vid=ublive#id=405
-彩虹k台,vid=ublive#id=406
-HOT星颜,vid=ublive#id=407
+
+# 私密頻道 #
+
+松視1台,vid=ublive#id=402
+松視2台,vid=ublive#id=403
+松視3台,vid=ublive#id=404
 香蕉台,vid=ublive#id=408
-惊艳台,vid=ublive#id=409
-潘多拉完美,vid=ublive#id=410
-潘多拉粉红,vid=ublive#id=411
-HAPPY,vid=ublive#id=412
-彩虹电影,vid=ublive#id=413
+潘朵拉完美,vid=ublive#id=410
+潘朵拉粉紅,vid=ublive#id=411
+彩虹電影,vid=ublive#id=413
+彩虹K台,vid=ublive#id=406
+彩虹E台,vid=ublive#id=405
 一本道,vid=ublive#id=414
 二本道,vid=ublive#id=415
-东京热,vid=ublive#id=416
+東京熱,vid=ublive#id=416
+HOT星顏,vid=ublive#id=407
+HAPPY,vid=ublive#id=412
+驚豔台,vid=ublive#id=409
 Erox HD,vid=ublive#id=456
 Dorcel HD,vid=ublive#id=454
 Babes TV HD,vid=ublive#id=458
+Hustler HD,vid=ublive#id=451
+SCT Classic,vid=ublive#id=462
+Redlight HD,vid=ublive#id=452
+SEX ATION HD,vid=ublive#id=459
+Super One HD,vid=ublive#id=457
+Prıvate TV,vid=ublive#id=453
+Passie,vid=ublive#id=461
+Vivid Red HD,vid=ublive#id=455

@@ -13,7 +13,7 @@ if ($_SESSION['epgadmin'] == 0) {
 // 清除EPG缓存
 if (isset($_POST['clearcache'])) {
     $num = 0;
-    $files = glob("../apps/epg/cache/*");
+    $files = glob("../cache/epgs/*");
     foreach ($files as $file) {
         unlink($file);
         $num++;

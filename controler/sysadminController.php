@@ -181,12 +181,14 @@ if (isset($_POST['submitsetver'])) {
 } 
 
 if (isset($_POST['submittipset'])) {
-    $failurl = $_POST['failurl'];
+    $failureurl = $_POST['failureurl'];
+    $deniedurl = $_POST['deniedurl'];
     $tiploading = $_POST['tiploading'];
     $tipusernoreg = $_POST['tipusernoreg'];
     $tipuserexpired = $_POST['tipuserexpired'];
     $tipuserforbidden = $_POST['tipuserforbidden'];
-    $db->mSet("luo2888_config", "value='$failurl'", "where name='failurl'");
+    $db->mSet("luo2888_config", "value='$failureurl'", "where name='failureurl'");
+    $db->mSet("luo2888_config", "value='$deniedurl'", "where name='deniedurl'");
     $db->mSet("luo2888_config", "value='$tiploading'", "where name='tiploading'");
     $db->mSet("luo2888_config", "value='$tipusernoreg'", "where name='tipusernoreg'");
     $db->mSet("luo2888_config", "value='$tipuserexpired'", "where name='tipuserexpired'");
@@ -341,6 +343,7 @@ $alipay_privatekey = $db->mGet("luo2888_config", "value", "where name='alipay_pr
 $ipchk = $db->mGet("luo2888_config", "value", "where name='ipchk'");
 $showwea = $db->mGet("luo2888_config", "value", "where name='showwea'");
 $keyproxy = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
-$failurl = $db->mGet("luo2888_config", "value", "where name='failurl'");
+$failureurl = $db->mGet("luo2888_config", "value", "where name='failureurl'");
+$deniedurl = $db->mGet("luo2888_config", "value", "where name='deniedurl'");
 
 ?>

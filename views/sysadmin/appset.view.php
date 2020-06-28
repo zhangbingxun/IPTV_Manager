@@ -247,7 +247,8 @@ $("#ipchkform").submit();
 			<div class="card-header"><h4>提示设置</h4></div>
 			<div class="card-body">
 				<form method="post">
-					<p>连接失效视频地址：<input class="form-control" type="text" name="failurl" value="<?php echo $failurl;?>"></p>
+					<p>非法访问视频地址：<input class="form-control" type="text" name="deniedurl" value="<?php echo $deniedurl;?>"></p>
+					<p>节目失效视频地址：<input class="form-control" type="text" name="failureurl" value="<?php echo $failureurl;?>"></p>
 					<p>节目加载提示：<input class="form-control" type="text" name="tiploading" value="<?php echo $tiploading;?>"></p>
 					<p>授权到期提示：<input class="form-control" type="text" name="tipuserexpired" value="<?php echo $tipuserexpired;?>"></p>
 					<p>账号停用提示：<input class="form-control" type="text" name="tipuserforbidden" value="<?php echo $tipuserforbidden;?>"></p>

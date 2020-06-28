@@ -67,26 +67,27 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $tid = $vkey['tid'];
         $id = $vkey['id'];
         $nowtime = time();
-        $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
+        $appsign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
         $key = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
-        $failurl = $db->mGet("luo2888_config", "value", "where name='failurl'");
+        $failureurl = $db->mGet("luo2888_config", "value", "where name='failureurl'");
+        $deniedurl = $db->mGet("luo2888_config", "value", "where name='deniedurl'");
         $vpntimes = $db->mGet("luo2888_config", "value", "where name='vpntimes'");
+        $androidid = $db->mGet("luo2888_users", "deviceid", "where name='$username'");
         $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$username'");
-        
-        if (strstr($_SERVER['HTTP_USER_AGENT'], "FMITV") == false) 
-        {
-            header('location:' . $failurl);
-            exit('您被系统判定为盗链！');
-        }
+        $b64key = '0flSMcbVvSVgqaENj#pM%foHAdcjhjCpUlWsFuuF$#X75SF7ebzoJ2F@sNkku$^y2%7nJt#q6yh!67vl6e0JUYJ%ED5roBrb&vZWjlI$$liQzV$3qb!MmSGBQGDt9MZL';
 
         if (abs($nowtime - $time) > 600) {
-            header('location:' . $failurl);
+            header('location:' . $deniedurl);
             exit('您被系统判定为盗链！');
-        } else if ($token != md5($key . $time . '^aEM%UIG!' . $app_sign)) {
-            header('location:' . $failurl);
+        }
+        else if ($token != md5($androidid . $key . $time . $b64key . $appsign))
+        {
+            header('location:' . $deniedurl);
             exit('您被系统判定为盗链！');
-        } else if ($uservpntimes >= $vpntimes) {
-            header('location:' . $failurl);
+        }
+        else if ($uservpntimes >= $vpntimes)
+        {
+            header('location:' . $deniedurl);
             exit('您被系统判定为抓包！');
         }
         
@@ -104,12 +105,12 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $obj = json_decode($datastr);
         $playurl = $obj->playurl;
 
-        $playurl = preg_replace('#185.93.2.35:12012#', 'ott.luo2888.cn:8880', $playurl);
+        $playurl = preg_replace('#185.93.2.35:12012#', 'hk.luo2888.cn:12382', $playurl);
 
         if (!empty($playurl)) {
             header('location:' . $playurl);
         } else {
-            header('location:' . $failurl);
+            header('location:' . $failureurl);
         }
         
     }
@@ -135,7 +136,11 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
             foreach($listobj as $channellist) {
                 if (is_array($channellist)) {
                     foreach($channellist as $channel) {
-                        $channel = preg_replace('#http://域名/文件名#', 'fmitv://tv', $channel);
+                        if ($vid  == "lttv") {
+                            $channel = preg_replace('#http://域名/文件名#', 'lttv://tv', $channel);
+                        } else {
+                            $channel = preg_replace('#http://域名/文件名#', 'fmitv://tv', $channel);
+                        }
                         echo $channel . "\n";
                     }
                 }

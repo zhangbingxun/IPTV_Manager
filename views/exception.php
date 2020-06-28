@@ -78,8 +78,8 @@
 													<td colspan='2'>
 													<form method='post'>
 														<input type='hidden' name='name' value='$name'>
-														<button class='btn btn-sm btn-primary' type='submit' name='startuse'>启用</button>
 														<button class='btn btn-sm btn-danger' type='submit' name='stopuse'>停用</button>
+														<button class='btn btn-sm btn-danger' type='submit' name='clearuser'>清空</button>
 														&nbsp;&nbsp;&nbsp;&nbsp;
 													</form>
 													</td>

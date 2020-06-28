@@ -89,7 +89,7 @@ function echoJSON($username, $category, $alisname, $psw) {
                 $nameArray[] = $row['name'];
             } 
             if (strstr($row['url'], "http") != false) {
-                $sourceArray[$row['name']][] = mUrl() . '?tvplay&user=' . $username . '&channel=' . $row['id'] . '&time=' . $nowtime . '&token=' . md5($row['id'] . $userip . $nowtime . $key);
+                $sourceArray[$row['name']][] = mUrl() . '?tvplay&user=' . $username . '&channel=' . $row['id'] . '&time=' . $nowtime . '&token=' . md5($row['id'] . $nowtime . $key);
             } else {
                 $sourceArray[$row['name']][] = $row['url'];
             }
@@ -310,36 +310,8 @@ else if (isset($_GET['getmeal'])) {
 
 else if (isset($_GET['tvinfo'])) {
 
-    $value = $db->mGet("luo2888_config", "value", "where name='epg_api_chk'");
-    $tipepgerror_1000 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1000'");
-    $tipepgerror_1001 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1001'");
-    $tipepgerror_1002 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1002'");
-    $tipepgerror_1003 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1003'");
-    $tipepgerror_1004 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1004'");
-    $tipepgerror_1005 = $db->mGet("luo2888_config", "value", "where name='tipepgerror_1005'");
-
-    if ($value != 0) {
-        $utoken = !empty($_SERVER["HTTP_USER_TOKEN"])?$_SERVER["HTTP_USER_TOKEN"]:failmsg(200, $tipepgerror_1000);
-        $uid = !empty($_SERVER["HTTP_USER_ID"])?$_SERVER["HTTP_USER_ID"]:failmsg(200, $tipepgerror_1001);
-        $uip = !empty($_SERVER["HTTP_USER_IP"])?$_SERVER["HTTP_USER_IP"]:failmsg(200, $tipepgerror_1002);
-
-        $randkey = $db->mGet("luo2888_config", "value", "where name='randkey'");
-        if ($utoken != $randkey) {
-            failmsg(200, $tipepgerror_1003);
-        } 
-
-        $ip = $db->mGet("luo2888_users", "ip", "where where name='$uid'");
-        if (!empty($ip)) {
-            if ($uip != $ip) {
-                failmsg(200, $tipepgerror_1004);
-            } 
-        } else {
-            failmsg(200, $tipepgerror_1005);
-        } 
-    }
-
     $channel_name = $_GET['channel'];
-    $apidir = dirname($myurl) . '/api';
+    $apidir = dirname($myurl) . '/api/common';
     $epgdata =  file_get_contents("$apidir/tvguide.php?channel=" . $channel_name);
     if (empty(json_decode($epgdata, true))) {
        failmsg(200, "EPG接口错误");
@@ -367,7 +339,7 @@ else if (isset($_GET['tvplay'])) {
         header('location:' . $deniedurl);
         exit('您被系统判定为盗链！');
     }
-    else if ($token != md5($channelid . $userip . $time . $key))
+    else if ($token != md5($channelid . $time . $key))
     {
         header('location:' . $deniedurl);
         exit('您被系统判定为盗链！');
@@ -384,6 +356,7 @@ else if (isset($_GET['tvplay'])) {
         header('location:' . $failureurl);
 
     }
+
 
     exit;
 

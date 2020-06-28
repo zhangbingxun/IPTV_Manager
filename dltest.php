@@ -14,7 +14,7 @@
 
 // 数据变量
 $dataurl = 'https://tv.luo2888.cn/dl.php';  // 代理API地址
-$failurl = 'https://tv.luo2888.cn/videos/fmitv_denied.mp4'; // 失效视频地址
+$failurl = 'https://tv.luo2888.cn/videos/fmitv_denied.mp4';
 $playcode = "dl627_qq625336209"; // 播放验证码
 $listcode = "fmi627"; // 列表安全码
 

@@ -23,6 +23,7 @@ if (empty($vid)){
         央视频：ysp
         芒果TV：mgtv
         重庆有线：cqyx
+        珠江宽频：zjkp
         汕头电视：cutv
         咪咕视频：migu
         北京移动：bjyd
@@ -36,8 +37,8 @@ if (empty($vid)){
 
         # 港台 #
         肥米TV：fmitv
+        普视PV：pvbox
         凤凰电视：fhds
-        普视PV采集：pvbox
         龙腾TV(需要专用壳)：lttv
         香港无线(节目源来自境外)：tvb
         四季线上(节目源来自境外)：4gtv
@@ -57,7 +58,7 @@ if (empty($vid)){
         企鹅电竞：egame
         视频网站解析：6ska
 
-        # 自定义列表 #
+        # 自定义 #
         外部列表：third
 
         # 多线 #

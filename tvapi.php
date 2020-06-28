@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
+require_once "api/common/cacher.class.php";
 require_once "config.php";
 $db = Config::GetIntance();
 $remote = new GetIP();
@@ -89,8 +90,6 @@ function echoJSON($username, $category, $alisname, $psw) {
             } 
             if (strstr($row['url'], "http") != false) {
                 $sourceArray[$row['name']][] = mUrl() . '?tvplay&user=' . $username . '&channel=' . $row['id'] . '&time=' . $nowtime . '&token=' . md5($row['id'] . $userip . $nowtime . $key);
-            } else if (strstr($row['url'], "fmitv") != false) {
-                $sourceArray[$row['name']][] = preg_replace('#play#', 'play&user=' . $username, $row['url']);
             } else {
                 $sourceArray[$row['name']][] = $row['url'];
             }
@@ -137,6 +136,74 @@ function failmsg($code, $msg) {
     exit;
 } 
 
+// 缓存数据
+function cache($key, $f_name, $ff = []) {
+    Cache::$cache_path = "./cache/tvapi/";
+    $val = Cache::gets($key);
+    if (!$val) {
+        $data = call_user_func_array($f_name, $ff);
+        Cache::put($key, $data);
+        return $data;
+    } else {
+        return $val;
+    } 
+} 
+
+// 缓存超时
+function cache_time_out() {
+    date_default_timezone_set("Asia/Shanghai");
+    $timetoken = time() + 1200;
+    return $timetoken;
+}
+
+function mCurl($url,$method,$refurl,$post_data){
+    $UserAgent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36';
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_USERAGENT, $UserAgent);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    if ($method == "POST") {
+        curl_setopt($curl, CURLOPT_REFERER, $refurl); 
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+    }
+    $response = curl_exec($curl);
+    curl_close($curl);
+    return $response;
+}
+
+function lanzouUrl($url) {
+    $ruleMatchDetailInList = "~ifr2\"\sname=\"[\s\S]*?\"\ssrc=\"\/(.*?)\"~";
+    preg_match_all($ruleMatchDetailInList, mCurl($url,null,null,null),$link);
+    $index = 0;
+    for($i=0;$i<count($link[1]);$i++){
+        if($link[1][$i]!="fn?v2"){
+            $index = $i;
+            break;
+        }
+    }
+
+    $refurl = "https://www.lanzous.com/".$link[1][$index];
+    $ruleMatchDetailInList = "~var ajaxup = '([^\]]*)';//~";
+    preg_match($ruleMatchDetailInList, mCurl($refurl,null,null,null),$segment);
+    $post_data = array(
+        "action" => "downprocess",
+        "sign" => $segment[1],
+        "ves" => 1,
+        "p" => ""
+    );
+
+    $downjson = mCurl("https://www.lanzous.com/ajaxm.php","POST",$refurl,$post_data);
+    $linkobj = json_decode($downjson);
+    if ($linkobj->dom == "") {
+        return false;
+    } else {
+        return $linkobj->dom . "/file/" . $linkobj->url;
+    }
+}
+
 if (isset($_GET['bgpic'])) {
 
     header('Content-Type: text/json;charset=UTF-8');
@@ -152,7 +219,6 @@ if (isset($_GET['bgpic'])) {
     echo $pngs[$rkey];
     exit;
 
-
 }
 
 else if (isset($_GET['getver'])) {
@@ -164,6 +230,23 @@ else if (isset($_GET['getver'])) {
     $up_size = $db->mGet("luo2888_config", "value", "where name='up_size'");
     $up_sets = $db->mGet("luo2888_config", "value", "where name='up_sets'");
     $up_text = $db->mGet("luo2888_config", "value", "where name='up_text'");
+
+    $timetoken = cache("time_out_chk", "cache_time_out");
+    if (time() >= $timetoken) {
+        Cache::$cache_path = "./cache/tvapi/"; 
+        Cache::dels();
+        cache("time_out_chk", "cache_time_out");
+    } 
+
+    if (strstr($appurl,"lanzou://")) {
+        $appurl = preg_replace('#lanzou\:#', 'https:', $appurl);
+        $appurl = cache("appurl", "lanzouUrl", [$appurl]);
+    }
+
+    if (strstr($boxurl,"lanzou://")) {
+        $boxurl = preg_replace('#lanzou\:#', 'https:', $boxurl);
+        $boxurl = cache("boxurl", "lanzouUrl", [$boxurl]);
+    }
 
     $data = json_encode(
         array(
@@ -299,6 +382,7 @@ else if (isset($_GET['tvplay'])) {
         header('location:' . $playurl);
     } else {
         header('location:' . $failureurl);
+
     }
 
     exit;

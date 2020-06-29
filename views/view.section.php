@@ -42,6 +42,8 @@
 							$index='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'author.php') !== false){
 							$author='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'serialadmin.php') !== false){
+							$serialadmin='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'useradmin.php') !== false){
 							$useradmin='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'exception.php') !== false){
@@ -82,6 +84,7 @@
 						?>
 						<li class="nav-item <?php echo $index ?>"> <a href="index.php"><i class="mdi mdi-home"></i>首页</a> </li>
 						<li class="nav-item <?php echo $author ?>"> <a href="author.php"><i class="mdi mdi-account-check"></i>授权</a> </li>
+						<li class="nav-item <?php echo $serialadmin ?>"> <a href="serialadmin.php"><i class="mdi mdi-account-check"></i>账号</a> </li>
 						<li class="nav-item <?php echo $useradmin ?>"> <a href="useradmin.php"><i class="mdi mdi-account"></i>用户</a> </li>
 						<li class="nav-item <?php echo $exception ?>"> <a href="exception.php"><i class="mdi mdi-account-alert"></i>异常</a> </li>
 						<li class="nav-item <?php echo $mealsadmin ?>"> <a href="mealsadmin.php"><i class="mdi mdi-shopping"></i>套餐</a></li>
@@ -135,6 +138,7 @@
 						<?php
 						if (strpos($_SERVER['REQUEST_URI'],'index.php') !== false){ echo '&nbsp;首页&nbsp;'; }
 						else if (strpos($_SERVER['REQUEST_URI'],'author.php') !== false){ echo '&nbsp;授权&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'serialadmin.php') !== false){ echo '&nbsp;账号&nbsp;'; }
 						else if (strpos($_SERVER['REQUEST_URI'],'useradmin.php') !== false){ echo '&nbsp;用户&nbsp;'; }
 						else if (strpos($_SERVER['REQUEST_URI'],'exception.php') !== false){ echo '&nbsp;异常&nbsp;'; }
 						else if (strpos($_SERVER['REQUEST_URI'],'mealsadmin.php') !== false){ echo '&nbsp;套餐&nbsp;'; }

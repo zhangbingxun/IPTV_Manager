@@ -10,23 +10,39 @@ if ($_SESSION['useradmin'] == 0) {
 ?>
 
 <?php
+
+// 解除绑定
+if (isset($_POST['submitclearbind'])) {
+    if (empty($_POST['id'])) {
+        echo("<script>lightyear.notify('请选择要取消绑定的用户账号！', 'danger', 3000);</script>");
+    } else {
+        foreach ($_POST['id'] as $id) {
+            $db->mSet("luo2888_users", "mac='',deviceid='',model=''", "where name=$id");
+            echo("<script>lightyear.notify('账号：$id 已取消绑定！', 'success', 3000);</script>");
+        } 
+    } 
+} 
+
+// 删除所有过期用户
 if (isset($_POST['submitdelall'])) {
     $nowtime = time();
     $db->mDel("luo2888_users", "where status=1 and exp<$nowtime");
     echo("<script>lightyear.notify('已清空所有过期用户！', 'success', 3000);</script>");
 } 
 
+// 删除用户
 if (isset($_POST['submitdel'])) {
     if (empty($_POST['id'])) {
         echo("<script>lightyear.notify('请选择要删除的用户账号！', 'danger', 3000);</script>");
     } else {
         foreach ($_POST['id'] as $id) {
             $db->mDel("luo2888_users", "where name=$id");
-            $db->mDel("luo2888_loginrec", "where userid=$id");
         } 
         echo("<script>lightyear.notify('选中用户及其登陆信息已删除！', 'success', 3000);</script>");
     } 
 } 
+
+// 修改授权天数
 if (isset($_POST['submitmodify'])) {
     if (empty($_POST['id'])) {
         echo("<script>lightyear.notify('请选择要修改授权天数的用户账号！', 'danger', 3000);</script>");
@@ -39,6 +55,7 @@ if (isset($_POST['submitmodify'])) {
     } 
 } 
 
+// 增加授权天数
 if (isset($_POST['submitadddays'])) {
     if (empty($_POST['id'])) {
         echo("<script>lightyear.notify('请选择要增加授权天数的用户账号！', 'danger', 3000);</script>");
@@ -54,6 +71,7 @@ if (isset($_POST['submitadddays'])) {
     } 
 } 
 
+// 修改备注
 if (isset($_POST['submitmodifymarks'])) {
     if (empty($_POST['id'])) {
         echo("<script>lightyear.notify('请选择要修改备注的用户账号！', 'danger', 3000);</script>");
@@ -66,6 +84,7 @@ if (isset($_POST['submitmodifymarks'])) {
     } 
 } 
 
+// 取消授权
 if (isset($_POST['submitforbidden'])) {
     if (empty($_POST['id'])) {
         echo("<script>lightyear.notify('请选择要取消授权的用户账号！', 'danger', 3000);</script>");
@@ -77,6 +96,7 @@ if (isset($_POST['submitforbidden'])) {
     } 
 } 
 
+// 设为永不到期
 if (isset($_POST['submitNotExpired'])) {
     if (empty($_POST['id'])) {
         echo("<script>lightyear.notify('请选择要设置永不到期的用户账号！', 'danger', 3000);</script>");
@@ -88,6 +108,7 @@ if (isset($_POST['submitNotExpired'])) {
     } 
 } 
 
+// 取消永不到期
 if (isset($_POST['submitCancelNotExpired'])) {
     if (empty($_POST['id'])) {
         echo("<script>lightyear.notify('请选择要取消永不到期的用户账号！', 'danger', 3000);</script>");
@@ -99,6 +120,7 @@ if (isset($_POST['submitCancelNotExpired'])) {
     } 
 } 
 
+// 修改套餐
 if (isset($_POST["s_meals"]) && isset($_POST["e_meals"])) {
     if (empty($_POST["s_meals"])) {
         echo("<script>lightyear.notify('请选择要修改的套餐！', 'danger', 3000);</script>");
@@ -112,34 +134,40 @@ if (isset($_POST["s_meals"]) && isset($_POST["e_meals"])) {
     } 
 } 
 
+// 修改每页显示数量
 if (isset($_POST['recCounts'])) {
     $recCounts = $_POST['recCounts'];
     $db->mSet("luo2888_admin", "showcounts=$recCounts", "where name='$user'");
 } 
+
 // 搜索关键字
 if (isset($_GET['keywords'])) {
     $keywords = trim($_GET['keywords']);
     $searchparam = "and (name like '%$keywords%' or deviceid like '%$keywords%' or mac like '%$keywords%' or name like '%$keywords%' or model like '%$keywords%' or ip like '%$keywords%' or region like '%$keywords%' or author like '%$keywords%' or marks like '%$keywords%' or status like '%$keywords%')";
 } 
 $keywords = trim($_GET['keywords']);
+
 // 获取每页显示数量
 if ($row = $db->mGetRow("luo2888_admin", "showcounts", "where name='$user'")) {
     $recCounts = $row['showcounts'];
 } else {
     $recCounts = 100;
 } 
+
 // 获取当前页
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
 } else {
     $page = 1;
 } 
+
 // 获取排序依据
 if (isset($_GET['order'])) {
     $order = $_GET['order'];
 } else {
     $order = 'lasttime desc';
 } 
+
 // 获取用户总数并根据每页显示数量计算页数
 if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>-1")) {
     $userCount = $row[0];
@@ -149,6 +177,7 @@ if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>-1")) {
     $pageCount = 1;
 } 
 unset($row);
+
 // 处理跳转逻辑
 if (isset($_POST['jumpto'])) {
     $p = $_POST['jumpto'];
@@ -156,6 +185,7 @@ if (isset($_POST['jumpto'])) {
         echo "<script language=JavaScript>location.href='useradmin.php' + '?page=$p&order=$order';</script>";
     } 
 } 
+
 // 获取当天上线用户总数
 $todayTime = strtotime(date("Y-m-d"), time());
 if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>-1 and lasttime>$todayTime")) {
@@ -164,6 +194,7 @@ if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>-1 and lastti
     $todayuserCount = 0;
 } 
 unset($row);
+
 // 获取当天授权用户总数
 if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>-1 and authortime>$todayTime")) {
     $todayauthoruserCount = $row[0];
@@ -171,6 +202,7 @@ if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>-1 and author
     $todayauthoruserCount = 0;
 } 
 unset($row);
+
 // 获取过期用户
 $nowTime = time();
 if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status=1 and exp<$nowTime")) {

@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
 require_once "config.php"; 
-require_once "../api/common/alipay/alipay.class.php";
+require_once "api/common/alipay.class.php";
 
 $user=$_GET['id'];
 $db = Config::GetIntance();

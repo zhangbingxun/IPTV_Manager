@@ -194,6 +194,7 @@
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitadddays">增加天数</button>
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitNotExpired">设为永不到期</button>
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitCancelNotExpired">取消永不到期</button>
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitclearbind">解除设备绑定</button>
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitforbidden">取消授权</button>
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitdel" onclick="return confirm('确定删除选中用户吗？')">删除</button>
 																<button class="btn btn-sm btn-primary" type="submit" name="submitdelall" onclick="return confirm('确认删除所有已过期授权信息？')">清空过期用户</button>

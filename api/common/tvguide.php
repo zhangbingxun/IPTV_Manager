@@ -4,10 +4,10 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 header("Content-Type:application/json;chartset=uft-8");
 
-require_once "../config.php";
+require_once "../../config.php";
 $db = Config::GetIntance();
-include_once "./common/curl.class.php";
-include_once "./common/cacher.class.php";
+include_once "curl.class.php";
+include_once "cacher.class.php";
 
 $cachedir = "../cache/epgs/";
 if (! is_dir ($cachedir)) {

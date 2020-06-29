@@ -59,12 +59,13 @@ function mUrl() {
 function genName() {
     global $db;    
     $name = rand(1000, 999999);
-    $result = $db->mGet("luo2888_users", "*", "where name=$name");
-    if (!$result) {
-        unset($result);
-        return $name;
-    } else {
+    $users = $db->mCheckOne("luo2888_users", "*", "where name=$name");
+    $serial = $db->mCheckOne("luo2888_serialnum", "*", "where name=$name");
+    if ($users || $serial) {
         genName();
+    } else {
+        unset($users,$serial);
+        return $name;
     }
 }
 
@@ -362,6 +363,65 @@ else if (isset($_GET['tvplay'])) {
 
 }
 
+else if (isset($_POST['active'])) {
+
+    $actstr = $_POST['active'];
+    $jsonstr = base64_decode($actstr);
+    $obj = json_decode($jsonstr);
+    $androidid = $obj->androidid;
+    $mac = $obj->mac;
+    $model = $obj->model;
+    $serial = $obj->serial;
+    $nowtime = time();
+
+    if(!is_numeric($serial))exit('授权号必须为数字！！');
+
+    if ($db->mCheckOne("luo2888_users", "*", "where deviceid='$androidid'") == false) {
+        exit('你的设备无法识别,请与管理员联系！');
+    }
+    unset($row);
+
+    if ($row = $db->mCheckRow("luo2888_users", "status,name,exp,marks,author,authortime", "where name=$serial and status>0 and mac='' and deviceid=''")) {
+        $status = $row['status'];
+        $exp = $row['exp'];
+        $marks = $row['marks'];
+        $author = $row['author'];
+        $authortime = $row['authortime'];
+
+        //通过SN重新绑定
+        $db->mDel("luo2888_users","where mac='$mac' and deviceid='$androidid' and model='$model' and status=-1");
+        $db->mSet("luo2888_users","mac='$mac',deviceid='$androidid',model='$model'","where name=$serial and status>0 and mac='' and deviceid='' and model=''");
+        exit("系统已为你重新绑定成功！");	
+
+    } else {
+
+        if($row = $db->mCheckRow("luo2888_serialnum", "name,meal,days,author,marks", "where name=$serial")){
+            $nowtime = time();
+            $meal = $row['meal'];
+            $marks = $row['marks'];
+            $author = $row['author'];
+            $exp = strtotime(date("Y-m-d"),$nowtime) + $row['days'] * 86400;
+
+            if ($row['days'] == 999) {
+                $status = 999;
+            } else {
+                $status = 1;
+            }
+           
+            if (empty($marks)) {
+                $marks = '授权号绑定';
+            }
+
+            $db->mSet("luo2888_users","name=$serial,meal=$meal,status=$status,exp=$exp,author='$author',authortime=$nowtime,marks='$marks'","where deviceid='$androidid'");
+            $db->mDel("luo2888_serialnum","where name=$serial");
+            exit("授权号绑定成功！！");
+        } else {
+            exit("授权号错误，请联系提供商！！");
+			   }
+    }
+    unset($row);
+}
+
 else if (isset($_POST['login'])) {
 
     $loginstr = $_POST['login'];
@@ -522,7 +582,8 @@ else if (isset($_POST['login'])) {
 
     if ($status < 1) {
         $datatoken = '';
-        $appurl = '';
+        $keyproxy = '';
+        $randkey = '';
     } 
 
     $result = $db->mQuery("SELECT name from luo2888_category where enable=1 and type='province' order by id");
@@ -541,6 +602,7 @@ else if (isset($_POST['login'])) {
         $status = 0;
         $tipuserforbidden= '检测不到Mac地址，请打开WiFi重新登录！';
     }
+
 
     if ($banuser == 1) {
         $status = 0;

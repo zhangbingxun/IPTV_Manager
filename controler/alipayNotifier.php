@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
 require_once "../config.php";
-require_once "alipay/notify.class.php";
+require_once "../api/common/notify.class.php";
 $db = Config::GetIntance();
 
 $alipayPublicKey = $db->mGet("luo2888_config", "value", "where name='alipay_publickey'");  //支付宝公钥

@@ -62,7 +62,6 @@ if (isset($_POST['submitadddays'])) {
     } elseif (empty($_POST['exp'])) {
         echo("<script>lightyear.notify('请输入要增加的授权天数！', 'danger', 3000);</script>");
     } else {
-        $expimportmac = $_POST['exp'];
         $exp = 86400 * $_POST['exp'];
         foreach ($_POST['id'] as $id) {
             $db->mSet("luo2888_users", "exp=exp+$exp", "where name=$id and status=1");

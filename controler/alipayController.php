@@ -6,11 +6,21 @@ error_reporting(E_ERROR);
 require_once "config.php"; 
 require_once "api/common/alipay.class.php";
 
-$user=$_GET['id'];
+// 获取地址
+function mUrl() {
+    $Url = 'http://';
+    if($_SERVER['HTTPS'] == 'on') {
+        $Url = 'https://';
+    }
+    $Url .= $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+    return $Url;
+}
+
+$myurl = mUrl();
+$user = $_GET['id'];
 $db = Config::GetIntance();
 $signType = 'RSA2';  //签名算法类型，支持RSA2和RSA
-$myurl=dirname('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-$notifyUrl = $myurl . '/controler/alipayNotifier.php';  //异步回调地址
+$notifyUrl = dirname($myurl) . '/controler/alipayNotifier.php';  //异步回调地址
 $appid = $db->mGet("luo2888_config", "value", "where name='alipay_appid'");  //应用APPID
 $appname = $db->mGet("luo2888_config", "value", "where name='app_appname'");  //应用名称
 $rsaPrivateKey = $db->mGet("luo2888_config", "value", "where name='alipay_privatekey'");  //商户私钥
@@ -24,6 +34,7 @@ if (isset($_POST['dopay'])) {
 	$orderName = $appname . $mealname;  //订单标题
 	$payAmount = $amount;  //付款金额
 	$outTradeNo = uniqid(rand(100000000000000, 999999999999999));  //生成订单号
+	$orderTime = time();
 	$aliPay = new AlipayService();
 	$aliPay->setAppid($appid);
 	$aliPay->setNotifyUrl($notifyUrl);
@@ -38,7 +49,7 @@ if (isset($_POST['dopay'])) {
     		$db->mDel("luo2888_payment", "where userid=$userid and status=0");
         	exit("<script>$.alert({title: '警告',content: '系统存在您的未支付订单，已为你删除，请重新支付，如有异议请联系管理员！',type: 'orange',buttons: {confirm: {text: '返回',btnClass: 'btn-default',action: function(){history.go(-1);}}}});</script>");
     	} else {
-    		$db->mInt("luo2888_payment", "userid,order_id,meal,days,status", "$userid,'$outTradeNo',$mealid,$days,0");
+    		$db->mInt("luo2888_payment", "userid,order_id,meal,days,ordertime,paidtime,status", "$userid,'$outTradeNo',$mealid,$days,$orderTime,0,0");
     	}
     }
 	$result = $aliPay->doPay();

@@ -126,7 +126,6 @@
 															$status=$row['status'];
 															$lasttime=date("Y-m-d H:i:s",$row['lasttime']);
 															$days=ceil(($row['exp']-time())/86400);
-															$expdate="到期时间：".date("Y-m-d H:i:s",$row['exp']);
 															$name=$row['name'];
 															$deviceid=$row['deviceid'];
 															$mac=$row['mac'];
@@ -161,7 +160,7 @@
 																<td>".$ip."</td>
 																<td>".$region."</td>
 																<td>".$lasttime ."</td>
-																<td title='$expdate'>".$days."</td>
+																<td>".$days."</td>
 																<td>".$author."</td>
 																<td>$marks</td>
 																</tr>";

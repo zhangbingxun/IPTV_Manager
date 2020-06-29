@@ -9,7 +9,7 @@ $db = Config::GetIntance();
 include_once "curl.class.php";
 include_once "cacher.class.php";
 
-$cachedir = "../cache/epgs/";
+$cachedir = "../../cache/epgs/";
 if (! is_dir ($cachedir)) {
     @mkdir ($cachedir, 0755, true) or die ('创建文件夹失败');
 } 
@@ -28,7 +28,7 @@ function out_epg($id,$is_simple) {
 
     $tt = cache("time_out_chk", "cache_time_out"); //获取当前时间（后天）的00:00时间戳
     if (time() >= $tt) {
-        Cache::$cache_path = "../cache/epgs/"; 
+        Cache::$cache_path = "../../cache/epgs/"; 
         // 删除除当前目录缓存文件
         Cache::dels(); 
         // 重新写入当天时间缓存文件
@@ -252,7 +252,7 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
         return json_encode($data, JSON_UNESCAPED_UNICODE);
         // 51zmt
     } else if (strstr($epgid, "51zmt") != false) {
-        $cachefile = "../cache/51zmt.xml";
+        $cachefile = "../../cache/51zmt.xml";
         $url = "http://epg.51zmt.top:8000/gat.xml";
         if (file_exists($cachefile)) {
             $filemtime = filemtime ($cachefile);

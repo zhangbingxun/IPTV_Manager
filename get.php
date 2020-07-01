@@ -51,8 +51,6 @@ function randomStr($len = 16)
     return $result;
 }
 
-// 头部
-header("Content-Type:text/plain;chartset=utf-8");
 
 // 配置
 if (isset($_GET['cietv'])) {
@@ -94,30 +92,6 @@ if (isset($_GET['hk168'])) {
     $packagename = 'com.lt.hk168'; //软件包名
     $url = 'http://tv668.club/hk666'; // 后台地址
 }
-if (isset($_GET['xsd168'])) {
-    $jnikey = '37HASY0B67UR';
-    $aid = randomStr();
-    $sig = 16015; //签名密码
-    $appname = '新时代直播'; //软件名
-    $packagename = 'com.lt.xsd168'; //软件包名
-    $url = 'http://tv668.club/xsd168'; // 后台地址
-}
-if (isset($_GET['qqds'])) {
-    $jnikey = 'AD80F93B542B';
-    $aid = randomStr();
-    $sig = 12315; //签名密码
-    $appname = '全球电视'; //软件名
-    $packagename = 'com.quanqiu'; //软件包名
-    $url = 'http://47.56.251.109/iptv'; // 后台地址
-}
-if (isset($_GET['dzzb'])) {
-    $jnikey = 'AD80F93B542B';
-    $aid = randomStr();
-    $sig = 14463; //签名密码
-    $appname = '大众直播'; //软件名
-    $packagename = 'com.iptv.dzzb'; //软件包名
-    $url = 'http://zhibo123.top'; // 后台地址
-}
 if (isset($_GET['pszb'])) {
     $jnikey = 'AD80F93B542B';
     $aid = randomStr();
@@ -149,6 +123,22 @@ if (isset($_GET['mhds'])) {
     $appname = '美好电视'; //软件名
     $packagename = 'com.meilixuexi.tv'; //软件包名
     $url = 'http://139.224.232.220/mhtv'; // 后台地址
+}
+if (isset($_GET['yjxb'])) {
+    $jnikey = 'LC2RC27QTTQM';
+    $aid = randomStr();
+    $sig = 523123313; //签名密码
+    $appname = '有家新版'; //软件名
+    $packagename = 'com.youjia.qwnew'; //软件包名
+    $url = 'http://bio-panasonic.cn/yj_iptv'; // 后台地址
+}
+
+// 头部
+if (isset($_GET['txt'])) {
+    header("Content-type:application/octet-stream");
+    header("Content-Disposition: attachment; filename=" . $appname . ".txt");
+} else {
+    header("Content-Type:text/plain;chartset=utf-8");
 }
 $mac = "11:22:33:44:55:66";
 $key = md5($sig . $appname . $packagename . $jnikey);

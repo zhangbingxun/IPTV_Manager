@@ -56,24 +56,24 @@ $ips = array(
     '39.101.217.17', // id=1 2020-04
     '140.143.146.222', // id=2 2020-04
     '103.133.179.97', // id=2 2020-04
-    '120.53.119.81', // id=2 2020-04
-    '149.129.75.149', // id=3 2020-04
+    '23.225.178.34', // id=3 2020-04
+    '8.210.170.8', // id=3 2020-07
     '103.145.39.149', // id=4 2020-04
-    '123.57.48.155', // id=5 51itv.top 2020-04
-    '114.67.203.190', // id=6 090n.com
-    '198.44.188.193', // id=7 llv99.cn 2020-04
-    '111.230.178.212', // id=8 3322.org 2020-06
-    '118.31.124.107', // id=8 3322.org 2020-06
-    '42.51.16.68', // id=8 3322.org lingdushuma.net2020-06
-    '39.99.174.216', // id=9 wangweizhushou.com 2020-06
+    '123.57.48.155', // id=5 2020-04
+    '114.67.203.190', // id=6
+    '198.44.188.193', // id=7 2020-04
+    '111.230.178.212', // id=8 2020-06
+    '118.31.124.107', // id=8 2020-06
+    '42.51.16.68', // id=8 2020-06
+    '39.99.174.216', // id=9 2020-06
     '47.56.247.8', // id=10 2020-06
     '122.114.123.45', // id=11 2020-06
     '191.101.44.238', // id=12 2020-06
-    '14.116.198.35', // id=13 qxwifi.com 2020-06
+    '14.116.198.35', // id=13 2020-06
     '47.114.56.181', // id=14 2020-04
     '111.229.143.72', // id=15 2020-06
     '23.235.147.161', // id=15 2020-06
-    '160.124.156.113', // mytvhd.xyz id=16 2020-06
+    '160.124.156.113', // id=16 2020-06
     '111.231.220.154', // id=17 2020-06
     '218.78.59.212', // id=18 2020-06
     '47.240.56.70', // id=19 2020-06
@@ -81,6 +81,7 @@ $ips = array(
     '39.105.57.132', // id=20 2020-06
     '39.106.196.210', // id=21 2020-06
     '52.163.205.245', // id=22  2020-06
+    '121.36.220.254', // id=22  2020-06
     '8.210.28.205', // id=23  2020-06
     '45.138.70.217', // id=24  2020-06
     '122.114.76.226', // id=25  2020-06
@@ -192,6 +193,7 @@ if (isset($_POST['fmitv_proxy']) || isset($_GET['url'])) {
 
 } else {
 
+    header('HTTP/1.1 403 Forbidden');
     exit;
 
 }
@@ -224,7 +226,7 @@ function urldata($vid,$tid,$id,$line) {
     }
     
     if ($vid == 'ysp') {
-        $playurl = "http://210.22.242.108/live-cnc-cdn.ysp.cctv.cn/001/$id.m3u8";
+        $playurl = "http://210.22.242.108/outlivecloud-cdn.ysp.cctv.cn/001/$id.m3u8";
     }
     
     if ($vid == 'cqyx') {
@@ -253,20 +255,6 @@ function urldata($vid,$tid,$id,$line) {
     
     if ($vid == 'yfy') {
         $playurl = "http://wx.tt1008.top/yfy.php?id=" . $id;
-    }
-
-    if (strstr($vid, "lttv") == true) {
-        $nowtime = time();
-        $signtime = $nowtime + 1908;
-        $sign = $signtime ^ 209002969;
-        $vids = array(
-            "lttv_ab"=>"playlive.118888888.xyz:99",
-            "lttv_ten"=>"playlive.228888888.xyz",
-            "lttv_bd"=>"playlive.558888888.xyz:10013",
-            "lttv_hd"=>"playlive.668888888.xyz:27766",
-        );
-        $tid = preg_replace('#_#', '/', $tid);
-        $playurl = "http://" . $vids[$vid] . "/" . $tid . ".php?id=" . $id . "&t=" . $nowtime . "&sign=" . $sign;
     }
 
     if ($vid=='4gtv') {
@@ -566,18 +554,26 @@ function urldata($vid,$tid,$id,$line) {
     }
 
     if ($vid == 'grtn') {
-        $url = "http://www.gdtv.cn/m2o/player/channel_xml.php?id=$id";
-        $stime = time();
-        $PlayerVersion = '4.12.180327_RC';
+        $url = "https://gdtv-api.gdtv.cn:7443/api/tv/v1/tvChannel/" . $id;
+        $fulltimes = time().substr(explode(".",microtime())[1],0,3);
+        $key = '89541443007807288657755311869534';
+        $secret = 'dfkcY1c3sfuw0Cii9DWjOUO3iQy2hqlDxyvDXd1oVMxwYAJSgeB6phO8eW1dfuwX';
+        $sign = base64_encode(hash_hmac('sha256',"GET\n".$url."\n". $fulltimes."\n",$secret,true));
+        $headers = array(
+            "x-itouchtv-ca-key: ".$key,
+            "x-itouchtv-ca-signature: ".$sign,
+            "x-itouchtv-ca-timestamp: ".$fulltimes,
+            "x-itouchtv-client: WEB_PC",
+            "x-itouchtv-device-id:WEB_6718dd60-b79e-11ea-a943-bd094ad2a8c4",
+          );
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727;)');
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         $curlobj = curl_exec($curl);
-        $curlobj = json_decode(json_encode(simplexml_load_string($curlobj)) , true);
-        $linkurl = str_replace('stream1', 'nclive', $curlobj['drm'] . '?playerVersion=' . $PlayerVersion . '&time=' . $stime . '&url=' . $curlobj['video']['@attributes']['baseUrl'] . $curlobj['video']['item'][0]['@attributes']['url'] . 'live.m3u8');
-        curl_setopt($curl, CURLOPT_URL, $linkurl);
-        $playurl = curl_exec($curl);
+        $playurl = json_decode(json_decode($curlobj,true)['playUrl'],true)['hd'];
         curl_close($curl);
     }
 

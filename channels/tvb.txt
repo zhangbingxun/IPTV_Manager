@@ -1,2 +1,3 @@
 无线新闻,vid=tvb#id=inews
 无线财经资讯,vid=tvb#id=finance
+无线新闻直播台,vid=tvb#id=newsevent1

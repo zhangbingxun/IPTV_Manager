@@ -52,6 +52,8 @@
 							$mealsadmin='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'epgadmin.php') !== false){
 							$epgadmin='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'vodsadmin.php') !== false){
+							$vodsadmin='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'mealsadmin.php') !== false){
 							$mealsadmin='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'ordersadmin.php') !== false){
@@ -90,6 +92,7 @@
 						<li class="nav-item <?php echo $mealsadmin ?>"> <a href="mealsadmin.php"><i class="mdi mdi-shopping"></i>套餐</a></li>
 						<li class="nav-item <?php echo $ordersadmin ?>"> <a href="ordersadmin.php"><i class="mdi mdi-wallet-giftcard"></i>订单</a></li>
 						<li class="nav-item <?php echo $epgadmin ?>"> <a href="epgadmin.php"><i class="mdi mdi-television-guide"></i>EPG</a> </li>
+						<li class="nav-item <?php echo $vodsadmin ?>"> <a href="vodsadmin.php"><i class="mdi mdi-television-guide"></i>点播采集</a> </li>
 						<li class="nav-item nav-item-has-subnav channeladmin">
 							<a href="javascript:void(0)"><i class="mdi mdi-television-classic"></i>频道列表</a>
 							<ul class="nav nav-subnav">
@@ -144,6 +147,7 @@
 						else if (strpos($_SERVER['REQUEST_URI'],'mealsadmin.php') !== false){ echo '&nbsp;套餐&nbsp;'; }
 						else if (strpos($_SERVER['REQUEST_URI'],'ordersadmin.php') !== false){ echo '&nbsp;订单&nbsp;'; }
 						else if (strpos($_SERVER['REQUEST_URI'],'epgadmin.php') !== false){ echo '&nbsp;EPG&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'vodsadmin.php') !== false){ echo '&nbsp;点播采集&nbsp;'; }
 						else if (strpos($_SERVER['REQUEST_URI'],'channeladmin.php') !== false){ echo '&nbsp;频道列表&nbsp;'; }
 						else if (strpos($_SERVER['REQUEST_URI'],'sysadmin.php') !== false){ echo '&nbsp;系统设置&nbsp;'; }
 						?>

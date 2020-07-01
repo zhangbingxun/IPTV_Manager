@@ -590,6 +590,23 @@ else if (isset($_POST['login'])) {
     while ($row = mysqli_fetch_array($result)) {
         $arrprov[] = $row[0];
     } 
+    unset($row);
+    mysqli_free_result($result);
+
+    $result = $db->mQuery("SELECT name,url from luo2888_vods where enable=1 order by id");
+    while ($row = mysqli_fetch_array($result)) {
+        $vodmodels[] = array(
+            "name" => $row['name'],
+            "api" => $row['url'],
+        );
+    } 
+    $vodapi = (Object)null;
+    $vodapi->name = "肥米TV视频采集接口";
+    $vodapi->model = $vodmodels;
+    $voddatas = json_encode($vodapi, JSON_UNESCAPED_UNICODE);
+    unset($row);
+    mysqli_free_result($result);
+
     $arrcanseek[] = '';
 
     banuser:
@@ -614,13 +631,12 @@ else if (isset($_POST['login'])) {
         $tipuserforbidden= '对不起，同一个IP只允许注册' . $ipadmit . '台设备！';
     }
 
-    $objres = array('id' => $name, 'status' => $status, 'mealname' => $mealname, 'datatoken' => $datatoken, 'appurl' => $appurl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'exp' => $days, 'userip' => $userip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'adinfo' => $adinfo, 'keyproxy' => $keyproxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => $autoupdate, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp);
+    $objres = array('id' => $name, 'status' => $status, 'mealname' => $mealname, 'datatoken' => $datatoken, 'appurl' => $appurl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'exp' => $days, 'userip' => $userip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'adinfo' => $adinfo, 'keyproxy' => $keyproxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => $autoupdate, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp, 'movieengine' => $voddatas);
 
     $objres = str_replace("\\/", "/", json_encode($objres, JSON_UNESCAPED_UNICODE)); 
     $key = substr($key, 5, 16);
     $aes = new Aes($key,$iv);
     $encrypted = $aes -> encrypt($objres);
-    mysqli_free_result($result);
     echo $encrypted;
     exit;
 

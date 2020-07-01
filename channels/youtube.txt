@@ -1,7 +1,7 @@
 ABC News,vid=youtube#id=w_Ma8oQLmSM
 ANN News,vid=youtube#id=coYw-eVU0Ks
 CCTV中文国际,vid=youtube#id=vCDDYb_M2B4
-中视新闻,vid=youtube#id=me_mFzhe-cE
+中视新闻,vid=youtube#id=wxQcIb8zcPA
 台视新闻,vid=youtube#id=NbjI0cARzjQ
 民视新闻,vid=youtube#id=XxJKnDLYZz4
 华视新闻,vid=youtube#id=TL8mmew3jb8

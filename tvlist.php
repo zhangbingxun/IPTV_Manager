@@ -39,7 +39,6 @@ if (empty($vid)){
         肥米TV：fmitv
         普视PV：pvbox
         凤凰电视：fhds
-        龙腾TV(需要专用壳)：lttv
         香港无线(节目源来自境外)：tvb
         四季线上(节目源来自境外)：4gtv
         台湾哈TV(节目源来自境外)：hatv
@@ -217,9 +216,14 @@ TXT文件格式：
 加勒比海盗2,vid=6ska#id=https://www.iqiyi.com/v_19rrjcdxnc.html
 LPL赛事直播,vid=huya#id=lpl
 ";
-    } else {
-        $channels = file_get_contents($id);
-        preg_match_all('/(.*?),(.*?)\n/i', $channels, $arrays);
+    } else {;
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $id);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        $channels = curl_exec($curl);
+        preg_match_all('/(.*?),(.*?)\r/i', $channels, $arrays);
         foreach ($arrays[1] as &$channelname) {
             $channellist[] = $channelname . ',' . $arrays[2][$i] . "\n";
             $i++;

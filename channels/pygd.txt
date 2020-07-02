@@ -1,2 +1,0 @@
-晋中一台,vid=pygd#id=006
-晋中二台,vid=pygd#id=178

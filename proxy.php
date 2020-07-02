@@ -15,7 +15,7 @@ require_once "config.php";
 $db = Config::getIntance();
 
 // 数据变量
-$dataurl = 'https://tv.luo2888.cn/dl.php';  // 代理API地址
+$dataurl = 'https://ott.luo2888.cn/dl.php';  // 代理API地址
 $checkcode = "fmi"; // 节目列表安全码
 
 // 解密URL

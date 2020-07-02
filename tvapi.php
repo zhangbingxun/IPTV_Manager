@@ -241,12 +241,12 @@ else if (isset($_GET['getver'])) {
 
     if (strstr($appurl,"lanzou://")) {
         $appurl = preg_replace('#lanzou\:#', 'https:', $appurl);
-        $appurl = cache("appurl", "lanzouUrl", [$appurl]);
+        $appurl = cache("appurl" . $appurl, "lanzouUrl", [$appurl]);
     }
 
     if (strstr($boxurl,"lanzou://")) {
         $boxurl = preg_replace('#lanzou\:#', 'https:', $boxurl);
-        $boxurl = cache("boxurl", "lanzouUrl", [$boxurl]);
+        $boxurl = cache("boxurl" . $boxurl, "lanzouUrl", [$boxurl]);
     }
 
     $data = json_encode(

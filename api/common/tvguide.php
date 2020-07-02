@@ -125,7 +125,7 @@ function getPos($json,$which_api) {
 
 // 缓存EPG节目数据
 function cache($key, $f_name, $ff = []) {
-    Cache::$cache_path = "../cache/epgs/";
+    Cache::$cache_path = "../../cache/epgs/";
     $val = Cache::gets($key);
     if (!$val) {
         $data = call_user_func_array($f_name, $ff);

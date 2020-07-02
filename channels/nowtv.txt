@@ -1,3 +1,0 @@
-NOW直播,vid=nowtv#id=331
-NOW新闻,vid=nowtv#id=332
-NOW体育,vid=nowtv#id=630

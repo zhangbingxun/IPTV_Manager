@@ -1,3 +1,0 @@
-汕头一台,vid=cutv#id=st1
-汕头二台,vid=cutv#id=st2
-汕头三台,vid=cutv#id=st3

@@ -108,14 +108,6 @@ if (isset($_GET['xszb'])) {
     $packagename = 'com.xszb.tv'; //软件包名
     $url = 'http://xszb.chxjon.cn'; // 后台地址
 }
-if (isset($_GET['hxzb'])) {
-    $jnikey = 'AD80F93B542B';
-    $aid = randomStr();
-    $sig = 9119; //签名密码
-    $appname = '海峡直播'; //软件名
-    $packagename = 'cn.hxtv.player'; //软件包名
-    $url = 'http://hxtv.942wifi.com:8421'; // 后台地址
-}
 if (isset($_GET['mhds'])) {
     $jnikey = 'AD80F93B542B';
     $aid = "319fdd0b8a87bb06";

@@ -58,6 +58,8 @@
 							$mealsadmin='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'ordersadmin.php') !== false){
 							$ordersadmin='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'type=web') !== false){
+							$web='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'type=default') !== false){
 							$default='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'type=province') !== false){
@@ -96,6 +98,7 @@
 						<li class="nav-item nav-item-has-subnav channeladmin">
 							<a href="javascript:void(0)"><i class="mdi mdi-television-classic"></i>频道列表</a>
 							<ul class="nav nav-subnav">
+								<li class="<?php echo $web ?>"><a href="channeladmin.php?type=web">网页端频道</a></li>
 								<li class="<?php echo $default ?>"><a href="channeladmin.php?type=default">默认频道</a></li>
 								<li class="<?php echo $province ?>"><a href="channeladmin.php?type=province">省份频道</a></li>
 								<li class="<?php echo $chinanet ?>"><a href="channeladmin.php?type=chinanet">电信频道</a></li>

@@ -14,18 +14,20 @@ $categorytype = $_GET['type'];
 // 对分类进行重新排序
 function sort_id() {
     global $categorytype, $db;
-    if ($categorytype == 'default') {
+    if ($categorytype == 'web') {
         $numCount = 1;
-    } else if ($categorytype == 'vip') {
+    } else if ($categorytype == 'default') {
         $numCount = 50;
-    } else if ($categorytype == 'cmcc') {
+    } else if ($categorytype == 'vip') {
         $numCount = 100;
-    } else if ($categorytype == 'unicom') {
+    } else if ($categorytype == 'cmcc') {
         $numCount = 150;
-    } else if ($categorytype == 'chinanet') {
+    } else if ($categorytype == 'unicom') {
         $numCount = 200;
-    } else if ($categorytype == 'province') {
+    } else if ($categorytype == 'chinanet') {
         $numCount = 250;
+    } else if ($categorytype == 'province') {
+        $numCount = 300;
     } 
     $result = $db->mQuery("SELECT * from luo2888_category where type='$categorytype' order by id");
     while ($row = mysqli_fetch_array($result)) {
@@ -74,7 +76,7 @@ function add_channel_list($cname, $srclist) {
                         $src2 = str_replace("\'", "", $src2);
                         $src2 = str_replace("}", "", $src2);
                         $src2 = str_replace("{", "", $src2);
-                        $channelurl = $db->mQuery("SELECT url from luo2888_channels");
+                        $channelurl = $db->mQuery("SELECT url from luo2888_channels where type='$categorytype'");
                         while ($url = mysqli_fetch_array($channelurl)) {
                             if ($src2 == $url[0]) {
                                 $src2 = '';
@@ -92,7 +94,7 @@ function add_channel_list($cname, $srclist) {
                     $src2 = str_replace("\'", "", $src2);
                     $src2 = str_replace("}", "", $src2);
                     $src2 = str_replace("{", "", $src2);
-                    $channelurl = $db->mQuery("SELECT url from luo2888_channels");
+                    $channelurl = $db->mQuery("SELECT url from luo2888_channels where type='$categorytype'");
                     while ($url = mysqli_fetch_array($channelurl)) {
                         if ($src2 == $url[0]) {
                             $src2 = '';

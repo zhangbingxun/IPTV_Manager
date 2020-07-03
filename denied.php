@@ -1,5 +1,5 @@
 <?php
 
-$url = 'https://gitee.com/GaHoKwan/ottproxy/raw/master/videos/fmitv_denied.mp4';
+$url = 'https://ott.luo2888.cn/videos/fmitv_denied.mp4';
 header('location:' . $url);
 ?>

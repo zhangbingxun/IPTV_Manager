@@ -3,13 +3,13 @@ ini_set("error_reporting", "E_ALL & ~E_NOTICE");
 
 session_start();
 require_once "config.php";
-$db = Config::GetIntance();
 $remote = new GetIP();
+$db = Config::GetIntance();
 $time = date("Y-m-d H:i:s");
 $userip = $remote->getuserip();
-$json = $remote -> getloc($userip);
-$obj = json_decode($json);
-$region = $obj->data->region . $obj->data->city . $obj->data->isp;
+$json = $remote -> getloc($db,$myurl,$userip);
+$iploc = json_decode($json);
+$region = $iploc->data->region . $iploc->data->city . $iploc->data->isp;
 $skey =  $db->mGet("luo2888_config","value","where name='secret_key'");
         
 if (isset($_COOKIE['secret_key'])) {

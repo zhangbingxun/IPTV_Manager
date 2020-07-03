@@ -20,6 +20,7 @@ class curl {
     //构造函数
     function __construct() {
         $this->ch = curl_init();
+        curl_setopt($this->ch, CURLOPT_TIMEOUT, 5);
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 60);
     }

@@ -6,6 +6,6 @@ setcookie("username", null, time() -1, "/");
 setcookie("password", null, time() -1, "/");
 setcookie("secret_key", null, time() -1, "/");
 setcookie("rememberpass", null, time() -1, "/");
-header("location:/index.php");
+header("location:/admin.php");
 
 ?>

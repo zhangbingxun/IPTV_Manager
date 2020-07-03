@@ -131,7 +131,8 @@
 					<div class="card-header">
 						<h4>
 							<?php
-							if (strpos($_SERVER['REQUEST_URI'],'default') !== false){ echo '默认频道'; }
+							if (strpos($_SERVER['REQUEST_URI'],'web') !== false){ echo '网页端频道'; }
+							else if (strpos($_SERVER['REQUEST_URI'],'default') !== false){ echo '默认频道'; }
 							else if (strpos($_SERVER['REQUEST_URI'],'province') !== false){ echo '省份频道'; }
 							else if (strpos($_SERVER['REQUEST_URI'],'chinanet') !== false){ echo '电信频道'; }
 							else if (strpos($_SERVER['REQUEST_URI'],'unicom') !== false){ echo '联通频道'; }

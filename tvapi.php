@@ -43,18 +43,6 @@ class Aes {
     }
 }
 
-// 获取API地址
-function mUrl() {
-
-    $Url = 'http://';
-    if($_SERVER['HTTPS'] == 'on') {
-        $Url = 'https://';
-    }
-    $Url .= $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
-    return $Url;
-
-}
-
 // 生成随机账号
 function genName() {
     global $db;    
@@ -157,54 +145,6 @@ function cache_time_out() {
     return $timetoken;
 }
 
-function mCurl($url,$method,$refurl,$post_data){
-    $UserAgent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36';
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_USERAGENT, $UserAgent);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    if ($method == "POST") {
-        curl_setopt($curl, CURLOPT_REFERER, $refurl); 
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
-    }
-    $response = curl_exec($curl);
-    curl_close($curl);
-    return $response;
-}
-
-function lanzouUrl($url) {
-    $ruleMatchDetailInList = "~ifr2\"\sname=\"[\s\S]*?\"\ssrc=\"\/(.*?)\"~";
-    preg_match_all($ruleMatchDetailInList, mCurl($url,null,null,null),$link);
-    $index = 0;
-    for($i=0;$i<count($link[1]);$i++){
-        if($link[1][$i]!="fn?v2"){
-            $index = $i;
-            break;
-        }
-    }
-
-    $refurl = "https://www.lanzous.com/".$link[1][$index];
-    $ruleMatchDetailInList = "~var ajaxup = '([^\]]*)';//~";
-    preg_match($ruleMatchDetailInList, mCurl($refurl,null,null,null),$segment);
-    $post_data = array(
-        "action" => "downprocess",
-        "sign" => $segment[1],
-        "ves" => 1,
-        "p" => ""
-    );
-
-    $downjson = mCurl("https://www.lanzous.com/ajaxm.php","POST",$refurl,$post_data);
-    $linkobj = json_decode($downjson);
-    if ($linkobj->dom == "") {
-        return false;
-    } else {
-        return $linkobj->dom . "/file/" . $linkobj->url;
-    }
-}
-
 if (isset($_GET['bgpic'])) {
 
     header('Content-Type: text/json;charset=UTF-8');
@@ -277,7 +217,7 @@ else if (isset($_GET['getloc'])) {
         $userip = $remote -> getuserip();
     }
 
-    $iploc = $remote -> getloc($userip);
+    $iploc = $remote -> getloc($db,$myurl,$userip);
     echo $iploc;
 
     exit;
@@ -448,7 +388,7 @@ else if (isset($_POST['login'])) {
     }
 
     if (empty($region)) {
-        $json = $remote -> getloc($userip);
+        $json = $remote -> getloc($db,$myurl,$userip);
         $obj = json_decode($json);
         $region = $obj->data->region . $obj->data->city . $obj->data->isp;
     } 

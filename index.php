@@ -78,7 +78,7 @@ if (strstr($boxurl,"lanzou://")) {
 						</div>
 						<nav>
 							<ul>
-								<li><a href="zblist.php">WEB版本</a></li>
+								<li><a href="/zblist.php">WEB版本</a></li>
 								<li><a href="#android">Android版本</a></li>
 								<li><a href="#about">關於及免責聲明</a></li>
 							</ul>

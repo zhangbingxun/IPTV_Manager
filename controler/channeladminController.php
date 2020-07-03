@@ -76,7 +76,7 @@ function add_channel_list($cname, $srclist) {
                         $src2 = str_replace("\'", "", $src2);
                         $src2 = str_replace("}", "", $src2);
                         $src2 = str_replace("{", "", $src2);
-                        $channelurl = $db->mQuery("SELECT url from luo2888_channels where type='$categorytype'");
+                        $channelurl = $db->mQuery("SELECT url from luo2888_channels where category='$cname'");
                         while ($url = mysqli_fetch_array($channelurl)) {
                             if ($src2 == $url[0]) {
                                 $src2 = '';
@@ -94,7 +94,7 @@ function add_channel_list($cname, $srclist) {
                     $src2 = str_replace("\'", "", $src2);
                     $src2 = str_replace("}", "", $src2);
                     $src2 = str_replace("{", "", $src2);
-                    $channelurl = $db->mQuery("SELECT url from luo2888_channels where type='$categorytype'");
+                    $channelurl = $db->mQuery("SELECT url from luo2888_channels where category='$cname'");
                     while ($url = mysqli_fetch_array($channelurl)) {
                         if ($src2 == $url[0]) {
                             $src2 = '';

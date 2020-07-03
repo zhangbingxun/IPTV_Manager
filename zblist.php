@@ -7,10 +7,16 @@ require_once "api/common/cacher.class.php";
 require_once "config.php";
 $db = Config::GetIntance();
 
-if (empty($_GET['cate'])) {
+if (isset($_GET['keywords'])) {
+    $nowcate = !empty($_GET['cate']) ? $_GET['cate'] : $nowcate = $db->mGet("luo2888_category", "name", "where type='web' order by id");
+    $keywords = trim($_GET['keywords']);
+    $where = "category='$nowcate' and (name like '%$keywords%')";
+} else if (empty($_GET['cate'])) {
     $nowcate = $db->mGet("luo2888_category", "name", "where type='web' order by id");
+    $where = "category='$nowcate'";
 } else {
     $nowcate = $_GET['cate'];
+    $where = "category='$nowcate'";
 }
 
 ?>
@@ -50,7 +56,7 @@ if (empty($_GET['cate'])) {
                         </a>
                         <i class="icon">
                         </i>
-                        <a href="zblist.php">
+                        <a href="/zblist.php">
                             电视直播
                         </a>
                         <i class="icon">
@@ -65,9 +71,9 @@ if (empty($_GET['cate'])) {
             </a>
         </header>
         <div class="clearfix" id="seindex">
-            <form name="formsearch" action="#" style="display: block;">
-                <input type="text" name="keyboard" class="searchText" id="sinput" value=""
-                placeholder="搜索关键词" />
+            <form method="GET" style="display: block;">
+                <input type="hidden" name="cate" value="<?php echo $nowcate; ?>" />
+                <input type="text" name="keywords" class="searchText" placeholder="搜索关键词" />
                 <input type="submit" class="searchBtn" value="" />
             </form>
         </div>
@@ -96,11 +102,16 @@ if (empty($_GET['cate'])) {
                     0.6em;font-size: 18px;color: #fff;background: #3a9;}
                 </style>
                 <h3 class="area">
-                    <?php echo $nowcate; ?>
+                    <?php 
+                         if (isset($_GET['keywords'])) {
+                             $nowcate = "搜索结果";
+                         }
+                         echo $nowcate;
+                     ?>
                 </h3>
                 <ul class="xhbox zblist">
                     <?php
-					        						$func = "SELECT distinct name FROM luo2888_channels where category='$nowcate' order by id";
+					        						$func = "SELECT distinct name FROM luo2888_channels where $where order by id";
 				          						$result = $db->mQuery($func);
 										         while($row = mysqli_fetch_array($result)) {
                             echo "

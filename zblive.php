@@ -25,6 +25,7 @@ $epgpos = $epgdata['pos'];
     <meta name="description" content="肥米TV，是一款優秀的OTT移動電視直播平台，除電視直播外，還有精彩的電影電視劇輪播、點播，給你最佳的娛樂體驗。功能全面增強，操作簡單快捷，隨時隨地觀看電視的同時，還有福利內容不時提供。" />
     <meta name="author" content="luo2888" />
     <meta name="renderer" content="webkit" />
+    <link rel="icon" href="/views/images/favicon.ico" type="image/ico">
     <link rel="stylesheet" href="/views/css/zhibo.css?t=<?php echo time(); ?>">
     <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
 </head>
@@ -38,7 +39,7 @@ $epgpos = $epgdata['pos'];
         <div class="top-map-noslide">
             <ul>
                 <li>
-                    <a href="zblist.php">
+                    <a href="/zblist.php">
                         频道列表
                     </a>
                     <i class="icon">
@@ -117,9 +118,9 @@ $epgpos = $epgdata['pos'];
                 <table style="width: 100%;">
                 <?php
                     if (!empty($epgdata['data'])) {
-                        echo '<tr><td align="center"><h3>正在播放：&nbsp;&nbsp;' . $epgdata['data'][$epgpos]['name'] . '</h3></td></tr>';
+                        echo '<h3 style="text-align: center;overflow:scroll;margin-bottom: 15px;">正在播放：' . $epgdata['data'][$epgpos]['name'] . '</h3>';
                         foreach ($epgdata['data'] as &$program) {
-                            echo '<tr><td>' . $program['starttime'] . '&nbsp;&nbsp;' . $program['name'] . '</td></tr>';
+                            echo '<tr><td><font size=4px>' . $program['starttime'] . '</font>&nbsp;&nbsp;&nbsp;&nbsp;' . $program['name'] . '</td></tr>';
                         }
                     } else {
                          echo '<tr><td align="center">暂无数据</td></tr>';

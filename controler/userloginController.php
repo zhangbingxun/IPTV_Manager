@@ -3,6 +3,7 @@ ini_set("error_reporting", "E_ALL & ~E_NOTICE");
 
 session_start();
 require_once "config.php";
+$myurl = mUrl();
 $remote = new GetIP();
 $db = Config::GetIntance();
 $time = date("Y-m-d H:i:s");

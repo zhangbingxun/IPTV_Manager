@@ -34,11 +34,9 @@ if (isset($_GET['keywords'])) {
         <meta name="author" content="luo2888" />
         <meta name="renderer" content="webkit" />
         <link rel="icon" href="/views/images/favicon.ico" type="image/ico">
-        <link rel="stylesheet" type="text/css" href="/views/css/zhibo.css" />
-        <script src="/views/js/zepto.js" type="text/javascript">
-        </script>
-        <script src="/views/js/zblist.js" type="text/javascript">
-        </script>
+        <link rel="stylesheet" type="text/css" href="/views/css/zhibo.css?t=<?php echo time(); ?>" />
+        <script src="https://cdn.jsdelivr.net/npm/zepto@1.2.0/dist/zepto.js" type="text/javascript"></script>
+        <script src="/views/js/zblist.js?t=<?php echo time(); ?>" type="text/javascript"></script>
     </head>
     
     <body>

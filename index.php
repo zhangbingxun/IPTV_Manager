@@ -6,7 +6,7 @@ error_reporting(E_ERROR);
 require_once "api/common/cacher.class.php";
 require_once "config.php";
 $db = Config::GetIntance();
-
+$myurl = mUrl();
 
 // 缓存数据
 function cache($key, $f_name, $ff = []) {
@@ -24,7 +24,7 @@ function cache($key, $f_name, $ff = []) {
 // 缓存超时
 function cache_time_out() {
     date_default_timezone_set("Asia/Shanghai");
-    $timetoken = time() + 1200;
+    $timetoken = time() + 500;
     return $timetoken;
 }
 
@@ -78,7 +78,7 @@ if (strstr($boxurl,"lanzou://")) {
 						</div>
 						<nav>
 							<ul>
-								<li><a href="/zblist.php">WEB版本</a></li>
+								<li><a href="<?php echo dirname($myurl); ?>/zblist.php">WEB版本</a></li>
 								<li><a href="#android">Android版本</a></li>
 								<li><a href="#about">關於及免責聲明</a></li>
 							</ul>
@@ -91,6 +91,7 @@ if (strstr($boxurl,"lanzou://")) {
 								<p>本站建立運營的電視直播軟件，支持Android 4.1 – Android 10.0的移動電話、平板電腦、AndroidTV電視機安裝使用。</p>
 								<span class="image main"><img src="http://blog.luo2888.cn/wp-content/uploads/2020/02/Screenshot_20200213_111339_cn.luo2888.tv_-1024x473.jpg" alt="肥米TV" /></span>
 								<p>因中國網絡原因，部分頻道可能無法在國內地區收看</p>
+								<p>隐藏频道：12345</p>
 								<p>下載：</p>
 								<p>
 									<ul class="actions">

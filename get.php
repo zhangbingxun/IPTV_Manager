@@ -76,53 +76,58 @@ if (isset($_GET['cietv'])) {
     }
     exit;
 }
+
 if (isset($_GET['fyds'])) {
-    $jnikey = 'AD80F93B542B';
     $aid = randomStr();
-    $sig = 20202; //签名密码
+    $mac = "11:22:33:44:55:66";
     $appname = '风韵电视'; //软件名
-    $packagename = 'com.vvv.test'; //软件包名
+    $key = "0ef64bef55b1b04514d7f58f7cb11e7b";
     $url = 'http://121.89.198.224/aatv'; // 后台地址
 }
 if (isset($_GET['hk168'])) {
-    $jnikey = 'AD80F93B542B';
     $aid = randomStr();
-    $sig = 16123; //签名密码
-    $appname = '华凯超视觉TV'; //软件名
-    $packagename = 'com.lt.hk168'; //软件包名
+    $mac = "11:22:33:44:55:66";
+    $appname = '华凯超视觉'; //软件名
+    $key = "3bbe41dd6aeee8d1b7ff190e7226bd4d";
     $url = 'http://tv668.club/hk666'; // 后台地址
 }
-if (isset($_GET['pszb'])) {
-    $jnikey = 'AD80F93B542B';
-    $aid = randomStr();
-    $sig = 13838; //签名密码
-    $appname = '普視直播'; //软件名
-    $packagename = 'com.global.live'; //软件包名
-    $url = 'http://live.tvbox.asia/live'; // 后台地址
-}
 if (isset($_GET['xszb'])) {
-    $jnikey = 'AD80F93B542B';
     $aid = randomStr();
-    $sig = 13628; //签名密码
+    $mac = "11:22:33:44:55:66";
     $appname = '星闪直播'; //软件名
-    $packagename = 'com.xszb.tv'; //软件包名
+    $key = "dcaaa109d90d9846ab6a5e42f658743d";
     $url = 'http://xszb.chxjon.cn'; // 后台地址
 }
 if (isset($_GET['mhds'])) {
-    $jnikey = 'AD80F93B542B';
     $aid = "319fdd0b8a87bb06";
-    $sig = 19869; //签名密码
+    $mac = "11:22:33:44:55:66";
     $appname = '美好电视'; //软件名
-    $packagename = 'com.meilixuexi.tv'; //软件包名
+    $key = "a3186c0d4c6da6daef9b3b911798dde7";
     $url = 'http://139.224.232.220/mhtv'; // 后台地址
 }
 if (isset($_GET['yjxb'])) {
-    $jnikey = 'LC2RC27QTTQM';
     $aid = randomStr();
-    $sig = 523123313; //签名密码
+    $mac = "11:22:33:44:55:66";
     $appname = '有家新版'; //软件名
-    $packagename = 'com.youjia.qwnew'; //软件包名
+    $key = "f4adef60bca2d6722fb319343a6c185b";
     $url = 'http://bio-panasonic.cn/yj_iptv'; // 后台地址
+}
+if (isset($_GET['yqlds'])) {
+    $aid = randomStr();
+    $mac = "11:22:33:44:55:66";
+    $appname = '云麒麟TV'; //软件名
+    $key = "e558e80ce561f42632ae146de7e9e050";
+    $url = 'https://66playgame.net/iptv'; // 后台地址
+}
+if (isset($_GET['zbdy'])) {
+    $needb64 = "1";
+    $aid = randomStr();
+    $mac = "11:22:33:44:55:66";
+    $appname = '直播电影'; //软件名
+    $key = "3856b05ab459be531787592fbe6396f3";
+    $url = 'http://x20195.cn/zbdy2020/'; // 后台地址
+    $ts = trim(file_get_contents($url . '/ts'));
+    $token = md5($ts . $url);
 }
 
 // 头部
@@ -132,15 +137,16 @@ if (isset($_GET['txt'])) {
 } else {
     header("Content-Type:text/plain;chartset=utf-8");
 }
-$mac = "11:22:33:44:55:66";
-$key = md5($sig . $appname . $packagename . $jnikey);
-$key = md5($key . $appname . $packagename);
-$postdata = '"region":"","mac":"' . $mac . '","androidid":"'. $aid . '","model":"Android x86","nettype":"","appname":"' . $appname . '"';
 
 // 登录
+if (!empty($needb64)) {
+    $postdata = base64_encode('{"r":"","m":"' . $mac . '","aid":"'. $aid . '","mo":"Android x86","n":"","a":"' . $appname . '","ts":"' . $ts . '","token":"' . $token . '"}');
+} else {
+    $postdata = '{"region":"","mac":"' . $mac . '","androidid":"'. $aid . '","model":"Android x86","nettype":"","appname":"' . $appname . '"}';
+}
 if (isset($_GET['login'])) {
     $loginkey = substr($key, 5, 16);
-    $login_post = 'login={' . $postdata . '}';
+    $login_post = 'login=' . $postdata;
     $login = new Aes($loginkey);
     $loginstr = send_post($url . '/login3.php', $login_post);
     $loginjson = $login->decrypt($loginstr);
@@ -153,7 +159,11 @@ if (isset($_GET['login'])) {
 }
 
 // 获取频道
-$data_post = 'data={' . $postdata . ',' . '"rand":"' . $randkey . '"' . '}';
+if (!empty($needb64)) {
+$data_post = 'data=' . base64_encode('{"r":"","m":"' . $mac . '","aid":"'. $aid . '","mo":"Android x86","n":"","a":"' . $appname . '","rand":"' . $randkey . '","ts":"' . $ts . '","token":"' . $token . '"}');
+} else {
+$data_post = 'data=' . '{"region":"","mac":"' . $mac . '","androidid":"'. $aid . '","model":"Android x86","nettype":"","appname":"' . $appname . '","rand":"' . $randkey . '"}';
+}
 $datakey = md5($key . $randkey);
 $datakey = substr($datakey, 7, 16);
 if (isset($_GET['login'])) {
@@ -173,7 +183,7 @@ $data = new Aes($datakey);
 $datajson = $data->decrypt($encrypted);
 $datajson = gzuncompress(base64_decode($datajson));
 $channeldata = json_decode($datajson, true);
-
+echo $loginstr;
 foreach($channeldata as $catelist) {
     print_r("\n" . '--------------------------------------------------------' . $catelist['name'] . '--------------------------------------------------------' . "\n\n");
     foreach($catelist as $channellist) {

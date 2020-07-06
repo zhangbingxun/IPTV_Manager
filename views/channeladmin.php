@@ -175,11 +175,7 @@
 								<div class="btn-group-vertical" style="padding-left: 15px;">
 									<label class="btn-block">分类列表</label>
 									<?php
-										if ($categorytype=='vip'){
-											$func = "SELECT name,psw,enable FROM luo2888_category where type='$categorytype' order by id";
-										}else{
-											$func = "SELECT name,psw,enable FROM luo2888_category where type='$categorytype' or type='thirdlist' order by id";
-										}
+										$func = "SELECT name,psw,enable FROM luo2888_category where type='$categorytype' order by id";
 										$result = $db->mQuery($func);
 										$index=0;
 										while($row = mysqli_fetch_array($result)) {

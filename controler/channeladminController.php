@@ -2,6 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
+require_once "../api/common/converter.class.php";
 
 if ($_SESSION['channeladmin'] == 0) {
     exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
@@ -52,6 +53,7 @@ chk_sort_id();
 // 增加频道列表
 function add_channel_list($cname, $srclist) {
     global $db;
+    $converter = new ZhConvert();
     if (!empty($srclist && $cname)) {
         $db->mDel("luo2888_channels", "where category='$cname'");
         $repetnum = 0;
@@ -68,6 +70,7 @@ function add_channel_list($cname, $srclist) {
             if (strpos($row, ',') !== false) {
                 $ipos = strpos($row, ',');
                 $channelname = substr($row, 0, $ipos);
+                $channelname = $converter -> zh_hant_to_zh_hans($channelname);
                 $source = substr($row, $ipos + 1);
                 if (strpos($source, '#') !== false) {
                     $sources = explode("#", $source);

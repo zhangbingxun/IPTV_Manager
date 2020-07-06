@@ -375,6 +375,12 @@ h3 {
 	padding:2px 7px;
 	color:#0090fe
 }
+.player {
+	background:url("/views/images/loading_red.gif")50% no-repeat #fff;
+	width:100%;
+	height:100%;
+	overflow:hidden;
+}
 .player-obj {
 	color:#000;
 	position:relative;

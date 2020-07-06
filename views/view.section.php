@@ -121,7 +121,7 @@
 				</nav>
 				
 				<div class="sidebar-footer">
-					<p align="center"><?php echo date("Y-m-d H:i",time()); ?></p>
+					<p align="center"><?php echo date("Y-m-d",time()); ?></p>
 					<p align="center">客户讨论QQ群：<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=55jH1sG">807073464</a></p>
 					<p class="copyright">Copyright &copy; 2020. <a target="_blank" href="http://www.luo2888.cn">luo2888</a> All rights reserved. </p>
 				</div>

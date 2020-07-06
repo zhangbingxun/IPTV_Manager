@@ -19,7 +19,7 @@ $epgpos = $epgdata['pos'];
     <meta name="applicable-device" content="mobile">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <title>
-        <?php echo $channel; ?> - 在线直播电视观看
+        <?php echo $channel; ?> - 肥米TV - 在线直播
     </title>
     <meta name="keywords" content="肥米TV" />
     <meta name="description" content="肥米TV，是一款優秀的OTT移動電視直播平台，除電視直播外，還有精彩的電影電視劇輪播、點播，給你最佳的娛樂體驗。功能全面增強，操作簡單快捷，隨時隨地觀看電視的同時，還有福利內容不時提供。" />
@@ -27,7 +27,7 @@ $epgpos = $epgdata['pos'];
     <meta name="renderer" content="webkit" />
     <link rel="icon" href="/views/images/favicon.ico" type="image/ico">
     <link rel="stylesheet" href="/views/css/zhibo.css?t=<?php echo time(); ?>">
-    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 </head>
 <body>
     <header class="header-map">

@@ -12,11 +12,13 @@
 // +----------------------------------------------------------------------+
 //
 
+header('Access-Control-Allow-Origin: *');
+
 // 数据变量
 $dataurl = 'https://ott.luo2888.cn/dl.php';  // 代理API地址
-$failurl = 'https://gitee.com/GaHoKwan/ottproxy/raw/master/videos/fmitv_denied.mp4';
-$playcode = "dl629_qq625336209"; // 播放验证码
-$listcode = "fmi629"; // 列表安全码
+$failurl = 'https://ott.luo2888.cn/videos/fmitv_denied.mp4';
+$playcode = "dl704_qq625336209"; // 播放验证码
+$listcode = "fmi704"; // 列表安全码
 
 // 获取代理地址
 function GetUrl() {

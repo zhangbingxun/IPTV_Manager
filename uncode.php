@@ -16,7 +16,7 @@ foreach($channeldata as $catelist) {
     foreach($catelist as $channellist) {
         if (is_array($channellist)) {
             foreach($channellist as $channel) {
-                if (is_array($channel) && strstr($channel['source'][0],"vid") != false) {
+                if (is_array($channel)) {
                     print_r($channel['name'] . ',' . $channel['source'][0] . "\n");
                     if (!empty($channel['source'][1])) {
                         print_r($channel['name'] . ',' . $channel['source'][1] . "\n");

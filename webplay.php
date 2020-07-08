@@ -13,7 +13,7 @@ $channel = $_GET['cname'];
 $playurl = $db->mGet("luo2888_channels", "url", "where id='$channelid'");
 
 if (strstr($playurl, "flv") != false) {
-    $player = "FlvJsPlayer";
+    $player = "FlvPlayer";
 } else {
     $player = "HlsJsPlayer";
 }
@@ -35,12 +35,13 @@ if ($token != md5($channel . $userip)) {
         </style>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/xgplayer@latest/browser/index.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/xgplayer-flv.js@latest/browser/index.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/xgplayer-flv@latest/dist/index.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/xgplayer-hls.js@latest/browser/index.js"></script>
         <script>
             let player = new <?php echo $player; ?>({
                 id: 'liveplayer',
                 lang: 'zh-cn',
+                cors: true,
                 isLive: true,
                 airplay: true,
                 autoplay: true,

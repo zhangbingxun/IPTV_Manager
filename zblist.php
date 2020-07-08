@@ -49,13 +49,8 @@ if (isset($_GET['keywords'])) {
             <div class="top-map-noslide">
                 <ul>
                     <li>
-                        <a href="/">
-                            肥米TV
-                        </a>
-                        <i class="icon">
-                        </i>
                         <a href="/zblist.php">
-                            电视直播
+                            肥米TV
                         </a>
                         <i class="icon">
                         </i>
@@ -81,11 +76,15 @@ if (isset($_GET['keywords'])) {
             <div class="nav-box">
                 <ul class="J-tabset">
                 <?php
-                    $func = "SELECT name FROM luo2888_category where type='web' order by id";
+                    $func = "SELECT name FROM luo2888_category where type='web' and enable=1 order by id";
                     $result = $db->mQuery($func);
                     while($row = mysqli_fetch_array($result)) {
+                        if ($nowcate == $row['name']) {
+                            echo '<li class="curr">';
+                        } else {
+                            echo '<li>';
+                        }
                         echo "
-                            <li>
                                 <a href='?cate=" . $row['name'] . "'>" . $row['name'] . "</a>
                             </li>
                         ";

@@ -39,12 +39,12 @@ $epgpos = $epgdata['pos'];
         <div class="top-map-noslide">
             <ul>
                 <li>
-                    <a href="/zblist.php">
-                        频道列表
+                    <a href="/zblist.php?cate=<?php echo $category; ?>">
+                        <?php echo $category; ?>
                     </a>
                     <i class="icon">
                     </i>
-                    <a href="?channel=<?php echo $channel; ?>">
+                    <a href="?cate=<?php echo $category; ?>&channel=<?php echo $channel; ?>">
                         <?php echo $channel; ?>
                     </a>
                     <i class="icon">

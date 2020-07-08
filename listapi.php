@@ -31,7 +31,7 @@ function send_post($url, $post_data) {
    //curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded;charset=utf-8'));
    curl_setopt($curl, CURLOPT_USERAGENT, 'MSIE');
    curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
-   curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+   curl_setopt($curl, CURLOPT_TIMEOUT, 15);
    curl_setopt($curl, CURLOPT_POST, 1);
    curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
    $output = curl_exec($curl);
@@ -79,6 +79,8 @@ if (isset($_GET['cietv'])) {
 
 if (isset($_GET['fyds'])) {
     $aid = randomStr();
+    $loginfile = 'login3.php';
+    $datafile = 'data3.php';
     $mac = "11:22:33:44:55:66";
     $appname = '风韵电视'; //软件名
     $key = "0ef64bef55b1b04514d7f58f7cb11e7b";
@@ -86,6 +88,8 @@ if (isset($_GET['fyds'])) {
 }
 if (isset($_GET['hk168'])) {
     $aid = randomStr();
+    $loginfile = 'login3.php';
+    $datafile = 'data3.php';
     $mac = "11:22:33:44:55:66";
     $appname = '华凯超视觉'; //软件名
     $key = "3bbe41dd6aeee8d1b7ff190e7226bd4d";
@@ -93,12 +97,16 @@ if (isset($_GET['hk168'])) {
 }
 if (isset($_GET['xszb'])) {
     $aid = randomStr();
+    $loginfile = 'login3.php';
+    $datafile = 'data3.php';
     $mac = "11:22:33:44:55:66";
     $appname = '星闪直播'; //软件名
     $key = "dcaaa109d90d9846ab6a5e42f658743d";
     $url = 'http://xszb.chxjon.cn'; // 后台地址
 }
 if (isset($_GET['mhds'])) {
+    $loginfile = 'login3.php';
+    $datafile = 'data3.php';
     $aid = "319fdd0b8a87bb06";
     $mac = "11:22:33:44:55:66";
     $appname = '美好电视'; //软件名
@@ -107,6 +115,8 @@ if (isset($_GET['mhds'])) {
 }
 if (isset($_GET['yjxb'])) {
     $aid = randomStr();
+    $loginfile = 'login3.php';
+    $datafile = 'data3.php';
     $mac = "11:22:33:44:55:66";
     $appname = '有家新版'; //软件名
     $key = "f4adef60bca2d6722fb319343a6c185b";
@@ -114,20 +124,21 @@ if (isset($_GET['yjxb'])) {
 }
 if (isset($_GET['yqlds'])) {
     $aid = randomStr();
+    $loginfile = 'login3.php';
+    $datafile = 'data3.php';
     $mac = "11:22:33:44:55:66";
     $appname = '云麒麟TV'; //软件名
     $key = "e558e80ce561f42632ae146de7e9e050";
     $url = 'https://66playgame.net/iptv'; // 后台地址
 }
-if (isset($_GET['zbdy'])) {
-    $needb64 = "1";
+if (isset($_GET['qwtds'])) {
     $aid = randomStr();
+    $loginfile = 'login.php';
+    $datafile = 'data.php';
     $mac = "11:22:33:44:55:66";
-    $appname = '直播电影'; //软件名
-    $key = "3856b05ab459be531787592fbe6396f3";
-    $url = 'http://x20195.cn/zbdy2020/'; // 后台地址
-    $ts = trim(file_get_contents($url . '/ts'));
-    $token = md5($ts . $url);
+    $appname = '全网通TV'; //软件名
+    $key = "f6a52170b44d98bf3e9dfb2c97606edc";
+    $url = 'http://qwttv.xb08.cn'; // 后台地址
 }
 
 // 头部
@@ -139,16 +150,12 @@ if (isset($_GET['txt'])) {
 }
 
 // 登录
-if (!empty($needb64)) {
-    $postdata = base64_encode('{"r":"","m":"' . $mac . '","aid":"'. $aid . '","mo":"Android x86","n":"","a":"' . $appname . '","ts":"' . $ts . '","token":"' . $token . '"}');
-} else {
-    $postdata = '{"region":"","mac":"' . $mac . '","androidid":"'. $aid . '","model":"Android x86","nettype":"","appname":"' . $appname . '"}';
-}
+$postdata = '{"region":"","mac":"' . $mac . '","androidid":"'. $aid . '","model":"Android x86","nettype":"","appname":"' . $appname . '"}';
 if (isset($_GET['login'])) {
     $loginkey = substr($key, 5, 16);
     $login_post = 'login=' . $postdata;
     $login = new Aes($loginkey);
-    $loginstr = send_post($url . '/login3.php', $login_post);
+    $loginstr = send_post($url . '/' . $loginfile, $login_post);
     $loginjson = $login->decrypt($loginstr);
     $logindata = json_decode($loginjson, true);
     $randkey = $logindata['randkey'];
@@ -159,19 +166,15 @@ if (isset($_GET['login'])) {
 }
 
 // 获取频道
-if (!empty($needb64)) {
-$data_post = 'data=' . base64_encode('{"r":"","m":"' . $mac . '","aid":"'. $aid . '","mo":"Android x86","n":"","a":"' . $appname . '","rand":"' . $randkey . '","ts":"' . $ts . '","token":"' . $token . '"}');
-} else {
 $data_post = 'data=' . '{"region":"","mac":"' . $mac . '","androidid":"'. $aid . '","model":"Android x86","nettype":"","appname":"' . $appname . '","rand":"' . $randkey . '"}';
-}
 $datakey = md5($key . $randkey);
 $datakey = substr($datakey, 7, 16);
 if (isset($_GET['login'])) {
 $datastr = send_post($dataurl, $data_post);
-$datastr = str_replace("A9SZzkKb5bJKldYrCBa3", "", $datastr);
 } else {
-$datastr = send_post($url . '/data3.php', $data_post);
+$datastr = send_post($url . '/' . $datafile, $data_post);
 }
+$datastr = str_replace("A9SZzkKb5bJKldYrCBa3", "", $datastr);
 $encrypted = substr($datastr, 128, strlen($datastr)-128);
 $encrypted = str_replace("y", "#", $encrypted);
 $encrypted = str_replace("t", "y", $encrypted);
@@ -183,28 +186,15 @@ $data = new Aes($datakey);
 $datajson = $data->decrypt($encrypted);
 $datajson = gzuncompress(base64_decode($datajson));
 $channeldata = json_decode($datajson, true);
-echo $loginstr;
+
 foreach($channeldata as $catelist) {
     print_r("\n" . '--------------------------------------------------------' . $catelist['name'] . '--------------------------------------------------------' . "\n\n");
     foreach($catelist as $channellist) {
         if (is_array($channellist)) {
             foreach($channellist as $channel) {
-                if (is_array($channel) && strstr($channel['source'][0],"#sop://") == false) {
-                    print_r($channel['name'] . ',' . $channel['source'][0] . "\n");
-                    if (!empty($channel['source'][1])) {
-                        print_r($channel['name'] . ',' . $channel['source'][1] . "\n");
-                    } 
-                    if (!empty($channel['source'][2])) {
-                        print_r($channel['name'] . ',' . $channel['source'][2] . "\n");
-                    } 
-                    if (!empty($channel['source'][3])) {
-                        print_r($channel['name'] . ',' . $channel['source'][3] . "\n");
-                    } 
-                    if (!empty($channel['source'][4])) {
-                        print_r($channel['name'] . ',' . $channel['source'][4] . "\n");
-                    } 
-                    if (!empty($channel['source'][5])) {
-                        print_r($channel['name'] . ',' . $channel['source'][5] . "\n");
+                if (is_array($channel)) {
+                    foreach($channel['source'] as $url) {
+                        print_r($channel['name'] . ',' . $url . "\n");
                     } 
                 } 
             } 

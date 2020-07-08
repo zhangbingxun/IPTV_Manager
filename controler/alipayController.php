@@ -7,16 +7,11 @@ require_once "config.php";
 require_once "api/common/alipay.class.php";
 
 // 获取地址
-function mUrl() {
-    $Url = 'http://';
-    if($_SERVER['HTTPS'] == 'on') {
-        $Url = 'https://';
-    }
-    $Url .= $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
-    return $Url;
+$myurl = 'http://';
+if($_SERVER['HTTPS'] == 'on') {
+    $myurl = 'https://';
 }
-
-$myurl = mUrl();
+$myurl .= $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 $user = $_GET['id'];
 $db = Config::GetIntance();
 $signType = 'RSA2';  //签名算法类型，支持RSA2和RSA

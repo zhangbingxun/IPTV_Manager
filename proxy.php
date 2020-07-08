@@ -74,6 +74,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $vpntimes = $db->mGet("luo2888_config", "value", "where name='vpntimes'");
         $androidid = $db->mGet("luo2888_users", "deviceid", "where name='$username'");
         $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$username'");
+        $status = $db->mGet("luo2888_users", "status", "where name='$username'");
         $b64key = '0flSMcbVvSVgqaENj#pM%foHAdcjhjCpUlWsFuuF$#X75SF7ebzoJ2F@sNkku$^y2%7nJt#q6yh!67vl6e0JUYJ%ED5roBrb&vZWjlI$$liQzV$3qb!MmSGBQGDt9MZL';
 
         if (abs($nowtime - $time) > 600) {
@@ -89,6 +90,11 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         {
             header('location:' . $deniedurl);
             exit('您被系统判定为抓包！');
+        }
+        else if ($status == 0)
+        {
+            header('location:' . $deniedurl);
+            exit('您已被系统禁止访问！');
         }
         
         $data = json_encode(

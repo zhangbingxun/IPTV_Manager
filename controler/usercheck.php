@@ -5,7 +5,7 @@ $db = Config::getIntance();
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
 } else {
-    header("location:../index.php");
+    header("location:../admin.php");
     exit();
 } 
 
@@ -16,7 +16,7 @@ if ($row = $db->mGetRow("luo2888_admin", "*", "where name='$user'")) {
 } 
 
 if (!isset($_SESSION['psw']) || $_SESSION['psw'] != $psw) {
-    header("location:../index.php");
+    header("location:../admin.php");
     exit();
 } 
 

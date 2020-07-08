@@ -1,5 +1,5 @@
-<?php require_once "views/view.main.php";require_once "controler/alipayController.php";?>
-<script type="text/javascript" src="views/js/wxcheck.js"></script>
+<?php require_once "views/view.main.php"; require_once "controler/alipayController.php"; ?>
+<script type="text/javascript" src="/views/js/wxcheck.js"></script>
 <body scroll="no" style="overflow-x:hidden;overflow-y:hidden">
 	<div id="container" class="row lyear-wrapper">
 		<div class="lyear-login">
@@ -8,7 +8,7 @@
 			</div>
 			<div class="login-center form__content">
 				<div class="login-header text-center">
-					<a href="payment.php"> <img src="views/images/logo-sidebar.png"> </a>
+					<a href="payment.php"> <img src="/views/images/logo-sidebar.png"> </a>
 				</div>
 				<table class="table form-inline">
 					<?php

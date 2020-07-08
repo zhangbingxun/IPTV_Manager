@@ -18,6 +18,13 @@ $b64str = 'uksevY3s!@lTmTJ1Pm&X$CT!5mCwCTZ&v^eKlozFP%Ysjni!UyBk5udDQofWs8Y6JkA80
 $appkey = md5($appsign . $appname . $packagename . $b64str);
 $key = md5($appkey . $appname . $packagename);
 
+/*
+
+$str = preg_replace("# #", "+", $str);
+$str = base64_decode($str);
+$unstr = gzuncompress($str);
+
+*/
 class Aes {
     protected $iv;
     protected $options;
@@ -275,6 +282,7 @@ else if (isset($_GET['tvplay'])) {
     $deniedurl = $db->mGet("luo2888_config", "value", "where name='deniedurl'");
     $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$username'");
     $playurl = $db->mGet("luo2888_channels", "url", "where id='$channelid'");
+    $status = $db->mGet("luo2888_users", "status", "where name='$username'");
 
     if (abs($nowtime - $time) > $uptime * 60 + 30) {
         header('location:' . $deniedurl);
@@ -289,6 +297,11 @@ else if (isset($_GET['tvplay'])) {
     {
         header('location:' . $deniedurl);
         exit('您被系统判定为抓包！');
+    }
+    else if ($status == 0)
+    {
+        header('location:' . $deniedurl);
+        exit('您已被系统禁止访问！');
     }
 
     if (!empty($playurl)) {

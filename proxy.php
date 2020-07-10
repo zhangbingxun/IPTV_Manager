@@ -75,7 +75,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $androidid = $db->mGet("luo2888_users", "deviceid", "where name='$username'");
         $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$username'");
         $status = $db->mGet("luo2888_users", "status", "where name='$username'");
-        $b64key = '0flSMcbVvSVgqaENj#pM%foHAdcjhjCpUlWsFuuF$#X75SF7ebzoJ2F@sNkku$^y2%7nJt#q6yh!67vl6e0JUYJ%ED5roBrb&vZWjlI$$liQzV$3qb!MmSGBQGDt9MZL';
+        $b64key = 'l@L%ARIO56$KMtLHhn@J#JQP58fpe%zf*phXJX*SAmAANQZpHCrh&lj%xeXQ8F*ZbdK%1lMmBRU1Ge4n@&jcURdw7hJnPyL2vRdb!tZxeYp&PWAvkqUG2CNI0^lv48T9';
 
         if (abs($nowtime - $time) > 600) {
             header('location:' . $deniedurl);

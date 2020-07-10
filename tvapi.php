@@ -14,17 +14,10 @@ $nowtime = time();
 $appsign = $db->mGet("luo2888_config","value","where name='app_sign'");
 $appname = $db->mGet("luo2888_config","value","where name='app_appname'");
 $packagename = $db->mGet("luo2888_config","value","where name='app_packagename'");
-$b64str = 'uksevY3s!@lTmTJ1Pm&X$CT!5mCwCTZ&v^eKlozFP%Ysjni!UyBk5udDQofWs8Y6JkA80xxGp#oJqjWvQo9glQx^7eWoe#C4m71QQn!A1ZxhdjTqwoUp9QNZv#3oV@ZC';
+$b64str = '^u%dFUQXi%7jwyS$wo4TfGQd!XGRibrL89nBt$xBBMPG&Dv*rAOV268SXG1%D7lF0kW1cyRzYTE8Qa3rqS#reaHXB3*&tJLm9fy@S6svg&etMqcbADqoovN3g0WKPk9&';
 $appkey = md5($appsign . $appname . $packagename . $b64str);
 $key = md5($appkey . $appname . $packagename);
 
-/*
-
-$str = preg_replace("# #", "+", $str);
-$str = base64_decode($str);
-$unstr = gzuncompress($str);
-
-*/
 class Aes {
     protected $iv;
     protected $options;
@@ -64,10 +57,30 @@ function genName() {
     }
 }
 
-// 输出频道数据
-function echoJSON($username, $category, $alisname, $psw) {
+// 随机字符串
+function getRandomStr($len){
+	$chars = array(
+		"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
+		"l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+		"w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G",
+		"H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
+		"S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2",
+		"3", "4", "5", "6", "7", "8", "9"
+		);
 
-    global $db, $remote, $channelNumber, $key, $myurl;
+	$charsLen = count($chars) - 1;
+    shuffle($chars);
+    $str = '';
+    for($i=0; $i<$len; $i++){
+        $str .= $chars[mt_rand(0, $charsLen)];
+    }
+    return $str;
+}
+
+// 输出频道数据
+function echoJSON($username, $category, $alisname, $psw, $randstr) {
+
+    global $db, $remote, $channelNumber, $key;
     $userip = $remote -> getuserip();
     $nowtime = time();
 
@@ -99,6 +112,12 @@ function echoJSON($username, $category, $alisname, $psw) {
             $objChannel = (Object)null;
             $objChannel->num = $channelNumber;
             $objChannel->name = $nameArray[$i];
+            foreach ( $sourceArray[$nameArray[$i]] as $k => $v )
+            {
+                $pre = "fmirand://" . getRandomStr(32) . base64_encode($sourceArray[$nameArray[$i]][$k]);
+                $pre = substr_replace($pre,$randstr . getRandomStr(24), strlen($pre)-7, 0);
+                $sourceArray[$nameArray[$i]][$k] = "fmitv://" . base64_encode($pre);
+            }
             $objChannel->source = $sourceArray[$nameArray[$i]];
             $channelArray[] = $objChannel;
             $channelNumber++;
@@ -260,7 +279,11 @@ else if (isset($_GET['tvinfo'])) {
 
     $channel_name = $_GET['channel'];
     $apidir = dirname($myurl) . '/api/common';
-    $epgdata =  file_get_contents("$apidir/tvguide.php?channel=" . $channel_name);
+    if (!empty($_GET["simple"])) {
+        $epgdata =  file_get_contents("$apidir/tvguide.php?simple=1&channel=" . $channel_name);
+    } else {
+        $epgdata =  file_get_contents("$apidir/tvguide.php?channel=" . $channel_name);
+    }
     if (empty(json_decode($epgdata, true))) {
        failmsg(200, "EPG接口错误");
     }
@@ -363,6 +386,7 @@ else if (isset($_POST['active'])) {
            
             if (empty($marks)) {
                 $marks = '授权号绑定';
+
             }
 
             $db->mSet("luo2888_users","name=$serial,meal=$meal,status=$status,exp=$exp,author='$author',authortime=$nowtime,marks='$marks'","where deviceid='$androidid'");
@@ -378,13 +402,16 @@ else if (isset($_POST['active'])) {
 else if (isset($_POST['login'])) {
 
     $loginstr = $_POST['login'];
-    $jsonstr = base64_decode($loginstr);
+    $loginstr = preg_replace("# #", "+", $loginstr);
+    $gzstr = base64_decode($loginstr);
+    $jsonstr = gzuncompress($gzstr);
     $obj = json_decode($jsonstr);
     $region = $obj->region;
     $androidid = $obj->androidid;
     $iv = $obj->iv;
     $mac = $obj->mac;
     $model = $obj->model;
+
     $nettype = $obj->nettype;
     $appname = $obj->appname;
     $userip = $remote -> getuserip();
@@ -392,6 +419,7 @@ else if (isset($_POST['login'])) {
     $ipadmit = $db->mGet("luo2888_config", "value", "where name='max_sameip_user'");
     
     if (strstr($mac,"44:55:66")  || $androidid == '871544fa3caeb847'){
+        $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'主动拦截','$userip','系统','$time','非法访问已拦截！'");
         exit;
     }
 
@@ -587,8 +615,9 @@ else if (isset($_POST['login'])) {
     $objres = array('id' => $name, 'status' => $status, 'mealname' => $mealname, 'datatoken' => $datatoken, 'appurl' => $appurl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'exp' => $days, 'userip' => $userip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'adinfo' => $adinfo, 'keyproxy' => $keyproxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => $autoupdate, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp, 'movieengine' => $voddatas);
 
     $objres = str_replace("\\/", "/", json_encode($objres, JSON_UNESCAPED_UNICODE)); 
-    $key = substr($key, 5, 16);
-    $aes = new Aes($key,$iv);
+    $key = substr($key, 9, 20);
+    $ivkey = substr(md5($iv), 7, 23);
+    $aes = new Aes($key,$ivkey);
     $encrypted = $aes -> encrypt($objres);
     echo $encrypted;
     exit;
@@ -599,8 +628,10 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
 
     $token = $_GET['token'];
     $datastr  = $_POST['tvdata'];
-    $data = base64_decode($datastr);
-    $obj = json_decode($data);
+    $datastr = preg_replace("# #", "+", $datastr);
+    $gzstr = base64_decode($datastr);
+    $jsonstr = gzuncompress($gzstr);
+    $obj = json_decode($jsonstr);
     $androidid = $obj->androidid;
     $mac = $obj->mac;
     $model = $obj->model;
@@ -608,12 +639,14 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
     $nettype = $obj->nettype;
     $randkey = $obj->rand;
     $iv = $obj->iv;
+    $pdkey = md5($iv);
+    $userip = $remote -> getuserip();
     $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
     $username = $db->mGet("luo2888_users", "name", "where mac='$mac'");
 
     if ($token != md5($username . $app_sign . $randkey)) {
         header('HTTP/1.1 403 Forbidden');
-
+         $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'主动拦截','$userip','系统','$time','非法访问已拦截！'");
         exit;
     }
 
@@ -656,7 +689,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
     } 
 
     // 增加我的收藏
-    $contents[] = echoJSON($username, '', "我的收藏", ''); 
+    $contents[] = echoJSON($username, '', "我的收藏", '', $pdkey); 
 
     // 默认套餐不输出运营商和各省的频道
     if ($mid != 1000) {
@@ -667,7 +700,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
             while ($row = mysqli_fetch_array($result)) {
                 $pdname = $row['name'];
                 $psw = $row['psw'];
-                $contents[] = echoJSON($username, $pdname, $pdname, $psw);
+                $contents[] = echoJSON($username, $pdname, $pdname, $psw, $pdkey);
             } 
             unset($row);
             mysqli_free_result($result);
@@ -680,7 +713,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
             while ($row = mysqli_fetch_array($result)) {
                 $pdname = $row['name'];
                 $psw = $row['psw'];
-                $contents[] = echoJSON($username, $pdname, '省内', $psw);
+                $contents[] = echoJSON($username, $pdname, '省内', $psw, $pdkey);
             } 
             unset($row);
             mysqli_free_result($result);
@@ -699,7 +732,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
                 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
                 $pdname = $row['name'];
                 $psw = $row['psw'];
-                $contents[] = echoJSON($username, $pdname, $pdname, $psw);
+                $contents[] = echoJSON($username, $pdname, $pdname, $psw, $pdkey);
                 unset($row);
                 mysqli_free_result($result);
             } 
@@ -712,16 +745,17 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
     $str = stripslashes($str);
     $str = base64_encode(gzcompress($str));
     $key = md5($key . $randkey);
-    $key = substr($key, 7, 16);
-    $aes = new Aes($key,$iv);
+    $key = substr($key, 13, 22);
+    $ivkey = substr(md5($iv), 9, 25);
+    $aes = new Aes($key,$ivkey);
     $encrypted = $aes->encrypt($str);
-    $encrypted = str_replace("f", "&", $encrypted);
-    $encrypted = str_replace("b", "f", $encrypted);
-    $encrypted = str_replace("&", "b", $encrypted);
-    $encrypted = str_replace("t", "#", $encrypted);
-    $encrypted = str_replace("y", "t", $encrypted);
-    $encrypted = str_replace("#", "y", $encrypted);
-    $coded = substr($encrypted, 44, 128);
+    $encrypted = str_replace("h", "&", $encrypted);
+    $encrypted = str_replace("k", "h", $encrypted);
+    $encrypted = str_replace("&", "k", $encrypted);
+    $encrypted = str_replace("z", "#", $encrypted);
+    $encrypted = str_replace("i", "z", $encrypted);
+    $encrypted = str_replace("#", "i", $encrypted);
+    $coded = substr($encrypted, 44, 192);
     $coded = strrev($coded);
     $datastr = $coded . $encrypted;
     echo $datastr;

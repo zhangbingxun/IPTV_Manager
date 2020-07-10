@@ -21,7 +21,7 @@ class Aes {
 }
 
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, "http://www.twtvcdn.com/apply/getchannel.php");
+        curl_setopt($curl, CURLOPT_URL, "http://www.twtvcdn.com/motion/getchannel.php");
         curl_setopt($curl, CURLOPT_TIMEOUT, 1);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_USERAGENT, "okhttp/3.12.0");
@@ -34,6 +34,11 @@ class Aes {
         $de_aes = $aes->decrypt($en_aes['sign']);
         $json = json_decode($de_aes, true);
 
-print_r($json);
+    foreach($json['return_live'] as $catelist) {
+        print_r("\n" . '# ' . $catelist['name'] . ' #' . "\n\n");
+        foreach($catelist['channel'] as $channel) {
+            print_r($channel['title'] . ',vid=ublive#id=' . $channel['id'] . "\n");
+        }  
+    } 
 
 ?>

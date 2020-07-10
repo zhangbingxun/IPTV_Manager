@@ -14,8 +14,10 @@ if (! is_dir ($cachedir)) {
     @mkdir ($cachedir, 0755, true) or die ('创建文件夹失败');
 } 
 $id = !empty($_GET["channel"])?$_GET["channel"]:exit(json_encode(["code" => 500, "msg" => "EPG频道参数不能为空!", "name" => $name, "date" => null, "data" => null], JSON_UNESCAPED_UNICODE));
-echo out_epg($id);
+$is_simple = !empty($_GET["simple"]);
+echo out_epg($id,$is_simple);
 exit;
+
 // 输出EPG节目地址
 function out_epg($id,$is_simple) {
     $tvdata = channel($id);
@@ -36,7 +38,7 @@ function out_epg($id,$is_simple) {
     } 
   //  echo $tvid,$epgid,$id;
     $ejson = cache($tvid, "get_epg_data", [$tvid, $epgid, $id]);
-    if($is_simple){
+  if($is_simple == 1){
 		$ejson = getJsonByCacheAndPos($ejson);
 	}else{
 		$ejson = getJsonByCache($ejson);
@@ -54,6 +56,7 @@ function getJsonByCache($ejson) {
 	$cache_ret["data"] = $iarr['data'];
 	return json_encode($cache_ret,JSON_UNESCAPED_UNICODE);
 }
+
 function getJsonByCacheAndPos($ejson) {
 	//从缓存获取最新json位置
 	$iarr = json_decode($ejson,true);
@@ -65,6 +68,7 @@ function getJsonByCacheAndPos($ejson) {
 	}
 	return json_encode($cache_ret,JSON_UNESCAPED_UNICODE);
 }
+
 //获取当前播放位置
 function getPos($json,$which_api) {
 	$curpos_sure=false;
@@ -253,16 +257,17 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
         // 51zmt
     } else if (strstr($epgid, "51zmt") != false) {
         $cachefile = "../../cache/51zmt.xml";
-        $url = "http://epg.51zmt.top:8000/gat.xml";
+        $url = "http://hkt.luo2888.cn:12252/gat.xml";
+        //$url = "http://epg.51zmt.top:8000/gat.xml";
         if (file_exists($cachefile)) {
             $filemtime = filemtime ($cachefile);
             if (time() - $filemtime >= 259200) {
                 unlink($cachefile);
-                $file = curl::c()->get($url);
+                $file = curl::c()->set_ssl()->get($url);
                 file_put_contents($cachefile, $file) ;
             } 
         } else {
-            $file = curl::c()->get($url);
+            $file = curl::c()->set_ssl()->get($url);
             file_put_contents($cachefile, $file) ;
         } 
         $xml = simplexml_load_file($cachefile);

@@ -33,7 +33,7 @@ if ($_GET["act"]=="edit") {
 	unset($row);
 	mysqli_free_result($result);
 	//获取套餐所有的收视内容
-	$result=$db->mQuery("SELECT id,name from luo2888_category where enable=1 ORDER BY id ASC");
+	$result=$db->mQuery("SELECT id,name from luo2888_category where type<>'web' and enable=1 ORDER BY id ASC");
 	if (!mysqli_num_rows($result)) {
 		mysqli_free_result($result);
 		exit("<script>$.alert({title: '错误',content: '对不起，没有频道分类信息，无法生成套餐！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php'}}}});</script>");

@@ -24,7 +24,7 @@ function cache($key, $f_name, $ff = []) {
 // 缓存超时
 function cache_time_out() {
     date_default_timezone_set("Asia/Shanghai");
-    $timetoken = time() + 300;
+    $timetoken = time() + 10;
     return $timetoken;
 }
 
@@ -48,7 +48,10 @@ if (strstr($boxurl,"lanzou://")) {
     $boxurl = cache("boxurl" . $boxurl, "lanzouUrl", [$boxurl]);
 }
 
+$appver = $db->mGet("luo2888_config", "value", "where name='appver'");
+$boxver = $db->mGet("luo2888_config", "value", "where name='appver_sdk14'");
 ?>
+
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -95,8 +98,8 @@ if (strstr($boxurl,"lanzou://")) {
 								<p>下載：</p>
 								<p>
 									<ul class="actions">
-										<li><a class="button primary icon solid fa-download" href="<?php echo $appurl; ?>">手機版下載</a></li>
-									<li><a class="button primary icon solid fa-download"  href="<?php echo $boxurl; ?>">電視/盒子版下載</a></li>
+										<li><a class="button primary icon solid fa-download" href="<?php echo $appurl; ?>">手機版 <?php echo 'V' . $appver; ?> 下載</a></li>
+									<li><a class="button primary icon solid fa-download"  href="<?php echo $boxurl; ?>">電視/盒子版 <?php echo 'V' . $boxver; ?> 下載</a></li>
 									</ul>
 								</p>
 							</article>

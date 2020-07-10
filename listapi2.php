@@ -75,6 +75,17 @@ if (isset($_GET['lttv'])) {
     $ts = trim(file_get_contents($url . '/ts'));
     $token = md5($ts . $url);
 }
+if (isset($_GET['kkds'])) {
+    $useragent = 'MSIE';
+    $aid = "8bfac13a39286a47";
+    $mac = "94:87:e0:1b:d2:71";
+    $model = "MI 8";
+    $appname = '看看电视'; //软件名
+    $key = "f0733b7171d68cf90f2488ec3ef2ceda";
+    $url = 'http://kk.suntv.xyz/kktv'; // 后台地址
+    $ts = trim(file_get_contents($url . '/ts'));
+    $token = md5($ts . $url);
+}
 
 // 头部
 header("Content-Type:text/plain;chartset=utf-8");

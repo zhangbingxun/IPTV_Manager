@@ -72,6 +72,9 @@ if (isset($_GET['keywords'])) {
         </div>
         <div class="bg">
         </div>
+        <h3 align="center">
+            网页端仅供体验测试使用，更多频道请下载客户端观看
+        </h3>
         <div class="wrap">
             <div class="nav-box">
                 <ul class="J-tabset">

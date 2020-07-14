@@ -28,6 +28,10 @@ $("#ipchkform").submit();
 						<label>代理密码</label>
 						<input class="form-control" type="text" name="keyproxy" value="<?php echo $keyproxy; ?>" placeholder="代理密码" >
 					</div>
+					<div class="form-group" style="margin-right: 15px;">
+						<label>Base64密钥</label>
+						<input class="form-control" type="text" name="app_b64key" value="<?php echo $app_b64key; ?>" placeholder="Base64密钥" >
+					</div>
 					<div class="form-group">
 						<button class="btn btn-label btn-primary" type="submit" name="submitappinfo"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>确认提交</button>
 					</div>

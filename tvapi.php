@@ -10,13 +10,14 @@ $remote = new GetIP();
 $channelNumber = 1;
 $myurl = mUrl();
 $nowtime = time();
+$datetime = date("Y-m-d H:i:s");
 
 $appsign = $db->mGet("luo2888_config","value","where name='app_sign'");
+$b64str = $db->mGet("luo2888_config","value","where name='app_b64key'");
 $appname = $db->mGet("luo2888_config","value","where name='app_appname'");
 $packagename = $db->mGet("luo2888_config","value","where name='app_packagename'");
-$b64str = '^u%dFUQXi%7jwyS$wo4TfGQd!XGRibrL89nBt$xBBMPG&Dv*rAOV268SXG1%D7lF0kW1cyRzYTE8Qa3rqS#reaHXB3*&tJLm9fy@S6svg&etMqcbADqoovN3g0WKPk9&';
-$appkey = md5($appsign . $appname . $packagename . $b64str);
-$key = md5($appkey . $appname . $packagename);
+$appkey = md5('#' . $appname . '#' . $appsign . '#' . $packagename . '#' . $b64str . '#');
+$key = md5('#' . $appname . '#' . $appkey . '#' . $packagename . '#');
 
 class Aes {
     protected $iv;
@@ -24,21 +25,18 @@ class Aes {
     protected $method;
     protected $secret_key;
  
-    public function __construct($key, $iv = '', $method = 'AES-128-CBC', $options = 0)
-    {
+    public function __construct($key, $iv = '', $method = 'AES-128-CBC', $options = 0) {
         $this->iv = $iv;
         $this->options = $options;
         $this->method = $method;
         $this->secret_key = isset($key) ? $key : 'tvkey_luo2888';
     }
  
-    public function encrypt($data)
-    {
+    public function encrypt($data) {
         return openssl_encrypt($data, $this->method, $this->secret_key, $this->options, $this->iv);
     }
  
-    public function decrypt($data)
-    {
+    public function decrypt($data) {
         return openssl_decrypt($data, $this->method, $this->secret_key, $this->options, $this->iv);
     }
 }
@@ -58,20 +56,20 @@ function genName() {
 }
 
 // 随机字符串
-function getRandomStr($len){
-	$chars = array(
-		"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
-		"l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
-		"w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G",
-		"H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
-		"S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2",
-		"3", "4", "5", "6", "7", "8", "9"
-		);
+function randomStr($len) {
+    $chars = array(
+        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
+        "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+        "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G",
+        "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
+        "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2",
+        "3", "4", "5", "6", "7", "8", "9"
+    );
 
-	$charsLen = count($chars) - 1;
+    $charsLen = count($chars) - 1;
     shuffle($chars);
     $str = '';
-    for($i=0; $i<$len; $i++){
+    for ($i=0; $i<$len; $i++) {
         $str .= $chars[mt_rand(0, $charsLen)];
     }
     return $str;
@@ -80,8 +78,7 @@ function getRandomStr($len){
 // 输出频道数据
 function echoJSON($username, $category, $alisname, $psw, $randstr) {
 
-    global $db, $remote, $channelNumber, $key;
-    $userip = $remote -> getuserip();
+    global $db, $channelNumber, $key;
     $nowtime = time();
 
     if ($alisname == '我的收藏') {
@@ -114,8 +111,8 @@ function echoJSON($username, $category, $alisname, $psw, $randstr) {
             $objChannel->name = $nameArray[$i];
             foreach ( $sourceArray[$nameArray[$i]] as $k => $v )
             {
-                $pre = "fmirand://" . getRandomStr(32) . base64_encode($sourceArray[$nameArray[$i]][$k]);
-                $pre = substr_replace($pre,$randstr . getRandomStr(24), strlen($pre)-7, 0);
+                $pre = "fmirand://" . randomStr(32) . base64_encode($sourceArray[$nameArray[$i]][$k]);
+                $pre = substr_replace($pre,$randstr . randomStr(24), strlen($pre)-7, 0);
                 $sourceArray[$nameArray[$i]][$k] = "fmitv://" . base64_encode($pre);
             }
             $objChannel->source = $sourceArray[$nameArray[$i]];
@@ -167,7 +164,7 @@ function cache($key, $f_name, $ff = []) {
 // 缓存超时
 function cache_time_out() {
     date_default_timezone_set("Asia/Shanghai");
-    $timetoken = time() + 1200;
+    $timetoken = time() + 50;
     return $timetoken;
 }
 
@@ -265,16 +262,6 @@ else if (isset($_GET['gettime'])) {
 
 }
 
-else if (isset($_GET['getmeal'])) {
-
-    $androidid = $_GET['id'];
-    $mealid = $db->mGet("luo2888_users", "meal", "where deviceid='$androidid'");
-    $mealname = $db->mGet("luo2888_meals", "name", "where id='$mealid'");
-    echo $mealname;
-    exit;
-
-}
-
 else if (isset($_GET['tvinfo'])) {
 
     $channel_name = $_GET['channel'];
@@ -298,7 +285,6 @@ else if (isset($_GET['tvplay'])) {
     $username = $_GET['user'];
     $token = $_GET['token'];
     $time = $_GET['time'];
-    $userip = $remote -> getuserip();
     $uptime = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
     $vpntimes = $db->mGet("luo2888_config", "value", "where name='vpntimes'");
     $failureurl = $db->mGet("luo2888_config", "value", "where name='failureurl'");
@@ -334,7 +320,6 @@ else if (isset($_GET['tvplay'])) {
 
     }
 
-
     exit;
 
 }
@@ -342,7 +327,9 @@ else if (isset($_GET['tvplay'])) {
 else if (isset($_POST['active'])) {
 
     $actstr = $_POST['active'];
-    $jsonstr = base64_decode($actstr);
+    $actstr = preg_replace("# #", "+", $actstr);
+    $gzstr = base64_decode($actstr);
+    $jsonstr = gzuncompress($gzstr);
     $obj = json_decode($jsonstr);
     $androidid = $obj->androidid;
     $mac = $obj->mac;
@@ -355,7 +342,6 @@ else if (isset($_POST['active'])) {
     if ($db->mCheckOne("luo2888_users", "*", "where deviceid='$androidid'") == false) {
         exit('你的设备无法识别,请与管理员联系！');
     }
-    unset($row);
 
     if ($row = $db->mCheckRow("luo2888_users", "status,name,exp,marks,author,authortime", "where name=$serial and status>0 and mac='' and deviceid=''")) {
         $status = $row['status'];
@@ -367,7 +353,7 @@ else if (isset($_POST['active'])) {
         //通过SN重新绑定
         $db->mDel("luo2888_users","where mac='$mac' and deviceid='$androidid' and model='$model' and status=-1");
         $db->mSet("luo2888_users","mac='$mac',deviceid='$androidid',model='$model'","where name=$serial and status>0 and mac='' and deviceid='' and model=''");
-        exit("系统已为你重新绑定成功！");	
+        exit("已为你重新绑定账号，正在登录，请稍后...");	
 
     } else {
 
@@ -386,14 +372,13 @@ else if (isset($_POST['active'])) {
            
             if (empty($marks)) {
                 $marks = '授权号绑定';
-
             }
 
             $db->mSet("luo2888_users","name=$serial,meal=$meal,status=$status,exp=$exp,author='$author',authortime=$nowtime,marks='$marks'","where deviceid='$androidid'");
             $db->mDel("luo2888_serialnum","where name=$serial");
-            exit("授权号绑定成功！！");
+            exit("授权号绑定成功，正在登录，请稍后...");
         } else {
-            exit("授权号错误，请联系提供商！！");
+            exit("授权号错误，请联系管理员！！");
 			   }
     }
     unset($row);
@@ -418,10 +403,6 @@ else if (isset($_POST['login'])) {
     $ipcount = $db->mGet("luo2888_users", "count(*)", "where ip='$userip'");
     $ipadmit = $db->mGet("luo2888_config", "value", "where name='max_sameip_user'");
     
-    if (strstr($mac,"44:55:66")  || $androidid == '871544fa3caeb847'){
-        $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'主动拦截','$userip','系统','$time','非法访问已拦截！'");
-        exit;
-    }
 
     if ($userip == '' || $userip == '127.0.0.1') {
       $userip = '127.0.0.1';
@@ -433,6 +414,16 @@ else if (isset($_POST['login'])) {
         $obj = json_decode($json);
         $region = $obj->data->region . $obj->data->city . $obj->data->isp;
     } 
+
+    if (strstr($androidid == '871544fa3caeb847')) {
+        $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'主动拦截','$userip','$region','$datetime','黑名单用户非法访问已拦截！'");
+        exit;
+    }
+
+    /* if (strpos($region, '电信') !== false || strpos($region, '联通') !== false || strpos($region, '移动') !== false) {
+        $banuser = 1;
+        goto banuser;
+    } */
 
     // 没有mac禁止登陆
     if(strstr($mac,":") == false) {
@@ -482,11 +473,6 @@ else if (isset($_POST['login'])) {
             $sameuser = 1;
             goto banuser;
         }
-
-        /* if (strpos($region, '电信') !== false || strpos($region, '联通') !== false || strpos($region, '移动') !== false) {
-            $banuser = 1;
-            goto banuser;
-        } */
 
         $name = genName();
         $days = $db->mGet("luo2888_config", "value", "where name='trialdays'");
@@ -539,7 +525,7 @@ else if (isset($_POST['login'])) {
     $tipusernoreg = '您的账号是' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipusernoreg'");
     $tipuserexpired = '当前账号' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserexpired'");
     $tipuserforbidden = '当前账号' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserforbidden'");
-    $datatoken = "token=" . md5($name . $app_sign . $randkey);
+    $datatoken = "token=" . md5($name . $b64str . $randkey);
 
     if ($needauthor == 0 || ($status2 == -999)) {
         $status = 999;
@@ -559,12 +545,6 @@ else if (isset($_POST['login'])) {
             $weather =  "今天" . $obj->wea . '，' . $obj->tem2 . '℃' . '～' . $obj->tem1 . '℃' . '，' . $obj->win . $obj->win_speed . '，' . '湿度' . $obj->humidity . '，' . '空气' . $obj->air_level . '。';
             $adinfo = $weather .  "\n" . $adinfo;
         } 
-    } 
-
-    if ($status < 1) {
-        $datatoken = '';
-        $keyproxy = '';
-        $randkey = '';
     } 
 
     $result = $db->mQuery("SELECT name from luo2888_category where enable=1 and type='province' order by id");
@@ -590,6 +570,13 @@ else if (isset($_POST['login'])) {
 
     $arrcanseek[] = '';
 
+    if ($status < 1) {
+        $datatoken = '';
+        $keyproxy = '';
+        $randkey = '';
+        $voddatas = '';
+    } 
+
     banuser:
     if ($vpnuser == 1) {
         $status = 0;
@@ -600,7 +587,6 @@ else if (isset($_POST['login'])) {
         $status = 0;
         $tipuserforbidden= '检测不到Mac地址，请打开WiFi重新登录！';
     }
-
 
     if ($banuser == 1) {
         $status = 0;
@@ -641,12 +627,17 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
     $iv = $obj->iv;
     $pdkey = md5($iv);
     $userip = $remote -> getuserip();
-    $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
     $username = $db->mGet("luo2888_users", "name", "where mac='$mac'");
 
-    if ($token != md5($username . $app_sign . $randkey)) {
+    if (empty($region)) {
+        $json = $remote -> getloc($db,$myurl,$userip);
+        $obj = json_decode($json);
+        $region = $obj->data->region . $obj->data->city . $obj->data->isp;
+    }
+
+    if ($token != md5($username . $b64str . $randkey)) {
         header('HTTP/1.1 403 Forbidden');
-         $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'主动拦截','$userip','系统','$time','非法访问已拦截！'");
+         $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'主动拦截','$userip','$region','$datetime','虚假设备登录已拦截！'");
         exit;
     }
 

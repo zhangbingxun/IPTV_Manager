@@ -24,7 +24,7 @@ function cache($key, $f_name, $ff = []) {
 // 缓存超时
 function cache_time_out() {
     date_default_timezone_set("Asia/Shanghai");
-    $timetoken = time() + 10;
+    $timetoken = time() + 50;
     return $timetoken;
 }
 

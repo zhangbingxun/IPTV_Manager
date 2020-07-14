@@ -27,9 +27,6 @@ showindex=<?php echo $_GET['index']; ?>
 					<li>
 						<?php include "./sysadmin/appset.view.php" ?>
 					</li>
-					<li>
-						<?php include "./sysadmin/admins.view.php" ?>
-					</li>
 				</ul>
 			</div>
 		</div>

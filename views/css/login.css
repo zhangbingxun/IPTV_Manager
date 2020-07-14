@@ -36,14 +36,10 @@ body.document-loaded .form__content {
 }
 .lyear-login {
     min-height: 100vh;
+    padding: 0 3.5em;
     display: flex !important;
     align-items: flex-start !important;
     justify-content: center !important;
-}
-@media screen and (max-width: 524px){
-	.lyear-login {
-	    padding: 3.5em;
-	}
 }
 .login-center {
     height: auto;

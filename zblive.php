@@ -94,6 +94,9 @@ $epgpos = $epgdata['pos'];
             </div>
         </div>
         <script src="/views/js/player.js?t=<?php echo time(); ?>"></script>
+        <h3 align="center">
+            网页端仅供体验测试使用，更多频道请下载客户端观看↓
+        </h3>
         <div class="zbtool">
             <div class="bintro">
                 <a>

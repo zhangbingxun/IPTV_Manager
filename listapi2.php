@@ -119,7 +119,17 @@ $encrypted = str_replace("&", "a", $encrypted);
 $data = new Aes($datakey);
 $datajson = $data->decrypt($encrypted);
 $jsondata = gzuncompress(base64_decode($datajson));
-
+/*
+["http:\/\/long.188918.xyz:10086\/longtv\/",
+"http:\/\/playlive.118888888.xyz:99\/",
+"http:\/\/180.101.160.46:8118\/",
+"http:\/\/playlive.558888888.xyz:93\/",
+"http:\/\/180.101.160.9:6677\/",
+"http:\/\/180.101.160.9:7117\/",
+"http:\/\/180.101.160.9:7111\/",
+"http:\/\/180.101.160.46:6677\/",
+"http:\/\/180.101.160.46:9009\/"]
+*/
 $jsondata = preg_replace('#\.php\?#', '#', $jsondata);
 $jsondata = preg_replace('#ab:\/\/#', 'vid=lttv_ab#tid=', $jsondata);
 $jsondata = preg_replace('#long:\/\/#', 'vid=lttv_long#tid=', $jsondata);
@@ -129,17 +139,24 @@ $jsondata = preg_replace('#hw:\/\/#', 'vid=lttv_hw#tid=', $jsondata);
 $jsondata = preg_replace('#ws:\/\/#', 'vid=lttv_ws#tid=', $jsondata);
 $jsondata = preg_replace('#as:\/\/#', 'vid=lttv_as#tid=', $jsondata);
 $jsondata = preg_replace('#mm:\/\/#', 'vid=lttv_mm#tid=', $jsondata);
+$jsondata = preg_replace('#zli:\/\/#', 'vid=lttv_zli#tid=', $jsondata);
 
 $channeldata = json_decode($jsondata, true);
 
 foreach($channeldata as $catelist) {
-    print_r("\n" . '--------------------------------------------------------' . $catelist['name'] . '--------------------------------------------------------' . "\n\n");
+    print_r("\n" . '# ' . $catelist['name'] . ' #' . "\n\n");
     foreach($catelist as $channellist) {
         if (is_array($channellist)) {
             foreach($channellist as $channel) {
                 if (is_array($channel)) {
                     foreach($channel['source'] as $url) {
-                        print_r($channel['name'] . ',' . $url . "\n");
+                        if (isset($_GET['dl'])) {
+                            if (strstr($url, "//") != true) {
+                                print_r($channel['name'] . ',' . $url . "\n");
+                            }
+                        } else {
+                            print_r($channel['name'] . ',' . $url . "\n");
+                        }
                     } 
                 } 
             } 

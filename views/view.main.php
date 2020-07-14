@@ -10,8 +10,8 @@
 <meta name="renderer" content="webkit" />
 <link href="/views/css/bootstrap.min.css" rel="stylesheet">
 <link href="/views/css/materialdesignicons.min.css" rel="stylesheet">
-<link href="/views/css/style.min.css" rel="stylesheet">
-<link href="/views/css/login.css" rel="stylesheet" >
+<link href="/views/css/style.min.css?t=<?php echo time(); ?>" rel="stylesheet">
+<link href="/views/css/login.css?t=<?php echo time(); ?>" rel="stylesheet" >
 <link href="/views/css/animate.css" rel="stylesheet">
 <link href="/views/js/jconfirm/jquery-confirm.min.css" rel="stylesheet">
 <script type="text/javascript" src="/views/js/bootstrap.min.js"></script>

@@ -8,7 +8,7 @@ require_once "config.php";
 $db = Config::GetIntance();
 $remote = new GetIP();
 $channelNumber = 1;
-$myurl = mUrl();
+$myurl = $remote -> mUrl();
 $nowtime = time();
 $datetime = date("Y-m-d H:i:s");
 
@@ -16,8 +16,8 @@ $appsign = $db->mGet("luo2888_config","value","where name='app_sign'");
 $b64str = $db->mGet("luo2888_config","value","where name='app_b64key'");
 $appname = $db->mGet("luo2888_config","value","where name='app_appname'");
 $packagename = $db->mGet("luo2888_config","value","where name='app_packagename'");
-$appkey = md5('#' . $appname . '#' . $appsign . '#' . $packagename . '#' . $b64str . '#');
-$key = md5('#' . $appname . '#' . $appkey . '#' . $packagename . '#');
+$appkey = md5("#$appname#$appsign#$packagename#$b64str#");
+$key = md5("#$appname#$appkey#$packagename#");
 
 class Aes {
     protected $iv;
@@ -78,7 +78,7 @@ function randomStr($len) {
 // 输出频道数据
 function echoJSON($username, $category, $alisname, $psw, $randstr) {
 
-    global $db, $channelNumber, $key;
+    global $db, $channelNumber, $key, $remote;
     $nowtime = time();
 
     if ($alisname == '我的收藏') {
@@ -95,7 +95,7 @@ function echoJSON($username, $category, $alisname, $psw, $randstr) {
                 $nameArray[] = $row['name'];
             } 
             if (strstr($row['url'], "http") != false) {
-                $sourceArray[$row['name']][] = mUrl() . '?tvplay&user=' . $username . '&channel=' . $row['id'] . '&time=' . $nowtime . '&token=' . md5($row['id'] . $nowtime . $key);
+                $sourceArray[$row['name']][] = $remote -> mUrl() . '?tvplay&user=' . $username . '&channel=' . $row['id'] . '&time=' . $nowtime . '&token=' . md5($row['id'] . $nowtime . $key);
             } else {
                 $sourceArray[$row['name']][] = $row['url'];
             }
@@ -127,25 +127,6 @@ function echoJSON($username, $category, $alisname, $psw, $randstr) {
         return $objCategory;
     } 
 
-} 
-
-// EPG错误信息
-function failmsg($code, $msg) {
-    date_default_timezone_set("Asia/Shanghai");
-    header('content-type:application/json;charset=utf-8');
-    $arr = [];
-    $datas = [];
-    $datas["name"] = $msg;
-    $datas["starttime"] = date("H:i", time());
-    $arr["code"] = $code;
-    $arr["msg"] = $msg;
-    $arr["name"] = "Access deniend";
-    $arr["tvid"] = "1";
-    $arr["date"] = date("Y-m-d", time());
-    $arr["data"] = [$datas];
-    $str = json_encode($arr, JSON_UNESCAPED_UNICODE);
-    echo $str;
-    exit;
 } 
 
 // 缓存数据
@@ -214,16 +195,19 @@ else if (isset($_GET['getver'])) {
 
     $data = json_encode(
         array(
-            'boxver' => $boxver,
-            'boxurl' => $boxurl,
             'appver' => $appver,
             'appurl' => $appurl,
+            'boxver' => $boxver,
+            'boxurl' => $boxurl,
             'appsets' => $up_sets,
             'appsize' => $up_size,
             'apptext' => $up_text,
         ),JSON_UNESCAPED_UNICODE
     );
 
+    header("Content-type: text/json; charset=utf-8");
+    header("Cache-Control:no-cache,must-revalidate");
+    header("Pragma: no-cache");
     echo $data;
     exit;
 
@@ -240,7 +224,7 @@ else if (isset($_GET['getloc'])) {
         $userip = $remote -> getuserip();
     }
 
-    $iploc = $remote -> getloc($db,$myurl,$userip);
+    $iploc = $remote -> getloc($db,$userip);
     echo $iploc;
 
     exit;
@@ -271,11 +255,13 @@ else if (isset($_GET['tvinfo'])) {
     } else {
         $epgdata =  file_get_contents("$apidir/tvguide.php?channel=" . $channel_name);
     }
-    if (empty(json_decode($epgdata, true))) {
-       failmsg(200, "EPG接口错误");
+
+    $epgarray = json_decode($epgdata, true);
+    if (empty($epgarray['data'])) {
+        exit('{"code":500,"msg":"EPG接口发生错误！","data":{"name":"暂无节目信息","starttime":"00:00"}}');
+    } else {
+        exit($epgdata);
     }
-    echo $epgdata;
-    exit;
 
 }
 
@@ -353,7 +339,7 @@ else if (isset($_POST['active'])) {
         //通过SN重新绑定
         $db->mDel("luo2888_users","where mac='$mac' and deviceid='$androidid' and model='$model' and status=-1");
         $db->mSet("luo2888_users","mac='$mac',deviceid='$androidid',model='$model'","where name=$serial and status>0 and mac='' and deviceid='' and model=''");
-        exit("已为你重新绑定账号，正在登录，请稍后...");	
+        exit("已为你重新绑定账号，请返回重新登录。");	
 
     } else {
 
@@ -410,13 +396,13 @@ else if (isset($_POST['login'])) {
     }
 
     if (empty($region)) {
-        $json = $remote -> getloc($db,$myurl,$userip);
+        $json = $remote -> getloc($db,$userip);
         $obj = json_decode($json);
         $region = $obj->data->region . $obj->data->city . $obj->data->isp;
     } 
 
     if (strstr($androidid == '871544fa3caeb847')) {
-        $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'主动拦截','$userip','$region','$datetime','黑名单用户非法访问已拦截！'");
+        $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'主动拦截','$userip','$region','$datetime','黑名单用户非法访问已拦截！'");
         exit;
     }
 
@@ -533,7 +519,7 @@ else if (isset($_POST['login'])) {
 
     $mealname = $db->mGet("luo2888_meals", "name", "where id='$mealid'");
     $week = array('日', '一', '二', '三', '四', '五', '六');
-    $adtext = '尊敬的用户，欢迎使用' . $app_appname . '。' . date('今天n月d号') . "，" . '星期' . $week[date('w')] . '，当前套餐：' . $mealname . '。' . $adtext;
+    $adtext = '欢迎使用' . $app_appname . '，' . date('今天n月d号') . "，" . '星期' . $week[date('w')] . '。' . $adtext;
 
     if ($showwea == 1) {
         $weaapi_id = $db->mGet("luo2888_config", "value", "where name='weaapi_id'");
@@ -569,6 +555,11 @@ else if (isset($_POST['login'])) {
     mysqli_free_result($result);
 
     $arrcanseek[] = '';
+
+    if ($status2 < 1) {
+         $adtext = $db->mGet("luo2888_config", "value", "where name='adtext_free'");
+         $adtext = '欢迎使用' . $app_appname . '，' . $adtext;
+    } 
 
     if ($status < 1) {
         $datatoken = '';
@@ -630,14 +621,14 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
     $username = $db->mGet("luo2888_users", "name", "where mac='$mac'");
 
     if (empty($region)) {
-        $json = $remote -> getloc($db,$myurl,$userip);
+        $json = $remote -> getloc($db,$userip);
         $obj = json_decode($json);
         $region = $obj->data->region . $obj->data->city . $obj->data->isp;
     }
 
     if ($token != md5($username . $b64str . $randkey)) {
+         $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'主动拦截','$userip','$region','$datetime','虚假设备登录已拦截！'");
         header('HTTP/1.1 403 Forbidden');
-         $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'主动拦截','$userip','$region','$datetime','虚假设备登录已拦截！'");
         exit;
     }
 

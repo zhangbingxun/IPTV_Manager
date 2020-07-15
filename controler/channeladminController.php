@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 require_once "../api/common/converter.class.php";
 
-if ($_SESSION['channeladmin'] == 0) {
+if ($user != 'admin') {
     exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
 } 
 
@@ -60,12 +60,7 @@ function add_channel_list($cname, $srclist) {
         $rows = explode("\n", $srclist);
         $rows = preg_replace('# ,#', ',', $rows);
         $rows = preg_replace('#\r#', '', $rows);
-        $rows = preg_replace('/高清/', '', $rows);
-        $rows = preg_replace('/\[.*?\]/', '', $rows);
         $rows = preg_replace('/\#genre\#/', '', $rows);
-        $rows = preg_replace('/ver\..*?\.m3u8/', '', $rows);
-        $rows = preg_replace('/t\.me.*?\.m3u8/', '', $rows);
-        $rows = preg_replace("/https(.*)www.bbsok.cf[^>]*/", "", $rows);
         foreach($rows as $row) {
             if (strpos($row, ',') !== false) {
                 $ipos = strpos($row, ',');

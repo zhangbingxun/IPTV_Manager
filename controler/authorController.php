@@ -3,13 +3,14 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
-if ($_SESSION['author'] == 0) {
+if ($user != 'admin') {
     exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
 } 
 
 ?>
 
 <?php 
+
 // 删除用户
 if (isset($_POST['submitdel'])) {
     foreach ($_POST['id'] as $id) {
@@ -17,6 +18,7 @@ if (isset($_POST['submitdel'])) {
         echo "<script>lightyear.notify('用户$id 已删除！', 'success', 3000);</script>";
     } 
 } 
+
 // 授权用户
 if (isset($_POST['submitauthor'])) {
     $meals = (array_filter($_POST['meal_s']));
@@ -41,6 +43,7 @@ if (isset($_POST['submitauthor'])) {
         echo "<script>$.alert({title: '成功',content: '选中用户已授权" . $_POST['exp'] . "天。',type: 'green',buttons: {confirm: {text: '好',btnClass: 'btn-primary',action: function(){window.location.href='useradmin.php';}}}});</script>";
     } 
 } 
+
 // 授权用户永不到期
 if (isset($_POST['submitauthorforever'])) {
     $meals = (array_filter($_POST['meal_s']));
@@ -65,6 +68,7 @@ if (isset($_POST['submitauthorforever'])) {
         echo"<script>$.alert({title: '成功',content: '选中用户已授权为永不到期。',type: 'green',buttons: {confirm: {text: '好',btnClass: 'btn-primary',action: function(){window.location.href='useradmin.php';}}}});</script>";
     } 
 } 
+
 // 禁用用户
 if (isset($_POST['submitforbidden'])) {
     if (empty($_POST['id'])) {
@@ -78,47 +82,50 @@ if (isset($_POST['submitforbidden'])) {
         } 
     } 
 } 
+
 // 删除一天前未授权用户
 if (isset($_POST['submitdelonedaybefor'])) {
     $onedaybefore = strtotime(date("Y-m-d"), time());
     $db->mDel("luo2888_users", "where status=-1 and lasttime<$onedaybefore");
     echo"<script>lightyear.notify('已删除一天前未授权用户！', 'success', 3000);</script>";
 } 
+
 // 删除所有未授权用户
 if (isset($_POST['submitdelall'])) {
     $db->mDel("luo2888_users", "where status=-1 or status=0 or status=-999");
     echo"<script>lightyear.notify('已删除所有未授权用户！', 'success', 3000);</script>";
 } 
+
 // 搜索关键字
 if (isset($_GET['keywords'])) {
     $keywords = trim($_GET['keywords']);
     $searchparam = "and (name like '%$keywords%' or mac like '%$keywords%' or deviceid like '%$keywords%' or model like '%$keywords%' or ip like '%$keywords%' or region like '%$keywords%' or status like '%$keywords%')";
 } 
 $keywords = trim($_GET['keywords']);
+
 // 设置每页显示数量
 if (isset($_POST['recCounts'])) {
     $recCounts = $_POST['recCounts'];
-    $db->mSet("luo2888_admin", "showcounts=$recCounts", "where name='$user'");
+    $db->mSet("luo2888_config", "value=$recCounts", "where name='admin_showcounts'");
 } 
+
 // 获取每页显示数量
-if ($row = $db->mGetRow("luo2888_admin", "showcounts", "where name='$user'")) {
-    $recCounts = $row['showcounts'];
-} else {
-    $recCounts = 100;
-} 
-unset($row);
+$recCounts = $db->mGet("luo2888_config", "value", "where name='admin_showcounts'");
+
 // 获取当前页
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
 } else {
     $page = 1;
 } 
+
 // 获取排序依据
 if (isset($_GET['order'])) {
     $order = $_GET['order'];
 } else {
     $order = 'lasttime desc';
 } 
+
 // 获取用户总数并根据每页显示数量计算页数
 if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status=-1 or status=-999 or status=0")) {
     $userCount = $row[0];
@@ -128,6 +135,7 @@ if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status=-1 or status=
     $pageCount = 1;
 } 
 unset($row);
+
 // 处理跳转逻辑
 if (isset($_POST['jumpto'])) {
     $p = $_POST['jumpto'];
@@ -135,6 +143,7 @@ if (isset($_POST['jumpto'])) {
         echo "<script language=JavaScript>location.href='author.php' + '?page=$p&order=$order';</script>";
     } 
 } 
+
 // 获取当天上线用户总数
 $todayTime = strtotime(date("Y-m-d"), time());
 if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status=-1 or status=-999 and lasttime>$todayTime")) {
@@ -143,6 +152,7 @@ if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status=-1 or status=
     $todayuserCount = 0;
 } 
 unset($row);
+
 // 获取当天授权用户总数
 if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>0 and authortime>$todayTime")) {
     $todayauthoruserCount = $row[0];
@@ -150,6 +160,7 @@ if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>0 and authort
     $todayauthoruserCount = 0;
 } 
 unset($row);
+
 // 获取授权开关状态试用天数
 $needauthor = $db->mGet("luo2888_config", "value", "where name='needauthor'");
 $isfreeuser = $db->mGet("luo2888_config", "value", "where name='trialdays'");

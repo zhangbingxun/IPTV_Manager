@@ -3,9 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
-if ($_SESSION['useradmin'] == 0) {
-    echo"<script>alert('你无权访问此页面！');history.go(-1);</script>";
-} 
+if ($user != 'admin') {
+    exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
+}
 
 ?>
 
@@ -133,11 +133,14 @@ if (isset($_POST["s_meals"]) && isset($_POST["e_meals"])) {
     } 
 } 
 
-// 修改每页显示数量
+// 设置每页显示数量
 if (isset($_POST['recCounts'])) {
     $recCounts = $_POST['recCounts'];
-    $db->mSet("luo2888_admin", "showcounts=$recCounts", "where name='$user'");
+    $db->mSet("luo2888_config", "value=$recCounts", "where name='admin_showcounts'");
 } 
+
+// 获取每页显示数量
+$recCounts = $db->mGet("luo2888_config", "value", "where name='admin_showcounts'");
 
 // 搜索关键字
 if (isset($_GET['keywords'])) {
@@ -145,13 +148,6 @@ if (isset($_GET['keywords'])) {
     $searchparam = "and (name like '%$keywords%' or deviceid like '%$keywords%' or mac like '%$keywords%' or name like '%$keywords%' or model like '%$keywords%' or ip like '%$keywords%' or region like '%$keywords%' or author like '%$keywords%' or marks like '%$keywords%' or status like '%$keywords%')";
 } 
 $keywords = trim($_GET['keywords']);
-
-// 获取每页显示数量
-if ($row = $db->mGetRow("luo2888_admin", "showcounts", "where name='$user'")) {
-    $recCounts = $row['showcounts'];
-} else {
-    $recCounts = 100;
-} 
 
 // 获取当前页
 if (isset($_GET['page'])) {

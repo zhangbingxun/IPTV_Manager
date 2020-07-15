@@ -4,13 +4,13 @@ $db = Config::GetIntance();
 
 session_start();
 if (isset($_SESSION['user']))$user = $_SESSION['user'];
-if ($row = $db->mGetRow("luo2888_admin", "*", "where name='$user'")) {
-    $psw = $row['psw'];
+if ($user == 'admin') {
+    $psw = $db->mGet("luo2888_config","value","where name='adminpass'");
 } else {
-    $psw = '';
+    exit("<script>alert('你无权访问该页面，请先登录！');window.location.href='../admin.php';</script>");
 } 
 if (!isset($_SESSION['psw']) || $_SESSION['psw'] != $psw) {
-    exit;
+    exit("<script>alert('数据错误，请检查网站日志！');window.location.href='../admin.php';</script>");
 } 
 
 ?>

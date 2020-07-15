@@ -6,18 +6,19 @@ if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
 } else {
     header("location:../admin.php");
-    exit();
+    exit;
 } 
 
-if ($row = $db->mGetRow("luo2888_admin", "*", "where name='$user'")) {
-    $psw = $row['psw'];
+if ($user == 'admin') {
+    $psw = $db->mGet("luo2888_config","value","where name='adminpass'");
 } else {
-    $psw = '';
+    header("location:../admin.php");
+    exit;
 } 
 
 if (!isset($_SESSION['psw']) || $_SESSION['psw'] != $psw) {
     header("location:../admin.php");
-    exit();
+    exit;
 } 
 
 ?>

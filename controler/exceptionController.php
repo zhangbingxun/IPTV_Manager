@@ -3,9 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
-if ($_SESSION['ipcheck'] == 0) {
-    echo"<script>alert('你无权访问此页面！');history.go(-1);</script>";
-    exit();
+if ($user != 'admin') {
+    exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
 } 
 
 ?>

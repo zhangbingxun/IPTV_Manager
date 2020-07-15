@@ -1,30 +1,25 @@
 <?php
 require_once "config.php";
+require_once "api/common/converter.class.php";
 $db = Config::getIntance();
 $time = date("Y-m-d H:i:s");
+$converter = new ZhConvert();
 
 // 增加频道列表
 function add_channel_list($cname, $srclist) {
-    global $db;
+    global $db，$converter;
     if (!empty($srclist && $cname)) {
         $db->mDel("luo2888_channels", "where category='$cname'");
         $repetnum = 0;
         $rows = explode("\n", $srclist);
         $rows = preg_replace('# ,#', ',', $rows);
         $rows = preg_replace('#\r#', '', $rows);
-        $rows = preg_replace('/高清/', '', $rows);
-        $rows = preg_replace('/FHD/', '', $rows);
-        $rows = preg_replace('/HD/', '', $rows);
-        $rows = preg_replace('/SD/', '', $rows);
-        $rows = preg_replace('/\[.*?\]/', '', $rows);
         $rows = preg_replace('/\#genre\#/', '', $rows);
-        $rows = preg_replace('/ver\..*?\.m3u8/', '', $rows);
-        $rows = preg_replace('/t\.me.*?\.m3u8/', '', $rows);
-        $rows = preg_replace("/https(.*)www.bbsok.cf[^>]*/", "", $rows);
         foreach($rows as $row) {
             if (strpos($row, ',') !== false) {
                 $ipos = strpos($row, ',');
                 $channelname = substr($row, 0, $ipos);
+                $channelname = $converter -> zh_hant_to_zh_hans($channelname);
                 $source = substr($row, $ipos + 1);
                 if (strpos($source, '#') !== false) {
                     $sources = explode("#", $source);
@@ -83,9 +78,9 @@ if ($result){
             $listurl = $db->mGetRow("luo2888_category", "url", "where name='$category'");
             $addlist = add_channel_list($category, $srclist);
             if ($addlist !== -1) {
-                $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'自动任务','系统','系统','$time','更新列表$category 成功！'");
+                $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'自动任务','系统','系统','$time','更新列表$category 成功！'");
             } else {
-                $db->mInt("luo2888_adminrec","id,name,ip,loc,time,func","null,'自动任务','系统','系统','$time','更新列表$category 失败！'");
+                $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'自动任务','系统','系统','$time','更新列表$category 失败！'");
             } 
         } 
     }

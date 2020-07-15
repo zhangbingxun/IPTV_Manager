@@ -6,7 +6,6 @@ error_reporting(E_ERROR);
 require_once "api/common/cacher.class.php";
 require_once "config.php";
 $db = Config::GetIntance();
-$myurl = mUrl();
 
 // 缓存数据
 function cache($key, $f_name, $ff = []) {
@@ -81,7 +80,7 @@ $boxver = $db->mGet("luo2888_config", "value", "where name='appver_sdk14'");
 						</div>
 						<nav>
 							<ul>
-								<li><a href="<?php echo dirname($myurl); ?>/zblist.php">WEB版本</a></li>
+								<li><a href="/zblist.php">WEB版本</a></li>
 								<li><a href="#android">Android版本</a></li>
 								<li><a href="#about">關於及免責聲明</a></li>
 							</ul>

@@ -41,8 +41,12 @@ function weaForm(){
 					<form method="post">
 						
                     	<div class="form-group">
-							<label>系统公告</label>
+							<label>会员用户公告</label>
                     		<textarea class="form-control" rows="5" name="adtext" placeholder="请输入公告内容" ><?php echo $adtext ?></textarea>
+						</div>
+                    	<div class="form-group">
+							<label>免费用户公告</label>
+                    		<textarea class="form-control" rows="5" name="adtext_free" placeholder="请输入公告内容" ><?php echo $adtext_free ?></textarea>
 						</div>
                     	<div class="form-group">
 							<label>预留文字</label>

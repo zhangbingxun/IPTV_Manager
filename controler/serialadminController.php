@@ -3,9 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
-if ($_SESSION['useradmin'] == 0) {
-    echo"<script>alert('你无权访问此页面！');history.go(-1);</script>";
-} 
+if ($user != 'admin') {
+    exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
+}
 
 ?>
 
@@ -123,10 +123,14 @@ if (isset($_POST["meal_s"]) && isset($_POST["e_meals"])) {
     } 
 } 
 
+// 设置每页显示数量
 if (isset($_POST['recCounts'])) {
     $recCounts = $_POST['recCounts'];
-    $db->mSet("luo2888_admin", "showcounts=$recCounts", "where name='$user'");
+    $db->mSet("luo2888_config", "value=$recCounts", "where name='admin_showcounts'");
 } 
+
+// 获取每页显示数量
+$recCounts = $db->mGet("luo2888_config", "value", "where name='admin_showcounts'");
 
 // 搜索关键字
 if (isset($_GET['keywords'])) {
@@ -134,24 +138,21 @@ if (isset($_GET['keywords'])) {
     $searchparam = "and (name like '%$keywords%' or author like '%$keywords%' or marks like '%$keywords%' or days like '%$keywords%')";
 } 
 $keywords = trim($_GET['keywords']);
-// 获取每页显示数量
-if ($row = $db->mGetRow("luo2888_admin", "showcounts", "where name='$user'")) {
-    $recCounts = $row['showcounts'];
-} else {
-    $recCounts = 100;
-} 
+
 // 获取当前页
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
 } else {
     $page = 1;
 } 
+
 // 获取排序依据
 if (isset($_GET['order'])) {
     $order = $_GET['order'];
 } else {
     $order = 'gentime desc';
 } 
+
 // 获取账号总数并根据每页显示数量计算页数
 if ($row = $db->mGetRow("luo2888_serialnum", "count(*)")) {
     $serialCount = $row[0];
@@ -161,6 +162,7 @@ if ($row = $db->mGetRow("luo2888_serialnum", "count(*)")) {
     $pageCount = 1;
 } 
 unset($row);
+
 // 处理跳转逻辑
 if (isset($_POST['jumpto'])) {
     $p = $_POST['jumpto'];
@@ -168,6 +170,7 @@ if (isset($_POST['jumpto'])) {
         echo "<script language=JavaScript>location.href='serialadmin.php' + '?page=$p&order=$order';</script>";
     } 
 } 
+
 // 获取当天授权用户总数
 $todayTime = strtotime(date("Y-m-d"), time());
 if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>-1 and authortime>$todayTime")) {

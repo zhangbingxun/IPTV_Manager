@@ -9,7 +9,7 @@ $remote = new GetIP();
 $userip = $remote -> getuserip();
 $category = $_GET['cate'];
 $channel = $_GET['channel'];
-$epgdata =  json_decode(file_get_contents(dirname(mUrl()) . "/api/common/tvguide.php?channel=" . $channel), true);
+$epgdata =  json_decode(file_get_contents(dirname($remote -> mUrl()) . "/api/common/tvguide.php?channel=" . $channel), true);
 $epgpos = $epgdata['pos'];
 
 ?>

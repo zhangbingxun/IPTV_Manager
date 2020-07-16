@@ -19,7 +19,7 @@ class Config {
         $this->port = '3306'; //数据库端口
         $this->user = ''; //数据库帐号
         $this->pass = ''; //数据库密码
-        $this->database = ''; //数据库名称
+        $this->database = 'tvpanel'; //数据库名称
         $this->charset = 'utf8'; //数据库字符集
         $this->db_connect(); //连接数据库
         $this->db_charset(); //设置字符集
@@ -122,21 +122,109 @@ class Config {
     } 
 } 
 
+function mCurl($url,$method,$refurl,$post_data){
+    $UserAgent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36';
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_TIMEOUT, 2);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($curl, CURLOPT_USERAGENT, $UserAgent);
+    if ($method == "POST") {
+        curl_setopt($curl, CURLOPT_REFERER, $refurl); 
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+    }
+    $response = curl_exec($curl);
+    curl_close($curl);
+    return $response;
+}
+
+function lanzouUrl($url) {
+    $ruleMatchDetailInList = "~ifr2\"\sname=\"[\s\S]*?\"\ssrc=\"\/(.*?)\"~";
+    preg_match_all($ruleMatchDetailInList, mCurl($url,null,null,null),$link);
+    $index = 0;
+    for($i=0;$i<count($link[1]);$i++){
+        if($link[1][$i]!="fn?v2"){
+            $index = $i;
+            break;
+        }
+    }
+
+    $refurl = "https://www.lanzous.com/".$link[1][$index];
+    $ruleMatchDetailInList = "~var ajaxup = '([^\]]*)';//~";
+    preg_match($ruleMatchDetailInList, mCurl($refurl,null,null,null),$segment);
+    $post_data = array(
+        "action" => "downprocess",
+        "sign" => $segment[1],
+        "ves" => 1,
+        "p" => ""
+    );
+
+    $downjson = mCurl("https://www.lanzous.com/ajaxm.php","POST",$refurl,$post_data);
+    $linkobj = json_decode($downjson);
+    if ($linkobj->dom == "") {
+        return false;
+    } else {
+        return $linkobj->dom . "/file/" . $linkobj->url;
+    }
+}
+
 class GetIP {
+
+    // 获取API地址
+    function mUrl() {
+        $Url = 'http://';
+        if($_SERVER['HTTPS'] == 'on') {
+            $Url = 'https://';
+        }
+        $Url .= $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+        return $Url;
+    }
+
     function getuserip() {
-        $real_ip = $_SERVER['REMOTE_ADDR'];
-        if (isset($_SERVER['HTTP_CLIENT_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_CLIENT_IP'])) {
-            $real_ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) AND preg_match_all('#\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}#s', $_SERVER['HTTP_X_FORWARDED_FOR'], $matches)) {
+        $IP = $_SERVER['REMOTE_ADDR'];
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) AND preg_match_all('#\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}#s', $_SERVER['HTTP_X_FORWARDED_FOR'], $matches)) {
             foreach ($matches[0] AS $xip) {
                 if (!preg_match('#^(10|172\.16|192\.168)\.#', $xip)) {
-                    $real_ip = $xip;
+                    $IP = $xip;
                     break;
                 } 
             } 
-        } 
-        return $real_ip;
+        }
+        if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+            $IP = $_SERVER['HTTP_CF_CONNECTING_IP'];
+        }
+        return $IP;
     } 
+
+    // 获取IP归属地
+    function getloc($db,$userip) {
+        $ipchk = $db->mGet("luo2888_config", "value", "where name='ipchk'");
+        $locapi = dirname($this -> mUrl()) . '/api/iploc';
+
+        switch ($ipchk) {
+            case 1:
+                $iploc =  file_get_contents("$locapi/qqzeng.php?ip=$userip");
+                break;
+            case 2:
+                $iploc =  file_get_contents("$locapi/ipcn.php?ip=$userip");
+                break;
+            case 3:
+                $iploc =  file_get_contents("$locapi/taobao.php?ip=$userip");
+                break;
+            case 4:
+                $iploc =  file_get_contents("$locapi/pconline.php?ip=$userip");
+                break;
+            case 5:
+                $iploc = file_get_contents("$locapi/zxinc.php?ip=$userip");
+                break;
+        }
+        return $iploc;
+    }
+
 } 
 
 ?>

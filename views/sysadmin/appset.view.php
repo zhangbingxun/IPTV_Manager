@@ -136,17 +136,13 @@ $("#ipchkform").submit();
 										case 5:
 			    							$ipchkselected5 = "selected";
 											break;
-										case 6:
-			    							$ipchkselected6 = "selected";
-											break;
 									}
 									?>
 									<option value='1' <?php echo $ipchkselected1;?> >QQzeng</option>
 									<option value='2' <?php echo $ipchkselected2;?> >IP.cn</option>
 									<option value='3' <?php echo $ipchkselected3;?> >淘宝</option>
-									<option value='4' <?php echo $ipchkselected4;?> >纯真</option>
-									<option value='5' <?php echo $ipchkselected5;?> >太平洋</option>
-									<option value='6' <?php echo $ipchkselected6;?> >ZXINC</option>
+									<option value='4' <?php echo $ipchkselected4;?> >太平洋</option>
+									<option value='5' <?php echo $ipchkselected5;?> >ZXINC</option>
 								</select>
 							</div>
 						</div>

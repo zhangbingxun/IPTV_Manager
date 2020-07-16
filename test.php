@@ -1,27 +1,18 @@
 <?php
 
-$nowtime = time();
-$signtime = $nowtime + 1908;
-$sign = $signtime ^ 209002969;
-$url = $_GET['url'] . "&t=" . $nowtime . "&sign=" . $sign;
+header("Content-Type: video/mp2t");
+$tsurl = $_GET['ts']
 
 $curl = curl_init();
-curl_setopt($curl, CURLOPT_URL, $url);
+curl_setopt($curl, CURLOPT_URL, $tsurl);
+curl_setopt($curl, CURLOPT_HEADER, 1);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($curl, CURLOPT_NOBODY, 1);
-curl_setopt($curl, CURLOPT_TIMEOUT, 2);
-curl_setopt($curl, CURLOPT_MAXREDIRS, 1);
-curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-curl_setopt($curl, CURLOPT_USERAGENT, 'longtengtv');
 curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-    'referer: https://tv.lctv.vip/ssl/longtv.html'
+    'playtoken: 6cd3c4d0f834c26c32182fe053c6b360'
 ));
-curl_exec($curl);
-$returnurl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
-
-header("Content-Type:text/plain;chartset=utf-8");
-print_r($returnurl);
+$contents = curl_exec($curl);
 curl_close($curl);
-exit;
+
+print_r($contents);
 
 ?>

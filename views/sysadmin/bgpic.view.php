@@ -1,10 +1,16 @@
+<script type="text/javascript">
+function submitsplash(){
+$("#splashform").submit();
+}
+</script>
 <div class="row">
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="card-header"><h4>背景图片</h4></div>
 			<div class="tab-content">
 				<div class="tab-pane active">
-					<table class="table table-hover">
+					<div class="table-responsive" >
+					<table class="table table-hover table-vcenter">
 						<thead>
 							<tr>
 								<th>图片名称</th>
@@ -42,17 +48,21 @@
 						}
 						unset($files);
 						?>
-	                  </tbody>
-	                </table>
-					<small class="help-block">提示：图片仅支持PNG格式，不超过800KB，多张图片为随机显示。</small>
-					<form method="post" enctype="multipart/form-data">
+						<tr>
+							<td colspan="5">
 						<div class="form-group">
-							<input type="file" name="splash" accept="image/png" />
-						</div>
-						<div class="form-group">
-							<button id="submit" class="btn btn-w-md btn-primary" type="submit" name="submitsplash" >开始上传</button>
-						</div>
+					<form id="splashform" method="post" enctype="multipart/form-data">
+							<input style="display: inline;" type="file" name="splash" accept="image/png" onchange="submitsplash()"/>
 					</form>
+						</div>
+						<div class="form-group">
+					<small class="help-block">提示：图片仅支持PNG格式，不超过800KB，多张图片为随机显示。</small>
+						</div>
+							</td>
+						</tr>
+	            </tbody>
+	          </table>
+						</div>
 				</div>
 			</div>
 		</div>

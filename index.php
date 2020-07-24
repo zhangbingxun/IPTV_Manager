@@ -6,6 +6,13 @@ error_reporting(E_ERROR);
 require_once "api/common/cacher.class.php";
 require_once "config.php";
 $db = Config::GetIntance();
+$nowtime = time();
+
+$appver = $db->mGet("luo2888_config", "value", "where name='appver'");
+$boxver = $db->mGet("luo2888_config", "value", "where name='appver_sdk14'");
+
+$appurl = $db->mGet("luo2888_config", "value", "where name='appurl'");
+$boxurl = $db->mGet("luo2888_config", "value", "where name='appurl_sdk14'");
 
 // 缓存数据
 function cache($key, $f_name, $ff = []) {
@@ -23,32 +30,39 @@ function cache($key, $f_name, $ff = []) {
 // 缓存超时
 function cache_time_out() {
     date_default_timezone_set("Asia/Shanghai");
-    $timetoken = time() + 50;
-    return $timetoken;
+    return time();
 }
 
-$appurl = $db->mGet("luo2888_config", "value", "where name='appurl'");
-$boxurl = $db->mGet("luo2888_config", "value", "where name='appurl_sdk14'");
-$timetoken = cache("time_out_chk", "cache_time_out");
+// 蓝奏云解析
+function downurl($url) {
 
-if (time() >= $timetoken) {
+    if (strstr($url,"lanzou://")) {
+
+        $lzurl = str_replace('lanzou:', 'https:', $url);
+        $directlink = lanzouUrl($lzurl);
+        if (!$directlink) {
+            return $lzurl;
+        } else {
+            return $directlink;
+        }
+
+    } else {
+
+        return $url;
+
+    }
+
+}
+
+$timetoken = cache("time_out_chk", "cache_time_out");
+if (abs($nowtime - $timetoken) > 120) {
     Cache::$cache_path = "./cache/tvapi/"; 
     Cache::dels();
     cache("time_out_chk", "cache_time_out");
 } 
 
-if (strstr($appurl,"lanzou://")) {
-    $appurl = preg_replace('#lanzou\:#', 'https:', $appurl);
-    $appurl = cache("appurl" . $appurl, "lanzouUrl", [$appurl]);
-}
-
-if (strstr($boxurl,"lanzou://")) {
-    $boxurl = preg_replace('#lanzou\:#', 'https:', $boxurl);
-    $boxurl = cache("boxurl" . $boxurl, "lanzouUrl", [$boxurl]);
-}
-
-$appver = $db->mGet("luo2888_config", "value", "where name='appver'");
-$boxver = $db->mGet("luo2888_config", "value", "where name='appver_sdk14'");
+$appurl = cache("appdown" . $appurl, "downurl", [$appurl]);
+$boxurl = cache("boxdown" . $boxurl, "downurl", [$boxurl]);
 ?>
 
 <!DOCTYPE HTML>

@@ -17,7 +17,7 @@
 	}
 </script>
     
-    <!--页面主要内容-->
+  <!--页面主要内容-->
 	<main class="lyear-layout-content">
 		<div class="container-fluid">
 			<div class="row">
@@ -159,9 +159,9 @@
 													<td colspan="12">
 														<div class="input-group">
 															<div class="input-group-btn">
-																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitdelunpaid" onclick="return confirm('确认删除所有未支付订单？')">删除所有未支付订单</button>
-																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitdelall" onclick="return confirm('确认删除所有订单？')">删除所有订单</button>
-																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitdel" onclick="return confirm('确定删除选中订单吗？')">删除订单</button>
+																<button class="btn btn-sm btn-danger m-r-10" type="submit" name="submitdel" onclick="return confirm('确定删除选中订单吗？')">删除订单</button>
+																<button class="btn btn-sm btn-danger m-r-10" type="submit" name="submitdelall" onclick="return confirm('确认删除所有订单？')">删除所有订单</button>
+																<button class="btn btn-sm btn-danger m-r-10" type="submit" name="submitdelunpaid" onclick="return confirm('确认删除所有未支付订单？')">删除所有未支付订单</button>
 															</div>
 														</div>
 													</td>

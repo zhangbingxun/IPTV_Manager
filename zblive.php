@@ -9,8 +9,12 @@ $remote = new GetIP();
 $userip = $remote -> getuserip();
 $category = $_GET['cate'];
 $channel = $_GET['channel'];
-$epgdata =  json_decode(file_get_contents(dirname($remote -> mUrl()) . "/api/common/tvguide.php?channel=" . $channel), true);
+$epgdata =  json_decode(file_get_contents(dirname(mUrl()) . "/api/common/tvguide.php?channel=" . $channel), true);
 $epgpos = $epgdata['pos'];
+
+if (strstr($_SERVER['HTTP_USER_AGENT'], "Windows") && strstr($_SERVER['HTTP_USER_AGENT'], "Chrome")) {
+    $ischrome = '<p align="center">您的浏览器正使用Chrome内核，要正常观看节目内容需要在属性页增加参数</p><p align="center">--allow-running-insecure-content --disable-web-security --user-data-dir=C:\Browser</p>';
+}
 
 ?>
 <!DOCTYPE html>
@@ -111,6 +115,7 @@ $epgpos = $epgdata['pos'];
             <div class="clear">
             </div>
         </div>
+        <?php echo $ischrome; ?>
         <div class="intro_desc">
             <h3>
                 <b>

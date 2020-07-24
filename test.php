@@ -1,18 +1,7 @@
 <?php
 
-header("Content-Type: video/mp2t");
-$tsurl = $_GET['ts']
+header("Content-Type:text/plain;chartset=utf-8");
 
-$curl = curl_init();
-curl_setopt($curl, CURLOPT_URL, $tsurl);
-curl_setopt($curl, CURLOPT_HEADER, 1);
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-    'playtoken: 6cd3c4d0f834c26c32182fe053c6b360'
-));
-$contents = curl_exec($curl);
-curl_close($curl);
-
-print_r($contents);
-
+$m3u8 = file_get_contents('http://live2.cdn.iptv8k.org/live/id115/s.m3u8');
+echo str_replace(",\n",",\nhttp://live2.cdn.iptv8k.org/live/id115/",$m3u8);
 ?>

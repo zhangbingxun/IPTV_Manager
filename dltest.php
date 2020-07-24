@@ -17,8 +17,8 @@ header('Access-Control-Allow-Origin: *');
 // 数据变量
 $dataurl = 'https://ott.luo2888.cn/dl.php';  // 代理API地址
 $failurl = 'https://ott.luo2888.cn/videos/fmitv_failure.mp4';
-$playcode = "dl717_qq625336209"; // 播放验证码
-$listcode = "fmi717"; // 列表安全码
+$playcode = "dl722_qq625336209"; // 播放验证码
+$listcode = "fmi722"; // 列表安全码
 
 // 获取代理地址
 function GetUrl() {
@@ -113,6 +113,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
             )
         );
         
+        $num = 1;
         $post_data = 'fmitv_list=' . $data;
         $datastr = send_post($dataurl, $post_data);
         $listobj = json_decode($datastr, true);
@@ -123,6 +124,8 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
                     foreach($channellist as $channel) {
                         $channel = preg_replace('#http://域名/文件名\?#', GetUrl() . '?' . $playcode . '&', $channel);
                         echo $channel . "\n";
+                        //echo "4001," . $num . "," . $channel . "\n";
+                        $num++;
                     }
                 }
             }

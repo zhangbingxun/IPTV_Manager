@@ -155,8 +155,8 @@
 										<input class="form-control" style="width: 108px;height: 30px;" id="typename" type="text" size="10" name="category" value="<?PHP echo $category?>" placeholder="分类名称"/>
 										<input class="form-control" style="width: 115px;height: 30px;" id="typepass" type="text" size="10" name="cpass" value="<?PHP echo $cpass?>" placeholder="分类密码"/>
 										<button class="btn btn-sm btn-default" type="submit" name="submit">增加分类</button>
-										<button class="btn btn-sm btn-default" type="submit" name="submit_deltype">删除分类</button>
-										<button class="btn btn-sm btn-default" type="submit" name="submit_modifytype">修改分类</button>
+										<button class="btn btn-sm btn-default" type="submit" name="submit_deltype" onclick="return confirm('确认删除频道分类吗？')">删除分类</button>
+										<button class="btn btn-sm btn-default" type="submit" name="submit_modifytype" onclick="return confirm('确认修改频道分类吗？')">修改分类</button>
 										<button class="btn btn-sm btn-default" type="submit" name="submit_moveup">上移分类</button>
 										<button class="btn btn-sm btn-default" type="submit" name="submit_movedown">下移分类</button>
 										<button class="btn btn-sm btn-default" type="submit" name="submit_movetop">移至最上</button>

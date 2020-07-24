@@ -40,7 +40,7 @@ $("#ipchkform").submit();
 		</div>
 
 		<div class="card">
-			<div class="card-header"><h4>应用默认设置</h4></div>
+			<div class="card-header"><h4>应用设置</h4></div>
 			<div class="card-body">
 				<form method="post" id="appsetform">
 					<div class="form-inline">
@@ -100,12 +100,20 @@ $("#ipchkform").submit();
 							</select>
 						</div>
 					</div>
-					<div class="form-group form-inline" style="margin-top: 15px;">
+					<div class="form-group" style="margin-top: 15px;">
+						<label>允许同一个IP授权数量：</label>
+						<input style="width: 85px;height: 30px;display: inline;" class="form-control" type="text" name="sameip_user" size="2" value="<?php echo $max_sameip_user; ?>">
+					</div>
+					<div class="form-group">
+						<label>自动封禁最大抓包次数：</label>
+						<input style="width: 85px;height: 30px;display: inline;" class="form-control" type="text" name="vpntimes" size="2" value="<?php echo $vpntimes; ?>">
+					</div>
+					<div class="form-group">
 						<label>试用天数：</label>
-						<input class="form-control" style="width: 60px;height: 26.5px;" type="text" name="trialdays" value="<?php echo $trialdays ?>" size="3">
+						<input class="form-control" style="width: 60px;height: 26.5px;display: inline;" type="text" name="trialdays" value="<?php echo $trialdays ?>" size="3">
 					</div>
 					<small class="help-block">提示：试用天数-999为永不到期。</small>
-					<button class="btn btn-label btn-primary" type="submit" name="submittrialdays"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>修改</button>
+					<button class="btn btn-label btn-primary" type="submit" name="submit"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>修改</button>
 				</form>
 			</div>
 		</div>
@@ -130,19 +138,11 @@ $("#ipchkform").submit();
 										case 3:
 			    							$ipchkselected3 = "selected";
 											break;
-										case 4:
-			    							$ipchkselected4 = "selected";
-											break;
-										case 5:
-			    							$ipchkselected5 = "selected";
-											break;
 									}
 									?>
-									<option value='1' <?php echo $ipchkselected1;?> >QQzeng</option>
-									<option value='2' <?php echo $ipchkselected2;?> >IP.cn</option>
-									<option value='3' <?php echo $ipchkselected3;?> >淘宝</option>
-									<option value='4' <?php echo $ipchkselected4;?> >太平洋</option>
-									<option value='5' <?php echo $ipchkselected5;?> >ZXINC</option>
+									<option value='1' <?php echo $ipchkselected1;?> >ZXINC</option>
+									<option value='2' <?php echo $ipchkselected2;?> >淘宝</option>
+									<option value='3' <?php echo $ipchkselected3;?> >太平洋</option>
 								</select>
 							</div>
 						</div>

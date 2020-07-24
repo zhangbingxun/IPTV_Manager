@@ -91,16 +91,21 @@ if (isset($_POST['submit']) && isset($_POST['appver_sdk14'])) {
     echo"<script>showindex=4;lightyear.notify('盒子版APP升级设置成功！', 'success', 3000);</script>";
 } 
 
+// APP设置
 if (isset($_POST['decodersel']) && isset($_POST['buffTimeOut'])) {
     $decoder = $_POST['decodersel'];
     $buffTimeOut = $_POST['buffTimeOut'];
     $trialdays = $_POST['trialdays'];
+    $vpntimes = $_POST['vpntimes'];
+    $sameip_user = $_POST['sameip_user'];
     if ($trialdays == 0) {
         $db->mSet("luo2888_users", "exp=0", "where status=-1");
     } 
-	$db->mSet("luo2888_config", "value='$decoder'", "where name='decoder'");
-	$db->mSet("luo2888_config", "value='$trialdays'", "where name='trialdays'");
-	$db->mSet("luo2888_config", "value='$buffTimeOut'", "where name='buffTimeOut'");
+    $db->mSet("luo2888_config", "value='$sameip_user'", "where name='max_sameip_user'");
+    $db->mSet("luo2888_config", "value='$vpntimes'", "where name='vpntimes'");
+    $db->mSet("luo2888_config", "value='$decoder'", "where name='decoder'");
+    $db->mSet("luo2888_config", "value='$trialdays'", "where name='trialdays'");
+    $db->mSet("luo2888_config", "value='$buffTimeOut'", "where name='buffTimeOut'");
     echo"<script>showindex=4;lightyear.notify('设置成功！', 'success', 3000);</script>";
 } 
 
@@ -193,15 +198,13 @@ if (isset($_POST['alipay_set'])) {
 } 
 
 // 上传APP背景图片
-if (isset($_POST['submitsplash'])) {
+if (isset($_POST['submit']) && isset($_FILES["splash"])) {
     if ($_FILES["splash"]["type"] == "image/png") {
         if ($_FILES["splash"]["error"] > 0) {
             echo "Error: " . $_FILES["splash"]["error"];
         } else {
             $savefile = "../images/" . $_FILES["splash"]["name"];
             move_uploaded_file($_FILES["splash"]["tmp_name"], $savefile);
-            $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER["REQUEST_URI"];
-            $splashurl = dirname($url) . '/' . $savefile;
             echo "<script>showindex=1;lightyear.notify('上传成功！', 'success', 3000);</script>";
         } 
     } else {
@@ -289,5 +292,7 @@ $showwea = $db->mGet("luo2888_config", "value", "where name='showwea'");
 $keyproxy = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
 $failureurl = $db->mGet("luo2888_config", "value", "where name='failureurl'");
 $deniedurl = $db->mGet("luo2888_config", "value", "where name='deniedurl'");
+$max_sameip_user = $db->mGet("luo2888_config", "value", "where name='max_sameip_user'");
+$vpntimes = $db->mGet("luo2888_config", "value", "where name='vpntimes'");
 
 ?>

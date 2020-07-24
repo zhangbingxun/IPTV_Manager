@@ -11,22 +11,22 @@ if ($user != 'admin') {
 
 <?php 
 // 上线操作
-if ($_GET["act"] == "online") {
-    $id = !empty($_GET["id"])?$_GET["id"]:exit("<script>$.alert({title: '错误',content: '套餐参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
-    $db->mSet("luo2888_vods", "enable=1", "where id=$id");
+if (isset($_POST['upline'])) {
+    $id = !empty($_POST["id"])?$_POST["id"]:exit("<script>$.alert({title: '错误',content: '参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
+    $db->mSet("luo2888_vods", "status=1", "where id=$id");
     exit("<script>$.alert({title: '成功',content: '接口编号 " . $id . " 已上线！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
 } 
 
 // 下线操作
-if ($_GET["act"] == "downline") {
-    $id = !empty($_GET["id"])?$_GET["id"]:exit("<script>$.alert({title: '错误',content: '套餐参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
-    $db->mSet("luo2888_vods", "enable=0", "where id=$id");
+if (isset($_POST['downline'])) {
+    $id = !empty($_POST["id"])?$_POST["id"]:exit("<script>$.alert({title: '错误',content: '参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
+    $db->mSet("luo2888_vods", "status=0", "where id=$id");
     exit("<script>$.alert({title: '成功',content: '接口编号 " . $id . " 已下线！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
 } 
 
 // 删除操作
-if ($_GET["act"] == "dels") {
-    $id = !empty($_GET["id"])?$_GET["id"]:exit("<script>$.alert({title: '错误',content: '参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
+if (isset($_POST['delete'])) {
+    $id = !empty($_POST["id"])?$_POST["id"]:exit("<script>$.alert({title: '错误',content: '参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
     $db->mDel("luo2888_vods", "where id=$id");
     exit("<script>$.alert({title: '成功',content: '接口编号 " . $id . " 已删除！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
 } 
@@ -48,7 +48,7 @@ if (isset($_POST['submitvod'])) {
         exit("<script>$.alert({title: '错误',content: '接口链接： " . $vod_url . " 已存在，请不要重复新增！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
     } 
     // 新加接口数据
-    $db->mInt("luo2888_vods", "name,url,enable", "'$vod_name', '$vod_url', 1");
+    $db->mInt("luo2888_vods", "name,url,status", "'$vod_name', '$vod_url', 1");
     exit("<script>$.alert({title: '成功',content: '接口 " . $vod_name . " 已增加！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
 } 
 

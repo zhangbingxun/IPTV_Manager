@@ -111,8 +111,6 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $obj = json_decode($datastr);
         $playurl = $obj->playurl;
 
-        $playurl = preg_replace('#185.93.2.35:12012#', 'hk.luo2888.cn:12382', $playurl);
-
         if (!empty($playurl)) {
             header('location:' . $playurl);
         } else {

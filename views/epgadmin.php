@@ -23,7 +23,6 @@ function submitForm(){
 								</div>
 							</div>
 						</form>
-
 						<div class="toolbar-btn-action">
 							<form class="pull-left" method="POST" id="recCounts">
 									<label>每页</label>
@@ -75,7 +74,6 @@ function submitForm(){
 													<button class="btn btn-default" type="submit" name="bindchannel" onclick="return confirm('自动绑定频道列表后,如果不准确请手动修改!!!')">绑定频道</button>
 													<button class="btn btn-default" type="submit" name="clearbind" onclick="return confirm('确定要清空绑定的频道列表吗？')">清空绑定</button>
 													<button class="btn btn-default" type="submit" name="clearcache" onclick="return confirm('确定要清空EPG缓存吗？')">清空EPG缓存</button>
-													<button class="btn btn-default" type="button" data-toggle="modal" data-target="#epgset">EPG接口设置</button>
 												</form>
 											</td>
 										</tr>
@@ -170,55 +168,6 @@ function submitForm(){
 													</div>
 													<div class="modal-footer">
 														<button class="btn btn-primary" type="submit" >新增</button>
-														<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-													</div>
-												</form>
-											</div>
-										</div>
-									</div>
-									<div class="modal fade" id="epgset" tabindex="-1" role="dialog">
-										<div class="modal-dialog" role="document">
-											<div class="modal-content">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-													<h4 class="modal-title">EPG接口设置</h4>
-												</div>
-												<form method="post">
-													<div class="modal-body">
-														<div class="form-group">
-															<label class="control-label">请求头没有面板RandKey报错提示：</label>
-															<input type="text" class="form-control" name="tipepgerror_1000" value="<?php echo $tipepgerror_1000?>">
-														</div>
-														<div class="form-group">
-															<label class="control-label">请求头没有用户ID报错提示：</label>
-															<input type="text" class="form-control" name="tipepgerror_1001" value="<?php echo $tipepgerror_1001?>">
-														</div>
-														<div class="form-group">
-															<label class="control-label">请求头没有用户IP报错提示：</label>
-															<input type="text" class="form-control" name="tipepgerror_1002" value="<?php echo $tipepgerror_1002?>">
-														</div>
-														<div class="form-group">
-															<label class="control-label">验证面板RandKey失败报错提示：</label>
-															<input type="text" class="form-control" name="tipepgerror_1003" value="<?php echo $tipepgerror_1003?>">
-														</div>
-														<div class="form-group">
-															<label class="control-label">验证用户IP失败报错提示：</label>
-															<input type="text" class="form-control" name="tipepgerror_1004" value="<?php echo $tipepgerror_1004?>">
-														</div>
-														<div class="form-group">
-															<label class="control-label">用户没有IP报错提示：</label>
-															<input type="text" class="form-control" name="tipepgerror_1005" value="<?php echo $tipepgerror_1005?>">
-														</div>
-														<div class="form-group">
-															<label class="control-label">接口验证：</label>
-															<label class="lyear-checkbox checkbox-inline checkbox-primary">
-																<input type="checkbox" name="epgapi_chk" onclick="alert('注意：非专用客户端打开后EPG会将不显示！');" <?php echo $epg_api_chk;?>>
-																<span></span>
-															</label>
-														</div>
-													</div>
-													<div class="modal-footer">
-														<button class="btn btn-default" type="submit" name="submitepgapi_chk">保存</button>
 														<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 													</div>
 												</form>

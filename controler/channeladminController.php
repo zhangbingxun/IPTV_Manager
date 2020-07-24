@@ -69,26 +69,11 @@ function add_channel_list($cname, $srclist) {
                 $source = substr($row, $ipos + 1);
                 if (strpos($source, '#') !== false) {
                     $sources = explode("#", $source);
-                    foreach ($sources as $src) {
-                        $src2 = str_replace("\"", "", $src);
-                        $src2 = str_replace("\'", "", $src2);
-                        $src2 = str_replace("}", "", $src2);
-                        $src2 = str_replace("{", "", $src2);
-                        $channelurl = $db->mQuery("SELECT url from luo2888_channels where category='$cname'");
-                        while ($url = mysqli_fetch_array($channelurl)) {
-                            if ($src2 == $url[0]) {
-                                $src2 = '';
-                                $repetnum++;
-                            } 
-                        } 
-                        unset($url);
-                        mysqli_free_result($channelurl);
-                        if ($channelname != '' && $src2 != '') {
-                            $db->mInt("luo2888_channels", "id,name,url,category", "NULL,'$channelname','$src2','$cname'");
-                        } 
-                    } 
                 } else {
-                    $src2 = str_replace("\"", "", $source);
+                    $sources[0] = $source;
+                }
+                foreach ($sources as $src) {
+                    $src2 = str_replace("\"", "", $src);
                     $src2 = str_replace("\'", "", $src2);
                     $src2 = str_replace("}", "", $src2);
                     $src2 = str_replace("{", "", $src2);
@@ -100,7 +85,7 @@ function add_channel_list($cname, $srclist) {
                         } 
                     } 
                     unset($url);
-					mysqli_free_result($channelurl);
+                    mysqli_free_result($channelurl);
                     if ($channelname != '' && $src2 != '') {
                         $db->mInt("luo2888_channels", "id,name,url,category", "NULL,'$channelname','$src2','$cname'");
                     } 
@@ -112,6 +97,7 @@ function add_channel_list($cname, $srclist) {
     } 
     return -1;
 } 
+
 // 获取分类名称
 if (isset($_GET['category'])) {
     $cname = $_GET['category'];

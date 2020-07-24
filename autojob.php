@@ -3,11 +3,11 @@ require_once "config.php";
 require_once "api/common/converter.class.php";
 $db = Config::getIntance();
 $time = date("Y-m-d H:i:s");
-$converter = new ZhConvert();
 
 // 增加频道列表
 function add_channel_list($cname, $srclist) {
-    global $db，$converter;
+    global $db;
+    $converter = new ZhConvert();
     if (!empty($srclist && $cname)) {
         $db->mDel("luo2888_channels", "where category='$cname'");
         $repetnum = 0;
@@ -23,26 +23,11 @@ function add_channel_list($cname, $srclist) {
                 $source = substr($row, $ipos + 1);
                 if (strpos($source, '#') !== false) {
                     $sources = explode("#", $source);
-                    foreach ($sources as $src) {
-                        $src2 = str_replace("\"", "", $src);
-                        $src2 = str_replace("\'", "", $src2);
-                        $src2 = str_replace("}", "", $src2);
-                        $src2 = str_replace("{", "", $src2);
-                        $channelurl = $db->mQuery("SELECT url from luo2888_channels");
-                        while ($url = mysqli_fetch_array($channelurl)) {
-                            if ($src2 == $url[0]) {
-                                $src2 = '';
-                                $repetnum++;
-                            } 
-                        } 
-                        unset($url);
-                        mysqli_free_result($channelurl);
-                        if ($channelname != '' && $src2 != '') {
-                            $db->mInt("luo2888_channels", "id,name,url,category", "NULL,'$channelname','$src2','$cname'");
-                        } 
-                    } 
                 } else {
-                    $src2 = str_replace("\"", "", $source);
+                    $sources[] = $source;
+                }
+                foreach ($sources as $src) {
+                    $src2 = str_replace("\"", "", $src);
                     $src2 = str_replace("\'", "", $src2);
                     $src2 = str_replace("}", "", $src2);
                     $src2 = str_replace("{", "", $src2);
@@ -54,7 +39,7 @@ function add_channel_list($cname, $srclist) {
                         } 
                     } 
                     unset($url);
-					mysqli_free_result($channelurl);
+                    mysqli_free_result($channelurl);
                     if ($channelname != '' && $src2 != '') {
                         $db->mInt("luo2888_channels", "id,name,url,category", "NULL,'$channelname','$src2','$cname'");
                     } 

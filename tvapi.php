@@ -8,7 +8,7 @@ require_once "config.php";
 $db = Config::GetIntance();
 $remote = new GetIP();
 $channelNumber = 1;
-$myurl = $remote -> mUrl();
+$myurl = mUrl() . $_SERVER['PHP_SELF'];
 $nowtime = time();
 $datetime = date("Y-m-d H:i:s");
 
@@ -78,7 +78,7 @@ function randomStr($len) {
 // 输出频道数据
 function echoJSON($username, $category, $alisname, $psw, $randstr) {
 
-    global $db, $channelNumber, $key, $remote;
+    global $db, $channelNumber, $key, $myurl;
     $nowtime = time();
 
     if ($alisname == '我的收藏') {
@@ -95,7 +95,7 @@ function echoJSON($username, $category, $alisname, $psw, $randstr) {
                 $nameArray[] = $row['name'];
             } 
             if (strstr($row['url'], "http") != false) {
-                $sourceArray[$row['name']][] = $remote -> mUrl() . '?tvplay&user=' . $username . '&channel=' . $row['id'] . '&time=' . $nowtime . '&token=' . md5($row['id'] . $nowtime . $key);
+                $sourceArray[$row['name']][] = $myurl . '?tvplay&user=' . $username . '&channel=' . $row['id'] . '&time=' . $nowtime . '&token=' . md5($row['id'] . $nowtime . $key);
             } else {
                 $sourceArray[$row['name']][] = $row['url'];
             }
@@ -109,12 +109,6 @@ function echoJSON($username, $category, $alisname, $psw, $randstr) {
             $objChannel = (Object)null;
             $objChannel->num = $channelNumber;
             $objChannel->name = $nameArray[$i];
-            foreach ( $sourceArray[$nameArray[$i]] as $k => $v )
-            {
-                $pre = "fmirand://" . randomStr(32) . base64_encode($sourceArray[$nameArray[$i]][$k]);
-                $pre = substr_replace($pre,$randstr . randomStr(24), strlen($pre)-7, 0);
-                $sourceArray[$nameArray[$i]][$k] = "fmitv://" . base64_encode($pre);
-            }
             $objChannel->source = $sourceArray[$nameArray[$i]];
             $channelArray[] = $objChannel;
             $channelNumber++;
@@ -145,15 +139,12 @@ function cache($key, $f_name, $ff = []) {
 // 缓存超时
 function cache_time_out() {
     date_default_timezone_set("Asia/Shanghai");
-    $timetoken = time() + 50;
-    return $timetoken;
+    return time();
 }
 
 if (isset($_GET['bgpic'])) {
 
     header('Content-Type: text/json;charset=UTF-8');
-    $dir = dirname(__FILE__);
-    $dir = $dir . '/images';
     $files = glob("images/*.png");
 
     foreach ($files as $file) {
@@ -177,19 +168,19 @@ else if (isset($_GET['getver'])) {
     $up_text = $db->mGet("luo2888_config", "value", "where name='up_text'");
 
     $timetoken = cache("time_out_chk", "cache_time_out");
-    if (time() >= $timetoken) {
+    if (abs($nowtime - $timetoken) > 120) {
         Cache::$cache_path = "./cache/tvapi/"; 
         Cache::dels();
         cache("time_out_chk", "cache_time_out");
     } 
 
     if (strstr($appurl,"lanzou://")) {
-        $appurl = preg_replace('#lanzou\:#', 'https:', $appurl);
+        $appurl = str_replace('lanzou:', 'https:', $appurl);
         $appurl = cache("appurl" . $appurl, "lanzouUrl", [$appurl]);
     }
 
     if (strstr($boxurl,"lanzou://")) {
-        $boxurl = preg_replace('#lanzou\:#', 'https:', $boxurl);
+        $boxurl = str_replace('lanzou:', 'https:', $boxurl);
         $boxurl = cache("boxurl" . $boxurl, "lanzouUrl", [$boxurl]);
     }
 
@@ -402,7 +393,6 @@ else if (isset($_POST['login'])) {
     } 
 
     if (strstr($androidid == '871544fa3caeb847')) {
-        $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'主动拦截','$userip','$region','$datetime','黑名单用户非法访问已拦截！'");
         exit;
     }
 
@@ -444,7 +434,7 @@ else if (isset($_POST['login'])) {
         } 
 
         if ($deviceid != $androidid){
-        	$db->mSet("luo2888_users", "deviceid='$androidid',idchange=idchange+1", "where mac='$mac'"); 
+        	$db->mSet("luo2888_users", "deviceid='$androidid'", "where mac='$mac'"); 
         }
 
         // 更新位置，登陆时间
@@ -540,7 +530,7 @@ else if (isset($_POST['login'])) {
     unset($row);
     mysqli_free_result($result);
 
-    $result = $db->mQuery("SELECT name,url from luo2888_vods where enable=1 order by id");
+    $result = $db->mQuery("SELECT name,url from luo2888_vods where status=1 order by id");
     while ($row = mysqli_fetch_array($result)) {
         $vodmodels[] = array(
             "name" => $row['name'],

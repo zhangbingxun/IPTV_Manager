@@ -76,7 +76,7 @@ function randomStr($len) {
 }
 
 // 输出频道数据
-function echoJSON($username, $category, $alisname, $psw, $randstr) {
+function echoJSON($username, $category, $alisname, $psw) {
 
     global $db, $channelNumber, $key, $myurl;
     $nowtime = time();
@@ -271,8 +271,8 @@ else if (isset($_GET['tvplay'])) {
     $status = $db->mGet("luo2888_users", "status", "where name='$username'");
 
     if (abs($nowtime - $time) > $uptime * 60 + 30) {
-        header('location:' . $deniedurl);
-        exit('您被系统判定为盗链！');
+        header('location:' . $failureurl);
+        exit;
     }
     else if ($token != md5($channelid . $time . $key))
     {
@@ -294,7 +294,6 @@ else if (isset($_GET['tvplay'])) {
         header('location:' . $playurl);
     } else {
         header('location:' . $failureurl);
-
     }
 
     exit;
@@ -672,7 +671,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
             while ($row = mysqli_fetch_array($result)) {
                 $pdname = $row['name'];
                 $psw = $row['psw'];
-                $contents[] = echoJSON($username, $pdname, $pdname, $psw, $pdkey);
+                $contents[] = echoJSON($username, $pdname, $pdname, $psw);
             } 
             unset($row);
             mysqli_free_result($result);
@@ -685,7 +684,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
             while ($row = mysqli_fetch_array($result)) {
                 $pdname = $row['name'];
                 $psw = $row['psw'];
-                $contents[] = echoJSON($username, $pdname, '省内', $psw, $pdkey);
+                $contents[] = echoJSON($username, $pdname, '省内', $psw);
             } 
             unset($row);
             mysqli_free_result($result);
@@ -704,7 +703,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
                 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
                 $pdname = $row['name'];
                 $psw = $row['psw'];
-                $contents[] = echoJSON($username, $pdname, $pdname, $psw, $pdkey);
+                $contents[] = echoJSON($username, $pdname, $pdname, $psw);
                 unset($row);
                 mysqli_free_result($result);
             } 

@@ -441,8 +441,6 @@ else if (isset($_POST['login'])) {
 
     } else {
 
-        // 用户验证失败，识别用户信息存入后台
-
         // 禁止重复用户注册
         if ($ipcount > $ipadmit) {
             $sameuser = 1;

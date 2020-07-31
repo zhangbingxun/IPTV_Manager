@@ -81,8 +81,6 @@
 							$index3='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'index=4') !== false){
 							$index4='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'index=5') !== false){
-							$index5='active';
 						}
 						?>
 						<li class="nav-item <?php echo $index ?>"> <a href="index.php"><i class="mdi mdi-home"></i>首页</a> </li>
@@ -114,7 +112,6 @@
 								<li class="<?php echo $index2 ?>"><a href="sysadmin.php?index=2">后台记录</a></li>		
 								<li class="<?php echo $index3 ?>"><a href="sysadmin.php?index=3">后台设置</a></li>
 								<li class="<?php echo $index4 ?>"><a href="sysadmin.php?index=4">客户端设置</a></li>
-								<li class="<?php echo $index5 ?>"><a href="sysadmin.php?index=5">管理员设置</a></li>
 							</ul>
 						</li>
 					</ul>

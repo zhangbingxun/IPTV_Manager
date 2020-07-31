@@ -1,15 +1,41 @@
-<?php require_once "views/view.main.php"; require_once "controler/alipayController.php"; ?>
+<?php
+require_once "views/view.main.php";
+require_once "controler/alipayController.php";
+
+?>
 <script type="text/javascript" src="/views/js/wxcheck.js"></script>
-<body scroll="no" style="overflow-x:hidden;overflow-y:hidden">
-	<div id="container" class="row lyear-wrapper">
-		<div class="lyear-login">
-			<div id="bg">
-				<div id="anitOut"></div>
-			</div>
-			<div class="login-center form__content">
-				<div class="login-header text-center">
-					<a href="payment.php"> <img src="/views/images/logo-sidebar.png"> </a>
-				</div>
+<body>
+	<div id="container">
+		<div class="lyear-login-box form__content">
+       <div class="lyear-login-left">
+            <ul class="w3lsg-bubbles">
+               <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <div class="lyear-overlay"></div>
+            <div class="lyear-featured">
+                <h4>
+                    <?php echo $mingyan_contents; ?>
+                    <small>
+                        - <?php echo $mingyan_author; ?>
+                    </small>
+                </h4>
+            </div>
+      </div>
+      <div class="lyear-login-right">
+           <div class="lyear-logo text-center">
+                <a href="payment.php">
+                    <img src="views/images/logo-sidebar.png">
+                </a>
+            </div>
 				<table class="table form-inline">
 					<?php
 						if (isset($_POST['dopay'])) {
@@ -59,7 +85,7 @@
 						}
 					?>
 					<?php 						
-					if (isset($_GET['id']) || isset($_POST['userid_enter'])) {
+					if (isset($_GET['id']) && !empty($_GET['id'])) {
          $userid = !empty($_POST["userid"])?$_POST["userid"]:$userid=$_GET['id'];
 						if ($row = $db->mCheckRow("luo2888_users", "name,mac,region", "where name='$userid'")) {
 						    $userid= $row['name'];
@@ -110,22 +136,20 @@
 							</tr>
 						</form>
 						';
-						echo '<script type="text/javascript">$("#userid_form").hide;$("#userid_form").hide(0);</script>';
 					} ?>
 				</table>
-				<form class="form-inline" id="userid_form" method="POST">
+				<form class="form-inline" id="userid_form" method="GET">
 					<div class="form-group">
-						<input type="text" name="userid" class="form-control" value="<?php echo $user ?>" placeholder="请输入用户ID">
+						<input type="text" name="id" class="form-control" value="<?php echo $user ?>" placeholder="请输入用户ID">
 					</div>
 					<div class="form-group">
-						<button type="submit" class="btn btn-block btn-primary" name="userid_enter" id="userid_enter">查询</button>
+						<button type="submit" class="btn btn-block btn-primary" id="userid_enter">查询</button>
 					</div>
 				</form>
 				<hr>
 				<footer class="col-sm-12 text-center">
 					<p class="m-b-0">Copyright © 2020 <a href="http://www.luo2888.cn">luo2888.cn</a>. All right reserved</p>
 				</footer>
-			</div>
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -136,4 +160,9 @@
 	    lightyear.loading('show');
 	});
 	</script>
+<?php
+if (isset($_GET['id'])) {
+    echo '<script type="text/javascript">$("#userid_form").hide;$("#userid_form").hide(0);</script>';
+}
+?>
 </body>

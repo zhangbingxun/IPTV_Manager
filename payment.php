@@ -160,6 +160,13 @@ require_once "controler/alipayController.php";
 	    lightyear.loading('show');
 	});
 	</script>
+  <script type="text/javascript">
+      document.onreadystatechange = function() {
+          if (document.readyState == 'complete') {
+              $("#Loading").fadeOut();
+          }
+      }
+  </script>
 <?php
 if (isset($_GET['id'])) {
     echo '<script type="text/javascript">$("#userid_form").hide;$("#userid_form").hide(0);</script>';

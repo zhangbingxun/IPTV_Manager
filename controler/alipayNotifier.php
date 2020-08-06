@@ -20,9 +20,10 @@ if ($notifyres === true) {
         $userid = $row['userid'];
         $exp = strtotime(date("Y-m-d"), time()) + 86400 * $days;
         $userexp = $db->mGet("luo2888_users", "exp", "where name='$userid'");
+        $ustatus = $db->mGet("luo2888_users", "status", "where name='$userid'");
         if ($days == 999) {
 	          $db->mSet("luo2888_users", "status=999,exp=$exp,author='支付宝',authortime=$nowtime,marks='已支付',meal='$meal'", "where name='$userid'");
-        } else if ($userexp > time()) {
+        } else if ($ustatus == 1 && $userexp > time()) {
             $exp = $userexp + 86400 * $days;
             $db->mSet("luo2888_users", "status=1,exp=$exp,author='支付宝',authortime=$nowtime,marks='已续费',meal='$meal'", "where name='$userid'");
 	      } else {

@@ -3,6 +3,7 @@ require_once "config.php";
 require_once "api/common/converter.class.php";
 $db = Config::getIntance();
 $time = date("Y-m-d H:i:s");
+ini_set("max_execution_time", 0);
 
 // 增加频道列表
 function add_channel_list($cname, $srclist) {
@@ -59,8 +60,7 @@ if ($result){
         $category=$row['name'];
         $listurl=$row['url'];
         $srclist = file_get_contents($listurl);
-        if (!empty($category)) {
-            $listurl = $db->mGetRow("luo2888_category", "url", "where name='$category'");
+        if (!empty($srclist)) {
             $addlist = add_channel_list($category, $srclist);
             if ($addlist !== -1) {
                 $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'自动任务','系统','系统','$time','更新列表$category 成功！'");
@@ -70,4 +70,8 @@ if ($result){
         } 
     }
 }
+
+ini_set("max_execution_time", 300);
+exit;
+
 ?>

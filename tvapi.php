@@ -11,6 +11,7 @@ $channelNumber = 1;
 $myurl = mUrl() . $_SERVER['PHP_SELF'];
 $nowtime = time();
 $datetime = date("Y-m-d H:i:s");
+$today = strtotime(date("Y-m-d") , time());
 
 $appsign = $db->mGet("luo2888_config","value","where name='app_sign'");
 $b64str = $db->mGet("luo2888_config","value","where name='app_b64key'");
@@ -76,10 +77,11 @@ function randomStr($len) {
 }
 
 // 输出频道数据
-function echoJSON($username, $category, $alisname, $psw) {
+function echoJSON($user, $category, $alisname, $psw) {
 
     global $db, $channelNumber, $key, $myurl;
-    $nowtime = time();
+    $ckey = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
+    $today = strtotime(date("Y-m-d") , time());
 
     if ($alisname == '我的收藏') {
         $channelname = $alisname;
@@ -94,8 +96,11 @@ function echoJSON($username, $category, $alisname, $psw) {
             if (!in_array($row['name'], $nameArray)) {
                 $nameArray[] = $row['name'];
             } 
-            if (strstr($row['url'], "http") != false) {
-                $sourceArray[$row['name']][] = $myurl . '?tvplay&user=' . $username . '&channel=' . $row['id'] . '&time=' . $nowtime . '&token=' . md5($row['id'] . $nowtime . $key);
+            if (strstr($row['url'], "fmitv") != false) {
+                $url = str_replace('fmitv://', mUrl() . '/', $row['url']);
+                $sourceArray[$row['name']][] = str_replace('play', 'play' . '&user=' . $user . '&tsum=' . md5('fmitv_' . $user . $ckey . $today), $url);
+            } else if (strstr($row['url'], "http") != false && strstr($row['url'], "migu") == false) {
+                $sourceArray[$row['name']][] = $myurl . '?tvplay&cid=' . $row['id'] . '&user=' . $user . '&tsum=' . md5($row['id'] . $user . $ckey . $today);
             } else {
                 $sourceArray[$row['name']][] = $row['url'];
             }
@@ -123,25 +128,6 @@ function echoJSON($username, $category, $alisname, $psw) {
 
 } 
 
-// 缓存数据
-function cache($key, $f_name, $ff = []) {
-    Cache::$cache_path = "./cache/tvapi/";
-    $val = Cache::gets($key);
-    if (!$val) {
-        $data = call_user_func_array($f_name, $ff);
-        Cache::put($key, $data);
-        return $data;
-    } else {
-        return $val;
-    } 
-} 
-
-// 缓存超时
-function cache_time_out() {
-    date_default_timezone_set("Asia/Shanghai");
-    return time();
-}
-
 if (isset($_GET['bgpic'])) {
 
     header('Content-Type: text/json;charset=UTF-8');
@@ -166,23 +152,6 @@ else if (isset($_GET['getver'])) {
     $up_size = $db->mGet("luo2888_config", "value", "where name='up_size'");
     $up_sets = $db->mGet("luo2888_config", "value", "where name='up_sets'");
     $up_text = $db->mGet("luo2888_config", "value", "where name='up_text'");
-
-    $timetoken = cache("time_out_chk", "cache_time_out");
-    if (abs($nowtime - $timetoken) > 120) {
-        Cache::$cache_path = "./cache/tvapi/"; 
-        Cache::dels();
-        cache("time_out_chk", "cache_time_out");
-    } 
-
-    if (strstr($appurl,"lanzou://")) {
-        $appurl = str_replace('lanzou:', 'https:', $appurl);
-        $appurl = cache("appurl" . $appurl, "lanzouUrl", [$appurl]);
-    }
-
-    if (strstr($boxurl,"lanzou://")) {
-        $boxurl = str_replace('lanzou:', 'https:', $boxurl);
-        $boxurl = cache("boxurl" . $boxurl, "lanzouUrl", [$boxurl]);
-    }
 
     $data = json_encode(
         array(
@@ -217,7 +186,6 @@ else if (isset($_GET['getloc'])) {
 
     $iploc = $remote -> getloc($db,$userip);
     echo $iploc;
-
     exit;
 
 }
@@ -258,37 +226,40 @@ else if (isset($_GET['tvinfo'])) {
 
 else if (isset($_GET['tvplay'])) {
 
-    $channelid = $_GET['channel'];
-    $username = $_GET['user'];
-    $token = $_GET['token'];
-    $time = $_GET['time'];
+    $user = $_GET['user'];
+    $token = $_GET['tsum'];
+    $channelid = $_GET['cid'];
     $uptime = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
     $vpntimes = $db->mGet("luo2888_config", "value", "where name='vpntimes'");
     $failureurl = $db->mGet("luo2888_config", "value", "where name='failureurl'");
     $deniedurl = $db->mGet("luo2888_config", "value", "where name='deniedurl'");
-    $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$username'");
-    $playurl = $db->mGet("luo2888_channels", "url", "where id='$channelid'");
-    $status = $db->mGet("luo2888_users", "status", "where name='$username'");
+    $status = $db->mGet("luo2888_users", "status", "where name='$user'");
+    $lasttime = $db->mGet("luo2888_users", "lasttime", "where name='$user'");
+    $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$user'");
+    $ckey = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
 
-    if (abs($nowtime - $time) > $uptime * 60 + 30) {
-        header('location:' . $failureurl);
-        exit;
-    }
-    else if ($token != md5($channelid . $time . $key))
+    if ($status == 0)
     {
         header('location:' . $deniedurl);
-        exit('您被系统判定为盗链！');
+        exit('您已被系统禁止访问！');
     }
     else if ($uservpntimes >= $vpntimes)
     {
         header('location:' . $deniedurl);
         exit('您被系统判定为抓包！');
     }
-    else if ($status == 0)
+    else if (abs($nowtime - $lasttime) > $uptime * 5)
     {
-        header('location:' . $deniedurl);
-        exit('您已被系统禁止访问！');
+        header('location:' . $failureurl);
+        exit('未能检测到用户状态！');
     }
+    else if ($token != md5($channelid . $user . $ckey . $today))
+    {
+        header('location:' . $failureurl);
+        exit('您被系统判定为盗链！');
+    }
+
+    $playurl = $db->mGet("luo2888_channels", "url", "where id='$channelid'");
 
     if (!empty($playurl)) {
         header('location:' . $playurl);
@@ -372,13 +343,11 @@ else if (isset($_POST['login'])) {
     $iv = $obj->iv;
     $mac = $obj->mac;
     $model = $obj->model;
-
     $nettype = $obj->nettype;
     $appname = $obj->appname;
     $userip = $remote -> getuserip();
     $ipcount = $db->mGet("luo2888_users", "count(*)", "where ip='$userip'");
     $ipadmit = $db->mGet("luo2888_config", "value", "where name='max_sameip_user'");
-    
 
     if ($userip == '' || $userip == '127.0.0.1') {
       $userip = '127.0.0.1';
@@ -453,7 +422,6 @@ else if (isset($_POST['login'])) {
             $days = 0;
         } 
         if ($days > 0) {
-
             $status = -1;
             $marks = '试用';
         } else if ($days == "-999") {
@@ -476,6 +444,7 @@ else if (isset($_POST['login'])) {
     } 
     unset($row);
 
+    $app_useragent = $db->mGet("luo2888_config", "value", "where name='app_useragent'");
     $app_appname = $db->mGet("luo2888_config", "value", "where name='app_appname'");
     $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
     $dataver = $db->mGet("luo2888_config", "value", "where name='dataver'");
@@ -489,8 +458,6 @@ else if (isset($_POST['login'])) {
     $showinterval = $db->mGet("luo2888_config", "value", "where name='showinterval'");
     $decoder = $db->mGet("luo2888_config", "value", "where name='decoder'");
     $buffTimeOut = $db->mGet("luo2888_config", "value", "where name='buffTimeOut'");
-    $needauthor = $db->mGet("luo2888_config", "value", "where name='needauthor'");
-    $autoupdate = $db->mGet("luo2888_config", "value", "where name='autoupdate'");
     $randkey = $db->mGet("luo2888_config", "value", "where name='randkey'");
     $updateinterval = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
     $keyproxy = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
@@ -500,7 +467,7 @@ else if (isset($_POST['login'])) {
     $tipuserforbidden = '当前账号' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserforbidden'");
     $datatoken = "token=" . md5($name . $b64str . $randkey);
 
-    if ($needauthor == 0 || ($status2 == -999)) {
+    if ($status2 == -999) {
         $status = 999;
     } 
 
@@ -576,7 +543,9 @@ else if (isset($_POST['login'])) {
         $tipuserforbidden= '对不起，同一个IP只允许注册' . $ipadmit . '台设备！';
     }
 
-    $objres = array('id' => $name, 'status' => $status, 'mealname' => $mealname, 'datatoken' => $datatoken, 'appurl' => $appurl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'exp' => $days, 'userip' => $userip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'adinfo' => $adinfo, 'keyproxy' => $keyproxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => $autoupdate, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp, 'movieengine' => $voddatas);
+    $accesstoken = $name . '.' . strtoupper(dechex($name ^ 282888));
+
+    $objres = array('id' => $name, 'status' => $status, 'mealname' => $mealname, 'datatoken' => $datatoken, 'appurl' => $appurl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'exp' => $days, 'userip' => $userip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'adinfo' => $adinfo, 'keyproxy' => $keyproxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => 1, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp, 'movieengine' => $voddatas, 'useragent' => $app_useragent, 'accesstoken' => $accesstoken);
 
     $objres = str_replace("\\/", "/", json_encode($objres, JSON_UNESCAPED_UNICODE)); 
     $key = substr($key, 9, 20);
@@ -618,6 +587,9 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
         header('HTTP/1.1 403 Forbidden');
         exit;
     }
+
+    // 更新位置，登陆时间
+    $db->mSet("luo2888_users", "region='$region',ip='$userip',lasttime=$nowtime", "where mac='$mac'");
 
     if (strpos($nettype, '电信') !== false) {
         $nettype = "chinanet";
@@ -710,7 +682,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
     } 
 
     $str = json_encode($contents, JSON_UNESCAPED_UNICODE);
-    $str = preg_replace('#null,#', '', $str);
+    $str = str_replace('null,', '', $str);
     $str = stripslashes($str);
     $str = base64_encode(gzcompress($str));
     $key = md5($key . $randkey);

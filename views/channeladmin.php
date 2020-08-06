@@ -42,11 +42,7 @@
 											<label>列表设置：</label>
 												<span>更新间隔</span>
 												<input type="hidden" name="ver" value="<?php echo ($ver+1); ?>">
-												<input type="text" name='updateinterval' style="width: 30px;height: 20px;" value="<?php echo $updateinterval ?>" size="5"><span>&nbsp;分</span>
-												<label class="lyear-checkbox checkbox-inline">
-													<input type="checkbox" name="autoupdate" value="<?php $autoupdate ?>" <?php echo $checktext ?>>
-													<span>自动更新</span>
-												</label>
+												<input type="text" class="form-control" name='updateinterval' style="display: inline;width: 43.5px;height: 20px;" value="<?php echo $updateinterval ?>" size="5"><span>&nbsp;秒</span>
 												<button class="btn btn-xs btn-default" type="submit" name="submit"/>保存设定</button>
 											</form>
 										</td>

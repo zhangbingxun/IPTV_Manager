@@ -57,46 +57,46 @@ function send_post($url, $post_data) {
 if (isset($_GET['play']) || isset($_GET['list'])) {
 
     if (isset($_GET['play'])) {
-        $username = $_GET['user'];
-        $token = $_GET['token'];
-        $time = $_GET['time'];
+
+        $today = strtotime(date("Y-m-d") , time());
         $vkeys = $_GET['vkeys'];
-        $vkey = decode($vkeys);
+        $token = $_GET['tsum'];
+        $user = $_GET['user'];
         $line = $_GET['line'];
+        $vkey = decode($vkeys);
         $vid = $vkey['vid'];
         $tid = $vkey['tid'];
         $id = $vkey['id'];
-        $nowtime = time();
-        $appsign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
+        $time = time();
         $key = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
+        $uptime = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
         $failureurl = $db->mGet("luo2888_config", "value", "where name='failureurl'");
         $deniedurl = $db->mGet("luo2888_config", "value", "where name='deniedurl'");
         $vpntimes = $db->mGet("luo2888_config", "value", "where name='vpntimes'");
-        $androidid = $db->mGet("luo2888_users", "deviceid", "where name='$username'");
-        $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$username'");
-        $status = $db->mGet("luo2888_users", "status", "where name='$username'");
-        $b64key = 'l@L%ARIO56$KMtLHhn@J#JQP58fpe%zf*phXJX*SAmAANQZpHCrh&lj%xeXQ8F*ZbdK%1lMmBRU1Ge4n@&jcURdw7hJnPyL2vRdb!tZxeYp&PWAvkqUG2CNI0^lv48T9';
+        $status = $db->mGet("luo2888_users", "status", "where name='$user'");
+        $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$user'");
+        $lasttime = $db->mGet("luo2888_users", "lasttime", "where name='$user'");
 
-        if (abs($nowtime - $time) > 600) {
+        if ($status == 0) {
             header('location:' . $deniedurl);
-            exit('您被系统判定为盗链！');
-        }
-        else if ($token != md5($androidid . $key . $time . $b64key . $appsign))
-        {
-            header('location:' . $deniedurl);
-            exit('您被系统判定为盗链！');
+            exit('您已被系统禁止访问！');
         }
         else if ($uservpntimes >= $vpntimes)
         {
             header('location:' . $deniedurl);
             exit('您被系统判定为抓包！');
         }
-        else if ($status == 0)
+        else if (abs($time - $lasttime) > $uptime * 5)
         {
-            header('location:' . $deniedurl);
-            exit('您已被系统禁止访问！');
+            header('location:' . $failureurl);
+            exit('未能检测到用户状态！');
         }
-        
+        else if ($token != md5('fmitv_' . $user . $key . $today))
+        {
+            header('location:' . $failureurl);
+            exit('您被系统判定为盗链！');
+        }
+
         $data = json_encode(
             array(
                 'video' => $vid,
@@ -140,11 +140,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
             foreach($listobj as $channellist) {
                 if (is_array($channellist)) {
                     foreach($channellist as $channel) {
-                        if ($vid  == "lttv") {
-                            $channel = preg_replace('#http://域名/文件名#', 'lttv://tv', $channel);
-                        } else {
-                            $channel = preg_replace('#http://域名/文件名#', 'fmitv://tv', $channel);
-                        }
+                        $channel = preg_replace('#http://域名/文件名#', 'fmitv://tv', $channel);
                         echo $channel . "\n";
                     }
                 }
@@ -152,11 +148,13 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         }
     }
     
+    if ($_SERVER['HTTP_ACCESSTOKEN'] == 'fmitv_test123') {
+    }
     exit;
     
 } else {
 
-    header('HTTP/1.1 403 Forbidden');
+    header('location:' . $deniedurl);
     exit;
 
 }

@@ -2,8 +2,8 @@
 function submitappset(){
 $("#appsetform").submit();
 }
-function submitipchk(){
-$("#ipchkform").submit();
+function submitlocapi(){
+$("#locapiform").submit();
 }
 </script>
 <div class="row">
@@ -14,23 +14,27 @@ $("#ipchkform").submit();
 				<form class="form-inline" method="post" id="weaform" >
 					<div class="form-group" style="margin-right: 15px;">
 						<label>应用名</label>
-						<input class="form-control" type="text" name="app_appname" value="<?php echo $app_appname; ?>" placeholder="应用名" >
+						<input class="form-control" type="text" name="app_appname" value="<?php echo $app_appname; ?>">
 					</div>
 					<div class="form-group" style="margin-right: 15px;">
 						<label>应用包名</label>
-						<input class="form-control" type="text" name="app_packagename" value="<?php echo $app_packagename; ?>" placeholder="应用包名" >
+						<input class="form-control" type="text" name="app_packagename" value="<?php echo $app_packagename; ?>">
 					</div>
 					<div class="form-group" style="margin-right: 15px;">
 						<label>签名密码</label>
-						<input class="form-control" type="text" name="app_sign" value="<?php echo $app_sign; ?>" placeholder="签名密码" >
+						<input class="form-control" type="text" name="app_sign" value="<?php echo $app_sign; ?>">
 					</div>
 					<div class="form-group" style="margin-right: 15px;">
 						<label>代理密码</label>
-						<input class="form-control" type="text" name="keyproxy" value="<?php echo $keyproxy; ?>" placeholder="代理密码" >
+						<input class="form-control" type="text" name="keyproxy" value="<?php echo $keyproxy; ?>">
 					</div>
 					<div class="form-group" style="margin-right: 15px;">
 						<label>Base64密钥</label>
-						<input class="form-control" type="text" name="app_b64key" value="<?php echo $app_b64key; ?>" placeholder="Base64密钥" >
+						<input class="form-control" type="text" name="app_b64key" value="<?php echo $app_b64key; ?>">
+					</div>
+					<div class="form-group" style="margin-right: 15px;">
+						<label>HTTP_UserAgent</label>
+						<input class="form-control" type="text" name="app_useragent" value="<?php echo $app_useragent; ?>">
 					</div>
 					<div class="form-group">
 						<button class="btn btn-label btn-primary" type="submit" name="submitappinfo"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>确认提交</button>
@@ -126,52 +130,29 @@ $("#ipchkform").submit();
 						<label>IP归属地数据库：</label>
 						<div class="input-group">
 							<div class="input-group-btn">
-								<select name="ipchk" onchange="submitipchk()" class="btn btn-sm btn-default dropdown-toggle" style="width: 115px;">
+								<select name="locapi" onchange="submitlocapi()" class="btn btn-sm btn-default dropdown-toggle" style="width: 115px;">
 									<?php
-									switch ($ipchk) {
+									switch ($locapi) {
 										case 1:
-			    							$ipchkselected1 = "selected";
+			    							$locapi1 = "selected";
 											break;
 										case 2:
-			    							$ipchkselected2 = "selected";
+			    							$locapi2 = "selected";
 											break;
 										case 3:
-			    							$ipchkselected3 = "selected";
+			    							$locapi3 = "selected";
 											break;
 									}
 									?>
-									<option value='1' <?php echo $ipchkselected1;?> >ZXINC</option>
-									<option value='2' <?php echo $ipchkselected2;?> >淘宝</option>
-									<option value='3' <?php echo $ipchkselected3;?> >太平洋</option>
+									<option value='1' <?php echo $locapi1;?> >ZXINC</option>
+									<option value='2' <?php echo $locapi2;?> >淘宝</option>
+									<option value='3' <?php echo $locapi3;?> >太平洋</option>
 								</select>
 							</div>
 						</div>
 					</div>
 				</form>
 				<form method="post" style="margin-top: 15px;">
-					<div class="form-group">
-						<label class="btn-block">授权设置</label>
-						<input class="btn btn-warning" type="hidden" name="needauthor" value="<?php echo $needauthor;?>">
-						<?php
-						switch ($needauthor) {
-							case 0:
-    							echo '
-								<button class="btn btn-danger" type="button">
-									  状态：<span class="badge">已关闭</span>
-								</button>
-								<button type="submit" name="submitauthor" class="btn btn-label btn-primary"><label><i class="mdi mdi-lock-outline"></i></label> 打开授权</button>';
-								break;
-							case 1:
-    							echo '
-								<button class="btn btn-primary" type="button">
-									  状态：<span class="badge">已开启</span>
-								</button>
-								<button type="submit" name="submitauthor" class="btn btn-label btn-danger"><label><i class="mdi mdi-lock-open-outline"></i></label> 关闭授权</button>';
-								break;
-						}
-						?>
-						<small class="help-block">提示：关闭后，APP进入无需授权。</small>
-					</div>
 					<div class="form-group">
 						<label class="btn-block">推送清除数据</label>
 						<button class="btn btn-primary" type="button">

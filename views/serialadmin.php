@@ -27,6 +27,28 @@
 						snCount.style.display = "none"
 				} 
 	}
+	function copytoclip() {
+		var ck=document.getElementsByName("id[]");
+		var clipBoardContent="";
+		for (var i = 0; i < ck.length; i++) {
+			if(ck[i].checked){
+				clipBoardContent+=ck[i].value+"\r\n";
+			}
+
+		}
+		if (clipBoardContent === undefined || clipBoardContent.length == 0) {
+			alert("请选择要复制的帐号");
+			return false;
+		}
+		var oInput = document.createElement('textarea');
+		oInput.value = clipBoardContent;
+		document.body.appendChild(oInput);
+    oInput.select();
+    document.execCommand("Copy");
+    oInput.className = 'oInput';
+    document.body.removeChild(oInput);
+    alert("选中的账号已复制到剪切板。");
+	}
 </script>
     
     <!--页面主要内容-->
@@ -179,6 +201,7 @@
 																<input class="btn btn-default " style="width: 85px;height: 30px;" type="text" name="days" size="3" placeholder="授权天数">
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitmodify">修改天数</button>
 																<button class="btn btn-sm btn-primary m-r-10" type="button" data-toggle="modal" data-target="#addserial">增加账号</button>
+																<button class="btn btn-sm btn-primary m-r-10" type="button" onclick="copytoclip()">复制账号</button>
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitNotExpired">设为永不到期</button>
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitdel" onclick="return confirm('确定删除选中用户吗？')">删除</button>
 															</div>

@@ -254,16 +254,11 @@ if (isset($_POST['submit_movetop']) && isset($_POST['category'])) {
     } 
 } 
 // 列表设置
-if (isset($_POST['submit']) && isset($_POST['ver'])) {
+if (isset($_POST['submit']) && isset($_POST['updateinterval'])) {
+    $ver = $_POST['ver'];
     $updateinterval = $_POST['updateinterval'];
-    if (isset($_POST['autoupdate'])) {
-		$db->mSet("luo2888_config", "value='1'", "where name='autoupdate'");
-		$db->mSet("luo2888_config", "value='$updateinterval'", "where name='updateinterval'");
-    } else {
-        $ver = $_POST['ver'];
-		$db->mSet("luo2888_config", "value='0'", "where name='autoupdate'");
-		$db->mSet("luo2888_config", "value='$ver'", "where name='dataver'");
-    } 
+    $db->mSet("luo2888_config", "value='$ver'", "where name='dataver'");
+    $db->mSet("luo2888_config", "value='$updateinterval'", "where name='updateinterval'");
     echo "<script>lightyear.notify('保存成功！', 'success', 3000);</script>";
 } 
 // 分类开关
@@ -276,13 +271,6 @@ if (isset($_POST['checkpdname'])) {
 // 获取列表设置
 $ver = $db->mGet("luo2888_config", "value", "where name='dataver'");
 $versionname = $db->mGet("luo2888_config", "value", "where name='appver'");
-$autoupdate = $db->mGet("luo2888_config", "value", "where name='autoupdate'");
 $updateinterval = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
-
-if ($autoupdate == 1) {
-    $checktext = "checked='true'";
-} else {
-    $checktext = '';
-} 
 
 ?>

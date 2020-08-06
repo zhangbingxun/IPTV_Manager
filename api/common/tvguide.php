@@ -4,12 +4,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 header("Content-Type:application/json;chartset=uft-8");
+
 require_once "../../config.php";
-$db = Config::GetIntance();
 include_once "curl.class.php";
 include_once "cacher.class.php";
-$cachedir = "../../cache/epgs/";
+$db = Config::GetIntance();
 
+$cachedir = "../../cache/epgs/";
 if (!is_dir($cachedir)) {
     @mkdir($cachedir, 0755, true) or die('创建文件夹失败');
 }
@@ -17,7 +18,6 @@ if (!is_dir($cachedir)) {
 $id = !empty($_GET["channel"]) ? $_GET["channel"] : exit(json_encode(["code" => 500, "msg" => "EPG频道参数不能为空!", "name" => $name, "date" => null, "data" => null], JSON_UNESCAPED_UNICODE));
 
 $is_simple = !empty($_GET["simple"]);
-
 echo out_epg($id, $is_simple);
 exit;
 
@@ -54,11 +54,10 @@ function getJsonByCache($ejson) {
     );
     $cache_ret["pos"] = getPos($data["data"][] = array(
         $iarr['data']
-    ) , $iarr['which']);
+    ));
     $cache_ret["data"] = $iarr['data'];
     return json_encode($cache_ret, JSON_UNESCAPED_UNICODE);
 }
-
 function getJsonByCacheAndPos($ejson) {
     $iarr = json_decode($ejson, true);
     $cache_ret = array(
@@ -67,7 +66,7 @@ function getJsonByCacheAndPos($ejson) {
     );
     $pos = getPos($data["data"][] = array(
         $iarr['data']
-    ) , $iarr['which']);
+    ));
     if ($pos >= 0) {
         $cache_ret['data'] = $iarr['data'][$pos];
     }
@@ -75,7 +74,7 @@ function getJsonByCacheAndPos($ejson) {
 }
 
 //获取当前播放位置
-function getPos($json, $which_api) {
+function getPos($json) {
     $curpos_sure = false;
     $cur = date("H:i");
     $pos = 0;
@@ -84,43 +83,17 @@ function getPos($json, $which_api) {
         foreach ($v as $v1) {
             $i = 0;
             foreach ($v1 as $v2) {
-                if ($which_api == 6) {
-                    //天脉接口计算
-                    if ($i == 9) {
-                        //echo $v2."\n";
-                        if ($list_index == count($v) && !$curpos_sure) {
-                            //最后一个
-                            $pos = $list_index;
-                            $curpos_sure = true;
-                        }
-                        if (strtotime($cur) > strtotime($v2)) {
-                            //当前正在播放
-                            $curpos_sure = true;
-                        } else {
-                            if (curpos_sure) {
-                                $pos = $list_index;
-                                //echo  "qq";
-                                break;
-                            }
-                        }
+                if ($i == 1) {
+                    if ($list_index == count($v) && !$curpos_sure) {
+                        $pos = $list_index;
+                        $curpos_sure = true;
                     }
-                } else {
-                    if ($i == 1) {
-                        //echo $v2."\n";
-                        if ($list_index == count($v) && !$curpos_sure) {
-                            //最后一个
+                    if (strtotime($cur) < strtotime($v2)) {
+                        $curpos_sure = true;
+                    } else {
+                        if (curpos_sure) {
                             $pos = $list_index;
-                            $curpos_sure = true;
-                        }
-                        if (strtotime($cur) < strtotime($v2)) {
-                            //当前正在播放
-                            $curpos_sure = true;
-                        } else {
-                            if (curpos_sure) {
-                                $pos = $list_index;
-                                //echo  "qq";
-                                break;
-                            }
+                            break;
                         }
                     }
                 }
@@ -149,10 +122,8 @@ function cache_time_out() {
     $tt = strtotime(date("Y-m-d 00:00:00", time())) + 86400;
     return $tt;
 }
-
 // 请求频道的EPG数据
 function get_epg_data($tvid, $epgid, $name = "", $date = "") {
-
     // CNTV
     if (strstr($epgid, "cntv") != false) {
         $url = "https://api.cntv.cn/epg/epginfo?serviceId=cbox&c=" . substr($epgid, 5) . "&d=" . date('Ymd');
@@ -175,9 +146,7 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
         }
         $data = ["code" => 500, "msg" => "请求失败!", "name" => $name, "date" => null, "data" => null];
         return json_encode($data, JSON_UNESCAPED_UNICODE);
-
     } else if (strstr($epgid, "tvsou") != false) {
-
         // 搜视网
         $wday = intval(date('w', strtotime(date('Y-m-d'))));
         if ($wday == 0) $wday = 7;
@@ -216,9 +185,7 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
         }
         $data = ["code" => 500, "msg" => "请求失败!", "name" => $name, "date" => null, "data" => null];
         return json_encode($data, JSON_UNESCAPED_UNICODE);
-
     } else if (strstr($epgid, "tvmao") != false) {
-
         // 电视猫
         $keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
         $wday = intval(date('w', strtotime(date('Y-m-d'))));
@@ -259,35 +226,7 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
         }
         // echo "失败";
         return json_encode($data, JSON_UNESCAPED_UNICODE);
-        
-    } else if (strstr($epgid, "tvming") != false) {
-
-        // 天脉聚源
-        $url = "http://stream.suntv.sungole.com/approve/epginfo?channel=";
-        $str = curl::c()->set_ssl()->get($url . substr($epgid, 7) . '&date=' . date('Y-m-d'));
-        $xml = simplexml_load_string($str);
-        $arr = json_encode($xml);
-        $arr = json_decode($arr, true);
-        if (!empty($arr)) {
-            $data = array(
-                "code" => 200,
-                "msg" => "请求成功!",
-                "pos" => $tvid
-            );
-            foreach ($arr["epg"]["program"] as & $val) {
-                $epgarr[] = array(
-                    "name" => $val["title"],
-                    "starttime" => date("H:i", $val["start_time"])
-                );
-            }
-            $data["data"] = array_reverse($epgarr);
-        } else {
-            $data = ["code" => 500, "msg" => "请求失败!", "name" => $name, "date" => null, "data" => null];
-        }
-        return json_encode($data, JSON_UNESCAPED_UNICODE);
-        
     } else if (strstr($epgid, "51zmt") != false) {
-
         // 51zmt
         $cachefile = "../../cache/51zmt.xml";
         //$url = "http://epg.51zmt.top:8000/gat.xml";
@@ -350,7 +289,6 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
         }
         $data = ["code" => 500, "msg" => "请求失败!", "name" => $name, "date" => null, "data" => null];
         return json_encode($data, JSON_UNESCAPED_UNICODE);
-
     }
 }
 
@@ -365,4 +303,5 @@ function channel($id) {
         exit(json_encode($data, JSON_UNESCAPED_UNICODE));
     }
 }
+
 ?>

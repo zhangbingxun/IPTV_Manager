@@ -177,11 +177,13 @@ if (isset($_POST['submitappinfo'])) {
     $app_sign = $_POST['app_sign'];
     $app_b64key = $_POST['app_b64key'];
     $app_appname = $_POST['app_appname'];
+    $app_useragent = $_POST['app_useragent'];
     $app_packagename = $_POST['app_packagename'];
     $db->mSet("luo2888_config", "value='$keyproxy'", "where name='keyproxy'");
     $db->mSet("luo2888_config", "value='$app_b64key'", "where name='app_b64key'");
     $db->mSet("luo2888_config", "value='$app_sign'", "where name='app_sign'");
     $db->mSet("luo2888_config", "value='$app_appname'", "where name='app_appname'");
+    $db->mSet("luo2888_config", "value='$app_appname'", "where name='app_useragent'");
     $db->mSet("luo2888_config", "value='$app_packagename'", "where name='app_packagename'");
     echo"<script>showindex=4;lightyear.notify('保存成功！', 'success', 3000);</script>";
 } 
@@ -219,19 +221,6 @@ if (isset($_POST['submitdelbg'])) {
     echo"<script>showindex=1;lightyear.notify('删除成功！', 'success', 3000);</script>";
 } 
 
-// 用户授权设置
-if (isset($_POST['submitauthor'])) {
-    $needauthor = $_POST['needauthor'];
-    if ($needauthor == 1) {
-        $needauthor = 0;
-        echo"<script>showindex=4;lightyear.notify('用户授权已关闭！', 'success', 3000);</script>";
-    } else {
-        $needauthor = 1;
-        echo"<script>showindex=4;lightyear.notify('用户授权已开启！', 'success', 3000);</script>";
-    } 
-    $db->mSet("luo2888_config", "value='$needauthor'", "where name='needauthor'");
-} 
-
 // 后台记录
 if (isset($_POST['clearlog'])) {
     $db->mDel("luo2888_record");
@@ -266,7 +255,6 @@ $appurl_sdk14 = $db->mGet("luo2888_config", "value", "where name='appurl_sdk14'"
 $showtime = $db->mGet("luo2888_config", "value", "where name='showtime'");
 $showinterval = $db->mGet("luo2888_config", "value", "where name='showinterval'");
 $splash = $db->mGet("luo2888_config", "value", "where name='splash'");
-$needauthor = $db->mGet("luo2888_config", "value", "where name='needauthor'");
 $decoder = $db->mGet("luo2888_config", "value", "where name='decoder'");
 $buffTimeOut = $db->mGet("luo2888_config", "value", "where name='buffTimeOut'");
 $tiploading = $db->mGet("luo2888_config", "value", "where name='tiploading'");
@@ -282,6 +270,7 @@ $weaapi_id = $db->mGet("luo2888_config", "value", "where name='weaapi_id'");
 $weaapi_key = $db->mGet("luo2888_config", "value", "where name='weaapi_key'");
 $app_sign = $db->mGet("luo2888_config", "value", "where name='app_sign'");
 $app_appname = $db->mGet("luo2888_config", "value", "where name='app_appname'");
+$app_useragent = $db->mGet("luo2888_config", "value", "where name='app_useragent'");
 $app_packagename = $db->mGet("luo2888_config", "value", "where name='app_packagename'");
 $alipay_appid = $db->mGet("luo2888_config", "value", "where name='alipay_appid'");
 $app_b64key = $db->mGet("luo2888_config", "value", "where name='app_b64key'");

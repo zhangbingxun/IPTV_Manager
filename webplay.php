@@ -33,40 +33,6 @@ if ($token != md5($channel . $userip)) {
             #Loading{ background:url("/views/images/loading_red.gif")50% no-repeat #fff; width:100%; height:100%; overflow:hidden; position:fixed; left:0; top:0; z-index:100; }
             #liveplayer{ width: 100%;height: 220px; }
         </style>
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/xgplayer@latest/browser/index.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/xgplayer-flv@latest/dist/index.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/xgplayer-hls.js@latest/browser/index.js"></script>
-        <script>
-            let player = new <?php echo $player; ?>({
-                id: 'liveplayer',
-                lang: 'zh-cn',
-                cors: true,
-                isLive: true,
-                airplay: true,
-                autoplay: true,
-                playsinline: true,
-                keyShortcut: 'on',
-                closeVideoTouch: true,
-                width: window.innerWidth,
-                height: window.innerHeight,
-                url: '<?php echo $playurl; ?>'
-            });
-            player.on('requestFullscreen',
-            function() {
-                if (/Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                    screen.orientation.lock('landscape');
-                    document.getElementById('liveplayer').style.height = "100%";
-                }
-            });
-            player.on('exitFullscreen',
-            function() {
-                if (/Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                    screen.orientation.lock('landscape');
-                    document.getElementById('liveplayer').style.height = "220px";
-                }
-            });
-        </script>
     </head>
     
     <body>
@@ -74,6 +40,40 @@ if ($token != md5($channel . $userip)) {
         <div id="liveplayer"></div>
     </body>
 
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xgplayer@2.9.6/browser/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xgplayer-flv/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xgplayer-hls.js@2.2.3/browser/index.js"></script>
+    <script>
+        let player = new <?php echo $player; ?>({
+            id: 'liveplayer',
+            lang: 'zh-cn',
+            cors: true,
+            isLive: true,
+            airplay: true,
+            autoplay: true,
+            playsinline: true,
+            keyShortcut: 'on',
+            closeVideoTouch: true,
+            width: window.innerWidth,
+            height: window.innerHeight,
+            url: '<?php echo $playurl; ?>'
+        });
+        player.on('requestFullscreen',
+        function() {
+            if (/Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                screen.orientation.lock('landscape');
+                document.getElementById('liveplayer').style.height = "100%";
+            }
+        });
+        player.on('exitFullscreen',
+        function() {
+            if (/Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                screen.orientation.lock('landscape');
+                document.getElementById('liveplayer').style.height = "220px";
+            }
+        });
+    </script>
     <script type="text/javascript">
         document.onreadystatechange = function() {
             if (document.readyState == 'complete') {

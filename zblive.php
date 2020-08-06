@@ -9,7 +9,8 @@ $remote = new GetIP();
 $userip = $remote -> getuserip();
 $category = $_GET['cate'];
 $channel = $_GET['channel'];
-$epgdata =  json_decode(file_get_contents(dirname(mUrl()) . "/api/common/tvguide.php?channel=" . $channel), true);
+$epgjson = file_get_contents(mUrl() . "/api/common/tvguide.php?channel=" . $channel);
+$epgdata =  json_decode($epgjson, true);
 $epgpos = $epgdata['pos'];
 
 if (strstr($_SERVER['HTTP_USER_AGENT'], "Windows") && strstr($_SERVER['HTTP_USER_AGENT'], "Chrome")) {

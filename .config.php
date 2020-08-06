@@ -3,6 +3,16 @@ header("Content-type: text/html; charset=utf-8");
 
 define("PANEL_MD5_KEY", "tvkey_"); //面板密码MD5加密秘钥
 
+// 获取API地址
+function mUrl() {
+    $Url = 'http://';
+    if($_SERVER['HTTPS'] == 'on') {
+        $Url = 'https://';
+    }
+    $Url .= $_SERVER['HTTP_HOST'];
+    return $Url;
+}
+
 class Config {
     // 私有属性,防止在类外引入存放对象
     private static $conn = false;
@@ -16,9 +26,9 @@ class Config {
     // 私有属性,防止在类外使用new关键字实例化对象
     private function __construct() {
         $this->host = 'localhost'; //数据库服务器
-        $this->port = '3306'; //数据库端口
-        $this->user = ''; //数据库帐号
-        $this->pass = ''; //数据库密码
+        $this->port = '2305'; //数据库端口
+        $this->user = 'tvdbuser'; //数据库帐号
+        $this->pass = 'NkPTkDKdbPTP7c3p'; //数据库密码
         $this->database = 'tvpanel'; //数据库名称
         $this->charset = 'utf8'; //数据库字符集
         $this->db_connect(); //连接数据库
@@ -122,67 +132,7 @@ class Config {
     } 
 } 
 
-function mCurl($url,$method,$refurl,$post_data){
-    $UserAgent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36';
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_TIMEOUT, 2);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-    curl_setopt($curl, CURLOPT_USERAGENT, $UserAgent);
-    if ($method == "POST") {
-        curl_setopt($curl, CURLOPT_REFERER, $refurl); 
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
-    }
-    $response = curl_exec($curl);
-    curl_close($curl);
-    return $response;
-}
-
-function lanzouUrl($url) {
-    $ruleMatchDetailInList = "~ifr2\"\sname=\"[\s\S]*?\"\ssrc=\"\/(.*?)\"~";
-    preg_match_all($ruleMatchDetailInList, mCurl($url,null,null,null),$link);
-    $index = 0;
-    for($i=0;$i<count($link[1]);$i++){
-        if($link[1][$i]!="fn?v2"){
-            $index = $i;
-            break;
-        }
-    }
-
-    $refurl = "https://www.lanzous.com/".$link[1][$index];
-    $ruleMatchDetailInList = "~var ajaxup = '([^\]]*)';//~";
-    preg_match($ruleMatchDetailInList, mCurl($refurl,null,null,null),$segment);
-    $post_data = array(
-        "action" => "downprocess",
-        "sign" => $segment[1],
-        "ves" => 1,
-        "p" => ""
-    );
-
-    $downjson = mCurl("https://www.lanzous.com/ajaxm.php","POST",$refurl,$post_data);
-    $linkobj = json_decode($downjson);
-    if ($linkobj->dom == "") {
-        return false;
-    } else {
-        return $linkobj->dom . "/file/" . $linkobj->url;
-    }
-}
-
 class GetIP {
-
-    // 获取API地址
-    function mUrl() {
-        $Url = 'http://';
-        if($_SERVER['HTTPS'] == 'on') {
-            $Url = 'https://';
-        }
-        $Url .= $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
-        return $Url;
-    }
 
     function getuserip() {
         $IP = $_SERVER['REMOTE_ADDR'];
@@ -202,27 +152,22 @@ class GetIP {
 
     // 获取IP归属地
     function getloc($db,$userip) {
-        $ipchk = $db->mGet("luo2888_config", "value", "where name='ipchk'");
-        $locapi = dirname($this -> mUrl()) . '/api/iploc';
+        $locapi = $db->mGet("luo2888_config", "value", "where name='locapi'");
 
-        switch ($ipchk) {
+        switch ($locapi) {
             case 1:
-                $iploc =  file_get_contents("$locapi/qqzeng.php?ip=$userip");
+                require_once("api/iploc/zxinc.php");
                 break;
             case 2:
-                $iploc =  file_get_contents("$locapi/ipcn.php?ip=$userip");
+                require_once("api/iploc/taobao.php");
                 break;
             case 3:
-                $iploc =  file_get_contents("$locapi/taobao.php?ip=$userip");
-                break;
-            case 4:
-                $iploc =  file_get_contents("$locapi/pconline.php?ip=$userip");
-                break;
-            case 5:
-                $iploc = file_get_contents("$locapi/zxinc.php?ip=$userip");
+                require_once("api/iploc/pconline.php");
                 break;
         }
-        return $iploc;
+
+        $location =  loc($userip);
+        return $location;
     }
 
 } 

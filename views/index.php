@@ -18,13 +18,13 @@
           </div>
           
           <div class="col-sm-6 col-lg-3">
-            <div class="card bg-danger">
+            <div class="card bg-success">
               <div class="card-body clearfix">
                 <div class="pull-right">
-                  <p class="h6 text-white m-t-0">异常用户</p>
-                  <p class="h3 text-white m-b-0"><?php echo $exceptionuserCount; ?></p>
+                  <p class="h6 text-white m-t-0">今日上线</p>
+                  <p class="h3 text-white m-b-0"><?php echo $todayuserCount; ?></p>
                 </div>
-                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-account-alert fa-1-5x"></i></span> </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-account-check fa-1-5x"></i></span> </div>
               </div>
             </div>
           </div>
@@ -33,22 +33,10 @@
             <div class="card bg-purple">
               <div class="card-body clearfix">
                 <div class="pull-right">
-                  <p class="h6 text-white m-t-0">今日上线</p>
-                  <p class="h3 text-white m-b-0"><?php echo $todayuserCount; ?></p>
+                  <p class="h6 text-white m-t-0">在线用户</p>
+                  <p class="h3 text-white m-b-0"><?php echo $onlineuserCount; ?></p>
                 </div>
-                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-play-protected-content fa-1-5x"></i></span> </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="col-sm-6 col-lg-3">
-            <div class="card bg-success">
-              <div class="card-body clearfix">
-                <div class="pull-right">
-                  <p class="h6 text-white m-t-0">今日授权</p>
-                  <p class="h3 text-white m-b-0"><?php echo $todayauthoruserCount; ?></p>
-                </div>
-                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-account-check fa-1-5x"></i></span> </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-television-guide fa-1-5x"></i></span> </div>
               </div>
             </div>
           </div>
@@ -57,10 +45,22 @@
             <div class="card bg-cyan">
               <div class="card-body clearfix">
                 <div class="pull-right">
-                  <p class="h6 text-white m-t-0">频道分类数量</p>
-                  <p class="h3 text-white m-b-0"><?php echo $categoryCount; ?></p>
+                  <p class="h6 text-white m-t-0">今日授权</p>
+                  <p class="h3 text-white m-b-0"><?php echo $todayauthoruserCount; ?></p>
                 </div>
-                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-television-guide fa-1-5x"></i></span> </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-play-protected-content fa-1-5x"></i></span> </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-sm-6 col-lg-3">
+            <div class="card bg-danger">
+              <div class="card-body clearfix">
+                <div class="pull-right">
+                  <p class="h6 text-white m-t-0">异常用户</p>
+                  <p class="h3 text-white m-b-0"><?php echo $exceptionuserCount; ?></p>
+                </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-account-alert fa-1-5x"></i></span> </div>
               </div>
             </div>
           </div>
@@ -81,8 +81,8 @@
             <div class="card bg-warning">
               <div class="card-body clearfix">
                 <div class="pull-right">
-                  <p class="h6 text-white m-t-0">EPG数量</p>
-                  <p class="h3 text-white m-b-0"><?php echo $epgCount; ?></p>
+                  <p class="h6 text-white m-t-0">频道分类数量</p>
+                  <p class="h3 text-white m-b-0"><?php echo $categoryCount; ?></p>
                 </div>
                 <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-television-guide fa-1-5x"></i></span> </div>
               </div>

@@ -36,10 +36,11 @@ if(isset($_POST['submitserial']) && !empty($_POST['snNumber']))
         $days = $_POST['days'];
         $marks = $_POST['marks'];
         $meal = $_POST["meal_s"];
+        $author = $_POST['author'];
         if($db->mCheckOne("luo2888_serialnum", "*", "where name='$name'")){
 	    	echo("<script>lightyear.notify('该账号已经存在', 'danger', 3000);</script>");
         } else {
-            $db->mInt("luo2888_serialnum", "name,meal,days,gentime,author,marks", "$name,'$meal',$days,$nowtime,'$user','$marks'");
+            $db->mInt("luo2888_serialnum", "name,meal,days,gentime,author,marks", "$name,'$meal',$days,$nowtime,'$author','$marks'");
 			       echo("<script>lightyear.notify('恭喜，账号已生成！', 'success', 3000);</script>");
         }
     }
@@ -55,10 +56,11 @@ if(isset($_POST['submitserial']) && !empty($_POST['snCount']))
         $days = $_POST['days'];
         $marks = $_POST['marks'];
         $meal = $_POST["meal_s"];
+        $author = $_POST['author'];
         for ($i=0; $i <$snCount ; $i++) { 
             $name = genName();
             $nowtime = time();
-            $db->mInt("luo2888_serialnum", "name,meal,days,gentime,author,marks", "$name,'$meal',$days,$nowtime,'$user','$marks'");
+            $db->mInt("luo2888_serialnum", "name,meal,days,gentime,author,marks", "$name,'$meal',$days,$nowtime,'$author','$marks'");
          }
          echo("<script>lightyear.notify('恭喜，账号已生成完成！', 'success', 3000);</script>");
     }
@@ -95,6 +97,18 @@ if (isset($_POST['submitmodifymarks'])) {
         foreach ($_POST['id'] as $id) {
             $db->mSet("luo2888_serialnum", "marks='$marks'", "where name=$id");
             echo("<script>lightyear.notify('账号$id 备注已修改！', 'success', 3000);</script>");
+        } 
+    } 
+} 
+
+if (isset($_POST['submitmodifyauthor'])) {
+    if (empty($_POST['id'])) {
+        echo("<script>lightyear.notify('请选择要修改备注的账号！', 'danger', 3000);</script>");
+    } else {
+        $author = $_POST['author'];
+        foreach ($_POST['id'] as $id) {
+            $db->mSet("luo2888_serialnum", "author='$author'", "where name=$id");
+            echo("<script>lightyear.notify('账号$id 代理商id已修改！', 'success', 3000);</script>");
         } 
     } 
 } 

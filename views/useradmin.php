@@ -28,6 +28,7 @@
 							<div class="btn-block" >
 								<label>用户总数：<?php echo $userCount; ?></label>
 								<label>今日上线：<?php echo $todayuserCount; ?></label>
+								<label>在线用户：<?php echo $onlineuserCount; ?></label>
 								<label>今日授权：<?php echo $todayauthoruserCount; ?></label>
 								<label>过期用户：<?php echo $expuserCount; ?></label>
 							</div>
@@ -96,7 +97,8 @@
 											<th class="w-10"><a href="?order=model">型号</a></th>
 											<th class="w-10"><a href="?order=ip">IP</a></th>
 											<th class="w-15"><a href="?order=region">地区</a></th>
-											<th class="w-15"><a href="?order=lasttime">最后登陆</a></th>
+											<th class="w-5"><a href="?order=lasttime">在线时长</a></th>
+											<th class="w-15"><a href="?order=loginime">最后登陆</a></th>
 											<th class="w-5"><a href="?order=exp">状态</a></th>
 											<th class="w-5"><a href="?order=author">授权人</a></th>
 											<th class="w-10"><a href="?order=marks">备注</a></th>
@@ -107,9 +109,9 @@
 												<?php
 													$recStart=$recCounts*($page-1);
 													if($user=='admin'){
-													$func="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,meal from luo2888_users where status>0 $searchparam order by $order limit $recStart,$recCounts";
+													$func="select * from luo2888_users where status>0 $searchparam order by $order limit $recStart,$recCounts";
 													}else{
-														$func="select status,name,mac,deviceid,model,ip,region,lasttime,exp,author,marks,vpn,meal from luo2888_users where status>0 and author='$user' $searchparam order by $order limit $recStart,$recCounts";
+														$func="select * from luo2888_users where status>0 and author='$user' $searchparam order by $order limit $recStart,$recCounts";
 													}
 													$meals=$db->mQuery("select id,name from luo2888_meals");
 													if (mysqli_num_rows($meals)) {
@@ -124,7 +126,10 @@
 													if (mysqli_num_rows($result)) {
 														while($row=mysqli_fetch_array($result)){
 															$status=$row['status'];
-															$lasttime=date("Y-m-d H:i:s",$row['lasttime']);
+															$lasttime=$row['lasttime'];
+															$logintime=$row['logintime'];
+															$logindate=date("Y-m-d H:i:s",$row['logintime']);
+															$onlinetime=abs(round(($lasttime - $logintime) / 60));
 															$days=ceil(($row['exp']-time())/86400);
 															$name=$row['name'];
 															$deviceid=$row['deviceid'];
@@ -148,6 +153,11 @@
 																$days='永不到期';
 																$expdate=$days;
 															}
+															if(abs(time() - $lasttime) > $OnlineTime) {
+																$onlinestatus='不在线';
+															} else {
+																$onlinestatus=$onlinetime . '分';
+															}
 															echo "<tr class=\"h-5\">
 																<td><label class=\"lyear-checkbox checkbox-primary\">
 																<input type=\"checkbox\" name=\"id[]\" value=\"$name\"><span></span>
@@ -159,7 +169,8 @@
 																<td>$model</td>
 																<td>".$ip."</td>
 																<td>".$region."</td>
-																<td>".$lasttime ."</td>
+																<td>".$onlinestatus ."</td>
+																<td>".$logindate ."</td>
 																<td>".$days."</td>
 																<td>".$author."</td>
 																<td>$marks</td>

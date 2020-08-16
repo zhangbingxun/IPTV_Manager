@@ -190,6 +190,16 @@ if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>-1 and lastti
 } 
 unset($row);
 
+// 获取在线用户总数
+$OnlineTime = 120;
+$OnlineNum = time() - $OnlineTime;
+if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>-1 and lasttime>$OnlineNum")) {
+    $onlineuserCount = $row[0];
+} else {
+    $onlineuserCount = 0;
+} 
+unset($row);
+
 // 获取当天授权用户总数
 if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>-1 and authortime>$todayTime")) {
     $todayauthoruserCount = $row[0];

@@ -34,6 +34,14 @@ if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>0 and authort
     $todayauthoruserCount = 0;
 } 
 unset($row);
+// 获取在线用户总数
+$OnlineTime = time() - 120;
+if ($row = $db->mGetRow("luo2888_users", "count(*)", "where lasttime>$OnlineTime")) {
+    $onlineuserCount = $row[0];
+} else {
+    $onlineuserCount = 0;
+} 
+unset($row);
 // 异常用户总数统计
 if ($row = $db->mGetRow("luo2888_users", "count(*)", "where vpn>0")) {
     $exceptionuserCount = $row[0];

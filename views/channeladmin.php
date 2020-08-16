@@ -36,41 +36,81 @@
 						<div class="tab-pane active">
 	                		<div class="table-responsive" >
 								<table class="table table-bordered table-vcenter">
-									<tr>
-										<td>
+<tbody>
+									<tr align="center">
+										<td colspan="3">
 											<form class="form-inline" method="post" id='autoupdate_form'>
 											<label>列表设置：</label>
 												<span>更新间隔</span>
 												<input type="hidden" name="ver" value="<?php echo ($ver+1); ?>">
 												<input type="text" class="form-control" name='updateinterval' style="display: inline;width: 43.5px;height: 20px;" value="<?php echo $updateinterval ?>" size="5"><span>&nbsp;秒</span>
+												<button class="btn btn-xs btn-default" type="button" data-toggle="modal" data-target="#addlist">导入列表</button>
 												<button class="btn btn-xs btn-default" type="submit" name="submit"/>保存设定</button>
 											</form>
 										</td>
 									</tr>
-									<tr>
-									<td>
-										<form class="form-inline" method="post">
-											<label>外部列表：</label>
-											<div class="input-group">
-												<div class="input-group-btn">
-													<select class="btn btn-sm btn-default dropdown-toggle" name="thirdlist">
-														<option selected="selected" value="">请选列表</option>
-															<?php $result=$db->mQuery("SELECT name from luo2888_category where type='$categorytype' and url is not null");
-															while ($row=mysqli_fetch_array($result)) {
-																$listname=$row['name'];
-																echo "<option>$listname</option>";
-															}
-															unset($row);
-															mysqli_free_result($result); ?>
-													</select>
-													<button id="updatelist" class="btn btn-sm btn-default" style="width: 85px;height: 26.5px;" type="submit" name="updatelist">更新列表</button>
-												<button class="btn btn-sm btn-default" style="width: 85px;height: 26.5px;" type="button" data-toggle="modal" data-target="#addlist">导入列表</button>
-												</div>
+    <tr align="center">
+        <td class="w-5">
+            分类
+        </td>
+        <td class="w-15">
+            链接
+        </td>
+        <td class="w-5">
+            操作
+        </td>
+    </tr>
+<?php
+//获取接口数据显示
+$result = $db->mQuery("SELECT * from luo2888_category where type='$categorytype' and url is not null");
+if (!mysqli_num_rows($result)) {
+    echo '<tr><td colspan="3" align="center" style="font-size:14px;color:red;height:35px;font-weight: bold;">当前未有外部列表！</td></tr>';
+    mysqli_free_result($result);
+}
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    echo '<form method="post">';
+    echo '<tr>';
+    echo '<input type="hidden" name="id" value="' . $row["id"] . '"/>';
+    echo '<td align="center">' . $row["name"] . '</td>';
+    echo '<td align="left">' . $row["url"] . '</td>';
+    echo '<td align="center">';
+    echo '<button type="button" class="btn btn-sm btn-cyan m-r-5" data-toggle="modal" data-target="#editlist_' . $row["id"] . '">编辑</button>';
+    echo '<input type="hidden" name="category" value="' . $row["name"] . '"/>';
+    echo '<button type="submit" class="btn btn-sm btn-success" id="updatelist" name="updatelist">更新</button>';
+    echo '</td>';
+    echo '</tr>';
+    echo '</form>';
+    echo '<div class="modal fade" id="editlist_' . $row["id"] . '" tabindex="-1" role="dialog">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+												<h4 class="modal-title">编辑外部列表</h4>
 											</div>
-										</form>
-									</td>
-									</tr>
-								</table>
+											<form method="post">
+												<div class="modal-body">
+													<div class="form-group">
+														<label for="recipient-name" class="control-label">分类名称：</label>
+														<input type="text" class="form-control" name="thirdlistcategory" value="' . $row["name"] . '">
+													</div>
+													<div class="form-group">
+														<label for="recipient-name" class="control-label">列表链接：</label>
+														<input type="text" class="form-control" name="thirdlisturl" value="' . $row["url"] . '">
+													</div>
+												</div>
+												<div class="modal-footer">
+													<button type="submit" class="btn btn-primary" id="editlist" name="editlist">确定</button>
+													<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>';
+}
+unset($row);
+mysqli_free_result($result);
+?>
+</tbody>
 								<div class="modal fade" id="addlist" tabindex="-1" role="dialog">
 									<div class="modal-dialog" role="document">
 										<div class="modal-content">
@@ -97,6 +137,7 @@
 										</div>
 									</div>
 								</div>
+								</table>
 							</div>
 						</div>
 					</div>
@@ -215,6 +256,9 @@
 
 <script type="text/javascript">
 	showlist(showindex);
+	$('#editlist').on('click', function(){
+	    lightyear.loading('show');
+	});
 	$('#updatelist').on('click', function(){
 	    lightyear.loading('show');
 	});

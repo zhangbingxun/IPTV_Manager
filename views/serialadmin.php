@@ -125,7 +125,7 @@
 											<th class="w-10"><a href="?order=meal">套餐</a></th>
 											<th class="w-5"><a href="?order=days">期限</a></th>
 											<th class="w-15"><a href="?order=gentime">生成时间</a></th>
-											<th class="w-5"><a href="?order=author">授权人</a></th>
+											<th class="w-5"><a href="?order=author">授权代理</a></th>
 											<th class="w-10"><a href="?order=marks">备注</a></th>
 										</tr>
 										</thead>
@@ -198,6 +198,8 @@
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="e_meals">修改套餐</button>
 																<input class="btn btn-default " style="width: 115px;height: 30px;" type="text" name="marks" size="3" placeholder="请输入备注">
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitmodifymarks">修改备注</button>
+																<input class="btn btn-default " style="width: 115px;height: 30px;" type="text" name="author" size="3" placeholder="请输入编号">
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitmodifyauthor">修改代理商</button>
 																<input class="btn btn-default " style="width: 85px;height: 30px;" type="text" name="days" size="3" placeholder="授权天数">
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitmodify">修改天数</button>
 																<button class="btn btn-sm btn-primary m-r-10" type="button" data-toggle="modal" data-target="#addserial">增加账号</button>
@@ -245,6 +247,10 @@
 													<div class="form-group">
 														<label for="message-text" class="control-label">授权天数：</label>
 														<input type="number" class="form-control" name="days" placeholder="请输入要授权的天数"></input>
+													</div>
+													<div class="form-group">
+														<label for="message-text" class="control-label">代理商编号(可选)：</label>
+														<input type="text" class="form-control" name="author" placeholder="为空时默认为系统管理员"></input>
 													</div>
 													<div class="form-group">
 														<label for="message-text" class="control-label">备注：</label>

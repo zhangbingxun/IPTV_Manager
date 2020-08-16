@@ -76,10 +76,24 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         $status = $db->mGet("luo2888_users", "status", "where name='$user'");
         $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$user'");
         $lasttime = $db->mGet("luo2888_users", "lasttime", "where name='$user'");
+        preg_match('/\((.*?)\)/i', $_SERVER['HTTP_USER_AGENT'], $tokenstr);
 
-        if ($status == 0) {
+        $usertoken = explode(".",  $tokenstr[1]);
+        $authkey = hexdec($usertoken[1]) ^ trim($user);
+        if ($user != $usertoken[0])
+        {
             header('location:' . $deniedurl);
-            exit('您已被系统禁止访问！');
+            exit('您被系统判定为盗链！');
+        }
+        else if ($authkey != $today)
+        {
+            header('location:' . $deniedurl);
+            exit('您被系统判定为盗链！');
+        }
+        else if ($token != md5('fmitv_' . $user . $key . $today))
+        {
+            header('location:' . $failureurl);
+            exit('您被系统判定为盗链！');
         }
         else if ($uservpntimes >= $vpntimes)
         {
@@ -91,10 +105,9 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
             header('location:' . $failureurl);
             exit('未能检测到用户状态！');
         }
-        else if ($token != md5('fmitv_' . $user . $key . $today))
-        {
-            header('location:' . $failureurl);
-            exit('您被系统判定为盗链！');
+        else if ($status == 0) {
+            header('location:' . $deniedurl);
+            exit('您已被系统禁止访问！');
         }
 
         $data = json_encode(

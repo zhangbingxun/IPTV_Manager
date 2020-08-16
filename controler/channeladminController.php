@@ -165,21 +165,29 @@ if (isset($_POST['addthirdlist'])) {
         } 
     } 
 } 
+// 修改外部列表
+if (isset($_POST['editlist'])) {
+    $category = $_POST['thirdlistcategory'];
+    $listurl = $_POST['thirdlisturl'];
+    $db->mSet("luo2888_category", "url='$listurl'", "where name='$category'");
+    $srclist = file_get_contents($listurl);
+    $addlist = add_channel_list($category, $srclist);
+    if ($addlist !== -1) {
+        echo "<script>$.alert({title: '成功',content: '修改列表$category 成功！',type: 'green',buttons: {confirm: {text: '好',btnClass: 'btn-primary',action: function(){location.replace(location.href);}}}});</script>";
+    } else {
+        echo "<script>$.alert({title: '失败',content: '修改列表$category 失败！',type: 'red',buttons: {confirm: {text: '好',btnClass: 'btn-primary',action: function(){location.replace(location.href);}}}});</script>";
+    } 
+} 
 // 更新外部列表
 if (isset($_POST['updatelist'])) {
-    $category = $_POST['thirdlist'];
-	$listurl=$db->mGet("luo2888_category", "url", "where name='$category'");
+    $category = $_POST['category'];
+    $listurl = $db->mGet("luo2888_category", "url", "where name='$category'");
     $srclist = file_get_contents($listurl);
-    if ($category == "") {
-        echo "<script>lightyear.notify('列表名称不能为空！', 'danger', 3000);</script>";
+    $addlist = add_channel_list($category, $srclist);
+    if ($addlist !== -1) {
+        echo "<script>$.alert({title: '成功',content: '更新列表$category 成功！',type: 'green',buttons: {confirm: {text: '好',btnClass: 'btn-primary',action: function(){location.replace(location.href);}}}});</script>";
     } else {
-        $listurl = $db->mGetRow("luo2888_category", "url", "where name='$category'");
-        $addlist = add_channel_list($category, $srclist);
-        if ($addlist !== -1) {
-            echo "<script>$.alert({title: '成功',content: '更新列表$category 成功！',type: 'green',buttons: {confirm: {text: '好',btnClass: 'btn-primary',action: function(){location.replace(location.href);}}}});</script>";
-        } else {
-            echo "<script>$.alert({title: '成功',content: '更新列表$category 失败！',type: 'green',buttons: {confirm: {text: '好',btnClass: 'btn-primary',action: function(){location.replace(location.href);}}}});</script>";
-        } 
+        echo "<script>$.alert({title: '失败',content: '更新列表$category 失败！',type: 'red',buttons: {confirm: {text: '好',btnClass: 'btn-primary',action: function(){location.replace(location.href);}}}});</script>";
     } 
 } 
 // 删除分类

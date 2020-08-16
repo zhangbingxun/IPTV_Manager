@@ -237,26 +237,39 @@ else if (isset($_GET['tvplay'])) {
     $lasttime = $db->mGet("luo2888_users", "lasttime", "where name='$user'");
     $uservpntimes = $db->mGet("luo2888_users", "vpn", "where name='$user'");
     $ckey = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
+    preg_match('/\((.*?)\)/i', $_SERVER['HTTP_USER_AGENT'], $tokenstr);
 
-    if ($status == 0)
+    $usertoken = explode(".",  $tokenstr[1]);
+    $authkey = hexdec($usertoken[1]) ^ trim($user);
+    if ($user != $usertoken[0])
     {
         header('location:' . $deniedurl);
-        exit('您已被系统禁止访问！');
+        exit('您被系统判定为盗链！');
     }
-    else if ($uservpntimes >= $vpntimes)
+    else if ($authkey != $today)
     {
         header('location:' . $deniedurl);
-        exit('您被系统判定为抓包！');
+        exit('您被系统判定为盗链！');
+    }
+    else if ($token != md5($channelid . $user . $ckey . $today))
+    {
+        header('location:' . $deniedurl);
+        exit('您被系统判定为盗链！');
     }
     else if (abs($nowtime - $lasttime) > $uptime * 5)
     {
         header('location:' . $failureurl);
         exit('未能检测到用户状态！');
     }
-    else if ($token != md5($channelid . $user . $ckey . $today))
+    else if ($uservpntimes >= $vpntimes)
     {
-        header('location:' . $failureurl);
-        exit('您被系统判定为盗链！');
+        header('location:' . $deniedurl);
+        exit('您被系统判定为抓包！');
+    }
+    else if ($status == 0)
+    {
+        header('location:' . $deniedurl);
+        exit('您已被系统禁止访问！');
     }
 
     $playurl = $db->mGet("luo2888_channels", "url", "where id='$channelid'");
@@ -325,7 +338,7 @@ else if (isset($_POST['active'])) {
             $db->mDel("luo2888_serialnum","where name=$serial");
             exit("授权号绑定成功，正在登录，请稍后...");
         } else {
-            exit("授权号错误，请联系管理员！！");
+            exit("授权号错误或已激活，请检查账号！！");
 			   }
     }
     unset($row);
@@ -406,7 +419,7 @@ else if (isset($_POST['login'])) {
         }
 
         // 更新位置，登陆时间
-        $db->mSet("luo2888_users", "region='$region',ip='$userip',lasttime=$nowtime", "where mac='$mac'"); 
+        $db->mSet("luo2888_users", "region='$region',ip='$userip',logintime=$nowtime", "where mac='$mac'"); 
 
     } else {
 
@@ -435,7 +448,7 @@ else if (isset($_POST['login'])) {
         $mealid = 1000;
         $status2 = $status;
         $exp = strtotime(date("Y-m-d"), time()) + 86400 * $days;
-        $db->mInt("luo2888_users", "name,mac,deviceid,model,exp,ip,status,region,lasttime,marks", "$name,'$mac','$androidid','$model',$exp,'$userip',$status,'$region',$nowtime,'$marks'");
+        $db->mInt("luo2888_users", "name,mac,deviceid,model,exp,ip,status,region,logintime,marks", "$name,'$mac','$androidid','$model',$exp,'$userip',$status,'$region',$nowtime,'$marks'");
         if ($days > 0 && $status == -1) {
             $status = 1;
         } else if ($status2 == -999) {
@@ -462,10 +475,20 @@ else if (isset($_POST['login'])) {
     $updateinterval = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
     $keyproxy = $db->mGet("luo2888_config", "value", "where name='keyproxy'");
     $tiploading = $db->mGet("luo2888_config", "value", "where name='tiploading'");
-    $tipusernoreg = '您的账号是' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipusernoreg'");
-    $tipuserexpired = '当前账号' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserexpired'");
-    $tipuserforbidden = '当前账号' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserforbidden'");
+    $tipusernoreg = '账号:' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipusernoreg'");
+    $tipuserexpired = '账号:' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserexpired'");
+    $tipuserforbidden = '账号:' . $name . '，' . $db->mGet("luo2888_config", "value", "where name='tipuserforbidden'");
     $datatoken = "token=" . md5($name . $b64str . $randkey);
+
+    if ($status2 < 1) {
+         $adtext = $db->mGet("luo2888_config", "value", "where name='adtext_free'");
+    } 
+
+    $author = $db->mGet("luo2888_users", "author", "where name='$name'");
+    if (strstr($author, "A") != false) {
+        $adtext = '';
+        $adinfo = '';
+    } 
 
     if ($status2 == -999) {
         $status = 999;
@@ -473,7 +496,7 @@ else if (isset($_POST['login'])) {
 
     $mealname = $db->mGet("luo2888_meals", "name", "where id='$mealid'");
     $week = array('日', '一', '二', '三', '四', '五', '六');
-    $adtext = '欢迎使用' . $app_appname . '，' . date('今天n月d号') . "，" . '星期' . $week[date('w')] . '。' . $adtext;
+    $adtext =  '尊敬的用户，今天' . date('n月d号') . "，" . '星期' . $week[date('w')] . '。' . $adtext;
 
     if ($showwea == 1) {
         $weaapi_id = $db->mGet("luo2888_config", "value", "where name='weaapi_id'");
@@ -510,11 +533,6 @@ else if (isset($_POST['login'])) {
 
     $arrcanseek[] = '';
 
-    if ($status2 < 1) {
-         $adtext = $db->mGet("luo2888_config", "value", "where name='adtext_free'");
-         $adtext = '欢迎使用' . $app_appname . '，' . $adtext;
-    } 
-
     if ($status < 1) {
         $datatoken = '';
         $keyproxy = '';
@@ -525,7 +543,7 @@ else if (isset($_POST['login'])) {
     banuser:
     if ($vpnuser == 1) {
         $status = 0;
-        $tipuserforbidden= '您使用了VPN等程序' . $uservpntimes . '次，系统判定抓包已禁止登录！';
+        $tipuserforbidden= '使用了VPN等程序' . $uservpntimes . '次，系统判定抓包已禁止登录！';
     }
     
     if ($nomacuser == 1) {
@@ -543,7 +561,7 @@ else if (isset($_POST['login'])) {
         $tipuserforbidden= '对不起，同一个IP只允许注册' . $ipadmit . '台设备！';
     }
 
-    $accesstoken = $name . '.' . strtoupper(dechex($name ^ 282888));
+    $accesstoken = $name . '.' . strtoupper(dechex($today ^ $name));
 
     $objres = array('id' => $name, 'status' => $status, 'mealname' => $mealname, 'datatoken' => $datatoken, 'appurl' => $appurl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'exp' => $days, 'userip' => $userip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'adinfo' => $adinfo, 'keyproxy' => $keyproxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => 1, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp, 'movieengine' => $voddatas, 'useragent' => $app_useragent, 'accesstoken' => $accesstoken);
 
@@ -588,8 +606,8 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
         exit;
     }
 
-    // 更新位置，登陆时间
-    $db->mSet("luo2888_users", "region='$region',ip='$userip',lasttime=$nowtime", "where mac='$mac'");
+    // 更新在线时间
+    $db->mSet("luo2888_users", "lasttime=$nowtime", "where mac='$mac'");
 
     if (strpos($nettype, '电信') !== false) {
         $nettype = "chinanet";

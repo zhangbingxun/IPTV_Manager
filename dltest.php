@@ -17,8 +17,8 @@ header('Access-Control-Allow-Origin: *');
 // 数据变量
 $dataurl = 'https://ott.luo2888.cn/dl.php';  // 代理API地址
 $failurl = 'http://hk.luo2888.cn:8080/videos/fmitv_failure.mp4';
-$playcode = "dl722_qq625336209"; // 播放验证码
-$listcode = "fmi722"; // 列表安全码
+$playcode = "dl812_qq625336209"; // 播放验证码
+$listcode = "fmi812"; // 列表安全码
 
 // 获取代理地址
 function GetUrl() {

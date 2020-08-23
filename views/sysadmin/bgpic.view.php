@@ -1,12 +1,14 @@
-<script type="text/javascript">
-function submitsplash(){
-$("#splashform").submit();
-}
-</script>
+<form name="splashform" method="post" style="display: none;" enctype="multipart/form-data">
+	<input type="file" name="splash" accept="image/png" onchange="document.splashform.submitsplash.click()"/>
+	<input type="submit" name="submitsplash" value="">
+</form>
 <div class="row">
 	<div class="col-lg-12">
 		<div class="card">
-			<div class="card-header"><h4>背景图片</h4></div>
+			<div class="card-header">
+				<h4>背景图片</h4>
+				<button type="button" class="btn btn-sm btn-primary pull-right" onclick="document.splashform.splash.click()">上传</button>
+			</div>
 			<div class="tab-content">
 				<div class="tab-pane active">
 					<div class="table-responsive" >
@@ -21,6 +23,12 @@ $("#splashform").submit();
 						</thead>
 						<tbody>
 						<?php
+						if (empty($files)) {
+							echo '
+								<tr align="center">
+									<td colspan="5">暂无图片</td>
+								</tr>';
+						}
 						foreach ($files as $file) {
 							$fctime=date("Y-m-d H:i:s",filectime($file));
 							$fsize=filesize($file);
@@ -39,9 +47,9 @@ $("#splashform").submit();
 							<td>$fsize</td>
 							<td>
 								<form method='post'>
-									<button class=\"btn btn-w-md btn-secondary\" type='button' onclick=\"javascript:window.open('$splashurl')\">预览</button>
+									<button class=\"btn btn-sm btn-secondary\" type='button' onclick=\"javascript:window.open('$splashurl')\">预览</button>
 									<input type='hidden' name='file' value='$file'>
-									<button class=\"btn btn-w-md btn-danger\" type='submit' name='submitdelbg' onclick=\"return confirm('确认删除？')\" >删除</button>
+									<button class=\"btn btn-sm btn-danger\" type='submit' name='submitdelbg' onclick=\"return confirm('确认删除？')\" >删除</button>
 								</form>
 							</td>
 						</tr>";
@@ -50,16 +58,11 @@ $("#splashform").submit();
 						?>
 						<tr>
 							<td colspan="5">
-						<div class="form-group">
-					<form id="splashform" method="post" enctype="multipart/form-data">
-							<input style="display: inline;" type="file" name="splash" accept="image/png" onchange="submitsplash()"/>
-					</form>
-						</div>
-						<div class="form-group">
-					<small class="help-block">提示：图片仅支持PNG格式，不超过800KB，多张图片为随机显示。</small>
-						</div>
-							</td>
-						</tr>
+												<div class="form-group">
+													<small class="help-block">提示：图片仅支持PNG格式，不超过800KB，多张图片为随机显示。</small>
+												</div>
+											</td>
+										</tr>
 	            </tbody>
 	          </table>
 						</div>

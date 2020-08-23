@@ -17,7 +17,7 @@ if (isset($_POST['submitclearbind'])) {
         echo("<script>lightyear.notify('请选择要取消绑定的用户账号！', 'danger', 3000);</script>");
     } else {
         foreach ($_POST['id'] as $id) {
-            $db->mSet("luo2888_users", "mac='',deviceid='',model=''", "where name=$id");
+            $db->mSet("luo2888_users", "mac='',deviceid='',model=''", "where name='$id'");
             echo("<script>lightyear.notify('账号：$id 已取消绑定！', 'success', 3000);</script>");
         } 
     } 

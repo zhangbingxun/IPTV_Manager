@@ -100,7 +100,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
             header('location:' . $deniedurl);
             exit('您被系统判定为抓包！');
         }
-        else if (abs($time - $lasttime) > $uptime * 5)
+        else if (abs($time - $lasttime) > $uptime * 2)
         {
             header('location:' . $failureurl);
             exit('未能检测到用户状态！');

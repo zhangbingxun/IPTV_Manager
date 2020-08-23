@@ -200,7 +200,7 @@ if (isset($_POST['alipay_set'])) {
 } 
 
 // 上传APP背景图片
-if (isset($_POST['submit']) && isset($_FILES["splash"])) {
+if (isset($_POST['submitsplash'])) {
     if ($_FILES["splash"]["type"] == "image/png") {
         if ($_FILES["splash"]["error"] > 0) {
             echo "Error: " . $_FILES["splash"]["error"];

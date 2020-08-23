@@ -32,7 +32,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], "Windows") && strstr($_SERVER['HTTP_USER
     <meta name="renderer" content="webkit" />
     <link rel="icon" href="/views/images/favicon.ico" type="image/ico">
     <link rel="stylesheet" href="/views/css/zhibo.css?t=<?php echo time(); ?>">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.min.js"></script>
 </head>
 <body>
     <header class="header-map">

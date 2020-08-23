@@ -351,7 +351,6 @@ else if (isset($_POST['login'])) {
     $gzstr = base64_decode($loginstr);
     $jsonstr = gzuncompress($gzstr);
     $obj = json_decode($jsonstr);
-    $region = $obj->region;
     $androidid = $obj->androidid;
     $iv = $obj->iv;
     $mac = $obj->mac;
@@ -386,6 +385,14 @@ else if (isset($_POST['login'])) {
     if(strstr($mac,":") == false) {
         $nomacuser = 1;
         goto banuser;
+    }
+
+    // mac变动自动更改
+    if ($row = $db->mCheckRow("luo2888_users", "mac", "where deviceid='$androidid' and model='$model'")) {
+        $devicemac = $row['mac'];
+        if ($mac != $devicemac){
+            $db->mSet("luo2888_users", "mac='$mac'", "where deviceid='$androidid'"); 
+        }
     }
 
     // mac是否匹配
@@ -496,7 +503,7 @@ else if (isset($_POST['login'])) {
 
     $mealname = $db->mGet("luo2888_meals", "name", "where id='$mealid'");
     $week = array('日', '一', '二', '三', '四', '五', '六');
-    $adtext =  '尊敬的用户，今天' . date('n月d号') . "，" . '星期' . $week[date('w')] . '。' . $adtext;
+    $adtext =  '尊敬的『' . $name . '』用户，今天' . date('n月d号') . "，" . '星期' . $week[date('w')] . '。' . $adtext;
 
     if ($showwea == 1) {
         $weaapi_id = $db->mGet("luo2888_config", "value", "where name='weaapi_id'");

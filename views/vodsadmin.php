@@ -16,22 +16,13 @@ require_once "../controler/vodsadminController.php";
                 <div class="card">
                     <div class="card-header">
                         <h4>点播API列表</h4>
+                        <button type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#addvod">增加</button>
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane active">
                             <div class="form-group">
                                 <div class="table-responsive">
                                     <table class="table table-hover table-vcenter">
-                                        <tr align="center">
-                                            <td colspan="5">
-                                                <form class="form-inline" method="post">
-                                                    <label class="control-label">API管理：</label>
-                                                    <input type="text" style="display: inline;width: 18%;" class="form-control" name="name" placeholder="请输入名称">
-                                                    <input type="text" style="display: inline;width: 45%;" class="form-control" name="url" placeholder="请输入地址">
-                                                    <button class="btn btn-default" type="submit" name="submitvod">增加</button>
-                                                </form>
-                                            </td>
-                                        </tr>
                                         <tbody>
                                             <tr align="center">
                                                 <td class="w-5">
@@ -114,6 +105,32 @@ mysqli_free_result($result);
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addvod" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">增加接口</h4>
+                </div>
+                <form method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label">名称：</label>
+                            <input type="text" class="form-control" name="name" placeholder="请输入接口名称">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">链接：</label>
+                            <input class="form-control" name="url" placeholder="请输入接口链接"></input>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" name="submitvod">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

@@ -1,8 +1,16 @@
 <?php
-$myapi = file_get_contents('http://v1.alapi.cn/api/mingyan');
+/*
+$curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, 'http://v1.alapi.cn/api/mingyan');
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV');
+$myapi = curl_exec($curl);
 $mingyan = json_decode($myapi,true);
 $mingyan_contents = $mingyan['data']['content'];
-$mingyan_author = $mingyan['data']['author']; ?>
+$mingyan_author = $mingyan['data']['author'];
+*/
+$mingyan_contents = '欢迎';
+$mingyan_author = '小肥米电子科技工作室'; ?>
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">

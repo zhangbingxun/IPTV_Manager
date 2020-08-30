@@ -224,7 +224,6 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
             }
             return json_encode($data, JSON_UNESCAPED_UNICODE);
         }
-        // echo "失败";
         return json_encode($data, JSON_UNESCAPED_UNICODE);
     } else if (strstr($epgid, "51zmt") != false) {
         // 51zmt

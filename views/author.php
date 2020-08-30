@@ -79,7 +79,7 @@
 						<div class="tab-pane active">
 							<div class="form-group">
 								<div class="table-responsive">
-									<table class="table table-hover">
+									<table class="table table-hover" style="white-space:nowrap;word-break:keep-all;">
 										<thead>
 										<tr>
 											<th class="w-1">

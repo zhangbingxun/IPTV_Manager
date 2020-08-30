@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
-if ($user != 'admin') {
+if ($user != $admin) {
     exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
 } 
 
@@ -37,7 +37,8 @@ if (isset($_POST['bindchannel'])) {
     if (!mysqli_num_rows($result)) {
         mysqli_free_result($result);
         exit("<script>$.alert({title: '错误',content: '对不起，暂时没有频道信息，无法匹配！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
-    } while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    }
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $clist[] = $row;
     } 
     unset($row);
@@ -47,9 +48,12 @@ if (isset($_POST['bindchannel'])) {
         if ($_POST["remarks"] == '') {
             exit("<script>$.alert({title: '错误',content: '对不起，备注信息不完整，无法匹配！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
         } 
+        $remarks = explode(",", $_POST['remarks']);
         foreach ($clist as $cname => $channel) {
-            if (strstr($channel['name'], $_POST['remarks']) !== false) {
-                $list[$cname] = $channel['name'];
+            foreach ($remarks as $remarkstr) {
+                if (strstr($channel['name'], $remarkstr) !== false) {
+                    $list[$cname] = $channel['name'];
+                } 
             } 
         } 
         $content = implode(",", array_unique($list));
@@ -80,28 +84,28 @@ if (isset($_POST['bindchannel'])) {
 } 
 
 // 上线操作
-if ($_GET["act"] == "online") {
-    $id = !empty($_GET["id"])?$_GET["id"]:exit("<script>$.alert({title: '错误',content: '参数不能为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
+if (isset($_POST['upline'])) {
+    $id = !empty($_POST["id"])?$_POST["id"]:exit("<script>$.alert({title: '错误',content: '参数不能为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
     $db->mSet("luo2888_epg", "status=1", "where id=$id");
     exit("<script>$.alert({title: '成功',content: 'EPG编号 " . $id . " 已上线！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
 } 
 
 // 下线操作
-if ($_GET["act"] == "downline") {
-    $id = !empty($_GET["id"])?$_GET["id"]:exit("<script>$.alert({title: '错误',content: '参数不能为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
+if (isset($_POST['downline'])) {
+    $id = !empty($_POST["id"])?$_POST["id"]:exit("<script>$.alert({title: '错误',content: '参数不能为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
     $db->mSet("luo2888_epg", "status=0", "where id=$id");
     exit("<script>$.alert({title: '成功',content: 'EPG编号 " . $id . " 已下线！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
 } 
 
 // 删除操作
-if ($_GET["act"] == "dels") {
-    $id = !empty($_GET["id"])?$_GET["id"]:exit("<script>$.alert({title: '错误',content: '参数不能为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
+if (isset($_POST['delchannel'])) {
+    $id = !empty($_POST["id"])?$_POST["id"]:exit("<script>$.alert({title: '错误',content: '参数不能为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
     $db->mDel("luo2888_epg", "where id=$id");
     exit("<script>$.alert({title: '成功',content: 'EPG编号 " . $id . " 已删除！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
 } 
 
 // 新增EPG数据
-if ($_GET["act"] == "add") {
+if (isset($_POST['addchannel'])) {
     $epg = !empty($_POST["epg"])?$_POST["epg"]:exit("<script>$.alert({title: '错误',content: '请选择EPG来源！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
     $name = !empty($_POST["name"])?$_POST["name"]:exit("<script>$.alert({title: '错误',content: '请填写EPG名称！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
     $remarks = $_POST["remarks"];
@@ -115,6 +119,19 @@ if ($_GET["act"] == "add") {
     // 新加EPG数据
     $db->mInt("luo2888_epg", "name,remarks", "'" . $epg_name . "','" . $remarks . "'");
     exit("<script>$.alert({title: '成功',content: 'EPG " . $epg_name . " 已增加！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
+} 
+
+
+//修改EPG数据
+if (isset($_POST['editchannel'])) {
+    $id = !empty($_POST["id"])?$_POST["id"]:exit("<script>$.alert({title: '错误',content: '参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='epgadmin.php';}}}});</script>");
+    $epg = !empty($_POST["epg"])?$_POST["epg"]:exit("<script>$.alert({title: '错误',content: '请选择EPG来源！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
+    $name = !empty($_POST["name"])?$_POST["name"]:exit("<script>$.alert({title: '错误',content: '请填写EPG名称！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
+    $epg_name = $epg . '-' . $name;
+    $ids = implode(",", array_unique($_POST['ids']));
+    $remarks = $_POST["remarks"];
+    $db->mSet("luo2888_epg", "name='" . $epg_name . "',content='" . $ids . "',remarks='" . $remarks . "'", "where id=" . $id);
+    exit("<script>$.alert({title: '成功',content: 'EPG " . $epg_name . " 修改成功！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='epgadmin.php';}}}});</script>");
 } 
 
 // 搜索关键字

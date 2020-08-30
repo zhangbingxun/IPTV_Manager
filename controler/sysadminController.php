@@ -3,13 +3,34 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
-if ($user != 'admin') {
+if ($user != $admin) {
     exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
 } 
 
 ?>
 
-<?php 
+<?php
+// 修改用户名
+if (isset($_POST['submit']) && isset($_POST['newuser'])) {
+    if (empty($_POST['olduser']) || empty($_POST['newuser'])) {
+        echo"<script>showindex=3;lightyear.notify('用户名不能为空！', 'danger', 3000);</script>";
+    } else {
+        $olduser = $_POST['olduser'];
+        $newuser = $_POST['newuser'];
+        $newuser_confirm = $_POST['newuser_confirm'];
+        if ($newuser == $newuser_confirm) {
+            if (!empty($db->mGet("luo2888_config", "name", "where value='$olduser'"))) {
+                $db->mSet("luo2888_config", "value='$newuser'", "where name='adminname'");
+                echo"<script>showindex=3;lightyear.notify('用户名修改成功！', 'success', 3000);</script>";
+            } else {
+                echo"<script>showindex=3;lightyear.notify('用户名不匹配！', 'danger', 3000);</script>";
+            } 
+        } else {
+            echo"<script>showindex=3;lightyear.notify('两次输入不匹配！', 'danger', 3000);</script>";
+        } 
+    } 
+} 
+
 // 修改密码操作
 if (isset($_POST['submit']) && isset($_POST['newpassword'])) {
     if (empty($_POST['oldpassword']) || empty($_POST['newpassword'])) {

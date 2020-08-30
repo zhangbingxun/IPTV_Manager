@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 
-if ($user != 'admin') {
+if ($user != $admin) {
     exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
 }
 
@@ -37,6 +37,9 @@ if(isset($_POST['submitserial']) && !empty($_POST['snNumber']))
         $marks = $_POST['marks'];
         $meal = $_POST["meal_s"];
         $author = $_POST['author'];
+        if (empty($author)) {
+            $author = 'admin';
+        }
         if($db->mCheckOne("luo2888_serialnum", "*", "where name='$name'")){
 	    	echo("<script>lightyear.notify('该账号已经存在', 'danger', 3000);</script>");
         } else {
@@ -57,6 +60,9 @@ if(isset($_POST['submitserial']) && !empty($_POST['snCount']))
         $marks = $_POST['marks'];
         $meal = $_POST["meal_s"];
         $author = $_POST['author'];
+        if (empty($author)) {
+            $author = 'admin';
+        }
         for ($i=0; $i <$snCount ; $i++) { 
             $name = genName();
             $nowtime = time();

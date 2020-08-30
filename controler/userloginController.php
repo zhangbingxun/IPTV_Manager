@@ -11,8 +11,9 @@ $userip = $remote->getuserip();
 $json = $remote -> getloc($db,$userip);
 $iploc = json_decode($json);
 $region = $iploc->data->region . $iploc->data->city . $iploc->data->isp;
+$admin = $db->mGet("luo2888_config","value","where name='adminname'");
 $skey =  $db->mGet("luo2888_config","value","where name='secret_key'");
-        
+
 if (isset($_COOKIE['secret_key'])) {
     $secret_key = $_COOKIE['secret_key'];
 } else {
@@ -48,10 +49,10 @@ if (isset($_COOKIE['rememberpass'])) {
     $user = $db->mEscape_string($_COOKIE['username']);
     $cookiepass = $db->mEscape_string($_COOKIE['password']);
     $adminpass =  $db->mGet("luo2888_config","value","where name='adminpass'");
-    if ($user == 'admin') {
+    if ($user == $admin) {
         if ($cookiepass == $adminpass) {
-            $_SESSION['user'] = 'admin';
-            $_SESSION['psw'] = $adminpass;
+            $_SESSION['user'] = $admin;
+            $_SESSION['pass'] = $adminpass;
             $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'$user','$userip','$region','$time','用户登入'");
             header("location:views/index.php");
         } 
@@ -64,10 +65,10 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
     $inputpass = md5(PANEL_MD5_KEY . $password);
     
 $adminpass =  $db->mGet("luo2888_config","value","where name='adminpass'");
-    if ($user  == 'admin') {
+    if ($user == $admin) {
         if ($inputpass == $adminpass) {
-            $_SESSION['user'] = 'admin';
-            $_SESSION['psw'] = $adminpass;
+            $_SESSION['user'] = $admin;
+            $_SESSION['pass'] = $adminpass;
             if (isset($_POST['rememberpass'])) {
                 setcookie("username", $user, time() + 3600 * 24 * 7, "/");
                 setcookie("password", $adminpass, time() + 3600 * 24 * 7, "/");

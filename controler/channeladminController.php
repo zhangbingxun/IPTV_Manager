@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
 require_once "../api/common/converter.class.php";
 
-if ($user != 'admin') {
+if ($user != $admin) {
     exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
 } 
 
@@ -21,14 +21,8 @@ function sort_id() {
         $numCount = 50;
     } else if ($categorytype == 'vip') {
         $numCount = 100;
-    } else if ($categorytype == 'cmcc') {
-        $numCount = 150;
-    } else if ($categorytype == 'unicom') {
-        $numCount = 200;
-    } else if ($categorytype == 'chinanet') {
-        $numCount = 250;
     } else if ($categorytype == 'province') {
-        $numCount = 300;
+        $numCount = 150;
     } 
     $result = $db->mQuery("SELECT * from luo2888_category where type='$categorytype' order by id");
     while ($row = mysqli_fetch_array($result)) {

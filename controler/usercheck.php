@@ -9,14 +9,15 @@ if (isset($_SESSION['user'])) {
     exit;
 } 
 
-if ($user == 'admin') {
-    $psw = $db->mGet("luo2888_config","value","where name='adminpass'");
+$admin = $db->mGet("luo2888_config","value","where name='adminname'");
+if ($user == $admin) {
+    $pass = $db->mGet("luo2888_config","value","where name='adminpass'");
 } else {
     header("location:../admin.php");
     exit;
 } 
 
-if (!isset($_SESSION['psw']) || $_SESSION['psw'] != $psw) {
+if (!isset($_SESSION['pass']) || $_SESSION['pass'] != $pass) {
     header("location:../admin.php");
     exit;
 } 

@@ -39,10 +39,10 @@
 						<?php
 						if (strpos($_SERVER['REQUEST_URI'],'index.php') !== false){
 							$index='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'author.php') !== false){
-							$author='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'serialadmin.php') !== false){
 							$serialadmin='active';
+						} else if (strpos($_SERVER['REQUEST_URI'],'author.php') !== false){
+							$author='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'useradmin.php') !== false){
 							$useradmin='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'exception.php') !== false){
@@ -63,12 +63,6 @@
 							$default='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'type=province') !== false){
 							$province='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'type=chinanet') !== false){
-							$chinanet='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'type=unicom') !== false){
-							$unicom='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'type=cmcc') !== false){
-							$cmcc='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'type=vip') !== false){
 							$vip='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'index=0') !== false){
@@ -84,23 +78,20 @@
 						}
 						?>
 						<li class="nav-item <?php echo $index ?>"> <a href="index.php"><i class="mdi mdi-home"></i>首页</a> </li>
+						<li class="nav-item <?php echo $serialadmin ?>"> <a href="serialadmin.php"><i class="mdi mdi-account-key"></i>账号</a> </li>
 						<li class="nav-item <?php echo $author ?>"> <a href="author.php"><i class="mdi mdi-account-check"></i>授权</a> </li>
-						<li class="nav-item <?php echo $serialadmin ?>"> <a href="serialadmin.php"><i class="mdi mdi-account-check"></i>账号</a> </li>
 						<li class="nav-item <?php echo $useradmin ?>"> <a href="useradmin.php"><i class="mdi mdi-account"></i>用户</a> </li>
 						<li class="nav-item <?php echo $exception ?>"> <a href="exception.php"><i class="mdi mdi-account-alert"></i>异常</a> </li>
 						<li class="nav-item <?php echo $mealsadmin ?>"> <a href="mealsadmin.php"><i class="mdi mdi-shopping"></i>套餐</a></li>
 						<li class="nav-item <?php echo $ordersadmin ?>"> <a href="ordersadmin.php"><i class="mdi mdi-wallet-giftcard"></i>订单</a></li>
 						<li class="nav-item <?php echo $epgadmin ?>"> <a href="epgadmin.php"><i class="mdi mdi-television-guide"></i>EPG</a> </li>
-						<li class="nav-item <?php echo $vodsadmin ?>"> <a href="vodsadmin.php"><i class="mdi mdi-television-guide"></i>点播采集</a> </li>
+						<li class="nav-item <?php echo $vodsadmin ?>"> <a href="vodsadmin.php"><i class="mdi mdi-television-guide"></i>点播</a> </li>
 						<li class="nav-item nav-item-has-subnav channeladmin">
 							<a href="javascript:void(0)"><i class="mdi mdi-television-classic"></i>频道列表</a>
 							<ul class="nav nav-subnav">
 								<li class="<?php echo $web ?>"><a href="channeladmin.php?type=web">网页端频道</a></li>
 								<li class="<?php echo $default ?>"><a href="channeladmin.php?type=default">默认频道</a></li>
 								<li class="<?php echo $province ?>"><a href="channeladmin.php?type=province">省份频道</a></li>
-								<li class="<?php echo $chinanet ?>"><a href="channeladmin.php?type=chinanet">电信频道</a></li>
-								<li class="<?php echo $unicom ?>"><a href="channeladmin.php?type=unicom">联通频道</a></li>
-								<li class="<?php echo $cmcc ?>"><a href="channeladmin.php?type=cmcc">移动频道</a></li>
 								<li class="<?php echo $vip ?>"><a href="channeladmin.php?type=vip">会员频道</a></li>
 							</ul>
 						</li>

@@ -1,10 +1,12 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="card">
-			<div class="card-header"><h4>后台记录</h4></div>
-			<form align="center" style="padding: 5px;" method="POST" >
-				<button type="submit" name="clearlog" class="btn btn-label btn-danger"><label><i class="mdi mdi-delete-empty"></i></label> 清空记录</button>
-			</form>
+			<div class="card-header">
+				<h4>后台记录</h4>
+				<form method="POST" >
+					<button type="submit" name="clearlog" class="btn btn-sm btn-danger pull-right">清空记录</button>
+				</form>
+			</div>
 			<div class="tab-content">
 				<div class="tab-pane active">
 					<div class="form-group">

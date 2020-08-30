@@ -134,6 +134,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
 
     else if (isset($_GET['list']) && isset($_GET[$checkcode])) {
         
+        $line = $_GET['line'];
         $vid = $_GET['vid'];
         $tid = $_GET['tid'];
         $id = $_GET['id'];
@@ -154,6 +155,9 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
                 if (is_array($channellist)) {
                     foreach($channellist as $channel) {
                         $channel = preg_replace('#http://域名/文件名#', 'fmitv://tv', $channel);
+                        if (!empty($line)) {
+                            $channel = str_replace('play','play&line=' . $line,$channel);
+                        }
                         echo $channel . "\n";
                     }
                 }

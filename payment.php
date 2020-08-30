@@ -1,12 +1,11 @@
 <?php
 require_once "views/view.main.php";
 require_once "controler/alipayController.php";
-
 ?>
 <script type="text/javascript" src="/views/js/wxcheck.js"></script>
 <body>
 	<div id="container">
-		<div class="lyear-login-box form__content">
+		<div class="lyear-login-box">
        <div class="lyear-login-left">
             <ul class="w3lsg-bubbles">
                <li></li>
@@ -30,7 +29,8 @@ require_once "controler/alipayController.php";
                 </h4>
             </div>
       </div>
-      <div class="lyear-login-right">
+      <section id="Loading"></section>
+      <div class="lyear-login-right form__content">
            <div class="lyear-logo text-center">
                 <a href="payment.php">
                     <img src="views/images/logo-sidebar.png">

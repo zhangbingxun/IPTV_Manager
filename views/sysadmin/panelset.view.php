@@ -1,6 +1,23 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="card">
+			<div class="card-header"><h4>修改管理员账号</h4></div>
+			<div class="card-body">
+				<form method="post">
+					<div class="example-box">
+					<label class="btn-block">旧用户名</label>
+						<input class="form-control" type="text" name="olduser" value="<?php echo $admin; ?>" size="80"><br>
+					<label class="btn-block">新用户名</label>
+						<input class="form-control" type="text" name="newuser" value="" size="80"><br>
+					<label class="btn-block">确认新用户名</label>
+						<input class="form-control" type="text" name="newuser_confirm" value="" size="80"><br>
+					</div>
+					<button class="btn btn-label btn-primary" type="submit" name="submit" value=""><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>修改用户名</button>
+				</form>
+			</div>
+		</div>
+		<hr>
+		<div class="card">
 			<div class="card-header"><h4>修改管理员密码</h4></div>
 			<div class="card-body">
 				<form method="post">

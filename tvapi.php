@@ -568,7 +568,7 @@ else if (isset($_POST['login'])) {
         $tipuserforbidden= '对不起，同一个IP只允许注册' . $ipadmit . '台设备！';
     }
 
-    $accesstoken = $name . '.' . strtoupper(dechex($today ^ $name));
+    $accesstoken = strtoupper(dechex($today ^ $name));
 
     $objres = array('id' => $name, 'status' => $status, 'mealname' => $mealname, 'datatoken' => $datatoken, 'appurl' => $appurl, 'dataver' => $dataver, 'appver' => $appver, 'setver' => $setver, 'adtext' => $adtext, 'showinterval' => $showinterval, 'exp' => $days, 'userip' => $userip, 'showtime' => $showtime , 'provlist' => $arrprov, 'canseeklist' => $arrcanseek, 'decoder' => $decoder, 'buffTimeOut' => $buffTimeOut, 'tipusernoreg' => $tipusernoreg, 'tiploading' => $tiploading, 'tipuserforbidden' => $tipuserforbidden, 'tipuserexpired' => $tipuserexpired, 'adinfo' => $adinfo, 'keyproxy' => $keyproxy, 'location' => $region, 'nettype' => $nettype, 'autoupdate' => 1, 'updateinterval' => $updateinterval, 'randkey' => $randkey, 'exps' => $exp, 'movieengine' => $voddatas, 'useragent' => $app_useragent, 'accesstoken' => $accesstoken);
 
@@ -616,18 +616,7 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
     // 更新在线时间
     $db->mSet("luo2888_users", "lasttime=$nowtime", "where mac='$mac'");
 
-    if (strpos($nettype, '电信') !== false) {
-        $nettype = "chinanet";
-    } else if (strpos($nettype, '联通') !== false) {
-        $nettype = "unicom";
-    } else if (strpos($nettype, '移动') !== false) {
-        $nettype = "cmcc";
-    } else {
-        $nettype = "";
-    } 
-
     // 查找当前用户对应的套餐
-
     $result = $db->mQuery("SELECT meal from luo2888_users where mac='$mac'");
     if (mysqli_num_rows($result)) {
         $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
@@ -657,21 +646,8 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
     // 增加我的收藏
     $contents[] = echoJSON($username, '', "我的收藏", '', $pdkey); 
 
-    // 默认套餐不输出运营商和各省的频道
+    // 默认套餐不输出各省的频道
     if ($mid != 1000) {
-
-        // 添加运营商频道数据
-        if (!empty($nettype)) {
-            $result = $db->mQuery("SELECT name,id,psw FROM luo2888_category where enable=1 and type='$nettype' order by id");
-            while ($row = mysqli_fetch_array($result)) {
-                $pdname = $row['name'];
-                $psw = $row['psw'];
-                $contents[] = echoJSON($username, $pdname, $pdname, $psw);
-            } 
-            unset($row);
-            mysqli_free_result($result);
-        } 
-
 
         // 添加省内频道数据
         if (isset($region) && $region != '') {

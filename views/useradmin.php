@@ -81,7 +81,7 @@
 							<div class="tab-pane active">
 								<div class="form-group">
                 				<div class="table-responsive">
-									<table class="table table-hover">
+									<table class="table table-hover" style="white-space:nowrap;word-break:keep-all;">
 										<thead>
 										<tr>
 											<th class="w-1">
@@ -108,11 +108,6 @@
 											<form method="POST">
 												<?php
 													$recStart=$recCounts*($page-1);
-													if($user=='admin'){
-													$func="select * from luo2888_users where status>0 $searchparam order by $order limit $recStart,$recCounts";
-													}else{
-														$func="select * from luo2888_users where status>0 and author='$user' $searchparam order by $order limit $recStart,$recCounts";
-													}
 													$meals=$db->mQuery("select id,name from luo2888_meals");
 													if (mysqli_num_rows($meals)) {
 														$meals_arr = [];
@@ -122,7 +117,7 @@
 														unset($row);
 														mysqli_free_result($meals);
 													} 
-													$result=$db->mQuery($func);
+													$result=$db->mQuery("select * from luo2888_users where status>0 $searchparam order by $order limit $recStart,$recCounts");
 													if (mysqli_num_rows($result)) {
 														while($row=mysqli_fetch_array($result)){
 															$status=$row['status'];
@@ -153,7 +148,7 @@
 																$days='永不到期';
 																$expdate=$days;
 															}
-															if(abs(time() - $lasttime) > $OnlineTime) {
+															if(abs(time() - $lasttime) > $onlinetime) {
 																$onlinestatus='不在线';
 															} else {
 																$onlinestatus=$onlinetime . '分';

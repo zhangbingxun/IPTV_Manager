@@ -112,7 +112,7 @@
 							<div class="tab-pane active">
 								<div class="form-group">
                 				<div class="table-responsive">
-									<table class="table table-hover">
+									<table class="table table-hover" style="white-space:nowrap;word-break:keep-all;">
 										<thead>
 										<tr>
 											<th class="w-1">
@@ -133,11 +133,6 @@
 											<form method="POST">
 												<?php
 													$recStart=$recCounts*($page-1);
-													if($user=='admin'){
-														$func="select * from luo2888_serialnum where 1 $searchparam order by $order limit $recStart,$recCounts";
-													}else{
-														$func="select * from luo2888_serialnum where author='$user' $searchparam order by $order limit $recStart,$recCounts";
-													}
 													$meals=$db->mQuery("select id,name from luo2888_meals where id<>1000");
 													if (mysqli_num_rows($meals)) {
 														$meals_arr = [];
@@ -147,7 +142,7 @@
 														unset($row);
 														mysqli_free_result($meals);
 													} 
-													$result=$db->mQuery($func);
+													$result=$db->mQuery("select * from luo2888_serialnum where 1 $searchparam order by $order limit $recStart,$recCounts");
 													if (mysqli_num_rows($result)) {
 														while($row=mysqli_fetch_array($result)){
 															$gentime=date("Y-m-d H:i:s",$row['gentime']);

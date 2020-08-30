@@ -22,7 +22,7 @@ require_once "../controler/vodsadminController.php";
                         <div class="tab-pane active">
                             <div class="form-group">
                                 <div class="table-responsive">
-                                    <table class="table table-hover table-vcenter">
+                                    <table class="table table-hover table-vcenter" style="white-space:nowrap;word-break:keep-all;">
                                         <tbody>
                                             <tr align="center">
                                                 <td class="w-5">

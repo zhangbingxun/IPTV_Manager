@@ -29,6 +29,7 @@ require_once "views/view.main.php";
                     </h4>
                 </div>
             </div>
+            <section id="Loading"></section>
             <div class="lyear-login-right form__content">
                 <div class="lyear-logo text-center">
                     <a href="index.php">

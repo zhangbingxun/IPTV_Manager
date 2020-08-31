@@ -1,15 +1,17 @@
 <?php
 $curl = curl_init();
-curl_setopt($curl, CURLOPT_URL, 'http://v1.alapi.cn/api/mingyan');
+curl_setopt($curl, CURLOPT_URL, 'https://api.xygeng.cn/one');
 curl_setopt($curl, CURLOPT_TIMEOUT, 2);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_USERAGENT, 'FMITV');
 $myapi = curl_exec($curl);
 $mingyan = json_decode($myapi,true);
-$arrlength = count($mingyan['data']);
+if (!empty($mingyan['data'])) {
+    $arrlength = count($mingyan['data']);
+}
 if ($arrlength > 1) {
     $mingyan_contents = $mingyan['data']['content'];
-    $mingyan_author = $mingyan['data']['author'];
+    $mingyan_author = $mingyan['data']['origin'];
 } else {
     $mingyan_contents = '欢迎';
     $mingyan_author = '小肥米电子科技工作室';

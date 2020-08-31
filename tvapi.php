@@ -600,11 +600,17 @@ else if (isset($_POST['tvdata']) && isset($_GET['token'])) {
     $pdkey = md5($iv);
     $userip = $remote -> getuserip();
     $username = $db->mGet("luo2888_users", "name", "where mac='$mac'");
+    $logintime = $db->mGet("luo2888_users", "logintime", "where mac='$mac'");
 
     if (empty($region)) {
         $json = $remote -> getloc($db,$userip);
         $obj = json_decode($json);
         $region = $obj->data->region . $obj->data->city . $obj->data->isp;
+    }
+
+    if (abs($nowtime - $logintime) > 86400) {
+        header('HTTP/1.1 403 Forbidden');
+        exit;
     }
 
     if ($token != md5($username . $b64str . $randkey)) {

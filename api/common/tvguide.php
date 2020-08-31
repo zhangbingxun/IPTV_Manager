@@ -230,14 +230,9 @@ function get_epg_data($tvid, $epgid, $name = "", $date = "") {
         $cachefile = "../../cache/51zmt.xml";
         //$url = "http://epg.51zmt.top:8000/gat.xml";
         $url = "https://cdn.jsdelivr.net/gh/supzhang/epg/gat.xml";
-        if (file_exists($cachefile)) {
-            $filemtime = filemtime($cachefile);
-            if (time() - $filemtime >= 259200) {
-                unlink($cachefile);
-                $file = curl::c()->set_ssl()->get($url);
-                file_put_contents($cachefile, $file);
-            }
-        } else {
+        $filemtime = filemtime($cachefile);
+        if (abs(time() - $filemtime) >= 259200 || !file_exists($cachefile)) {
+            unlink($cachefile);
             $file = curl::c()->set_ssl()->get($url);
             file_put_contents($cachefile, $file);
         }

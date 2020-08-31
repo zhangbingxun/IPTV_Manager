@@ -135,7 +135,7 @@ while ($row=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
     echo '<td align="center">' . $func . '</td>';
     echo '<td align="left">' . $row["content"] . '</td>';
     echo '<td align="center">';
-    echo '<a href="?act=edit&id=' . $row["id"] . '"><button type="button" class="btn btn-sm btn-primary m-r-5">编辑</button></a>';
+    echo '<a href="epgedit.php?id=' . $row["id"] . '"><button type="button" class="btn btn-sm btn-primary m-r-5">编辑</button></a>';
     echo '<button type="submit" class="btn btn-sm btn-danger" name="delchannel" onclick="return confirm(\'确认删除吗？\')">删除</button>';
     echo '</td>';
     echo"</tr>";

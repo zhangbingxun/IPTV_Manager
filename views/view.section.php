@@ -39,23 +39,21 @@
 						<?php
 						if (strpos($_SERVER['REQUEST_URI'],'index.php') !== false){
 							$index='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'serialadmin.php') !== false){
+						} else if (strpos($_SERVER['REQUEST_URI'],'serialadmin') !== false){
 							$serialadmin='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'author.php') !== false){
+						} else if (strpos($_SERVER['REQUEST_URI'],'author') !== false){
 							$author='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'useradmin.php') !== false){
+						} else if (strpos($_SERVER['REQUEST_URI'],'useradmin') !== false){
 							$useradmin='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'exception.php') !== false){
+						} else if (strpos($_SERVER['REQUEST_URI'],'exception') !== false){
 							$exception='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'mealsadmin.php') !== false){
+						} else if (strpos($_SERVER['REQUEST_URI'],'mealsadmin') !== false){
 							$mealsadmin='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'epgadmin.php') !== false){
+						} else if (strpos($_SERVER['REQUEST_URI'],'epg') !== false){
 							$epgadmin='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'vodsadmin.php') !== false){
+						} else if (strpos($_SERVER['REQUEST_URI'],'vodsadmin') !== false){
 							$vodsadmin='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'mealsadmin.php') !== false){
-							$mealsadmin='active';
-						} else if (strpos($_SERVER['REQUEST_URI'],'ordersadmin.php') !== false){
+						} else if (strpos($_SERVER['REQUEST_URI'],'ordersadmin') !== false){
 							$ordersadmin='active';
 						} else if (strpos($_SERVER['REQUEST_URI'],'type=web') !== false){
 							$web='active';
@@ -130,16 +128,16 @@
 						<span class="navbar-page-title">
 						<?php
 						if (strpos($_SERVER['REQUEST_URI'],'index.php') !== false){ echo '&nbsp;首页&nbsp;'; }
-						else if (strpos($_SERVER['REQUEST_URI'],'author.php') !== false){ echo '&nbsp;授权&nbsp;'; }
-						else if (strpos($_SERVER['REQUEST_URI'],'serialadmin.php') !== false){ echo '&nbsp;账号&nbsp;'; }
-						else if (strpos($_SERVER['REQUEST_URI'],'useradmin.php') !== false){ echo '&nbsp;用户&nbsp;'; }
-						else if (strpos($_SERVER['REQUEST_URI'],'exception.php') !== false){ echo '&nbsp;异常&nbsp;'; }
-						else if (strpos($_SERVER['REQUEST_URI'],'mealsadmin.php') !== false){ echo '&nbsp;套餐&nbsp;'; }
-						else if (strpos($_SERVER['REQUEST_URI'],'ordersadmin.php') !== false){ echo '&nbsp;订单&nbsp;'; }
-						else if (strpos($_SERVER['REQUEST_URI'],'epgadmin.php') !== false){ echo '&nbsp;EPG&nbsp;'; }
-						else if (strpos($_SERVER['REQUEST_URI'],'vodsadmin.php') !== false){ echo '&nbsp;点播采集&nbsp;'; }
-						else if (strpos($_SERVER['REQUEST_URI'],'channeladmin.php') !== false){ echo '&nbsp;频道列表&nbsp;'; }
-						else if (strpos($_SERVER['REQUEST_URI'],'sysadmin.php') !== false){ echo '&nbsp;系统设置&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'author') !== false){ echo '&nbsp;授权&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'serialadmin') !== false){ echo '&nbsp;账号&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'useradmin') !== false){ echo '&nbsp;用户&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'exception') !== false){ echo '&nbsp;异常&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'mealsadmin') !== false){ echo '&nbsp;套餐&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'ordersadmin') !== false){ echo '&nbsp;订单&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'epg') !== false){ echo '&nbsp;EPG&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'vodsadmin') !== false){ echo '&nbsp;点播采集&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'channeladmin') !== false){ echo '&nbsp;频道列表&nbsp;'; }
+						else if (strpos($_SERVER['REQUEST_URI'],'sysadmin') !== false){ echo '&nbsp;系统设置&nbsp;'; }
 						?>
 						</span>
 					</div>

@@ -53,9 +53,6 @@
         <td class="w-5">
             分类
         </td>
-        <td class="w-15">
-            链接
-        </td>
         <td class="w-5">
             操作
         </td>
@@ -72,7 +69,6 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     echo '<tr>';
     echo '<input type="hidden" name="id" value="' . $row["id"] . '"/>';
     echo '<td align="center">' . $row["name"] . '</td>';
-    echo '<td align="left">' . $row["url"] . '</td>';
     echo '<td align="center">';
     echo '<button type="button" class="btn btn-sm btn-cyan m-r-5" data-toggle="modal" data-target="#editlist_' . $row["id"] . '">编辑</button>';
     echo '<input type="hidden" name="category" value="' . $row["name"] . '"/>';

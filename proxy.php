@@ -87,7 +87,7 @@ if (isset($_GET['play']) || isset($_GET['list'])) {
         }
         else if ($authkey != $today)
         {
-            header('location:' . $deniedurl);
+            header('location:' . $failureurl);
             exit('您被系统判定为盗链！');
         }
         else if ($token != md5('fmitv_' . $user . $key . $today))

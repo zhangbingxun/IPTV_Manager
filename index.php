@@ -96,6 +96,8 @@ $boxurl = cache("boxdown" . $boxurl, "downurl", [$boxurl]);
 							<ul>
 								<li><a href="/zblist.php">線上觀看</a></li>
 								<li><a href="#android">軟體下載</a></li>
+								<li><a href="#meals">套餐列表</a></li>
+								<li><a href="#channels">频道列表</a></li>
 								<li><a href="#about">關於及免責聲明</a></li>
 							</ul>
 						</nav>
@@ -120,13 +122,52 @@ $boxurl = cache("boxdown" . $boxurl, "downurl", [$boxurl]);
 
 							<article id="about">
 								<h2 class="major">關於我們</h2>
-								<h3 class="major">微信公眾號</h2>
+								<h3 class="major">微信公眾號</h3>
 								<span class="image main"><img src="/views/images/official.jpg" alt="" /></span>
-								<h3 class="major">聯繫客服</h2>
+								<h3 class="major">聯繫客服</h3>
 								<span class="image main"><img src="/views/images/wechat.jpg" alt="" /></span>
-								<h3 class="major">免責聲明</h2>
+								<h3 class="major">免責聲明</h3>
 								<p>軟體僅用於流媒體方案傳輸測試，相關項目開發合作請與我們聯繫，平台所有節目採集於網絡，如有侵犯到您的版權請來信我們將予以取消。</p>
 							</article>
+
+							<article id="meals">
+								<h2 class="major">套餐列表</h2>
+<?php 
+$result = $db->mQuery("select * from luo2888_meals");
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    echo '<h3 class="major">' . $row["name"] . '&nbsp&nbsp' . $row["amount"] . '元</h3>';
+    echo '<p>' . $row["content"] . '</p>';
+}
+?>
+							</article>
+
+							<article id="channels">
+								<h2 class="major">频道列表</h2>
+<?php 
+$result = $db->mQuery("SELECT id,name FROM luo2888_category order by id");
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    echo '<span class="button" style="margin: 1% 2.5%;"><a href="#' . $row["id"] . '">' . $row["name"] . '</a></span>';
+}
+?>
+							</article>
+
+<?php 
+$result = $db->mQuery("SELECT id,name FROM luo2888_category order by id");
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    $channeldata = $db->mQuery("SELECT distinct name FROM luo2888_channels where category='" . $row["name"] . "'order by id");
+    echo '<article id="' . $row["id"] . '">';
+    echo '<h2 class="major">' . $row["name"] . '</h2>';
+    $i = 1;
+    echo '<p>';
+    while ($channel = mysqli_fetch_array($channeldata, MYSQLI_ASSOC)) {
+        $channelname = $channel["name"];
+        echo $i . '、' . $channelname . '<br>';
+        $i++;
+    }
+    echo '</p>';
+    echo '</article>';
+}
+?>
 
 							<article id="develop">
 								<h2 class="major">正在建設</h2>

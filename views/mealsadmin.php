@@ -34,19 +34,22 @@
                                         <table class="table table-hover table-vcenter" style="white-space:nowrap;word-break:keep-all;">
                                             <tr align="center">
                                                 <td class="w-5">
-                                                    套餐编号
+                                                    编号
                                                 </td>
                                                 <td class="w-5">
-                                                    套餐名称
+                                                    名称
                                                 </td>
                                                 <td class="w-5">
-                                                    套餐状态
+                                                    状态
                                                 </td>
                                                 <td class="w-5">
-                                                    套餐金额
+                                                    公开销售
                                                 </td>
                                                 <td class="w-5">
-                                                    套餐期限
+                                                    金额
+                                                </td>
+                                                <td class="w-5">
+                                                    期限
                                                 </td>
                                                 <td class="w-15">
                                                     收视内容
@@ -77,12 +80,18 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     } else {
         $days = $row["days"] . "天";
     }
+    if ($row["sale"] == 0) {
+        $sale = "否";
+    } else {
+        $sale = "是";
+    }
     echo '<form method="post">';
     echo '<tr>';
     echo '<input type="hidden" name="id" value="' . $row["id"] . '"/>';
     echo '<td align="center">' . $row["id"] . '</td>';
     echo '<td align="center">' . $row["name"] . '</td>';
     echo '<td align="center">' . $func . '</td>';
+    echo '<td align="center">' . $sale . '</td>';
     echo '<td align="center">' . $row["amount"] . '元</td>';
     echo '<td align="center">' . $days . '</td>';
     echo '<td align="left">' . $row["content"] . '</td>';

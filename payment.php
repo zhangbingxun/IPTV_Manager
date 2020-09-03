@@ -130,7 +130,7 @@ require_once "controler/alipayController.php";
 							<tr>
 								<td>
 									<div class="form-group w-100">
-										<button type="submit" class="btn btn-block btn-primary" name="dopay" id="dopay">提交订单</button>
+										<button type="submit" class="btn btn-block btn-primary" name="dopay" id="dopay" onclick="return confirm(\'警告，订单支付成功代表您同意不退款原则，请确认同意后再付款！\')">提交订单</button>
 									</div>
 								</td>
 							</tr>

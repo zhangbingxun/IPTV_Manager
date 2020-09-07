@@ -35,7 +35,8 @@ if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>0 and authort
 } 
 unset($row);
 // 获取在线用户总数
-$OnlineTime = time() - 120;
+$uptime = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
+$OnlineTime = time() - $uptime;
 if ($row = $db->mGetRow("luo2888_users", "count(*)", "where lasttime>$OnlineTime")) {
     $onlineuserCount = $row[0];
 } else {

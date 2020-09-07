@@ -13,56 +13,8 @@ $boxver = $db->mGet("luo2888_config", "value", "where name='appver_sdk14'");
 
 $appurl = $db->mGet("luo2888_config", "value", "where name='appurl'");
 $boxurl = $db->mGet("luo2888_config", "value", "where name='appurl_sdk14'");
+$panurl = 'https://luo2888.lanzoui.com/b01hnorha';
 
-// 缓存数据
-function cache($key, $f_name, $ff = []) {
-    Cache::$cache_path = "./cache/tvapi/";
-    $val = Cache::gets($key);
-    if (!$val) {
-        $data = call_user_func_array($f_name, $ff);
-        Cache::put($key, $data);
-        return $data;
-    } else {
-        return $val;
-    } 
-} 
-
-// 缓存超时
-function cache_time_out() {
-    date_default_timezone_set("Asia/Shanghai");
-    return time();
-}
-
-// 蓝奏云解析
-function downurl($url) {
-
-    if (strstr($url,"lanzou://")) {
-
-        $lzurl = str_replace('lanzou:', 'https:', $url);
-        $directlink = lanzouUrl($lzurl);
-        if (!$directlink) {
-            return $lzurl;
-        } else {
-            return $directlink;
-        }
-
-    } else {
-
-        return $url;
-
-    }
-
-}
-
-$timetoken = cache("time_out_chk", "cache_time_out");
-if (abs($nowtime - $timetoken) > 120) {
-    Cache::$cache_path = "./cache/tvapi/"; 
-    Cache::dels();
-    cache("time_out_chk", "cache_time_out");
-} 
-
-$appurl = cache("appdown" . $appurl, "downurl", [$appurl]);
-$boxurl = cache("boxdown" . $boxurl, "downurl", [$boxurl]);
 ?>
 
 <!DOCTYPE HTML>
@@ -96,7 +48,7 @@ $boxurl = cache("boxdown" . $boxurl, "downurl", [$boxurl]);
 							<ul>
 								<li><a href="/zblist.php">線上觀看</a></li>
 								<li><a href="#android">軟體下載</a></li>
-								<li><a href="#meals">套餐列表</a></li>
+								<li><a href="#meals">套餐购买</a></li>
 								<li><a href="#channels">频道列表</a></li>
 								<li><a href="#about">關於及免責聲明</a></li>
 							</ul>
@@ -114,6 +66,7 @@ $boxurl = cache("boxdown" . $boxurl, "downurl", [$boxurl]);
 								<p>下載：</p>
 								<p>
 									<ul class="actions">
+										<li><a class="button primary icon solid fa-download"  href="<?php echo $panurl; ?>">网盘下载地址</a></li>
 										<li><a class="button primary icon solid fa-download" href="<?php echo $appurl; ?>">手机版（點播+直播） <?php echo 'V' . $appver; ?> 下載</a></li>
 									<li><a class="button primary icon solid fa-download"  href="<?php echo $boxurl; ?>">电视/盒子版（直播） <?php echo 'V' . $boxver; ?> 下載</a></li>
 									</ul>
@@ -131,20 +84,25 @@ $boxurl = cache("boxdown" . $boxurl, "downurl", [$boxurl]);
 							</article>
 
 							<article id="meals">
-								<h2 class="major">套餐列表</h2>
+								<h2 class="major">套餐购买</h2>
 <?php 
-$result = $db->mQuery("select * from luo2888_meals");
+$result = $db->mQuery("select * from luo2888_meals where sale=1");
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     echo '<h3 class="major">' . $row["name"] . '&nbsp&nbsp' . $row["amount"] . '元</h3>';
     echo '<p>' . $row["content"] . '</p>';
 }
 ?>
+								<p>
+									<ul class="actions">
+									<li><a class="button primary icon solid fa-download"  href="/payment.php">在线购买</a></li>
+									</ul>
+								</p>
 							</article>
 
 							<article id="channels">
 								<h2 class="major">频道列表</h2>
 <?php 
-$result = $db->mQuery("SELECT id,name FROM luo2888_category order by id");
+$result = $db->mQuery("SELECT id,name FROM luo2888_category where type <> 'web' order by id");
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     echo '<span class="button" style="margin: 1% 2.5%;"><a href="#' . $row["id"] . '">' . $row["name"] . '</a></span>';
 }

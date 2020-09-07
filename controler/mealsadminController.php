@@ -61,9 +61,14 @@ if (empty($mealchk)) {
 if (isset($_POST['editmeal'])) {
     $id=!empty($_POST["id"])?$_POST["id"]:exit("<script>$.alert({title: '错误',content: '参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
     $meal_name=!empty($_POST["name"])?$_POST["name"]:exit("<script>$.alert({title: '错误',content: '请填写套餐名称！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location=document.referrer;}}}});</script>");
+    $ids="";
     $amount=$_POST["amount"];
     $days=$_POST["days"];
-    $ids="";
+    if (isset($_POST['sale'])) {
+        $sale = 1;
+    } else {
+        $sale = 0;
+    } 
     if (!empty($_POST["ids"])) {
         foreach ($_POST["ids"] as $num=>$content ) {
             $ids.=$content;
@@ -72,7 +77,7 @@ if (isset($_POST['editmeal'])) {
             }
         }
     }
-    $db->mSet("luo2888_meals", "name='".$meal_name."',content='".$ids."',amount='".$amount."',days='".$days."'", "where id=" . $id);
+    $db->mSet("luo2888_meals", "name='".$meal_name."',content='".$ids."',amount='".$amount."',days='".$days."',sale='".$sale."'", "where id=" . $id);
     exit("<script>$.alert({title: '成功',content: '套餐 " . $meal_name . " 修改成功！',type: 'green',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php';}}}});</script>");
 }
 

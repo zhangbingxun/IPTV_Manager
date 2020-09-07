@@ -100,7 +100,7 @@ require_once "controler/alipayController.php";
 							<tr align='left'><td>用户位置：$userloc</td></tr>
 							<tr align='left'><td>设备MAC地址：$usermac</td></tr>
 						";
-							$result=$db->mQuery("select name,content from luo2888_meals where status=1 and id<>1000 ORDER BY id ASC");
+							$result=$db->mQuery("select name,content from luo2888_meals where status=1 and sale=1 and id<>1000 ORDER BY id ASC");
 							while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 							    echo '<tr align="left"><td>' . $row["name"] . ' : ' . $row["content"] . '</td></tr>';
 							} 
@@ -113,7 +113,7 @@ require_once "controler/alipayController.php";
 										<input type="hidden" name="userid" value="'. $userid .'"/>
 										<select class="btn btn-sm btn-default dropdown-toggle" style="height: 30px;" name="mealid">
 											<option value="">请选择套餐</option>';
-						       	$result=$db->mQuery("select id,name,amount,days from luo2888_meals where status=1 and id<>1000 ORDER BY id ASC");
+						       	$result=$db->mQuery("select id,name,amount,days from luo2888_meals where status=1 and sale=1 and id<>1000 ORDER BY id ASC");
 											while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 											 if ($row["days"] == 999) {
 									    			$days = "永久授权";
@@ -140,7 +140,7 @@ require_once "controler/alipayController.php";
 				</table>
 				<form class="form-inline" id="userid_form" method="GET">
 					<div class="form-group">
-						<input type="text" name="id" class="form-control" value="<?php echo $user ?>" placeholder="请输入用户ID">
+						<input type="text" name="id" class="form-control" value="<?php echo $user ?>" placeholder="请输入用户账号">
 					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-block btn-primary" id="userid_enter">查询</button>
@@ -148,7 +148,7 @@ require_once "controler/alipayController.php";
 				</form>
 				<hr>
 				<footer class="col-sm-12 text-center">
-					<p class="m-b-0">Copyright © 2020 <a href="http://www.luo2888.cn">luo2888.cn</a>. All right reserved</p>
+					<p class="m-b-0">Copyright © 2017-2020 <a href="http://www.luo2888.cn">luo2888.cn</a>. All right reserved</p>
 				</footer>
 		</div>
 	</div>

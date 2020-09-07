@@ -107,6 +107,14 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         mysqli_free_result($category);
         exit("<script>$.alert({title: '错误',content: '对不起，没有频道分类信息，无法生成套餐！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='mealsadmin.php'}}}});</script>");
     }
+    switch ($row["sale"]) {
+        case '0':
+            $salechecked = '';
+            break;
+        case '1':
+            $salechecked = 'checked="checked"';
+            break;
+    }
     echo '<div class="modal fade" id="editmeal_' . $row["id"] . '" tabindex="-1" role="dialog">
 									<div class="modal-dialog" role="document">
 										<div class="modal-content">
@@ -128,6 +136,13 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 													<div class="form-group">
 														<label class="control-label">期限：</label>
 														<input type="text" class="form-control" name="days" value="' . $row["days"] . '">
+													</div>
+													<div class="form-group">
+														<label class="control-label">公开销售：</label>
+														<label class="lyear-checkbox checkbox-inline  checkbox-primary">
+															<input type="checkbox" name="sale" ' . $salechecked . '>
+															<span></span>
+														</label>
 													</div>
 													<div class="form-group">
 														<label class="lyear-checkbox m-b-10">

@@ -43,7 +43,7 @@
 											<label>列表设置：</label>
 												<span>更新间隔</span>
 												<input type="hidden" name="ver" value="<?php echo ($ver+1); ?>">
-												<input type="text" class="form-control" name='updateinterval' style="display: inline;width: 43.5px;height: 20px;" value="<?php echo $updateinterval ?>" size="5"><span>&nbsp;秒</span>
+												<input type="text" class="form-control" name='updateinterval' style="display: inline;width: 15%;height: 20px;" value="<?php echo $updateinterval ?>" size="5"><span>&nbsp;秒</span>
 												<button class="btn btn-xs btn-default" type="button" data-toggle="modal" data-target="#addlist">导入列表</button>
 												<button class="btn btn-xs btn-default" type="submit" name="submit"/>保存设定</button>
 											</form>

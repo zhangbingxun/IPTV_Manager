@@ -1,22 +1,8 @@
-<?php require_once "view.section.php";require_once "../controler/mealsadminController.php"; ?>
+<?php
+require_once "../view.section.php";
+require_once "../../controler/mealsadminController.php";
+?>
 
-<script type="text/javascript">
-    function submitForm() {
-        var form = document.getElementById("recCounts");
-        form.submit();
-    }
-    function quanxuan(a) {
-        var ck = document.getElementsByName("ids[]");
-        for (var i = 0; i < ck.length; i++) {
-            var tr = ck[i].parentNode.parentNode;
-            if (a.checked) {
-                ck[i].checked = true;
-            } else {
-                ck[i].checked = false;
-            }
-        }
-    }
-</script>
 <!--页面主要内容-->
 <main class="lyear-layout-content">
     <div class="container-fluid">

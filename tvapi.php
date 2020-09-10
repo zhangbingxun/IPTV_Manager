@@ -45,7 +45,7 @@ class Aes {
 // 生成随机账号
 function genName() {
     global $db;    
-    $name = rand(1000, 999999);
+    $name = rand(100000, 99999999);
     $users = $db->mCheckOne("luo2888_users", "*", "where name=$name");
     $serial = $db->mCheckOne("luo2888_serialnum", "*", "where name=$name");
     if ($users || $serial) {
@@ -145,10 +145,10 @@ if (isset($_GET['bgpic'])) {
 
 else if (isset($_GET['getver'])) {
 
-    $boxver = $db->mGet("luo2888_config", "value", "where name='appver_sdk14'");
-    $boxurl = $db->mGet("luo2888_config", "value", "where name='appurl_sdk14'");
     $appver = $db->mGet("luo2888_config", "value", "where name='appver'");
     $appurl = $db->mGet("luo2888_config", "value", "where name='appurl'");
+    $boxver = $db->mGet("luo2888_config", "value", "where name='boxver'");
+    $boxurl = $db->mGet("luo2888_config", "value", "where name='boxurl'");
     $up_size = $db->mGet("luo2888_config", "value", "where name='up_size'");
     $up_sets = $db->mGet("luo2888_config", "value", "where name='up_sets'");
     $up_text = $db->mGet("luo2888_config", "value", "where name='up_text'");
@@ -372,10 +372,6 @@ else if (isset($_POST['login'])) {
         $region = $obj->data->region . $obj->data->city . $obj->data->isp;
     } 
 
-    if (strstr($androidid == '871544fa3caeb847')) {
-        exit;
-    }
-
     /* if (strpos($region, '电信') !== false || strpos($region, '联通') !== false || strpos($region, '移动') !== false) {
         $banuser = 1;
         goto banuser;
@@ -387,16 +383,16 @@ else if (isset($_POST['login'])) {
         goto banuser;
     }
 
-    // mac变动自动更改
+    // 设备ID与型号相同时mac变动自动更改
     if ($row = $db->mCheckRow("luo2888_users", "mac", "where deviceid='$androidid' and model='$model'")) {
         $devicemac = $row['mac'];
         if ($mac != $devicemac){
-            $db->mSet("luo2888_users", "mac='$mac'", "where deviceid='$androidid'"); 
+            $db->mSet("luo2888_users", "mac='$mac'", "where deviceid='$androidid' and model='$model'"); 
         }
     }
 
     // mac是否匹配
-    if ($row = $db->mCheckRow("luo2888_users", "name,status,exp,deviceid,mac,model,meal", "where mac='$mac'")) {
+    if ($row = $db->mCheckRow("luo2888_users", "name,status,exp,deviceid,mac,model,meal", "where mac='$mac' and model='$model'")) {
 
         // 匹配成功
         $days = ceil(($row['exp'] - time()) / 86400);
@@ -493,8 +489,8 @@ else if (isset($_POST['login'])) {
 
     $author = $db->mGet("luo2888_users", "author", "where name='$name'");
     if (strstr($author, "A") != false) {
-        $adtext = '';
-        $adinfo = '';
+        $adtext = $db->mGet("luo2888_agents", "adtext", "where id='$author'");
+        $adinfo = $db->mGet("luo2888_agents", "adinfo", "where id='$author'");
     } 
 
     if ($status2 == -999) {
@@ -504,18 +500,6 @@ else if (isset($_POST['login'])) {
     $mealname = $db->mGet("luo2888_meals", "name", "where id='$mealid'");
     $week = array('日', '一', '二', '三', '四', '五', '六');
     $adtext =  '尊敬的『' . $name . '』用户，今天' . date('n月d号') . "，" . '星期' . $week[date('w')] . '。' . $adtext;
-
-    if ($showwea == 1) {
-        $weaapi_id = $db->mGet("luo2888_config", "value", "where name='weaapi_id'");
-        $weaapi_key = $db->mGet("luo2888_config", "value", "where name='weaapi_key'");
-        $url = "https://www.tianqiapi.com/api?version=v6&appid=$weaapi_id&appsecret=$weaapi_key&ip=$userip";
-        $weajson = file_get_contents($url);
-        $obj = json_decode($weajson);
-        if (!empty($obj->city)) {
-            $weather =  "今天" . $obj->wea . '，' . $obj->tem2 . '℃' . '～' . $obj->tem1 . '℃' . '，' . $obj->win . $obj->win_speed . '，' . '湿度' . $obj->humidity . '，' . '空气' . $obj->air_level . '。';
-            $adinfo = $weather .  "\n" . $adinfo;
-        } 
-    } 
 
     $result = $db->mQuery("SELECT name from luo2888_category where enable=1 and type='province' order by id");
     while ($row = mysqli_fetch_array($result)) {

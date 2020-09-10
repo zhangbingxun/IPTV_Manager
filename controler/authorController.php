@@ -29,7 +29,6 @@ if (isset($_POST['submitauthor'])) {
     } else {
         $meals = array_values($meals);
         foreach($_POST['id']as $userid => $id) {
-            $administrator = $_SESSION['user'];
             $nowtime = time();
             $exp = strtotime(date("Y-m-d"), time()) + 86400 * $_POST['exp'];
             if (empty($meals[$userid])) {
@@ -37,7 +36,7 @@ if (isset($_POST['submitauthor'])) {
             } else {
                 $meal = $meals[$userid];
             } 
-            $db->mSet("luo2888_users", "status=1,exp=$exp,author='$administrator',authortime=$nowtime,marks='已授权',meal='$meal'", "where name='$id'");
+            $db->mSet("luo2888_users", "status=1,exp=$exp,author='管理员',authortime=$nowtime,marks='已授权',meal='$meal'", "where name='$id'");
         } 
         unset($meals);
         echo "<script>$.alert({title: '成功',content: '选中用户已授权" . $_POST['exp'] . "天。',type: 'green',buttons: {confirm: {text: '好',btnClass: 'btn-primary',action: function(){window.location.href='useradmin.php';}}}});</script>";
@@ -55,14 +54,13 @@ if (isset($_POST['submitauthorforever'])) {
         $meals = array_values($meals);
         foreach($_POST['id']as $userid => $id) {
             $exp = strtotime(date("Y-m-d"), time()) + 86400 * 999;
-            $administrator = $_SESSION['user'];
             $nowtime = time();
             if (empty($meals[$userid])) {
                 $meal = 1000;
             } else {
                 $meal = $meals[$userid];
             } 
-            $db->mSet("luo2888_users", "status=999,exp=$exp,author='$administrator',authortime=$nowtime,marks='已授权',meal='$meal'", "where name='$id'");
+            $db->mSet("luo2888_users", "status=999,exp=$exp,author='管理员',authortime=$nowtime,marks='已授权',meal='$meal'", "where name='$id'");
         } 
         unset($meals);
         echo"<script>$.alert({title: '成功',content: '选中用户已授权为永不到期。',type: 'green',buttons: {confirm: {text: '好',btnClass: 'btn-primary',action: function(){window.location.href='useradmin.php';}}}});</script>";
@@ -123,7 +121,7 @@ if (isset($_GET['page'])) {
 if (isset($_GET['order'])) {
     $order = $_GET['order'];
 } else {
-    $order = 'lasttime desc';
+    $order = 'logintime desc';
 } 
 
 // 获取用户总数并根据每页显示数量计算页数

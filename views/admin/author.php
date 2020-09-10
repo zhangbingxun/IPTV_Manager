@@ -1,4 +1,7 @@
-<?php require_once "view.section.php";require_once "../controler/authorController.php"; ?>
+<?php
+require_once "../view.section.php";
+require_once "../../controler/authorController.php"
+?>
 
 <script type="text/javascript">
 	function submitForm(){
@@ -96,7 +99,7 @@
 											<th class="w-10"><a href="?order=ip">IP</a></th>
 											<th class="w-15"><a href="?order=region">地区</a></th>
 											<th class="w-5"><a href="?order=exp">状态</a></th>
-											<th class="w-15"><a href="?order=lasttime">最后登陆</a></th>
+											<th class="w-15"><a href="?order=logintime">最后登陆</a></th>
 										</tr>
 										</thead>
 										<tbody>
@@ -116,9 +119,9 @@
 													mysqli_free_result($result);
 												} 
 												$recStart=$recCounts*($page-1);
-												$result=$db->mQuery("select name,mac,deviceid,model,ip,region,lasttime,exp,status from luo2888_users where status<1 $searchparam order by $order limit $recStart,$recCounts");
+												$result=$db->mQuery("select * from luo2888_users where status<1 $searchparam order by $order limit $recStart,$recCounts");
 												while($row=mysqli_fetch_array($result)){
-													$lasttime=date("Y-m-d H:i:s",$row['lasttime']);
+													$logintime=date("Y-m-d H:i:s",$row['logintime']);
 													$name=$row['name'];
 													$deviceid=$row['deviceid'];
 													$mac=$row['mac'];
@@ -142,7 +145,7 @@
 													<td>" .$ip ."</td>	
 													<td>" .$region ."</td>
 													<td>" .$days ."</td>
-													<td>" . $lasttime ."</td>
+													<td>" . $logintime ."</td>
 													</tr>";
 												}
 												unset($meal_select,$row);

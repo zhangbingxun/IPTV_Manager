@@ -1,4 +1,8 @@
-<?php require_once "view.section.php";require_once "../controler/sysadminController.php" ?>
+<?php
+require_once "../view.section.php";
+require_once "../../controler/sysadminController.php"
+?>
+
 <script type="text/javascript">
 function showli(index){
 	$(".main-content li").hide();
@@ -26,6 +30,9 @@ showindex=<?php echo $_GET['index']; ?>
 					</li>
 					<li>
 						<?php include "./sysadmin/appset.view.php" ?>
+					</li>
+					<li>
+						<?php include "./sysadmin/webset.view.php" ?>
 					</li>
 				</ul>
 			</div>

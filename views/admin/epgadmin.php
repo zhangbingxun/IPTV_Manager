@@ -1,6 +1,6 @@
 <?php
-require_once "view.section.php";
-require_once "../controler/epgadminController.php";
+require_once "../view.section.php";
+require_once "../../controler/epgadminController.php";
 ?>
 
 <script type="text/javascript">

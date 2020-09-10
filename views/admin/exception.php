@@ -1,4 +1,12 @@
-<?php require_once "view.section.php";require_once "../controler/exceptionController.php"; ?>
+<?php
+require_once "../view.section.php";
+
+if ($user != $admin) {
+    exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
+} 
+
+require_once "../../controler/exceptionController.php";
+?>
 
 <!--页面主要内容-->
 <main class="lyear-layout-content">

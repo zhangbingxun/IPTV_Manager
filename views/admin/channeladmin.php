@@ -1,11 +1,15 @@
-<?php require_once "view.section.php";require_once "../controler/channeladminController.php" ?>
+<?php
+require_once "../view.section.php";
+require_once "../../controler/channeladminController.php"
+?>
+
 <script>
 	function categorycheck(cname){
-		$.get("../controler/togglepdController.php?cname="+cname,function(data){$("#tip").html(data)});
+		$.get("../../controler/togglepdController.php?cname="+cname,function(data){$("#tip").html(data)});
 	}
 	function showlist(index){
 		$("#srclist").val("正在加载中...");
-		$("#srclist").load("../controler/listController.php?category="+cname[index],function(data){
+		$("#srclist").load("../../controler/listController.php?category="+cname[index],function(data){
 			$("#srclist").val(data);
 		});
 		$("#typename").val(cname[index]);

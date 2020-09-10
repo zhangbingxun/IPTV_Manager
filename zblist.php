@@ -19,6 +19,12 @@ if (isset($_GET['keywords'])) {
     $where = "category='$nowcate'";
 }
 
+// 初始化
+$appname = $db->mGet("luo2888_config", "value", "where name='app_appname'");
+$web_title = $db->mGet("luo2888_config", "value", "where name='web_title'");
+$web_copyright = $db->mGet("luo2888_config", "value", "where name='web_copyright'");
+$web_description = $db->mGet("luo2888_config", "value", "where name='web_description'");
+$updateinterval = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,10 +33,10 @@ if (isset($_GET['keywords'])) {
         <meta name="applicable-device" content="mobile" />
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
         <title>
-            肥米TV - 電視直播
+            <?php echo $appname; ?> - <?php echo $web_title; ?>
         </title>
-        <meta name="keywords" content="肥米TV" />
-        <meta name="description" content="肥米TV，是一款優秀的OTT移動電視直播平台，除電視直播外，還有精彩的電影電視劇輪播、點播，給你最佳的娛樂體驗。功能全面增強，操作簡單快捷，隨時隨地觀看電視的同時，還有福利內容不時提供。" />
+        <meta name="keywords" content="<?php echo $appname; ?>" />
+        <meta name="description" content="<?php echo $web_description; ?>" />
         <meta name="author" content="luo2888" />
         <meta name="renderer" content="webkit" />
         <link rel="icon" href="/views/images/favicon.ico" type="image/ico">
@@ -43,14 +49,14 @@ if (isset($_GET['keywords'])) {
         <header class="header-map">
             <a href="/" class="logo">
                 <i class="icon">
-                    肥米TV
+                    <?php echo $appname; ?>
                 </i>
             </a>
             <div class="top-map-noslide">
                 <ul>
                     <li>
                         <a href="/zblist.php">
-                            肥米TV
+                            <?php echo $appname; ?>
                         </a>
                         <i class="icon">
                         </i>
@@ -72,34 +78,41 @@ if (isset($_GET['keywords'])) {
         </div>
         <div class="bg">
         </div>
+        <hr>
         <h3 align="center">
             网页端仅供体验测试使用，更多频道请下载客户端观看
         </h3>
+        <hr>
         <div class="wrap">
             <div class="nav-box">
+                <style>
+                    h3.cate {line-height: 40px;height: 40px;border-bottom: 1px solid #ddd;text-align: center;font-size: 15px;color: #fff;background: #3a9;}
+                </style>
                 <ul class="J-tabset">
-                <?php
-                    $func = "SELECT name FROM luo2888_category where type='web' and enable=1 order by id";
-                    $result = $db->mQuery($func);
-                    while($row = mysqli_fetch_array($result)) {
-                        if ($nowcate == $row['name']) {
-                            echo '<li class="curr">';
-                        } else {
-                            echo '<li>';
+                    <h3 class="cate">
+                        分类
+                    </h3>
+                    <?php
+                        $func = "SELECT name FROM luo2888_category where type='web' and enable=1 order by id";
+                        $result = $db->mQuery($func);
+                        while($row = mysqli_fetch_array($result)) {
+                            if ($nowcate == $row['name']) {
+                                echo '<li class="curr">';
+                            } else {
+                                echo '<li>';
+                            }
+                            echo "
+                                    <a href='?cate=" . $row['name'] . "'>" . $row['name'] . "</a>
+                                </li>
+                            ";
                         }
-                        echo "
-                                <a href='?cate=" . $row['name'] . "'>" . $row['name'] . "</a>
-                            </li>
-                        ";
-                    }
-                    unset($row);
-                ?>
+                        unset($row);
+                    ?>
                 </ul>
             </div>
             <div class="list-box J-medal">
                 <style>
-                    h3.area {line-height: 40px;height: 40px;border-bottom: 1px solid #ddd;text-indent:
-                    0.6em;font-size: 18px;color: #fff;background: #3a9;}
+                    h3.area {line-height: 40px;height: 40px;border-bottom: 1px solid #ddd;text-indent: 0.6em;font-size: 18px;color: #fff;background: #3a9;}
                 </style>
                 <h3 class="area">
                     <?php 
@@ -111,9 +124,9 @@ if (isset($_GET['keywords'])) {
                 </h3>
                 <ul class="xhbox zblist">
                     <?php
-					        						$func = "SELECT distinct name FROM luo2888_channels where $where order by id";
-				          						$result = $db->mQuery($func);
-										         while($row = mysqli_fetch_array($result)) {
+                        $func = "SELECT distinct name FROM luo2888_channels where $where order by id";
+                        $result = $db->mQuery($func);
+                        while($row = mysqli_fetch_array($result)) {
                             echo "
                             <li>
                                 <a href='zblive.php?cate=" . $nowcate . "&channel=" . $row['name'] . "' title='" . $row['name'] . "在线直播'>" . $row['name'] . "</a>
@@ -126,28 +139,26 @@ if (isset($_GET['keywords'])) {
                     </div>
                 </ul>
             </div>
-            <div class="clear">
-            </div>
+            <div class="clear"></div>
         </div>
         <footer class="foot">
             <div class="foot-border">
                 <div class="footer-link">
                     <div class="footer">
                         友情链接：
-                        <a href="https://www.luo2888.cn" class="sred">
-                            luo2888的工作室
-                        </a>
-                        <a href="https://seller.luo2888.cn">
-                            VNet云
-                        </a>
+                        <a href="https://www.luo2888.cn" class="sred">luo2888的工作室</a>
+                        <a href="https://seller.luo2888.cn">VNet云</a>
                     </div>
                     <span>
-                        Copyright &copy; 2020 肥米TV luo2888.cn
-                    </span>
-                    <span style="display:none">
+                        <?php echo $web_copyright; ?>
                     </span>
                 </div>
             </div>
         </footer>
+        <script>
+            window.setTimeout(function(){
+                window.location.reload();
+            },<?php echo $updateinterval * 1000; ?>);
+        </script>
     </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
-require_once "view.section.php";
-require_once "../controler/vodsadminController.php";
+require_once "../view.section.php";
+require_once "../../controler/vodsadminController.php";
 ?>
 <script type="text/javascript">
     function submitForm() {

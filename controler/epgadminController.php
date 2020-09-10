@@ -14,7 +14,7 @@ if ($user != $admin) {
 // 清除EPG缓存
 if (isset($_POST['clearcache'])) {
     $num = 0;
-    $files = glob("../cache/epgs/*");
+    $files = glob("../../cache/epgs/*");
     foreach ($files as $file) {
         unlink($file);
         $num++;

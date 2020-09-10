@@ -14,9 +14,14 @@ $epgdata =  json_decode($epgjson, true);
 $epgpos = $epgdata['pos'];
 
 if (strstr($_SERVER['HTTP_USER_AGENT'], "Windows") && strstr($_SERVER['HTTP_USER_AGENT'], "Chrome")) {
-    $ischrome = '<p align="center">您的浏览器正使用Chrome内核，要正常观看节目内容需要在属性页增加参数</p><p align="center">--allow-running-insecure-content --disable-web-security --user-data-dir=C:\Browser</p>';
+    $ischrome = '<p align="center" style="margin: 5px;">您的浏览器正使用Chrome内核，要正常观看节目内容需要在属性页增加参数</p><p align="center">--allow-running-insecure-content --disable-web-security --user-data-dir=C:\Browser</p>';
 }
 
+// 初始化
+$appname = $db->mGet("luo2888_config", "value", "where name='app_appname'");
+$web_title = $db->mGet("luo2888_config", "value", "where name='web_title'");
+$web_copyright = $db->mGet("luo2888_config", "value", "where name='web_copyright'");
+$web_description = $db->mGet("luo2888_config", "value", "where name='web_description'");
 ?>
 <!DOCTYPE html>
 <head>
@@ -24,10 +29,10 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], "Windows") && strstr($_SERVER['HTTP_USER
     <meta name="applicable-device" content="mobile">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <title>
-        <?php echo $channel; ?> - 肥米TV - 在线直播
+        <?php echo $channel; ?> - <?php echo $appname; ?> - <?php echo $web_title; ?>
     </title>
-    <meta name="keywords" content="肥米TV" />
-    <meta name="description" content="肥米TV，是一款優秀的OTT移動電視直播平台，除電視直播外，還有精彩的電影電視劇輪播、點播，給你最佳的娛樂體驗。功能全面增強，操作簡單快捷，隨時隨地觀看電視的同時，還有福利內容不時提供。" />
+    <meta name="keywords" content="<?php echo $appname; ?>,<?php echo $channel; ?>直播" />
+    <meta name="description" content="<?php echo $web_description; ?>" />
     <meta name="author" content="luo2888" />
     <meta name="renderer" content="webkit" />
     <link rel="icon" href="/views/images/favicon.ico" type="image/ico">
@@ -38,7 +43,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], "Windows") && strstr($_SERVER['HTTP_USER
     <header class="header-map">
         <a href="/" class="logo">
             <i class="icon">
-                肥米TV
+                <?php echo $appname; ?>
             </i>
         </a>
         <div class="top-map-noslide">
@@ -58,10 +63,8 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], "Windows") && strstr($_SERVER['HTTP_USER
             </ul>
         </div>
     </header>
-    <div class="bg">
-    </div>
+    <div class="bg"></div>
     <section>
-        <!--play-bx-->
         <div class="play-bx">
             <div class="play-bd">
                 <div class="player" id="J_player">
@@ -74,7 +77,6 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], "Windows") && strstr($_SERVER['HTTP_USER
                 </div>
             </div>
         </div>
-        <!--/play-bx-->
         <div class="tab-syb">
             <span>
                 切换线路:
@@ -99,6 +101,8 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], "Windows") && strstr($_SERVER['HTTP_USER
             </div>
         </div>
         <script src="/views/js/player.js?t=<?php echo time(); ?>"></script>
+        <?php echo $ischrome; ?>
+        <hr>
         <h3 align="center">
             网页端仅供体验测试使用，更多频道请下载客户端观看↓
         </h3>
@@ -109,14 +113,13 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], "Windows") && strstr($_SERVER['HTTP_USER
                 </a>
             </div>
             <div class="report">
-                <a href="/index.php/#android" target="_blank">
+                <a href="/#android" target="_blank">
                     下载APP
                 </a>
             </div>
             <div class="clear">
             </div>
         </div>
-        <?php echo $ischrome; ?>
         <div class="intro_desc">
             <h3>
                 <b>
@@ -127,7 +130,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], "Windows") && strstr($_SERVER['HTTP_USER
                 <table style="width: 100%;">
                 <?php
                     if (!empty($epgdata['data'])) {
-                        echo '<h3 style="text-align: center;overflow:scroll;margin-bottom: 15px;">正在播放：' . $epgdata['data'][$epgpos]['name'] . '</h3>';
+                        echo '<h3 style="text-align: center;overflow:hidden;margin-bottom: 15px;width: 100%;">正在播放：' . $epgdata['data'][$epgpos]['name'] . '</h3>';
                         foreach ($epgdata['data'] as &$program) {
                             echo '<tr><td><font size=4px>' . $program['starttime'] . '</font>&nbsp;&nbsp;&nbsp;&nbsp;' . $program['name'] . '</td></tr>';
                         }
@@ -156,9 +159,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], "Windows") && strstr($_SERVER['HTTP_USER
                     </a>
                 </div>
                 <span>
-                    Copyright &copy; 2020 肥米TV luo2888.cn
-                </span>
-                <span style="display:none">
+                    <?php echo $web_copyright; ?>
                 </span>
             </div>
         </div>

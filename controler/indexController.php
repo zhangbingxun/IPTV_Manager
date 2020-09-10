@@ -2,11 +2,6 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ERROR);
-
-if ($user != $admin) {
-    exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
-} 
-
 ?>
 
 <?php 
@@ -36,7 +31,7 @@ if ($row = $db->mGetRow("luo2888_users", "count(*)", "where status>0 and authort
 unset($row);
 // 获取在线用户总数
 $uptime = $db->mGet("luo2888_config", "value", "where name='updateinterval'");
-$OnlineTime = time() - $uptime;
+$OnlineTime = time() - $uptime * 2;
 if ($row = $db->mGetRow("luo2888_users", "count(*)", "where lasttime>$OnlineTime")) {
     $onlineuserCount = $row[0];
 } else {

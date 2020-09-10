@@ -1,4 +1,11 @@
-<?php require_once "view.section.php";require_once "../controler/serialadminController.php"; ?>
+<?php
+require_once "../view.section.php";
+
+if ($user != $admin) {
+    exit("<script>$.alert({title: '警告',content: '你无权访问此页面。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
+}
+
+require_once "../../controler/useradminController.php"; ?>
 
 <script type="text/javascript">
 	function submitForm(){
@@ -15,40 +22,6 @@
 			}
 		}
 	}
-	function genserial(){
-				var genseries = document.getElementById("genseries");
-				var snNumber =document.getElementById("snNumber");
-				var snCount =document.getElementById("snCount");
-				if(genseries.checked){
-						snNumber.style.display = "none"
-						snCount.style.display = "block"
-				}else{
-						snNumber.style.display = "block"
-						snCount.style.display = "none"
-				} 
-	}
-	function copytoclip() {
-		var ck=document.getElementsByName("id[]");
-		var clipBoardContent="";
-		for (var i = 0; i < ck.length; i++) {
-			if(ck[i].checked){
-				clipBoardContent+=ck[i].value+"\r\n";
-			}
-
-		}
-		if (clipBoardContent === undefined || clipBoardContent.length == 0) {
-			alert("请选择要复制的帐号");
-			return false;
-		}
-		var oInput = document.createElement('textarea');
-		oInput.value = clipBoardContent;
-		document.body.appendChild(oInput);
-    oInput.select();
-    document.execCommand("Copy");
-    oInput.className = 'oInput';
-    document.body.removeChild(oInput);
-    alert("选中的账号已复制到剪切板。");
-	}
 </script>
     
     <!--页面主要内容-->
@@ -57,11 +30,14 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="card">
-						<div class="card-header"><h4>账号</h4></div>
+						<div class="card-header"><h4>已授权用户列表</h4></div>
 						<div class="card-toolbar clearfix">
 							<div class="btn-block" >
-								<label>账号总数：<?php echo $serialCount; ?></label>
+								<label>用户总数：<?php echo $userCount; ?></label>
+								<label>今日上线：<?php echo $todayuserCount; ?></label>
+								<label>在线用户：<?php echo $onlineuserCount; ?></label>
 								<label>今日授权：<?php echo $todayauthoruserCount; ?></label>
+								<label>过期用户：<?php echo $expuserCount; ?></label>
 							</div>
 							<form class="pull-right search-bar" method="GET">
 								<div class="input-group">
@@ -123,9 +99,15 @@
 											</th>
 											<th class="w-5"><a href="?order=name">账号</a></th>
 											<th class="w-10"><a href="?order=meal">套餐</a></th>
-											<th class="w-5"><a href="?order=days">期限</a></th>
-											<th class="w-15"><a href="?order=gentime">生成时间</a></th>
-											<th class="w-5"><a href="?order=author">授权代理</a></th>
+											<th class="w-15"><a href="?order=mac">MAC地址</a></th>
+											<th class="w-15"><a href="?order=deviceid">设备ID</a></th>
+											<th class="w-10"><a href="?order=model">型号</a></th>
+											<th class="w-10"><a href="?order=ip">IP</a></th>
+											<th class="w-15"><a href="?order=region">地区</a></th>
+											<th class="w-5"><a href="?order=lasttime">在线时长</a></th>
+											<th class="w-15"><a href="?order=loginime">最后登陆</a></th>
+											<th class="w-5"><a href="?order=exp">状态</a></th>
+											<th class="w-5"><a href="?order=author">授权来源</a></th>
 											<th class="w-10"><a href="?order=marks">备注</a></th>
 										</tr>
 										</thead>
@@ -133,7 +115,7 @@
 											<form method="POST">
 												<?php
 													$recStart=$recCounts*($page-1);
-													$meals=$db->mQuery("select id,name from luo2888_meals where id<>1000");
+													$meals=$db->mQuery("select id,name from luo2888_meals");
 													if (mysqli_num_rows($meals)) {
 														$meals_arr = [];
 														while ($row = mysqli_fetch_array($meals, MYSQLI_ASSOC)) {
@@ -142,22 +124,43 @@
 														unset($row);
 														mysqli_free_result($meals);
 													} 
-													$result=$db->mQuery("select * from luo2888_serialnum where 1 $searchparam order by $order limit $recStart,$recCounts");
+													$result=$db->mQuery("select * from luo2888_users where status>0 $searchparam order by $order limit $recStart,$recCounts");
 													if (mysqli_num_rows($result)) {
 														while($row=mysqli_fetch_array($result)){
-															$gentime=date("Y-m-d H:i:s",$row['gentime']);
-															$days=$row['days'];
+															$status=$row['status'];
+															$lasttime=$row['lasttime'];
+															$logintime=$row['logintime'];
+															$logindate=date("Y-m-d H:i:s",$row['logintime']);
+															$onlinetime=abs(round(($lasttime - $logintime) / 60));
+															$days=ceil(($row['exp']-time())/86400);
 															$name=$row['name'];
-															$marks=$row['marks'];
+															$deviceid=$row['deviceid'];
+															$mac=$row['mac'];
+															$model=$row['model'];
+															$ip=$row['ip'];
+															$region=$row['region'];
 															$author=$row['author'];
+															$marks=$row['marks'];
+															$vpn=$row['vpn'];
 															if (empty($meals_arr[$row["meal"]])) {
 																$meal = $row["meals"];
 															} else {
 																$meal = $meals_arr[$row["meal"]];
 															} 
-															$days = $days . '天';
-															if($days == 999){
+															if($row['exp']>time()){
+															    $days='剩'."$days".'天';
+															}
+															if($row['exp']<time()){
+																$days='过期';
+															}
+															if($status==999){
 																$days='永不到期';
+																$expdate=$days;
+															}
+															if(abs(time() - $lasttime) > $onlinetime * 60) {
+																$onlinestatus='不在线';
+															} else {
+																$onlinestatus=$onlinetime . '分';
 															}
 															echo "<tr class=\"h-5\">
 																<td><label class=\"lyear-checkbox checkbox-primary\">
@@ -165,15 +168,21 @@
 																</label></td>
 																<td>$name</td>
 																<td>$meal</td>
-																<td>$days</td>
-																<td>$gentime</td>
-																<td>$author</td>
+																<td>$mac</td>
+																<td>".$deviceid."</td>
+																<td>$model</td>
+																<td>".$ip."</td>
+																<td>".$region."</td>
+																<td>".$onlinestatus ."</td>
+																<td>".$logindate ."</td>
+																<td>".$days."</td>
+																<td>".$author."</td>
 																<td>$marks</td>
 																</tr>";
 														}
 														unset($row);
 													}else {
-													    echo "<tr><td align='center' colspan='12'><font color='red'>对不起，当前未有已生成的账号数据！</font></td></tr>";
+													    echo "<tr><td align='center' colspan='12'><font color='red'>对不起，当前未有已授权的用户数据！</font></td></tr>";
 													}
 													mysqli_free_result($result);
 																?>
@@ -182,25 +191,27 @@
 													<td colspan="12">
 														<div class="input-group">
 															<div class="input-group-btn">
-																<select class="btn btn-sm btn-default dropdown-toggle" style="width: 115px;height: 30px;" name="meal_s">
+																<select class="btn btn-sm btn-default dropdown-toggle" style="width: 115px;height: 30px;" name="s_meals">
 																	<option value="">请选择套餐</option>
 																	<?php 
 																		foreach($meals_arr as $mealid => $mealname) {
 																			echo "<option value=\"$mealid\">$mealname";
 																		} 
+																		unset($meals_arr);
 																	?>
 																</select>
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="e_meals">修改套餐</button>
 																<input class="btn btn-default " style="width: 115px;height: 30px;" type="text" name="marks" size="3" placeholder="请输入备注">
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitmodifymarks">修改备注</button>
-																<input class="btn btn-default " style="width: 115px;height: 30px;" type="text" name="author" size="3" placeholder="请输入编号">
-																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitmodifyauthor">修改代理商</button>
-																<input class="btn btn-default " style="width: 85px;height: 30px;" type="text" name="days" size="3" placeholder="授权天数">
+																<input class="btn btn-default " style="width: 85px;height: 30px;" type="text" name="exp" size="3" placeholder="授权天数">
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitmodify">修改天数</button>
-																<button class="btn btn-sm btn-primary m-r-10" type="button" data-toggle="modal" data-target="#addserial">增加账号</button>
-																<button class="btn btn-sm btn-primary m-r-10" type="button" onclick="copytoclip()">复制账号</button>
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitadddays">增加天数</button>
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitNotExpired">设为永不到期</button>
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitCancelNotExpired">取消永不到期</button>
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitclearbind" onclick="return confirm('确认解除设备绑定？')">解除设备绑定</button>
+																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitforbidden">取消授权</button>
 																<button class="btn btn-sm btn-primary m-r-10" type="submit" name="submitdel" onclick="return confirm('确定删除选中用户吗？')">删除</button>
+																<button class="btn btn-sm btn-primary" type="submit" name="submitdelall" onclick="return confirm('确认删除所有已过期授权信息？')">清空过期用户</button>
 															</div>
 														</div>
 													</td>
@@ -209,63 +220,6 @@
 											</form>
 										</tbody>
 									</table>
-								</div>
-								<div class="modal fade" id="addserial" tabindex="-1" role="dialog">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-												<h4 class="modal-title">生成账号</h4>
-											</div>
-											<form method="post">
-												<div class="modal-body">
-													<div class="form-group" id="snNumber">
-														<label for="recipient-name" class="control-label">账号：</label>
-														<input type="number" class="form-control" name="snNumber" placeholder="请输入要生成的账号">
-													</div>
-													<div class="form-group" id="snCount" style="display: none;">
-														<label for="recipient-name" class="control-label">账号数量：</label>
-														<input type="number" class="form-control" name="snCount" placeholder="请输入要生成的账号数量">
-													</div>
-													<div class="form-group">
-														<label for="message-text" class="control-label">授权套餐：</label>
-														<select class="form-control btn btn-default dropdown-toggle" name="meal_s">
-															<option value="">请选择套餐</option>
-															<?php 
-																foreach($meals_arr as $mealid => $mealname) {
-																	echo "<option value=\"$mealid\">$mealname";
-																	} 
-																unset($meals_arr);
-															?>
-														</select>
-													</div>
-													<div class="form-group">
-														<label for="message-text" class="control-label">授权天数：</label>
-														<input type="number" class="form-control" name="days" placeholder="请输入要授权的天数"></input>
-													</div>
-													<div class="form-group">
-														<label for="message-text" class="control-label">代理商编号(可选)：</label>
-														<input type="text" class="form-control" name="author" placeholder="为空时默认为系统管理员"></input>
-													</div>
-													<div class="form-group">
-														<label for="message-text" class="control-label">备注：</label>
-														<input class="form-control" name="marks" placeholder="请输入备注信息"></input>
-													</div>
-													<div class="form-group">
-														<label class="control-label">批量生成：</label>
-														<label class="lyear-checkbox checkbox-inline checkbox-primary">
-															<input type="checkbox" id="genseries" onClick="genserial()">
-															<span></span>
-														</label>
-													</div>
-												</div>
-												<div class="modal-footer">
-													<button type="submit" class="btn btn-primary" name="submitserial">确定</button>
-													<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-												</div>
-											</form>
-										</div>
-									</div>
 								</div>
 								</div>
 								<nav>

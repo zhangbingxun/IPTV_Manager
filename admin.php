@@ -21,12 +21,12 @@ require_once "views/view.main.php";
                 </ul>
                 <div class="lyear-overlay"></div>
                 <div class="lyear-featured">
-                    <h4>
+                    <h5>
                         <?php echo $mingyan_contents; ?>
                         <small>
                             - <?php echo $mingyan_author; ?>
                         </small>
-                    </h4>
+                    </h5>
                 </div>
             </div>
             <section id="Loading"></section>

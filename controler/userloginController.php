@@ -13,6 +13,7 @@ $iploc = json_decode($json);
 $region = $iploc->data->region . $iploc->data->city . $iploc->data->isp;
 $admin = $db->mGet("luo2888_config","value","where name='adminname'");
 $skey =  $db->mGet("luo2888_config","value","where name='secret_key'");
+$adminpass =  $db->mGet("luo2888_config","value","where name='adminpass'");
 
 if (isset($_COOKIE['secret_key'])) {
     $secret_key = $_COOKIE['secret_key'];
@@ -21,7 +22,6 @@ if (isset($_COOKIE['secret_key'])) {
 } 
 
 if (!empty($skey) && $secret_key != $skey) {
-
     header("Content-Type:text/html;chartset=utf-8");
     header('HTTP/1.1 403 Forbidden');
     exit('
@@ -31,7 +31,7 @@ if (!empty($skey) && $secret_key != $skey) {
             <title>安全入口验证错误</title>
         </head>
         <body>
-            <h1 style="margin-top: 3.5%;">
+            <h1 style="margin-top: 2.5%;">
                 <strong>请使用正确的入口登录面板</strong>
             </h1>
             <p><strong>错误原因</strong>：当前面板已经开启了安全入口登录，请使用正确的安全码进入面板。</p>
@@ -48,14 +48,20 @@ if (!empty($skey) && $secret_key != $skey) {
 if (isset($_COOKIE['rememberpass'])) {
     $user = $db->mEscape_string($_COOKIE['username']);
     $cookiepass = $db->mEscape_string($_COOKIE['password']);
-    $adminpass =  $db->mGet("luo2888_config","value","where name='adminpass'");
     if ($user == $admin) {
         if ($cookiepass == $adminpass) {
             $_SESSION['user'] = $admin;
             $_SESSION['pass'] = $adminpass;
-            $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'$user','$userip','$region','$time','用户登入'");
-            header("location:views/index.php");
-        } 
+            $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'$user','$userip','$region','$time','管理员登入'");
+            header("location:views/admin/index.php");
+        }
+    } else if ($row = $db->mGetRow("luo2888_agents","*","where name='$user'")) {
+        if ($cookiepass == $row['pass']) {
+            $_SESSION['user'] = $row['id'];
+            $_SESSION['pass'] = $row['pass'];
+            $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'$user','$userip','$region','$time','代理商登入'");
+            header("location:views/agent/index.php");
+        }
     }
 } 
 
@@ -63,8 +69,6 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
     $user = $db->mEscape_string($_POST['username']);
     $password = $db->mEscape_string($_POST['password']);
     $inputpass = md5(PANEL_MD5_KEY . $password);
-    
-$adminpass =  $db->mGet("luo2888_config","value","where name='adminpass'");
     if ($user == $admin) {
         if ($inputpass == $adminpass) {
             $_SESSION['user'] = $admin;
@@ -76,8 +80,25 @@ $adminpass =  $db->mGet("luo2888_config","value","where name='adminpass'");
             } else {
                 setcookie("rememberpass", "1", time()-3600, "/");
             } 
-            $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'$user','$userip','$region','$time','用户登入'");
-            header("location:views/index.php");
+            $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'$user','$userip','$region','$time','管理员登入'");
+            header("location:views/admin/index.php");
+        } else {
+            echo "<script>alert('密码错误！');</script>";
+            $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'$user','$userip','$region','$time','输入错误密码'");
+        } 
+    } else if ($row = $db->mGetRow("luo2888_agents","*","where name='$user'")) {
+        if ($inputpass == $row['pass']) {
+            $_SESSION['user'] = $row['id'];
+            $_SESSION['pass'] = $row['pass'];
+            if (isset($_POST['rememberpass'])) {
+                setcookie("username", $user, time() + 3600 * 24 * 7, "/");
+                setcookie("password", $row['pass'], time() + 3600 * 24 * 7, "/");
+                setcookie("rememberpass", "1", time() + 3600 * 24 * 7, "/");
+            } else {
+                setcookie("rememberpass", "1", time()-3600, "/");
+            } 
+            $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'$user','$userip','$region','$time','代理商登入'");
+            header("location:views/agent/index.php");
         } else {
             echo "<script>alert('密码错误！');</script>";
             $db->mInt("luo2888_record","id,name,ip,loc,time,func","null,'$user','$userip','$region','$time','输入错误密码'");

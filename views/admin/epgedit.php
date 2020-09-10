@@ -1,6 +1,6 @@
 <?php
-require_once "view.section.php";
-require_once "../controler/epgadminController.php";
+require_once "../view.section.php";
+require_once "../../controler/epgadminController.php";
 
 if (isset($_GET["id"])) {
     $id = !empty($_GET["id"]) ? $_GET["id"] : exit("<script>$.alert({title: '错误',content: '参数为空！',type: 'red',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){self.location='epgadmin.php';}}}});</script>");

@@ -1086,9 +1086,14 @@ table td {
 	margin-top: -2px;
 }
 .play-bx .play-bd, .play-bx .player, .play-bx .copyright {
-	height:220px;
+	height: 550px;
 	overflow:hidden;
 	position:relative
+}
+@media screen and (max-width: 480px) {
+    .play-bx .play-bd, .play-bx .player, .play-bx .copyright {
+    	height: 220px;
+    }
 }
 .play-bx .player {
 	width:100%
@@ -1269,9 +1274,9 @@ table td {
 	background-size:21px 7px;
 }
 /* footer*/
-	.foot {
+.foot {
 	width:100%;
-	height:55px;
+	height:75px;
 	background:#eee;
 	border-top:3px solid #ddd
 }
@@ -1307,7 +1312,7 @@ table td {
 	font:400 12px/12px "Microsoft YaHei";
 	text-align:center
 }
-	.wbplay {
+.wbplay {
 	width:100%;
 	height:220px;
 	text-align:center;

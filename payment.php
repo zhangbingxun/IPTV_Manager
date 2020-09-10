@@ -21,12 +21,12 @@ require_once "controler/alipayController.php";
             </ul>
             <div class="lyear-overlay"></div>
             <div class="lyear-featured">
-                <h4>
+                <h5>
                     <?php echo $mingyan_contents; ?>
                     <small>
                         - <?php echo $mingyan_author; ?>
                     </small>
-                </h4>
+                </h5>
             </div>
       </div>
       <section id="Loading"></section>
@@ -42,7 +42,7 @@ require_once "controler/alipayController.php";
 							if ($result['code'] && $result['code']=='10000') {
 							    //生成二维码
 							    $url = $result['qr_code'];
-							    $qr_code = 'http://qr.topscan.com/api.php?text=' . $url . '&bg=ffffff&fg=000000&pt=1c73bd&m=10&w=400&el=1&inpt=1eabfc&logo=https://t.alipayobjects.com/tfscom/T1Z5XfXdxmXXXXXXXX.png';
+							    $qr_code = 'https://api.pwmqr.com/qrcode/create/?url=' . $url;
 							    exit ("
 										<tr>
 											<td>
@@ -129,8 +129,13 @@ require_once "controler/alipayController.php";
 							</tr>
 							<tr>
 								<td>
+									<p>警告，订单支付成功代表您同意不退款原则，请确认同意后再付款！</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
 									<div class="form-group w-100">
-										<button type="submit" class="btn btn-block btn-primary" name="dopay" id="dopay" onclick="return confirm(\'警告，订单支付成功代表您同意不退款原则，请确认同意后再付款！\')">提交订单</button>
+										<button type="submit" class="btn btn-block btn-primary" id="dopay" name="dopay">提交订单</button>
 									</div>
 								</td>
 							</tr>
@@ -148,15 +153,15 @@ require_once "controler/alipayController.php";
 				</form>
 				<hr>
 				<footer class="col-sm-12 text-center">
-					<p class="m-b-0">Copyright © 2017-2020 <a href="http://www.luo2888.cn">luo2888.cn</a>. All right reserved</p>
+					<p class="m-b-0"><?php echo $web_copyright; ?></p>
 				</footer>
 		</div>
 	</div>
 	<script type="text/javascript">
-	$('#userid_enter').on('click', function(){
+	$('#dopay').on('click', function(){
 	    lightyear.loading('show');
 	});
-	$('#dopay').on('click', function(){
+	$('#userid_enter').on('click', function(){
 	    lightyear.loading('show');
 	});
 	</script>

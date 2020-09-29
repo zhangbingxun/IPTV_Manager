@@ -87,10 +87,10 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 							<h4 class="modal-title">编辑代理商</h4>
 						</div>
 						<form method="post">
-					        <input type="hidden" name="id" value="' . $row["id"] . '"/>
 							<div class="modal-body">
 								<div class="form-group">
 									<label class="control-label">编号：</label>
+					      <input type="hidden" name="id" value="' . $row["id"] . '"/>
 									<input type="text" class="form-control" value="' . $row["id"] . '" disabled>
 								</div>
 								<div class="form-group">
@@ -122,7 +122,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 							<h4 class="modal-title">修改代理商密码</h4>
 						</div>
 						<form method="post">
-					        <input type="hidden" name="id" value="' . $row["id"] . '"/>
+					   <input type="hidden" name="id" value="' . $row["id"] . '"/>
 							<div class="modal-body">
 								<div class="form-group">
 									<label class="control-label">新密码：</label>

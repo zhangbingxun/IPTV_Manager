@@ -71,12 +71,12 @@ $web_description = $db->mGet("luo2888_config", "value", "where name='web_descrip
                     </p>
                     <p>
                         <ul class="actions">
-                            <li><a class="button primary icon solid fa-download" href="<?php echo $appurl; ?>">手机版（点播+直播） <?php echo 'V' . $appver; ?> 下载</a></li>
+                            <li><a class="button primary icon solid fa-download" href="<?php echo $appurl; ?>">尝鲜版（点播+直播） <?php echo 'V' . $appver; ?> 下载</a></li>
                         </ul>
                     </p>
                     <p>
                         <ul class="actions">
-                            <li><a class="button primary icon solid fa-download"  href="<?php echo $boxurl; ?>">电视/盒子版（直播） <?php echo 'V' . $boxver; ?> 下载</a></li>
+                            <li><a class="button primary icon solid fa-download"  href="<?php echo $boxurl; ?>">稳定版（直播） <?php echo 'V' . $boxver; ?> 下载</a></li>
                         </ul>
                     </p>
                 </article>

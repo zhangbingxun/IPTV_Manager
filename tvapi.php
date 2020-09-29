@@ -499,7 +499,7 @@ else if (isset($_POST['login'])) {
 
     $mealname = $db->mGet("luo2888_meals", "name", "where id='$mealid'");
     $week = array('日', '一', '二', '三', '四', '五', '六');
-    $adtext =  '尊敬的『' . $name . '』用户，今天' . date('n月d号') . "，" . '星期' . $week[date('w')] . '。' . $adtext;
+    $adtext =  '尊敬的『' . $name . '』，今天' . date('n月d号') . "，" . '星期' . $week[date('w')] . '。' . $adtext;
 
     $result = $db->mQuery("SELECT name from luo2888_category where enable=1 and type='province' order by id");
     while ($row = mysqli_fetch_array($result)) {

@@ -66,12 +66,12 @@ if (isset($_POST['adtext']) || isset($_POST['newpass'])) {
     
     if ($user != $admin) {
         if ($id != $user) {
-            exit("<script>$.alert({title: '警告',content: '你无权进行此操作。',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
+            exit("<script>$.alert({title: '警告',content: '你无权进行此操作。$id',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){history.go(-1);}}}});</script>");
         }
     }
     
     // 信息修改
-    if (isset($_POST['adinfo']) && isset($_POST['adtext'])) {
+    if (isset($_POST['adinfo']) || isset($_POST['adtext'])) {
         $name=$_POST["name"];
         $adinfo=$_POST["adinfo"];
         $adtext=$_POST["adtext"];

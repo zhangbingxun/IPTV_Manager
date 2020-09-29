@@ -17,14 +17,15 @@ require_once "../../controler/agentadminController.php"
                         <div class="tab-content">
                             <div class="tab-pane active">
                                 <form method="post" name="noticeform">
-                                    <input type="hidden" name="name" value="<?php echo $user ?>"/>
+                                    <input type="hidden" name="id" value="<?php echo $user; ?>"/>
+                                    <input type="hidden" name="name" value="<?php echo $db->mGet("luo2888_agents", "name", "where id='$user'");?>"/>
                                     <div class="form-group">
                                         <label>滚动公告</label>
-                                        <textarea class="form-control" rows="5" name="adtext" placeholder="请输入公告内容" ><?php echo $db->mGet("luo2888_agents", "adtext", "where name='$user'") ?></textarea>
+                                        <textarea class="form-control" rows="5" name="adtext" placeholder="请输入公告内容" ><?php echo $db->mGet("luo2888_agents", "adtext", "where id='$user'") ?></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label>预留文字</label>
-                                        <textarea class="form-control" rows="5" name="adinfo" placeholder="请输入文字内容" ><?php echo $db->mGet("luo2888_agents", "adinfo", "where name='$user'");?></textarea>
+                                        <textarea class="form-control" rows="5" name="adinfo" placeholder="请输入文字内容" ><?php echo $db->mGet("luo2888_agents", "adinfo", "where id='$user'");?></textarea>
                                     </div>
                                 </form>
                             </div>
@@ -38,7 +39,7 @@ require_once "../../controler/agentadminController.php"
                         </div>
                         <div class="card-body">
                             <form method="post" name="newpassform">
-                                <input type="hidden" name="name" value="<?php echo $user ?>"/>
+                                <input type="hidden" name="id" value="<?php echo $user; ?>"/>
                                 <div class="example-box">
                                     <label class="btn-block">新密码</label>
                                     <input class="form-control" type="password" name="newpass" value="" size="80"><br>

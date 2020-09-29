@@ -40,12 +40,7 @@ if (isset($_POST['dopay'])) {
     if (empty($days) || empty($mealid)) {
         exit("<script>$.alert({title: '警告',content: '请选择要购买的套餐和天数！',type: 'orange',buttons: {confirm: {text: '确定',btnClass: 'btn-primary',action: function(){window.location.href='payment.php';}}}});</script>");
     } else {
-    	if ($db->mGetRow("luo2888_payment", "*", "where userid=$userid and status=0")){
-    		$db->mDel("luo2888_payment", "where userid=$userid and status=0");
-        	exit("<script>$.alert({title: '警告',content: '系统存在您的未支付订单，已为你删除，请重新支付，如有异议请联系管理员！',type: 'orange',buttons: {confirm: {text: '返回',btnClass: 'btn-default',action: function(){history.go(-1);}}}});</script>");
-    	} else {
     		$db->mInt("luo2888_payment", "userid,order_id,meal,days,ordertime,paidtime,status", "$userid,'$outTradeNo',$mealid,$days,$orderTime,0,0");
-    	}
     }
 	$result = $aliPay->doPay();
 	$result = $result['alipay_trade_precreate_response'];
